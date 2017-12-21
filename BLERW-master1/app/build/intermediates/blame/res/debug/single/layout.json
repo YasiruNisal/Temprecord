@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "C:\\Users\\yasir\\Desktop\\2017\\work\\BLERW-master1\\app\\build\\intermediates\\res\\merged\\debug\\layout\\listitem_device.xml",
+        "source": "C:\\Users\\yasir\\Desktop\\2017\\work\\BLERW-master1\\app\\src\\main\\res\\layout\\listitem_device.xml"
+    },
+    {
+        "merged": "C:\\Users\\yasir\\Desktop\\2017\\work\\BLERW-master1\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_scan.xml",
+        "source": "C:\\Users\\yasir\\Desktop\\2017\\work\\BLERW-master1\\app\\src\\main\\res\\layout\\activity_scan.xml"
+    },
+    {
+        "merged": "C:\\Users\\yasir\\Desktop\\2017\\work\\BLERW-master1\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_device.xml",
+        "source": "C:\\Users\\yasir\\Desktop\\2017\\work\\BLERW-master1\\app\\src\\main\\res\\layout\\activity_device.xml"
+    }
+]

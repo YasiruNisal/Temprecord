@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="true"
+        jar="C:\Users\yasir\Desktop\2017\work\BLERW-master1\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="c469fcd8dd0fc5082941663232c4a624a507a279">
+        <dex dex="C:\Users\yasir\Desktop\2017\work\BLERW-master1\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_42208dd8446026ae6cdfb4e665f16e247280f6d7\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\yasir\Desktop\2017\work\BLERW-master1\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="3a5e4643910ad05ac5b7c4777076a14e000af4ec">
+        <dex dex="C:\Users\yasir\Desktop\2017\work\BLERW-master1\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_9df4a825508d34ef25f7d1edd8abba99c4534add\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\yasir\Desktop\2017\Andoird Backup\BLERW-master1\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="944cd1c62dc46d6cff8565d85a7da59a7352f82e">
+        <dex dex="C:\Users\yasir\Desktop\2017\Andoird Backup\BLERW-master1\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_e84d1277f0a0e7072a5dfd976fde3b07a44948ff\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\yasir\Desktop\2017\Andoird Backup\BLERW-master1\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="37fd5345477b12f05a2a9be37106524d9d1d0dd5">
+        <dex dex="C:\Users\yasir\Desktop\2017\Andoird Backup\BLERW-master1\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_3c21c0c761f10af26b3b864d4e04f0249d33b417\classes.dex" />
+    </item>
+
+</items>
