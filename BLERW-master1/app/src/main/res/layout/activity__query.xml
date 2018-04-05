@@ -1,0 +1,1437 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/queryscroll"
+    android:layout_width="match_parent"
+    android:background="@color/chat_name_color"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:id="@+id/flWrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/ublox_blue_color"
+            android:orientation="vertical"
+            android:paddingBottom="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="5dp"
+            android:id="@+id/attop">
+            <!--android:weightSum="1.0"-->
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="1.0">
+
+                <TextView
+                    android:id="@+id/state"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="1dp"
+                    android:text=""
+                    android:layout_weight=".5"
+                    android:textColor="@color/white_color"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="1dp"
+                    android:gravity="right"
+                    android:text=""
+                    android:layout_weight=".5"
+                    android:textColor="@color/white_color" />
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="1.0">
+
+                <LinearLayout
+                    android:layout_width="57dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".33"
+                    android:gravity="left"
+                    android:orientation="vertical">
+
+
+                    <ImageView
+                        android:id="@+id/imageView2"
+                        android:layout_width="70dp"
+                        android:layout_height="43dp"
+                        android:gravity="left"
+                        android:paddingLeft="5dp"
+                        android:scaleX="0.7"
+                        android:scaleY="0.7"
+                        android:src="@drawable/temperature" />
+
+                    <TextView
+                        android:id="@+id/temperature"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="1dp"
+                        android:text=""
+                        android:textColor="@color/white_color"
+                        android:textSize="20sp" />
+
+                </LinearLayout>
+
+
+
+
+
+                <LinearLayout
+                    android:layout_width="57dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".33"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+
+                    <ImageView
+                        android:id="@+id/imageView3"
+                        android:layout_width="70dp"
+                        android:layout_height="43dp"
+                        android:gravity="center"
+                        android:paddingLeft="5dp"
+                        android:scaleX="0.7"
+                        android:scaleY="0.7"
+                        android:src="@drawable/humidity" />
+
+                    <TextView
+                        android:id="@+id/humiditytop"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="1dp"
+                        android:text=""
+                        android:gravity="center"
+                        android:textColor="@color/white_color"
+                        android:textSize="20sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="57dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".33"
+                    android:gravity="right"
+                    android:orientation="vertical">
+
+
+                    <ImageView
+                        android:id="@+id/imageView1"
+                        android:layout_width="70dp"
+                        android:layout_height="40dp"
+                        android:gravity="center"
+                        android:paddingLeft="5dp"
+                        android:scaleX="0.7"
+                        android:scaleY="0.7"
+                        android:src="@drawable/bfull" />
+
+                    <TextView
+                        android:id="@+id/battery"
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_toStartOf="@+id/imageView"
+                        android:gravity="center"
+                        android:paddingTop="0dp"
+                        android:text=""
+                        android:textColor="@color/white_color"
+                        android:textSize="20sp" />
+
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="110dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:elevation="10mm"
+            android:orientation="vertical"
+            >
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/layout_txtbg"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/connection_state"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentTop="true"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:text="@string/disconnected"
+                    android:textColor="@android:color/holo_red_light"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="25dp"
+                android:layout_marginTop="0dp"
+                android:background="@drawable/layout_txtbg"
+                android:orientation="vertical">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+
+                    <ImageView
+                        android:id="@+id/im1"
+                        android:layout_width="70dp"
+                        android:layout_height="40dp"
+                        android:gravity="center"
+                        android:paddingLeft="5dp"
+                        android:scaleX="0.7"
+                        android:scaleY="0.7"
+                        android:src="@drawable/loggerdetails" />
+
+                    <TextView
+                        android:id="@+id/info1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="3dp"
+                        android:paddingBottom="3dp"
+                        android:paddingTop="10dp"
+                        android:text="Logger Details"
+                        android:textSize="@dimen/Heading_size"
+                        android:textStyle="bold" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".50"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Logger Family : "
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/family"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".50"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Logger Model : "
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/model"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".50"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Logger Firmware : "
+                        android:textSize="15sp" />
+                    <TextView
+                        android:id="@+id/firmware"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".50"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Logger Serial No. : "
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/serialno"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".50"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Logger Memory : "
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/memory"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".50"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Manufacture Data : "
+                        android:textSize="15sp" />
+                    <TextView
+                        android:id="@+id/manudate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".50"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Total Samples : "
+                        android:textSize="15sp" />
+
+
+                    <TextView
+                        android:id="@+id/sampleno"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".50"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Total Trips : "
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/trips"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="25dp"
+                android:layout_marginTop="0dp"
+                android:background="@drawable/layout_txtbg"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+
+                    <ImageView
+                        android:id="@+id/im2"
+                        android:layout_width="70dp"
+                        android:layout_height="40dp"
+                        android:gravity="center"
+                        android:paddingLeft="5dp"
+                        android:scaleX="0.7"
+                        android:scaleY="0.7"
+                        android:src="@drawable/tripinfo" />
+
+                    <TextView
+                        android:id="@+id/info2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="3dp"
+                        android:paddingBottom="3dp"
+                        android:paddingTop="10dp"
+                        android:text="Trip Information"
+                        android:textSize="@dimen/Heading_size"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".50"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Logging :"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/logging"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".50"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Logger Units :"
+                        android:textSize="15sp" />
+                    <TextView
+                        android:id="@+id/units"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".50"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Start Delay : "
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/startdelay"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".50"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Sample Period : "
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/sampleperiod"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".50"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Trip Samples : "
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/tripsamples"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".50"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Logged Samples : "
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/loggedsamples"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".50"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Started at : "
+                        android:textSize="15sp" />
+
+
+                    <TextView
+                        android:id="@+id/startedat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".50"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Started by : "
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/startedby"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".50"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Stopped at : "
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/stoppedat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".50"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Stopped by : "
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/stoppedby"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".50"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:text="First Sample : "
+                        android:textSize="15sp" />
+                    <TextView
+                        android:id="@+id/firstsample"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".50"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Last Sample : "
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/lastsample"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".50"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Start with Button : "
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/startwithbutton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".50"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Start on Date Time : "
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/startondatetime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".50"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Loop Overwrite : "
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/loopoverwrite"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".50"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Allow placing Tags : "
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/allowplacingtags"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".50"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Re-Use with Button : "
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/reusewithbutton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".50"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Password Protected : "
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/passwordprotected"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".50"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Stop with Button : "
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/stopwithbutton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".50"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Stop on Date Time : "
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/stopondatatime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".50"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Stop on Sample : "
+                        android:textSize="15sp" />
+                    <TextView
+                        android:id="@+id/stoponsample"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".50"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Stop when Full : "
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/stopwhenfull"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".50"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Enable LCD Menu : "
+                        android:textSize="15sp" />
+                    <TextView
+                        android:id="@+id/enablelcdmenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".50"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Extended LCD Menu : "
+                        android:textSize="15sp" />
+                    <TextView
+                        android:id="@+id/extendedlcdmenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="25dp"
+                android:layout_marginTop="0dp"
+                android:background="@drawable/layout_txtbg"
+                android:orientation="vertical">
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+                    <ImageView
+                        android:id="@+id/im3"
+                        android:layout_width="70dp"
+                        android:layout_height="40dp"
+                        android:gravity="center"
+                        android:paddingLeft="5dp"
+                        android:scaleX="0.7"
+                        android:scaleY="0.7"
+                        android:src="@drawable/ch1info" />
+
+
+                    <TextView
+                        android:id="@+id/info3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="3dp"
+                        android:paddingTop="10dp"
+                        android:text="Channel Information"
+                        android:textSize="@dimen/Heading_size"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".50"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Channel 1 :"
+                        android:textSize="15sp" />
+                    <TextView
+                        android:id="@+id/channel1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Temperature"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".50"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Enabled : "
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/c1enabled"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".50"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Enable Limits : "
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/c1enablelimits"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".50"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Alarm Delay : "
+                        android:textSize="15sp" />
+
+
+                    <TextView
+                        android:id="@+id/alarmdelay1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".50"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Upper Limit : "
+                        android:textSize="15sp" />
+
+
+                    <TextView
+                        android:id="@+id/upperlimit1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".50"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Lower Limit : "
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/lowerlimit1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".50"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Channel 2 :"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/channel2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Humidity"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".50"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Enabled : "
+                        android:textSize="15sp" />
+                    <TextView
+                        android:id="@+id/c2enabled"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".50"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Enable Limits : "
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/c2enablelimits"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".50"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Alarm Delay : "
+                        android:textSize="15sp" />
+                    <TextView
+                        android:id="@+id/alarmdelay2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".50"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Upper Limit : "
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/upperlimit2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".50"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Lower Limit : "
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/lowerlimit2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="25dp"
+                android:layout_marginTop="0dp"
+                android:background="@drawable/layout_txtbg"
+                android:orientation="vertical">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+
+                    <ImageView
+                        android:id="@+id/im4"
+                        android:layout_width="70dp"
+                        android:layout_height="40dp"
+                        android:gravity="center"
+                        android:paddingLeft="5dp"
+                        android:scaleX="0.7"
+                        android:scaleY="0.7"
+                        android:src="@drawable/comments" />
+
+
+                    <TextView
+                        android:id="@+id/info4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="3dp"
+                        android:paddingTop="10dp"
+                        android:text="User Comments"
+                        android:textSize="@dimen/Heading_size"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+
+
+                <TextView
+                    android:id="@+id/usercomments"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="10dp"
+                    android:text=""
+                    android:textSize="15sp" />
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+    </FrameLayout>
+</ScrollView>

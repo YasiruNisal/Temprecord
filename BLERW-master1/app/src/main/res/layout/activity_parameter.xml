@@ -1,0 +1,823 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@color/ublox_blue_color"
+        android:orientation="vertical"
+        android:paddingBottom="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="5dp">
+        <!--android:weightSum="1.0"-->
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="1.0">
+
+            <TextView
+                android:id="@+id/state"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:paddingTop="1dp"
+                android:text=""
+                android:layout_weight=".5"
+                android:textColor="@color/white_color"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:paddingTop="1dp"
+                android:gravity="right"
+                android:text=""
+                android:layout_weight=".5"
+                android:textColor="@color/white_color" />
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="1.0">
+
+            <LinearLayout
+                android:layout_width="57dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".33"
+                android:gravity="left"
+                android:orientation="vertical">
+
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="70dp"
+                    android:layout_height="43dp"
+                    android:gravity="left"
+                    android:paddingLeft="5dp"
+                    android:scaleX="0.7"
+                    android:scaleY="0.7"
+                    android:src="@drawable/temperature" />
+
+                <TextView
+                    android:id="@+id/temperature"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="1dp"
+                    android:text=""
+                    android:textColor="@color/white_color"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+
+
+
+
+            <LinearLayout
+                android:layout_width="57dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".33"
+                android:gravity="center"
+                android:orientation="vertical">
+
+
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="70dp"
+                    android:layout_height="43dp"
+                    android:gravity="center"
+                    android:paddingLeft="5dp"
+                    android:scaleX="0.7"
+                    android:scaleY="0.7"
+                    android:src="@drawable/humidity" />
+
+                <TextView
+                    android:id="@+id/humiditytop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="1dp"
+                    android:text=""
+                    android:gravity="center"
+                    android:textColor="@color/white_color"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="57dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".33"
+                android:gravity="right"
+                android:orientation="vertical">
+
+
+                <ImageView
+                    android:id="@+id/imageView1"
+                    android:layout_width="70dp"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:paddingLeft="5dp"
+                    android:scaleX="0.7"
+                    android:scaleY="0.7"
+                    android:src="@drawable/bfull" />
+
+                <TextView
+                    android:id="@+id/battery"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_toStartOf="@+id/imageView"
+                    android:gravity="center"
+                    android:paddingTop="0dp"
+                    android:text=""
+                    android:textColor="@color/white_color"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/parametersscroll"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:background="@color/chat_name_color"
+        >
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/connection_state"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentTop="true"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:text="@string/disconnected"
+                    android:textColor="@android:color/holo_red_light"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="25dp"
+                android:layout_marginTop="0dp"
+                android:background="@drawable/layout_txtbg"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+                    <ImageView
+                        android:id="@+id/im1"
+                        android:layout_width="70dp"
+                        android:layout_height="40dp"
+                        android:gravity="center"
+                        android:paddingLeft="5dp"
+                        android:scaleX="0.7"
+                        android:scaleY="0.7"
+                        android:src="@drawable/generalsettings" />
+
+                    <TextView
+                        android:id="@+id/info1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="3dp"
+                        android:paddingTop="10dp"
+                        android:text="General Settings"
+                        android:textSize="@dimen/Heading_size"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/heading31"
+                    android:paddingTop="5dp"
+                    android:textSize="15sp"
+                    android:text="Logger Units"
+                    android:textStyle="bold"
+                    android:paddingLeft="16dp"/>
+
+                <RadioGroup
+                    android:id="@+id/imperialunitrg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent">
+
+                    <RadioButton
+                        android:id="@+id/celsius"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text="Celsius"
+                        android:textColorHighlight="@color/ublox_blue_color" />
+
+                    <RadioButton
+                        android:id="@+id/fahrenheit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text="Fahrenheit"
+                        android:textColorHighlight="@color/ublox_blue_color" />
+
+                </RadioGroup>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/heading32"
+                    android:paddingTop="10dp"
+                    android:textSize="15sp"
+                    android:text="Enables"
+                    android:textStyle="bold"
+                    android:paddingLeft="16dp"/>
+
+
+                <CheckBox
+                    android:id="@+id/loopoverwrite"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Loop Overwrite"
+                    android:textColorHighlight="@color/ublox_blue_color" />
+
+                <CheckBox
+                    android:id="@+id/extendedlcdmenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Extended LCD Menu"
+                    android:textColorHighlight="@color/ublox_blue_color" />
+
+                <CheckBox
+                    android:id="@+id/startwithbutton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Start with Button"
+                    android:textColorHighlight="@color/ublox_blue_color"/>
+
+                <CheckBox
+                    android:id="@+id/stopwithbutton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Stop with Button"
+                    android:textColorHighlight="@color/ublox_blue_color"/>
+
+                <CheckBox
+                    android:id="@+id/reusewithbutton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Re-Use with Button"
+                    android:textColorHighlight="@color/ublox_blue_color"/>
+
+                <CheckBox
+                    android:id="@+id/allowplacingtags"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Allow placing Tags"
+                    android:textColorHighlight="@color/ublox_blue_color"/>
+
+                <CheckBox
+                    android:id="@+id/enablelcdmenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Enable LCD Menu"
+                    android:textColorHighlight="@color/ublox_blue_color"/>
+
+                <CheckBox
+                    android:id="@+id/securewithpassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Secure logger with Password"
+                    android:textColorHighlight="@color/ublox_blue_color" />
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/heading33"
+                    android:paddingTop="10dp"
+                    android:textSize="15sp"
+                    android:text="Password"
+                    android:textStyle="bold"
+                    android:paddingLeft="16dp"/>
+
+                <EditText
+                    android:background="@drawable/my_button_bg"
+                    android:id="@+id/password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="16dp"
+                    android:maxLength="8"
+                    android:ems="10"
+                    android:inputType="textPassword" />
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/heading34"
+                    android:paddingTop="10dp"
+                    android:textSize="15sp"
+                    android:text="Confirm"
+                    android:textStyle="bold"
+                    android:paddingLeft="16dp"/>
+
+                <EditText
+                    android:background="@drawable/my_button_bg"
+                    android:id="@+id/confirm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="16dp"
+                    android:maxLength="8"
+                    android:ems="10"
+                    android:inputType="textPassword" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/heading35"
+                    android:paddingTop="10dp"
+                    android:textSize="15sp"
+                    android:text="User Comments"
+                    android:textStyle="bold"
+                    android:paddingLeft="16dp"/>
+
+                <EditText
+                    android:id="@+id/editusercomment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/my_button_bg"
+                    android:paddingLeft="16dp"
+                    android:maxLength="320"
+                    android:text="" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="25dp"
+                android:layout_marginTop="0dp"
+                android:background="@drawable/layout_txtbg"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+                    <ImageView
+                        android:id="@+id/im2"
+                        android:layout_width="70dp"
+                        android:layout_height="40dp"
+                        android:gravity="center"
+                        android:paddingLeft="5dp"
+                        android:scaleX="0.7"
+                        android:scaleY="0.7"
+                        android:src="@drawable/stopsettings" />
+
+                    <TextView
+                        android:id="@+id/info2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="3dp"
+                        android:paddingTop="10dp"
+                        android:text="Start, Stop and Sample Settings"
+                        android:textSize="@dimen/Heading_size"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/heading36"
+                    android:paddingTop="10dp"
+                    android:textSize="15sp"
+                    android:text="Start Options"
+                    android:textStyle="bold"
+                    android:paddingLeft="16dp"/>
+
+                <RadioGroup
+                    android:id="@+id/startoptionsrg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent">
+
+                    <RadioButton
+                        android:id="@+id/startwithdelay"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text="Start with Delay"
+                        android:textColorHighlight="@color/ublox_blue_color"/>
+
+                    <Button
+                        android:id="@+id/timePickerstartdelay"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/my_button_bg"
+                        android:text="00:00:05"
+                        />
+
+
+                    <RadioButton
+                        android:id="@+id/startondateand"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text="Start on date time"
+                        android:textColorHighlight="@color/ublox_blue_color"/>
+
+                    <Button
+                        android:id="@+id/timepickerstartdatetime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="14/3/2018 12:38"
+                        android:background="@drawable/my_button_bg"/>
+
+                </RadioGroup>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="15dp"
+                    android:text="Sample Period" />
+
+                <Button
+                    android:id="@+id/timePickersampleperiod"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/my_button_bg"
+                    android:text="00:00:02"/>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/heading37"
+                    android:paddingTop="10dp"
+                    android:textSize="15sp"
+                    android:text="Stop Options"
+                    android:textStyle="bold"
+                    android:paddingLeft="16dp"/>
+
+                <RadioGroup
+                    android:id="@+id/stopsettingrg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    >
+
+
+
+                    <RadioButton
+                        android:id="@+id/stopbyuser"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text="Requires stop by User"
+                        android:textColorHighlight="@color/ublox_blue_color"/>
+
+                    <RadioButton
+                        android:id="@+id/stopwhenfull"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text="Stop when Full"
+                        android:textColorHighlight="@color/ublox_blue_color"/>
+
+                    <RadioButton
+                        android:id="@+id/stoponsample"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text="Stop on Sample"
+                        android:textColorHighlight="@color/ublox_blue_color"/>
+
+                    <EditText
+                        android:background="@drawable/my_button_bg"
+                        android:id="@+id/samplenumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:text="2" />
+
+                    <RadioButton
+                        android:id="@+id/stopondatetime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text="Stop on Date Time"
+                        android:textColorHighlight="@color/ublox_blue_color"/>
+
+                </RadioGroup>
+
+                <Button
+                    android:id="@+id/timePickerstopondatetime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/my_button_bg"
+                    android:text="14/3/2018 12:50"/>
+
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="25dp"
+                android:layout_marginTop="0dp"
+                android:background="@drawable/layout_txtbg"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+                    <ImageView
+                        android:id="@+id/im3"
+                        android:layout_width="70dp"
+                        android:layout_height="40dp"
+                        android:gravity="center"
+                        android:paddingLeft="5dp"
+                        android:scaleX="0.7"
+                        android:scaleY="0.7"
+                        android:src="@drawable/channel_settings" />
+
+                    <TextView
+                        android:id="@+id/info3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="3dp"
+                        android:paddingTop="10dp"
+                        android:text="Channel Settings"
+                        android:textSize="@dimen/Heading_size"
+                        android:textStyle="bold" />
+
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/heading39"
+                    android:paddingTop="10dp"
+                    android:textSize="15sp"
+                    android:text="Channel 1: Temperature"
+                    android:textStyle="bold"
+                    android:paddingLeft="16dp"/>
+
+                <CheckBox
+                    android:id="@+id/ch1enable"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Enabled" />
+
+
+                <CheckBox
+                    android:id="@+id/ch1limitsenabled"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Enable Limits" />
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="15dp"
+                    android:text="Upper Limit" />
+
+                <EditText
+                    android:id="@+id/ch1upperlimit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/my_button_bg"
+                    android:gravity="center"
+                    android:inputType="number|numberSigned|numberDecimal"
+                    android:text="60.0" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="15dp"
+                    android:text="Lower Limit" />
+
+                <EditText
+                    android:id="@+id/ch1lowerlimit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/my_button_bg"
+                    android:gravity="center"
+                    android:inputType="numberSigned|numberDecimal"
+                    android:text="-30.0" />
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="15dp"
+                    android:text="Alarm Delay" />
+
+                <EditText
+                    android:background="@drawable/my_button_bg"
+                    android:id="@+id/ch1alarmdelay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="10"
+                    android:gravity="center"
+                    android:inputType="numberDecimal"/>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/heading40"
+                    android:paddingTop="10dp"
+                    android:textSize="15sp"
+                    android:text="Channel 2: Humidity"
+                    android:textStyle="bold"
+                    android:paddingLeft="16dp"/>
+
+
+                <CheckBox
+                    android:id="@+id/ch2enable"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Enabled" />
+
+
+                <CheckBox
+                    android:id="@+id/ch2limitenabled"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Enable Limits" />
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="15dp"
+                    android:text="Upper Limit" />
+
+                <EditText
+                    android:background="@drawable/my_button_bg"
+                    android:id="@+id/ch2upperlimit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="100.0"
+                    android:gravity="center"
+                    android:inputType="numberDecimal"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="15dp"
+                    android:text="Lower Limit" />
+
+                <EditText
+                    android:background="@drawable/my_button_bg"
+                    android:id="@+id/ch2lowerlimit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="00.0"
+                    android:gravity="center"
+                    android:inputType="numberDecimal"/>
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="15dp"
+                    android:text="Alarm Delay" />
+
+                <EditText
+                    android:background="@drawable/my_button_bg"
+                    android:id="@+id/ch2alarmdelay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="10"
+                    android:inputType="numberDecimal"/>
+
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:background="@drawable/layout_txtbg"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="25dp">
+
+                <Button
+                    android:id="@+id/done"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/ublox_blue_color"
+                    android:textColor="@color/white_color"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentEnd="true"
+                    android:text="Program Parameters" />
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

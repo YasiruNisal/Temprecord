@@ -1,0 +1,129 @@
+Installation Instructions
+=========================
+
+ - Copy all the files from the archive trw-setup.zip into a temporary folder.
+ - Run the file trw-setup.exe
+
+Installation Notes
+==================
+
+Temprecord requires the user to have administrator rights for installation.
+After installation, Temprecord will be available to all users of the computer,
+whether administrators or limited users.
+
+Folder Use and Permissions
+==========================
+
+Installation of Temprecord creates the following folders:
+
+C:\Documents and Settings\All Users\Documents\Temprecord\                                   Default folder for Temprecord (.TR) files
+C:\Documents and Settings\All Users\Documents\Temprecord\Reports\                           Default folder for PDF report files
+C:\Documents and Settings\All Users\Documents\Temprecord\Application Data\TRW\              Folder for TRW.INI settings file
+C:\Documents and Settings\All Users\Documents\Temprecord\Application Data\TRW\Email Files\  Folder for temporary attachment files for emails.  Files remain in here until the email with attachments is successfully sent, when these files are deleted.
+C:\Documents and Settings\All Users\Documents\Temprecord\Application Data\TRW\Event Log\    Folder for the event log
+C:\Documents and Settings\<User name>\Local Settings\Temp\Temprecord\TRW\Reports\           Folder for temporary PDF files created when PDF preview is used.
+
+These folders are all created with modify permissions for all users, so that
+limited users can still run Temprecord, create and save files and email
+attachments, etc.
+
+The Temprecord program is generally distributed as a ZIP file
+named trw-setup.zip.  Within the ZIP archive are four files:
+
+  - trw-setup.exe                          The setup executable.  Run this
+                                           file to install Temprecord.
+
+  - readme.txt                             Late-breaking news and version history
+
+  - Install.txt                            This  file
+
+  - TRW Batch Installation Template.bat    A sample batch file to illustrate
+                                           unattended batch installation
+
+NOTE:  The installation ZIP archive file contains EXE and BAT files.  These
+file types are often blocked by system administrators because of the fear
+they might harbour viruses.  You may need to find alternate ways of
+distributing the installable other than email attachments.
+
+
+INI Files
+=========
+
+The way in which Temprecord looks for the INI file on startup is designed 
+to allow system administrators to tailor each installation to their needs.
+
+  - TRW first looks in the folder that the executable was started from.  
+    If the file TRW.INI is found there then that file is read.
+    
+  - If the file TRW.INI was not found there TRW looks in the folder:
+  
+      C:\Documents and Settings\All Users\Documents\Temprecord\Application Data\TRW\
+      
+    If the file TRW.INI is found there then that file is read.
+      
+  - If the file TRW.INI was not found there TRW looks in the folder:
+  
+      C:\Documents and Settings\<user name>Local Settings\Application Data\Temprecord\TRW\
+      
+    If the file TRW.INI is found there then that file is read.
+    
+  - If the file TRW.INI is not found in any of the above 3 locations one is created in:  
+      
+      C:\Documents and Settings\All Users\Documents\Temprecord\Application Data\TRW\
+      
+  - The TRW.INI file is saved back into the folder it was found or 
+    created in when TRW exits.
+
+
+Customizing Installation
+========================
+
+If you require your installation to have customized settings, these are
+the steps required:
+
+  - unzip all the files in trw-setup.zip to a temporary folder
+  - install Temprecord on your computer.
+  - open the Options dialog.
+  - set any custom options you require.
+  - exit Temprecord.
+  - open Explorer and navigate to the folder:
+
+      C:\Documents and Settings\All Users\Application Data\Temprecord\TRW
+
+  - copy the file TRW.INI into the temporary folder
+
+The contents of the temporary folder are what you need to distribute as an
+installation image.
+
+Batch Installation
+==================
+
+The file Batch Installation Template.bat is provided as an example of how
+Temprecord can be installed without user intervention in situations where
+the installation destination folder is known in advance.  System
+administrators should examine this file and edit it to suit their
+environment if necessary, although using it in its supplied form will
+generally install Temprecord satisfactorily and is recommended.
+
+Kiosk Version
+=============
+
+Temprecord supplies a "Kiosk" version of the software, for use in environments
+where full access to some Temprecord functions is not required or undesirable.
+
+The Kiosk version installation instructions are the same as above, except that
+the executable is called:
+
+      trw-kiosk-setup.exe
+
+and the example installation batch file is called:
+
+      TRW Kiosk Batch Installation Template.bat
+
+If Temprecord and Temprecord Kiosk are both installed on the one computer,
+they will be assigned separate program groups and shortcuts, and they will
+each have their own INI file and temporary files folders.  Both versions
+will still share folders for TR files  and PDF reports.  
+
+
+

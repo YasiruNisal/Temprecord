@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/menu_about"
+        android:orderInCategory="100"
+        android:title="About"
+        android:icon="@drawable/ic_share_black_24dp"
+        android:showAsAction="always"/>
+    <item
+        android:id="@+id/menu"
+        android:title="Options"
+        android:icon="@drawable/query_option"
+        android:orderInCategory="101"
+        android:showAsAction="always">
+
+        <menu>
+
+            <item android:id="@+id/action_requery"
+                android:icon="@drawable/ic_infob"
+                android:showAsAction="ifRoom"
+                android:title="Re-Query" />
+
+            <item android:id="@+id/action_start"
+                android:icon="@drawable/ic_startb"
+                android:showAsAction="ifRoom"
+                android:title="Start" />
+
+            <item android:id="@+id/action_stop"
+                android:icon="@drawable/ic_stopb"
+                android:showAsAction="ifRoom"
+                android:title="Stop" />
+
+            <item android:id="@+id/action_reuse"
+                android:icon="@drawable/ic_reuseb"
+                android:showAsAction="ifRoom"
+                android:title="Re-Use" />
+
+            <item android:id="@+id/action_tag"
+                android:icon="@drawable/ic_tagb"
+                android:showAsAction="ifRoom"
+                android:title="Tag" />
+
+            <item android:id="@+id/action_menu"
+                android:icon="@drawable/ic_menub"
+                android:showAsAction="ifRoom"
+                android:title="Menu" />
+
+        </menu>
+
+    </item>
+    <item android:id="@+id/menu_refresh"
+        android:icon="@drawable/ic_refresh"
+        android:title="Menu"
+        android:orderInCategory="101"
+        android:showAsAction="ifRoom|withText"/>
+
+</menu>
