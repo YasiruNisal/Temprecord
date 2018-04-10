@@ -430,7 +430,7 @@ public class Activity_Read extends Activity {
         Thread thread = new Thread() {
             @Override
             public void run() {
-                if (mConnected && test != null) {
+                if (mConnected && test != null  && characteristicTX != null && characteristicRX != null && mBluetoothLeService != null) {
                     //characteristicTX.setValue(new byte[] {test[i]});
                     mBluetoothLeService.writeCharacteristic(characteristicTX, test);
                     mBluetoothLeService.setCharacteristicNotification(characteristicRX, true);

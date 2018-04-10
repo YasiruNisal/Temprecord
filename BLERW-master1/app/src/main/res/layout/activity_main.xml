@@ -47,6 +47,7 @@
                 app:colorPressed="#911D5D"
                 app:hintText="Query"
                 android:scaleType="centerInside"
+                android:elevation="30dp"
                 app:icon="@drawable/ic_info" />
 
             <com.imangazaliev.circlemenu.CircleMenuButton
@@ -57,6 +58,7 @@
                 app:colorPressed="#822380"
                 app:hintText="Start"
                 android:scaleType="centerInside"
+                android:elevation="30dp"
                 app:icon="@drawable/ic_start" />
 
             <com.imangazaliev.circlemenu.CircleMenuButton
@@ -67,6 +69,7 @@
                 app:colorPressed="#5C2A84"
                 app:hintText="Tag"
                 android:scaleType="centerInside"
+                android:elevation="30dp"
                 app:icon="@drawable/ic_tag" />
 
             <com.imangazaliev.circlemenu.CircleMenuButton
@@ -77,6 +80,7 @@
                 app:colorPressed="#213999"
                 app:hintText="Parameters"
                 android:scaleType="centerInside"
+                android:elevation="30dp"
                 app:icon="@drawable/ic_parameters" />
 
 
@@ -88,6 +92,7 @@
                 app:colorPressed="#00755F"
                 app:hintText="Device List"
                 android:scaleType="centerInside"
+                android:elevation="30dp"
                 app:icon="@drawable/ic_list" />
 
             <com.imangazaliev.circlemenu.CircleMenuButton
@@ -98,6 +103,7 @@
                 app:colorPressed="#01893E"
                 app:hintText="Open"
                 android:scaleType="centerInside"
+                android:elevation="30dp"
                 app:icon="@drawable/ic_open" />
 
             <com.imangazaliev.circlemenu.CircleMenuButton
@@ -108,6 +114,7 @@
                 app:colorPressed="#81B239"
                 app:hintText="Help"
                 android:scaleType="centerInside"
+                android:elevation="30dp"
                 app:icon="@drawable/ic_help" />
 
 
@@ -119,6 +126,7 @@
                 app:colorPressed="#E0C514"
                 app:hintText="Find"
                 android:scaleType="centerInside"
+                android:elevation="30dp"
                 app:icon="@drawable/ic_search" />
 
             <com.imangazaliev.circlemenu.CircleMenuButton
@@ -129,6 +137,7 @@
                 app:colorPressed="#DD821A"
                 app:hintText="Settings"
                 android:scaleType="centerInside"
+                android:elevation="30dp"
                 app:icon="@drawable/ic_settings" />
 
             <com.imangazaliev.circlemenu.CircleMenuButton
@@ -139,6 +148,7 @@
                 app:colorPressed="#E85C20"
                 app:hintText="Read"
                 android:scaleType="centerInside"
+                android:elevation="30dp"
                 app:icon="@drawable/ic_read" />
 
             <com.imangazaliev.circlemenu.CircleMenuButton
@@ -149,6 +159,7 @@
                 app:colorPressed="#D33830"
                 app:hintText="Reuse"
                 android:scaleType="centerInside"
+                android:elevation="30dp"
                 app:icon="@drawable/ic_reuse" />
 
             <com.imangazaliev.circlemenu.CircleMenuButton
@@ -159,6 +170,7 @@
                 app:colorPressed="#CE2135"
                 app:hintText="Stop"
                 android:scaleType="centerInside"
+                android:elevation="30dp"
                 app:icon="@drawable/ic_stop" />
 
         </com.imangazaliev.circlemenu.CircleMenu>

@@ -211,6 +211,7 @@ public class Activity_Query extends Activity {
     private final String LIST_UUID = "UUID";
 
     private String BLE_Address = "";
+    private boolean beenHere = false;
 
     // Code to manage Service lifecycle.
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
@@ -227,6 +228,7 @@ public class Activity_Query extends Activity {
             //for(int i = 0; i < 5; i++) {
             mBluetoothLeService.connect(mDevices.get(currentDevice).getAddress());
             BLE_Address = mDevices.get(currentDevice).getAddress();
+
             //}
         }
 
@@ -249,6 +251,7 @@ public class Activity_Query extends Activity {
             if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
                 mConnected = true;
                 updateConnectionState(R.string.connected, 1);
+                beenHere = true;
                 invalidateOptionsMenu();
             } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
                 mConnected = false;
@@ -368,20 +371,25 @@ public class Activity_Query extends Activity {
             case R.id.menu_refresh:
 
                 frommenu = true;
-                Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
-                bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
+                reconnect();
 
-                registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
-                if (mBluetoothLeService != null) {
-                    final boolean result = mBluetoothLeService.connect(BLE_Address);
-                    Log.d(TAG, "Connect request result===" + result);
-                }
-
-                displayGattServices(mBluetoothLeService.getSupportedGattServices());
+                //displayGattServices(mBluetoothLeService.getSupportedGattServices());
 
         }
         return super.onOptionsItemSelected(item);
     }
+
+    private void reconnect(){
+        Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
+        bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
+
+        registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
+        if (mBluetoothLeService != null) {
+            final boolean result = mBluetoothLeService.connect(BLE_Address);
+            Log.d(TAG, "Connect request result===" + result);
+        }
+    }
+
 
     private void updateConnectionState(final int resourceId, final int num) {
         runOnUiThread(new Runnable() {
@@ -447,7 +455,7 @@ public class Activity_Query extends Activity {
         Thread thread = new Thread() {
             @Override
             public void run() {
-                if (mConnected && test != null && characteristicTX != null && characteristicTX != null && mBluetoothLeService != null) {
+                if (mConnected && test != null && characteristicTX != null && characteristicRX != null && mBluetoothLeService != null) {
                     //characteristicTX.setValue(new byte[] {test[i]});
                     mBluetoothLeService.writeCharacteristic(characteristicTX, test);
                     mBluetoothLeService.setCharacteristicNotification(characteristicRX, true);
@@ -1026,10 +1034,27 @@ public class Activity_Query extends Activity {
         //getActionBar().setDisplayHomeAsUpEnabled(true);
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
-
+        tryAgain();
         progressDialoge();
         //ScrollListener();
         queryScroll.getViewTreeObserver().addOnScrollChangedListener(new ScrollPositionObserver());
+
+    }
+
+    private void tryAgain(){
+        final Thread t = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    TimeUnit.SECONDS.sleep(6);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if(!beenHere)
+                    reconnect();
+            }
+        };
+        t.start();
 
     }
 

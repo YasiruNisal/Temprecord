@@ -346,7 +346,11 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
         progresspercentage = 0;
         switch(item.getItemId()) {
             case R.id.action_program:
-                programbutton();
+                if(baseCMD.state == 2) {
+                    programbutton();
+                }else{
+                    BuildDialogue("Can't Program parameters", "Parameters can't be programed when the logger is in "+QS.GetState(baseCMD.state)+" state.\nPut the logger in to ready state!",2);
+                }
                 return true;
             case R.id.action_menu:
                 backpress = true;
@@ -438,7 +442,7 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
         Thread thread = new Thread() {
             @Override
             public void run() {
-                if (mConnected & !backpress) {
+                if (mConnected && !backpress && test != null && characteristicTX != null && characteristicRX != null && mBluetoothLeService != null) {
                     //characteristicTX.setValue(new byte[] {test[i]});
                     mBluetoothLeService.writeCharacteristic(characteristicTX, test);
                     mBluetoothLeService.setCharacteristicNotification(characteristicRX,true);
@@ -530,8 +534,10 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                        mBluetoothLeService.disconnect();
-                        unbindService(mServiceConnection);
+                        if(mBluetoothLeService != null){
+                            mBluetoothLeService.disconnect();
+                            unbindService(mServiceConnection);
+                        }
 
                         break;
                     case 8:
@@ -840,6 +846,7 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                if(mBluetoothLeService != null)
                 unbindService(mServiceConnection);
             }
         };
