@@ -57,7 +57,6 @@ public class BaseCMD {
     public int commentTextsize;
     public Calendar timestartstopdatetime;
     public int state;
-
     public byte[] ReadByte(byte[] rawBytes){
         byte[] b = new byte[0];
         int rawLength;

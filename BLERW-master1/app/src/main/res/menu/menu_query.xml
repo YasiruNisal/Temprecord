@@ -39,11 +39,15 @@
                 android:icon="@drawable/ic_tagb"
                 android:showAsAction="ifRoom"
                 android:title="Tag" />
-
+            <item android:id="@+id/action_find"
+                android:icon="@drawable/ic_findb"
+                android:showAsAction="ifRoom"
+                android:title="Find Logger" />
             <item android:id="@+id/action_menu"
                 android:icon="@drawable/ic_menub"
                 android:showAsAction="ifRoom"
                 android:title="Menu" />
+           
 
         </menu>
 

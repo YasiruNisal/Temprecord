@@ -143,6 +143,11 @@ public class MainActivity extends Activity {
                     //myIntent.putExtra(DevicesActivity.EXTRAS_MESSAGE,"6");
                     MainActivity.this.startActivity(myIntent);
                     Toast.makeText(MainActivity.this,"Settings Selected", Toast.LENGTH_SHORT).show();
+                }else if(menuButton.getHintText().equals("Find")) {
+                    Intent myIntent = new Intent(MainActivity.this, DevicesActivity.class);
+                    myIntent.putExtra(DevicesActivity.EXTRAS_MESSAGE, "8");
+                    MainActivity.this.startActivity(myIntent);
+                    Toast.makeText(MainActivity.this, "Find Selected", Toast.LENGTH_SHORT).show();
                 }
             }
 

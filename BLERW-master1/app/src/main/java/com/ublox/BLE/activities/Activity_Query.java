@@ -367,9 +367,12 @@ public class Activity_Query extends Activity {
             case R.id.menu_about:
                 //sendEmail();
                 return true;
-
+            case R.id.action_find:
+                sendData(HexData.FIND_L);
+                message = "8";
+                state = 1;
+                return true;
             case R.id.menu_refresh:
-
                 frommenu = true;
                 reconnect();
 
@@ -532,6 +535,10 @@ public class Activity_Query extends Activity {
                             sendData(HexData.QUARY);
                             state = 8;
                             //mBluetoothLeService.disconnect();
+                        }else if (message.equals("8")) {
+                            sendData(HexData.FIND_L);
+                            Log.d(TAG, "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&11");
+                            state = 5;
                         }
                         break;
                     case 1:
@@ -582,12 +589,23 @@ public class Activity_Query extends Activity {
                         state = 8;
                         break;
                     case 5:
-                        if (in[0] == 0x00) {
-                            BuildDialogue("Tag", "The Logger has been successfully tagged.", 0);
-                            makesound(getApplicationContext(), R.raw.definite);
-                        } else {
-                            BuildDialogue("Tag", "Tagging unsuccessful.\n\nTry starting the logger first", 0);
-                            makesound(getApplicationContext(), R.raw.unsure);
+
+                        if (message.equals("8")) {
+                            if (in[0] == 0x00) {
+                                BuildDialogue("Find Logger", "Green LED should be blinking on the logger now.", 0);
+                                makesound(getApplicationContext(), R.raw.definite);
+                            } else {
+                                BuildDialogue("Find Logger", "An error occurred", 0);
+                                makesound(getApplicationContext(), R.raw.unsure);
+                            }
+                        }else{
+                            if (in[0] == 0x00) {
+                                BuildDialogue("Tag", "The Logger has been successfully tagged.", 0);
+                                makesound(getApplicationContext(), R.raw.definite);
+                            } else {
+                                BuildDialogue("Tag", "Tagging unsuccessful.\n\nTry starting the logger first", 0);
+                                makesound(getApplicationContext(), R.raw.unsure);
+                            }
                         }
                         SystemClock.sleep(1000);
                         sendData(HexData.QUARY);
