@@ -155,6 +155,7 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
     private EditText ch2lowerlimitnb;
     private EditText ch2alarmdelaynb;
 
+    private CheckBox BLEenergysave;
     private CheckBox loopovewritecb;
     private CheckBox startwithbuttoncb;
     private CheckBox stopwithbuttoncb;
@@ -846,8 +847,8 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                if(mBluetoothLeService != null)
-                unbindService(mServiceConnection);
+//                if(mBluetoothLeService != null)
+//                unbindService(mServiceConnection);
             }
         };
         t.start();
@@ -878,6 +879,7 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
 
         }
 
+        if(baseCMD.energysave){BLEenergysave.setChecked(true);}else{BLEenergysave.setChecked(false);}
         if(baseCMD.ImperialUnit){fahrenheit.setChecked(true);}else {celsius.setChecked(true);}
         if(baseCMD.LoopOverwrite){loopovewritecb.setChecked(true);}else{loopovewritecb.setChecked(false);}
         if(baseCMD.StartwithButton){startwithbuttoncb.setChecked(true);}else{startwithbuttoncb.setChecked(false);}
@@ -1011,6 +1013,7 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
         ch2lowerlimitnb = (EditText) findViewById(R.id.ch2lowerlimit);
         ch2alarmdelaynb = (EditText) findViewById(R.id.ch2alarmdelay);
 
+        BLEenergysave = (CheckBox) findViewById(R.id.bleenergysave);
         loopovewritecb = (CheckBox) findViewById(R.id.loopoverwrite);
         startwithbuttoncb = (CheckBox) findViewById(R.id.startwithbutton);
         stopwithbuttoncb = (CheckBox) findViewById(R.id.stopwithbutton);
@@ -1498,7 +1501,7 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
         reconnect();
         progressDialoge2();
         boolean[] flags = {fahrenheit.isChecked(),loopovewritecb.isChecked(),enablelcdmenucb.isChecked(),allowplacingtagcb.isChecked(),startwithbuttoncb.isChecked(),stopwithbuttoncb.isChecked(),
-                reusewithbuttoncb.isChecked(),false,false,false,startondatetime.isChecked(), passwordenabledcb.isChecked(),stopwhenfull.isChecked(),stoponsample.isChecked(),stopondatetime.isChecked(),extendedlcdmenucb.isChecked()};
+                reusewithbuttoncb.isChecked(),false,false,BLEenergysave.isChecked(),startondatetime.isChecked(), passwordenabledcb.isChecked(),stopwhenfull.isChecked(),stoponsample.isChecked(),stopondatetime.isChecked(),extendedlcdmenucb.isChecked()};
 
         if(startondatetime.isChecked()) {
             data = baseCMD.WriteRTCStartDateTime(QS.getDatefromString(startondatetimebutton.getText().toString()));

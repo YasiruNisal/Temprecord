@@ -286,6 +286,13 @@
                     android:textStyle="bold"
                     android:paddingLeft="16dp"/>
 
+                <CheckBox
+                    android:id="@+id/bleenergysave"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Bluetooth energy save"
+                    android:textColorHighlight="@color/ublox_blue_color" />
 
                 <CheckBox
                     android:id="@+id/loopoverwrite"

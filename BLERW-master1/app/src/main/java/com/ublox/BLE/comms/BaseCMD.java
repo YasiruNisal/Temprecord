@@ -39,6 +39,7 @@ public class BaseCMD {
     public boolean StoponDateTime;
     public boolean ch1limitEnabled;
     public boolean ch2limitEnabled;
+    public boolean energysave;
     public String Password;
     public Calendar startDateTime;
     public Calendar stoponDateTime;
@@ -271,6 +272,7 @@ public class BaseCMD {
             returndata.add(queryStrings.YesorNo(msg.mt2_loggerFlags.sampleStop.getValue()));
             returndata.add(msg.uval32.getValue()+"");//8
             numberofsamples = msg.uval32.getValue();
+
             msg.dateRtc.getValue();
             String manudate = "" + msg.dateRtc.getValue().get(Calendar.YEAR)+"/"+(msg.dateRtc.getValue().get(Calendar.MONTH)+1)+"/"+msg.dateRtc.getValue().get(Calendar.DAY_OF_MONTH
             )+" "+ msg.dateRtc.getValue().get(Calendar.HOUR)+":"+msg.dateRtc.getValue().get(Calendar.MINUTE)+":"+msg.dateRtc.getValue().get(Calendar.SECOND)+" "+ queryStrings.PMorAM(msg.dateRtc.getValue().get(Calendar.AM_PM));
@@ -352,7 +354,7 @@ public class BaseCMD {
             StopwhenFull = msg.mt2_userData.mt2_userFlags.StoponFull();
             StoponDateTime = msg.mt2_userData.mt2_userFlags.StoponDate();
             StoponSample = msg.mt2_userData.mt2_userFlags.StoponSample();
-
+            energysave = msg.mt2_userData.mt2_userFlags.EnergySave();
             returndata.add(queryStrings.YesorNo(msg.mt2_userData.mt2_chUser.CHEnable()));
             ch1Enable = msg.mt2_userData.mt2_chUser.CHEnable();
             returndata.add(queryStrings.YesorNo(msg.mt2_userData.mt2_chUser.CHLimits()));
@@ -440,7 +442,7 @@ public class BaseCMD {
         msg.mt2_userData.mt2_userFlags.fullCheck.setValue(flags[7]);
 
         msg.mt2_userData.mt2_userFlags.safeStats.setValue(flags[8]);
-        msg.mt2_userData.mt2_userFlags.FullStats.setValue(flags[9]);
+        msg.mt2_userData.mt2_userFlags.energysave.setValue(flags[9]);
         msg.mt2_userData.mt2_userFlags.startDateTime.setValue(flags[10]);
         msg.mt2_userData.mt2_userFlags.passwordEnabled.setValue(flags[11]);
         msg.mt2_userData.mt2_userFlags.stoponfull.setValue(flags[12]);
