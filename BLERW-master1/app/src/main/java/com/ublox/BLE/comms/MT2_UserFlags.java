@@ -23,7 +23,7 @@ public class MT2_UserFlags extends baseType {
     bitBool fullCheck;
 
     bitBool safeStats;
-    bitBool FullStats;
+    bitBool energysave;
     bitBool startDateTime;
     bitBool passwordEnabled;
     bitBool stoponfull;
@@ -44,7 +44,7 @@ public class MT2_UserFlags extends baseType {
         fullCheck = new bitBool(7);
 
         safeStats = new bitBool(0);
-        FullStats = new bitBool(1);
+        energysave = new bitBool(1);
         startDateTime = new bitBool(2);
         passwordEnabled = new bitBool(3);
         stoponfull = new bitBool(4);
@@ -66,7 +66,7 @@ public class MT2_UserFlags extends baseType {
         fullCheck = new bitBool(data.get(0),7);
         data.remove(0);
         safeStats = new bitBool(data.get(0),0);
-        FullStats = new bitBool(data.get(0),1);
+        energysave = new bitBool(data.get(0),1);
         startDateTime = new bitBool(data.get(0),2);
         passwordEnabled = new bitBool(data.get(0),3);
         stoponfull = new bitBool(data.get(0),4);
@@ -91,7 +91,7 @@ public class MT2_UserFlags extends baseType {
 
         data.add((byte)0x00);
         safeStats.ToByte(data);
-        FullStats.ToByte(data);
+        energysave.ToByte(data);
         startDateTime.ToByte(data);
         passwordEnabled.ToByte(data);
         stoponfull.ToByte(data);
@@ -109,6 +109,7 @@ public class MT2_UserFlags extends baseType {
     public boolean ButtonStop(){return buttonStop1.getValue();}
     public boolean ButtonReuse(){return buttonReuse.getValue();}
     public boolean FullCheck(){return fullCheck.getValue();}
+    public boolean EnergySave(){return energysave.getValue();}
     public boolean StartDateTime(){return startDateTime.getValue();}
     public boolean PasswordEnabled(){return passwordEnabled.getValue();}
     public boolean StoponFull(){return stoponfull.getValue();}

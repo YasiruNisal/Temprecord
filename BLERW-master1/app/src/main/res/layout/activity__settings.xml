@@ -74,7 +74,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="3dp"
             android:paddingTop="10dp"
-            android:text="Personal Information"
+            android:text="E-mail Information"
             android:textColorHighlight="@color/ublox_blue_color"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -95,12 +95,13 @@
             android:textSize="15sp"
             />
 
-        <EditText
+        <Button
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/layout_txtbg"
             android:ems="10"
-            android:inputType="textPersonName" />
+            />
 
         <TextView
             android:id="@+id/info5"
@@ -112,12 +113,13 @@
             android:textSize="15sp"
              />
 
-        <EditText
+        <Button
             android:id="@+id/emailto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/layout_txtbg"
             android:ems="10"
-            android:inputType="textPersonName" />
+           />
 
         <TextView
             android:id="@+id/info6"
@@ -129,12 +131,13 @@
             android:textSize="15sp"
              />
 
-        <EditText
+        <Button
             android:id="@+id/emailcc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/layout_txtbg"
             android:ems="10"
-            android:inputType="textPersonName" />
+            />
 
 
     </LinearLayout>
