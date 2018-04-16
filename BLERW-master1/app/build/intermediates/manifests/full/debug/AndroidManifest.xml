@@ -1,29 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="youten.redo.ble.readwrite"
-    android:versionCode="1"
-    android:versionName="1.0" >
+    package="com.ublox.BLE"
+    android:versionCode="10"
+    android:versionName="2.5.2" >
 
     <uses-sdk
         android:minSdkVersion="18"
-        android:targetSdkVersion="18" />
+        android:targetSdkVersion="21" />
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-permission android:name="android.permission.VIBRATE" />
 
     <uses-feature
         android:name="android.hardware.bluetooth_le"
         android:required="true" />
 
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
         android:allowBackup="true"
-        android:icon="@drawable/applogo5"
-        android:label="@string/app_name"
+        android:debuggable="true"
+        android:icon="@drawable/applogo"
+        android:label="TempBLE"
+        android:testOnly="true"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="youten.redo.yasiru.readwrite.ScanActivity"
-            android:label="@string/app_name"
+            android:name="com.ublox.BLE.activities.MainActivity"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,7 +33,42 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="youten.redo.yasiru.readwrite.DeviceActivity" />
+
+        <service
+            android:name="com.ublox.BLE.services.BluetoothLeService"
+            android:enabled="true" />
+
+        <activity
+            android:name="com.ublox.BLE.activities.AboutActivity"
+            android:label=""
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.ublox.BLE.activities.DevicesActivity"
+            android:label=""
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.ublox.BLE.activities.DeviceControlActivity"
+            android:label=""
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.ublox.BLE.activities.Activity_Query"
+            android:label=""
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.ublox.BLE.activities.Activity_Read"
+            android:label=""
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.ublox.BLE.activities.Activity_Settings"
+            android:label=""
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.ublox.BLE.activities.Activity_Parameter"
+            android:label=""
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        />
     </application>
 
 </manifest>

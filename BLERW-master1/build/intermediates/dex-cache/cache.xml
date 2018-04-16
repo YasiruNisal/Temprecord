@@ -2,40 +2,234 @@
 <items version="2" >
 
     <item
-        is-multidex="true"
-        jar="C:\Users\yasir\Desktop\2017\work\BLERW-master1\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
-        jumboMode="true"
+        is-multidex="false"
+        jar="C:\Users\YasiruW\.gradle\caches\transforms-1\files-1.1\support-v13-27.0.2.aar\07bd0c253bfebef41b2542ec4dc6687a\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="18"
         optimize="true"
-        revision="25.0.2"
-        sha1="c469fcd8dd0fc5082941663232c4a624a507a279">
-        <dex dex="C:\Users\yasir\Desktop\2017\work\BLERW-master1\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_42208dd8446026ae6cdfb4e665f16e247280f6d7\classes.dex" />
+        revision="27.0.2"
+        sha1="e66b741299db855d094ffafb2b783258f24fc010">
+        <dex dex="C:\Users\YasiruW\Desktop\2018\Android Projects\Backup\Android-u-blox-BLE-master\app\build\intermediates\transforms\preDex\release\4.jar" />
     </item>
     <item
-        is-multidex="true"
-        jar="C:\Users\yasir\Desktop\2017\work\BLERW-master1\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
-        jumboMode="true"
+        is-multidex="false"
+        jar="C:\Users\YasiruW\.gradle\caches\modules-2\files-2.1\android.arch.lifecycle\common\1.0.3\7d7f60c4783872861222166f6164215f8951c7b1\common-1.0.3.jar"
+        jumboMode="false"
+        min-sdk-version="18"
         optimize="true"
-        revision="25.0.2"
-        sha1="3a5e4643910ad05ac5b7c4777076a14e000af4ec">
-        <dex dex="C:\Users\yasir\Desktop\2017\work\BLERW-master1\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_9df4a825508d34ef25f7d1edd8abba99c4534add\classes.dex" />
+        revision="27.0.2"
+        sha1="7d7f60c4783872861222166f6164215f8951c7b1">
+        <dex dex="C:\Users\YasiruW\Desktop\2018\Android Projects\Backup\Android-u-blox-BLE-master\app\build\intermediates\transforms\preDex\release\21.jar" />
     </item>
     <item
-        is-multidex="true"
-        jar="C:\Users\yasir\Desktop\2017\Andoird Backup\BLERW-master1\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
-        jumboMode="true"
+        is-multidex="false"
+        jar="C:\Users\YasiruW\.gradle\caches\transforms-1\files-1.1\support-v4-27.0.2.aar\9f17cd56dbec375c28a723383729c7a0\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="18"
         optimize="true"
-        revision="25.0.2"
-        sha1="944cd1c62dc46d6cff8565d85a7da59a7352f82e">
-        <dex dex="C:\Users\yasir\Desktop\2017\Andoird Backup\BLERW-master1\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_e84d1277f0a0e7072a5dfd976fde3b07a44948ff\classes.dex" />
+        revision="27.0.2"
+        sha1="bcd0bcdef85b31a656af76e39c0c95ce70800772">
+        <dex dex="C:\Users\YasiruW\Desktop\2018\Android Projects\Backup\Android-u-blox-BLE-master\app\build\intermediates\transforms\preDex\release\5.jar" />
     </item>
     <item
-        is-multidex="true"
-        jar="C:\Users\yasir\Desktop\2017\Andoird Backup\BLERW-master1\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
-        jumboMode="true"
+        is-multidex="false"
+        jar="C:\Users\YasiruW\.gradle\caches\transforms-1\files-1.1\runtime-1.0.3.aar\96c68c3b4d06ba5e6364eb051d0a0c90\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="18"
         optimize="true"
-        revision="25.0.2"
-        sha1="37fd5345477b12f05a2a9be37106524d9d1d0dd5">
-        <dex dex="C:\Users\yasir\Desktop\2017\Andoird Backup\BLERW-master1\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_3c21c0c761f10af26b3b864d4e04f0249d33b417\classes.dex" />
+        revision="27.0.2"
+        sha1="d7cc5473b9cf4ea159a263cd477fb3ecb2987b96">
+        <dex dex="C:\Users\YasiruW\Desktop\2018\Android Projects\Backup\Android-u-blox-BLE-master\app\build\intermediates\transforms\preDex\release\20.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\YasiruW\.gradle\caches\transforms-1\files-1.1\support-compat-27.0.2.aar\8bada5fc343f21349cf7ea0e127e37ab\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="18"
+        optimize="true"
+        revision="27.0.2"
+        sha1="b432e82447a3af781e927b9ba0bbb9fe2a496d4a">
+        <dex dex="C:\Users\YasiruW\Desktop\2018\Android Projects\Backup\Android-u-blox-BLE-master\app\build\intermediates\transforms\preDex\release\17.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\YasiruW\.gradle\caches\transforms-1\files-1.1\appcompat-v7-27.0.2.aar\122927368d0c9f7282d5bfa7d98dce78\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="18"
+        optimize="true"
+        revision="27.0.2"
+        sha1="04cd0cacbedcb338f64665b88bad64d145325fbd">
+        <dex dex="C:\Users\YasiruW\Desktop\2018\Android Projects\Backup\Android-u-blox-BLE-master\app\build\intermediates\transforms\preDex\release\10.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\YasiruW\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-27.0.2.aar\2a47cdc425a7702a723db0d851d7c71e\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="18"
+        optimize="true"
+        revision="27.0.2"
+        sha1="caa03787689212c10939f308a55a8dc8a3333ed2">
+        <dex dex="C:\Users\YasiruW\Desktop\2018\Android Projects\Backup\Android-u-blox-BLE-master\app\build\intermediates\transforms\preDex\release\16.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\YasiruW\.gradle\caches\transforms-1\files-1.1\transition-27.0.2.aar\afbb4e923a23d9a9eb8e3ade8746b4ed\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="18"
+        optimize="true"
+        revision="27.0.2"
+        sha1="a5fa2e3704f51b30b7b47e12a3a2909728799583">
+        <dex dex="C:\Users\YasiruW\Desktop\2018\Android Projects\Backup\Android-u-blox-BLE-master\app\build\intermediates\transforms\preDex\release\9.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\YasiruW\.gradle\caches\modules-2\files-2.1\com.android.support.constraint\constraint-layout-solver\1.0.2\b9cd8fc6bd15cb915735d34535db30ece0c44603\constraint-layout-solver-1.0.2.jar"
+        jumboMode="false"
+        min-sdk-version="18"
+        optimize="true"
+        revision="27.0.2"
+        sha1="b9cd8fc6bd15cb915735d34535db30ece0c44603">
+        <dex dex="C:\Users\YasiruW\Desktop\2018\Android Projects\Backup\Android-u-blox-BLE-master\app\build\intermediates\transforms\preDex\release\18.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\YasiruW\.gradle\caches\transforms-1\files-1.1\support-fragment-27.0.2.aar\eedb852e259f9c01ee3c301002d70e85\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="18"
+        optimize="true"
+        revision="27.0.2"
+        sha1="618f75fe11febf263e3234c7da7dc892232a5608">
+        <dex dex="C:\Users\YasiruW\Desktop\2018\Android Projects\Backup\Android-u-blox-BLE-master\app\build\intermediates\transforms\preDex\release\11.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\YasiruW\.gradle\caches\transforms-1\files-1.1\support-media-compat-27.0.2.aar\1b586c4a3656845ab7f7398021a28db7\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="18"
+        optimize="true"
+        revision="27.0.2"
+        sha1="25c8cb628374f9a2d59ff9e1172753751e9a9f84">
+        <dex dex="C:\Users\YasiruW\Desktop\2018\Android Projects\Backup\Android-u-blox-BLE-master\app\build\intermediates\transforms\preDex\release\14.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\YasiruW\.gradle\caches\transforms-1\files-1.1\materialdatetimepicker-3.5.1.aar\92cca5e01432f3f2c8578e55f5dfcc72\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="18"
+        optimize="true"
+        revision="27.0.2"
+        sha1="495c18cb338e91f2b412ac60cf7128385a4f7961">
+        <dex dex="C:\Users\YasiruW\Desktop\2018\Android Projects\Backup\Android-u-blox-BLE-master\app\build\intermediates\transforms\preDex\release\1.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\YasiruW\.gradle\caches\transforms-1\files-1.1\support-core-ui-27.0.2.aar\a8283b315b0f2ef696f35e9798938a4b\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="18"
+        optimize="true"
+        revision="27.0.2"
+        sha1="ed6560f31a6a40b5965f5879d8f2eab1f68def05">
+        <dex dex="C:\Users\YasiruW\Desktop\2018\Android Projects\Backup\Android-u-blox-BLE-master\app\build\intermediates\transforms\preDex\release\13.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\YasiruW\.gradle\caches\modules-2\files-2.1\android.arch.core\common\1.0.0\a2d487452376193fc8c103dd2b9bd5f2b1b44563\common-1.0.0.jar"
+        jumboMode="false"
+        min-sdk-version="18"
+        optimize="true"
+        revision="27.0.2"
+        sha1="a2d487452376193fc8c103dd2b9bd5f2b1b44563">
+        <dex dex="C:\Users\YasiruW\Desktop\2018\Android Projects\Backup\Android-u-blox-BLE-master\app\build\intermediates\transforms\preDex\release\22.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\YasiruW\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-27.0.2.aar\ea9e77269db137e37c3be919f67f85a2\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="18"
+        optimize="true"
+        revision="27.0.2"
+        sha1="9296d6f092fcdba4fafb6ac26546a39babdab46a">
+        <dex dex="C:\Users\YasiruW\Desktop\2018\Android Projects\Backup\Android-u-blox-BLE-master\app\build\intermediates\transforms\preDex\release\8.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\YasiruW\.gradle\caches\transforms-1\files-1.1\design-27.0.2.aar\41270d500b794c59adff5a24f7732f8f\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="18"
+        optimize="true"
+        revision="27.0.2"
+        sha1="031cc16b7b6e77b3c050134ecab9fa5c2640a069">
+        <dex dex="C:\Users\YasiruW\Desktop\2018\Android Projects\Backup\Android-u-blox-BLE-master\app\build\intermediates\transforms\preDex\release\2.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\YasiruW\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-27.0.2.aar\c6b5b094b004e2661b908c2d9544080a\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="18"
+        optimize="true"
+        revision="27.0.2"
+        sha1="fe3916317a699975bcce0cba2d13fd2d8cf88922">
+        <dex dex="C:\Users\YasiruW\Desktop\2018\Android Projects\Backup\Android-u-blox-BLE-master\app\build\intermediates\transforms\preDex\release\12.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\YasiruW\Desktop\2018\Android Projects\Backup\Android-u-blox-BLE-master\libraryMenu\build\intermediates\intermediate-jars\release\classes.jar"
+        jumboMode="false"
+        min-sdk-version="18"
+        optimize="true"
+        revision="27.0.2"
+        sha1="60f8d83dd5200c4c1190ebd230a5548892bdaa0f">
+        <dex dex="C:\Users\YasiruW\Desktop\2018\Android Projects\Backup\Android-u-blox-BLE-master\app\build\intermediates\transforms\preDex\release\23.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\YasiruW\.gradle\caches\transforms-1\files-1.1\support-core-utils-27.0.2.aar\e93f9919b7f4f46bdc7ec931777adfd0\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="18"
+        optimize="true"
+        revision="27.0.2"
+        sha1="ac2ce6027755bcf49442e70597bec0feb9064f68">
+        <dex dex="C:\Users\YasiruW\Desktop\2018\Android Projects\Backup\Android-u-blox-BLE-master\app\build\intermediates\transforms\preDex\release\15.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\YasiruW\.gradle\caches\transforms-1\files-1.1\timePickerWithSeconds-1.0.1.aar\0637f4b6e4c9f5b32fce60e53d120c26\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="18"
+        optimize="true"
+        revision="27.0.2"
+        sha1="409b5dd2e9d02914d6a30fc38c1c90b2d678d600">
+        <dex dex="C:\Users\YasiruW\Desktop\2018\Android Projects\Backup\Android-u-blox-BLE-master\app\build\intermediates\transforms\preDex\release\3.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\YasiruW\.gradle\caches\modules-2\files-2.1\com.android.support\support-annotations\27.0.2\b9ef4342c934a1a8b107506273dc8061662a322\support-annotations-27.0.2.jar"
+        jumboMode="false"
+        min-sdk-version="18"
+        optimize="true"
+        revision="27.0.2"
+        sha1="0b9ef4342c934a1a8b107506273dc8061662a322">
+        <dex dex="C:\Users\YasiruW\Desktop\2018\Android Projects\Backup\Android-u-blox-BLE-master\app\build\intermediates\transforms\preDex\release\19.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\YasiruW\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\6d6819d034df419be118d8875ec19de0\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="18"
+        optimize="true"
+        revision="27.0.2"
+        sha1="44ee06abb66da30f5855e6bf54574e64cdcd982a">
+        <dex dex="C:\Users\YasiruW\Desktop\2018\Android Projects\Backup\Android-u-blox-BLE-master\app\build\intermediates\transforms\preDex\release\6.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\YasiruW\.gradle\caches\modules-2\files-2.1\com.github.PhilJay\MPAndroidChart\v3.0.3\92fb46ea210fc3f0ab1125f28b33cf098583e8cf\MPAndroidChart-v3.0.3.jar"
+        jumboMode="false"
+        min-sdk-version="18"
+        optimize="true"
+        revision="27.0.2"
+        sha1="92fb46ea210fc3f0ab1125f28b33cf098583e8cf">
+        <dex dex="C:\Users\YasiruW\Desktop\2018\Android Projects\Backup\Android-u-blox-BLE-master\app\build\intermediates\transforms\preDex\release\7.jar" />
     </item>
 
 </items>
