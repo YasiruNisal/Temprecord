@@ -116,6 +116,7 @@ public class Activity_Query extends Activity {
     private TextView manudate;
     private TextView sampleno;
     private TextView trips;
+    private TextView energysave;
 
     private TextView logging;
     private TextView units;
@@ -896,6 +897,7 @@ public class Activity_Query extends Activity {
 
         sampleno.setText(U_data.get(5));
         trips.setText(U_data.get(3));
+        energysave.setText(QS.YesorNo(baseCMD.energysave));
 
         startedat.setText(U_data.get(1));
         stoppedat.setText(U_data.get(2));
@@ -1007,6 +1009,7 @@ public class Activity_Query extends Activity {
         manudate = (TextView) findViewById(R.id.manudate);
         sampleno = (TextView) findViewById(R.id.sampleno);
         trips = (TextView) findViewById(R.id.trips);
+        energysave = (TextView) findViewById(R.id.energysave);
 
         logging = (TextView) findViewById(R.id.logging);
         units = (TextView) findViewById(R.id.units);

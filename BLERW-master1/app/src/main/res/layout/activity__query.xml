@@ -429,6 +429,27 @@
                 </LinearLayout>
 
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".50"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Bluetooth Energy Save : "
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/energysave"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+                </LinearLayout>
             </LinearLayout>
 
 
