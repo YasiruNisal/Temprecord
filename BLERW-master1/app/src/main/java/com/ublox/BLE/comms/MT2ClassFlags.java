@@ -116,6 +116,112 @@ public class MT2ClassFlags {
 
     }
 
+    public static class MT2_FlashFlags extends baseType{
+
+/// <summary>The bytes taken up to store this object on the device.</summary>
+        public static final int ByteSize = 2;
+
+        bitBool notErased;
+        bitBool notStarted;
+        bitBool notOverflowed;
+        bitBool notStopped;
+        bitBool noAlarms;
+        bitBool notRead;
+        bitBool notReadTRW;
+        bitBool notReadPdf;
+
+        bitBool noRtcSycnc;
+        bitBool noBatLow;
+        bitBool notDefault;
+        bitBool noError;
+        bitBool noErrBatExpired;
+        bitBool noErrNotErased;
+        bitBool noErrStarted;
+        bitBool noErrSpare;
+
+        /// <summary>
+        /// Creates a default flag object initalizing all flags to default values.
+        /// </summary>
+        public MT2_FlashFlags(){
+            super(ByteSize);
+            notErased = new bitBool(true, 0);
+            notStarted = new bitBool(true, 1);
+            notOverflowed = new bitBool(true, 2);
+            notStopped = new bitBool(true, 3);
+            noAlarms = new bitBool(true, 4);
+            notRead = new bitBool(true, 5);
+            notReadTRW = new bitBool(true, 6);
+            notReadPdf = new bitBool(true, 7);
+
+            noRtcSycnc = new bitBool(true, 0);
+            noBatLow = new bitBool(true, 1);
+            notDefault = new bitBool(true,2);
+            noError = new bitBool(true, 3);
+            noErrBatExpired = new bitBool(true, 4);
+            noErrNotErased = new bitBool(true, 5);
+            noErrStarted = new bitBool(true, 6);
+            noErrSpare = new bitBool(true, 7);
+        }
+
+        /// <summary>
+        /// Creates a flags object by reading in bytes from a list
+        /// </summary>
+        /// <param name="data">The list of bytes to extract the flag data from</param>
+        public MT2_FlashFlags(ArrayList<Byte> data){
+            super(ByteSize);
+            notErased = new bitBool(data.get(0), 0);
+            notStarted = new bitBool(data.get(0), 1);
+            notOverflowed = new bitBool(data.get(0), 2);
+            notStopped = new bitBool(data.get(0), 3);
+            noAlarms = new bitBool(data.get(0), 4);
+            notRead = new bitBool(data.get(0), 5);
+            notReadTRW = new bitBool(data.get(0), 6);
+            notReadPdf = new bitBool(data.get(0), 7);
+            data.remove(0);
+
+            noRtcSycnc = new bitBool(data.get(0), 0);
+            noBatLow = new bitBool(data.get(0), 1);
+            notDefault = new bitBool(data.get(0), 2);
+            noError = new bitBool(data.get(0), 3);
+            noErrBatExpired = new bitBool(data.get(0), 4);
+            noErrNotErased = new bitBool(data.get(0), 5);
+            noErrStarted = new bitBool(data.get(0), 6);
+            noErrSpare = new bitBool(data.get(0), 7);
+            data.remove(0);
+        }
+
+        /// <summary>
+        /// The method that converts this class into a list of bytes.
+        /// </summary>
+        /// <param name="data">The list of bytes to append this classes bytes to.</param>
+        @Override
+        public void ToByte(ArrayList<Byte> data)
+        {
+            data.add((byte)0x00);
+            notErased.ToByte(data);
+            notStarted.ToByte(data);
+            notOverflowed.ToByte(data);
+            notStopped.ToByte(data);
+            noAlarms.ToByte(data);
+            notRead.ToByte(data);
+            notReadTRW.ToByte(data);
+            notReadPdf.ToByte(data);
+
+            data.add((byte)0x00);
+            noRtcSycnc.ToByte(data);
+            noBatLow.ToByte(data);
+            notDefault.ToByte(data);
+            noError.ToByte(data);
+            noErrBatExpired.ToByte(data);
+            noErrNotErased.ToByte(data);
+            noErrStarted.ToByte(data);
+            noErrSpare.ToByte(data);
+        }
+
+        public boolean NotOverFlowed(){return notOverflowed.getValue();}
+
+    }
+
 
 
 }

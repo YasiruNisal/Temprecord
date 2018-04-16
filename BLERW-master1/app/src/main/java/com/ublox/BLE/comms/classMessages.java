@@ -137,6 +137,7 @@ public class classMessages {
 
         public dataType.dateRtc dateRtc;
         public uVal16 uval16;
+        public uVal16 MemorySizeMax;
         public MT2_CHData mt2_chData;
 
         //46 bytes for the first set of data and 6 for the second set
@@ -146,6 +147,7 @@ public class classMessages {
             super(ByteSize);
             dateRtc = new dataType.dateRtc();
             uval16 = new uVal16();
+            MemorySizeMax = new uVal16();
             mt2_chData = new MT2_CHData();
         }
 
@@ -154,7 +156,8 @@ public class classMessages {
             dateRtc = new dataType.dateRtc(data);
             for (int i = 0; i < 34; i++) data.remove(0);
             uval16 = new uVal16(data);
-            for (int i = 0; i < 32; i++) data.remove(0);
+            MemorySizeMax = new uVal16(data);
+            for (int i = 0; i < 30; i++) data.remove(0);
             mt2_chData = new MT2_CHData(data);//KT103 means temperature sensor and SHT2X means humidity sensor.
 //            Log.d("&&&&&&&4", " " + manudate);
 //            Log.d("&&&&&&&4", " " + mt2_chData.getSensorMax());
@@ -165,6 +168,7 @@ public class classMessages {
         public void ToByte(ArrayList<Byte> data) {
             dateRtc.ToByte(data);
             uval16.ToByte(data);
+            MemorySizeMax.ToByte(data);
             mt2_chData.ToByte(data);
         }
 
@@ -174,6 +178,7 @@ public class classMessages {
             int i = 0;
             i+= dateRtc.TypeSize;
             i+= uVal16.ByteSize;
+            i+= uVal16.ByteSize;
             i+= mt2_chData.ByteSize;
             return i;
         }
@@ -182,6 +187,7 @@ public class classMessages {
 
     public static class RamRead extends baseType.baseClass{
 
+        public MT2ClassFlags.MT2_FlashFlags mt2_flashFlags;
         public MT2ClassFlags.MT2_LoggerFlags mt2_loggerFlags;
         public uVal32 uval32;
         public dataType.dateRtc dateRtc;
@@ -191,10 +197,11 @@ public class classMessages {
         public uVal16 samplePointer;
 
 
-        public static final int ByteSize = 98;
+        public static final int ByteSize = 100;
 
         public RamRead(){
             super(ByteSize);
+            mt2_flashFlags = new MT2ClassFlags.MT2_FlashFlags();
             mt2_loggerFlags = new MT2ClassFlags.MT2_LoggerFlags();
             uval32 = new uVal32();
             dateRtc = new dataType.dateRtc();
@@ -206,6 +213,7 @@ public class classMessages {
 
         public RamRead(ArrayList<Byte> data){
             super(ByteSize);
+            mt2_flashFlags = new MT2ClassFlags.MT2_FlashFlags(data);
             mt2_loggerFlags = new MT2ClassFlags.MT2_LoggerFlags(data);
             for (int i = 0; i < 1; i++) data.remove(0);
             batLife = new u_int8.uVal8_2(data);
@@ -223,6 +231,7 @@ public class classMessages {
 
         @Override
         public void ToByte(ArrayList<Byte> data){
+            mt2_flashFlags.ToByte(data);
             mt2_loggerFlags.ToByte(data);
             batLife.ToByte(data);
             samplePointer.ToByte(data);
@@ -235,6 +244,7 @@ public class classMessages {
         @Override
         public int CalculateSize(){
             int i = 0;
+            i += mt2_flashFlags.TypeSize;
             i += mt2_loggerFlags.TypeSize;
             i += uval32.TypeSize;
             i += batLife.TypeSize;

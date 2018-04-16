@@ -8,10 +8,7 @@ import com.ublox.BLE.utils.CommsChar;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Objects;
-import java.util.TimeZone;
 import java.util.zip.DataFormatException;
 
 /**
@@ -40,6 +37,7 @@ public class BaseCMD {
     public boolean ch1limitEnabled;
     public boolean ch2limitEnabled;
     public boolean energysave;
+    public boolean isLoopOverwriteOverFlow;
     public String Password;
     public Calendar startDateTime;
     public Calendar stoponDateTime;
@@ -53,6 +51,8 @@ public class BaseCMD {
     public int ch2Hi;
     public int ch2Lo;
     public int numberofsamples;
+    public int MemorySizeMax;
+    public int SamplePointer;
     public boolean ch1Enable;
     public boolean ch2Enable;
     public int commentTextsize;
@@ -244,6 +244,7 @@ public class BaseCMD {
 
             returndata.add(manudate);
             returndata.add(""+msg.uval16.getValue()+"");
+            MemorySizeMax = msg.MemorySizeMax.getValue();
             //Log.d("******0", " " + msg.uval16.getValue());
 
         }
@@ -258,10 +259,12 @@ public class BaseCMD {
         for(int  i = 0; i < ram.length; i++) data.add(ram[i]);
 
         //removing the first two bytes since we dont need to dispaly the infomation these contain
-        for (int i = 0; i < 2; i++) data.remove(0);
+
 
         if(data.size() == classMessages.RamRead.ByteSize)
             msg = new classMessages.RamRead(data);
+
+            isLoopOverwriteOverFlow = msg.mt2_flashFlags.NotOverFlowed();
 
             returndata.add(queryStrings.YesorNo(msg.mt2_loggerFlags.startDateTime.getValue()));
             returndata.add(queryStrings.YesorNo(msg.mt2_loggerFlags.buttonStart.getValue()));
@@ -301,6 +304,7 @@ public class BaseCMD {
             returndata.add("" + msg.mt2_chRam1.delayHi.value);
             returndata.add(""+msg.batLife.value);//17
             returndata.add(""+msg.samplePointer.getValue());
+            SamplePointer = msg.samplePointer.getValue();
             //Log.d("%%%%%0", " " +(msg.mt2_chRam1.chValue.getDoubleValue()) + " " + (msg.mt2_chRam1.valHi.getDoubleValue()) + " " + (msg.mt2_chRam1.valLo.getDoubleValue()) + " " + msg.mt2_chRam1.delayHi.value);//);
 
 

@@ -41,7 +41,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.support.annotation.RequiresApi;
-import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -53,7 +52,6 @@ import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -73,9 +71,6 @@ import com.ublox.BLE.utils.CommsChar;
 import com.ublox.BLE.utils.GattAttributes;
 import com.ublox.BLE.utils.HexData;
 
-import org.w3c.dom.Text;
-
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -186,6 +181,8 @@ public class Activity_Read extends Activity {
     private byte[] RamRead = new byte[100];
     private byte[] UserRead = new byte[512];
     private byte[] ExtraRead = new byte[284];
+    private byte[] ReadValues = new byte[32768];
+    private int firstRead = 0;
     private String mDeviceName;
     private String mDeviceAddress;
     private String message;
@@ -500,6 +497,7 @@ public class Activity_Read extends Activity {
                         sendData(HexData.QUARY);
                         state = 8;
                         firsttime = 0;
+                        firstRead = 0;
                         break;
 
                     case 6:
@@ -652,6 +650,15 @@ public class Activity_Read extends Activity {
                             state = 7;
                         }else if(baseCMD.LoopOverwrite){
                             //add the loop overwrite code here
+                            int bytesToRead;
+                            int address = 0;
+                            int bytePointer = baseCMD.SamplePointer *2;
+                            bytesToRead = bytePointer;
+
+                            mt2Msg_read = new MT2Msg_Read(commsChar.MEM_VAL, address, bytesToRead, 120, 3);
+                            sendData(commsSerial.WriteByte(mt2Msg_read.Read_into_writeByte(true)));
+                            state = 25;
+
                         }else {
                             mt2Msg_read = new MT2Msg_Read(commsChar.MEM_VAL, 0, BytestoRead(), 120, 3);
                             sendData(commsSerial.WriteByte(mt2Msg_read.Read_into_writeByte(true)));
@@ -659,15 +666,33 @@ public class Activity_Read extends Activity {
                         }
                         break;
                     case 25://
-
                         if(baseCMD.LoopOverwrite){
-
+                            if (mt2Msg_read.write_into_readByte(baseCMD.ReadByte(in))) {
+                                //read the ram value and see if the logger has actually started to loop around or is still in normal operation
+                               if(!baseCMD.isLoopOverwriteOverFlow) {
+                                   state = 26;
+                                   System.arraycopy(mt2Msg_read.memoryData, 0, ReadValues, 0, mt2Msg_read.memoryData.length);
+                                   hexData.BytetoHex(ReadValues);
+                               }else{//end the progress bar dialog if still in normal operation
+                                   state = 7;
+                                   ReadValues = new byte[mt2Msg_read.memoryData.length];
+                                   System.arraycopy(mt2Msg_read.memoryData, 0, ReadValues, 0, mt2Msg_read.memoryData.length);
+                                   hexData.BytetoHex(ReadValues);
+                                   MT2ValueIn(ReadValues);
+                                   addDatatoGraph();
+                                   SetUI();
+                                   progresspercentage = 100;
+                                   progress.cancel();
+                               }
+                            }//used to see the size index of the destination array
+                            firstRead++;
+                            sendData(commsSerial.WriteByte(mt2Msg_read.Read_into_writeByte(false)));
                         }else {
                             if (mt2Msg_read.write_into_readByte(baseCMD.ReadByte(in))) {
                                 state = 7;
                                 byte[] ValueRead = new byte[mt2Msg_read.memoryData.length];
                                 System.arraycopy(mt2Msg_read.memoryData, 0, ValueRead, 0, mt2Msg_read.memoryData.length);
-                                hexData.BytetoHex(ValueRead);
+                                //hexData.BytetoHex(ValueRead);
                                 MT2ValueIn(ValueRead);
                                 addDatatoGraph();
                                 SetUI();
@@ -678,6 +703,34 @@ public class Activity_Read extends Activity {
                         }
                         break;
                     case 26:
+
+                        int bytesToRead;
+                        int address;
+                        int totalToRead = baseCMD.MemorySizeMax*2;
+                        int bytePointer = baseCMD.SamplePointer *2;
+                        int pageOffset = bytePointer % QS.PAGESIZE;
+                        address = (int)((bytePointer / QS.PAGESIZE) + 1) * QS.PAGESIZE;
+                        address += pageOffset;
+                        bytesToRead = totalToRead - address;
+
+                        mt2Msg_read = new MT2Msg_Read(commsChar.MEM_VAL, address, bytesToRead, 120, 3);
+                        sendData(commsSerial.WriteByte(mt2Msg_read.Read_into_writeByte(true)));
+                        state = 27;
+                        break;
+                    case 27:
+                        if (mt2Msg_read.write_into_readByte(baseCMD.ReadByte(in))) {
+                            state = 7;
+                            System.arraycopy(mt2Msg_read.memoryData, 0, ReadValues, firstRead, mt2Msg_read.memoryData.length);
+                            hexData.BytetoHex(ReadValues);
+                            MT2ValueIn(ReadValues);
+                            addDatatoGraph();
+                            SetUI();
+                            progresspercentage = 100;
+                            progress.cancel();
+                        }
+                        sendData(commsSerial.WriteByte(mt2Msg_read.Read_into_writeByte(false)));
+                        break;
+                    case 28:
                         break;
 
 
