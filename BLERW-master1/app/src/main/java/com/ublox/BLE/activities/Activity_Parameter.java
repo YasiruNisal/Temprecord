@@ -111,7 +111,7 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
     private static final int PROGRESSBAR_MAX = 100;
 
 
-    private boolean celsiusfahrenheit = false;
+
 
     private ScrollView parameterscroll;
     private TextView currentTemp;
@@ -175,16 +175,6 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
 
     private boolean backpress = false;
 
-    private int STOPONSAMPLE;
-
-    private double CH1UPPERLIMIT;
-    private double CH1LOWERLIMIT;
-    private int CH1ALARMDELAY;
-
-    private double CH2UPPERLIMIT;
-    private double CH2LOWERLIMIT;
-    private int CH2ALARMDELAY;
-
     private int whichbutton;
     private int timeoutdelay;
 
@@ -209,7 +199,8 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
     private int firsttime = 0;
 
     private boolean soundon = true;
-
+    private boolean pands = false;
+    private boolean celsiusfahrenheit = false;
     private int state = 1;
     private ArrayList<String> Q_data = new ArrayList<String>();
     private ArrayList<String> U_data = new ArrayList<String>();
@@ -254,11 +245,9 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
             }
             iBinder = service;
             // Automatically connects to the device upon successful start-up initialization.
-
-            //for(int i = 0; i < 5; i++) {
             mBluetoothLeService.connect(mDevices.get(currentDevice).getAddress());
             BLE_Address = mDevices.get(currentDevice).getAddress();
-            //}
+
         }
 
         @Override
@@ -330,7 +319,6 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        sendData(HexData.GO_TO_SLEEP);
 //        SystemClock.sleep(300);
         //unbindService(mServiceConnection);
         mBluetoothLeService = null;
@@ -346,14 +334,14 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
     public boolean onOptionsItemSelected(MenuItem item) {
         progresspercentage = 0;
         switch(item.getItemId()) {
-            case R.id.action_program:
+            case R.id.action_program://code that run when the program button is pressed
                 if(baseCMD.state == 2) {
                     programbutton();
-                }else{
+                }else{//can't program if the logger is not in the ready state
                     BuildDialogue("Can't Program parameters", "Parameters can't be programed when the logger is in "+QS.GetState(baseCMD.state)+" state.\nPut the logger in to ready state!",2);
                 }
                 return true;
-            case R.id.action_menu:
+            case R.id.action_menu://when the menu button is pressed disconnect from ble and go to the menu page
                 backpress = true;
                 sendData(HexData.GO_TO_SLEEP);
                 try {
@@ -371,8 +359,16 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 return true;
-            case R.id.menu_about:
+            case R.id.menu_about://email the data
                 //sendEmail();
+                return true;
+            case R.id.action_p_and_s:
+                pands = true;
+                if(baseCMD.state == 2) {
+                    programbutton();
+                }else{//can't program if the logger is not in the ready state
+                    BuildDialogue("Can't Program parameters", "Parameters can't be programed when the logger is in "+QS.GetState(baseCMD.state)+" state.\nPut the logger in to ready state!",2);
+                }
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -435,40 +431,32 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
     }
 
 
-
+    // thead is used to send data out over BLE so that it does't occur in the UI thread
     private void sendData(final byte[] test){
-        //final byte[] tx = str.getBytes();
-
-
         Thread thread = new Thread() {
             @Override
             public void run() {
                 if (mConnected && !backpress && test != null && characteristicTX != null && characteristicRX != null && mBluetoothLeService != null) {
-                    //characteristicTX.setValue(new byte[] {test[i]});
                     mBluetoothLeService.writeCharacteristic(characteristicTX, test);
                     mBluetoothLeService.setCharacteristicNotification(characteristicRX,true);
                 }
             }
         };
-
         thread.start();
-
-        //for(int i = 0; i < test.length; i++) {
-
-        //SystemClock.sleep(2);
-        //}
-
     }
 
+    // disconnect from BLE from before going to the main menu.
     @Override
     public void onBackPressed() {
         backpress = true;
+        //delays are introduced to make the disconnect process reliable
+        sendData(HexData.GO_TO_SLEEP);
         try {
-            TimeUnit.MILLISECONDS.sleep(200);
+            TimeUnit.MILLISECONDS.sleep(300);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        sendData(HexData.GO_TO_SLEEP);
+
         try {
             TimeUnit.MILLISECONDS.sleep(400);
         } catch (InterruptedException e) {
@@ -480,12 +468,14 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);//skips the device list page when going back
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         //super.onBackPressed();
     }
 
+    //state machine used to send and receive data from the logger
+    //always start on state one
     private void Function(final byte[] in){
 
 
@@ -509,8 +499,8 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
 //                        Q_data = baseCMD.CMDQuery(query);
 //                        SetUI(Q_data);
                         break;
-                    case 1:
-                        //Log.d("++++++", "am i coming to this place");
+                    case 1://always comes here first
+                        pands = false;
                         sendData(HexData.QUARY);
                         state = 8;
                         //firsttime = 0;
@@ -519,13 +509,20 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
                     case 2:
 
                         sendData(commsSerial.WriteByte(baseCMD.WriteRTC()));
-                        Log.d(")))))))", "Sending RTCccccccccc");
                         state = 8;
                         break;
                     case 3:
+                        sendData(HexData.START_L);
+                        Toast.makeText(Activity_Parameter.this,"Started Successfully", Toast.LENGTH_SHORT).show();
+                        state = 4;
+                        break;
+                    case 4:
+                        sendData(HexData.QUARY);
+                        state = 7;
                         break;
                     case 7:
                         hexData.BytetoHex(in);
+
 //                        query = baseCMD.ReadByte(in);
 //                        Q_data = baseCMD.CMDQuery(query);
                         sendData(HexData.GO_TO_SLEEP);
@@ -539,7 +536,11 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
                             mBluetoothLeService.disconnect();
                             unbindService(mServiceConnection);
                         }
-
+                        if(pands){
+                            query = baseCMD.ReadByte(in);
+                            Q_data = baseCMD.CMDQuery(query);
+                            SetUI();
+                        }
                         break;
                     case 8:
                         hexData.BytetoHex(in);
@@ -657,7 +658,7 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
                         break;
                     case 23:
                         if(mt2Msg_read.write_into_readByte(baseCMD.ReadByte(in))) {
-                            state = 25;
+                            state = 24;
                             System.arraycopy(mt2Msg_read.memoryData, 0, ExtraRead, 236, 48);
                             firsttime++;
                             hexData.BytetoHex(ExtraRead);
@@ -696,7 +697,7 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
                     case 28:
                         sendData(commsSerial.WriteByte(mt2Msg_write.writeFlash()));
                         Toast.makeText(Activity_Parameter.this,"Programmed Successfully", Toast.LENGTH_SHORT).show();
-                        state = 7;
+                        if(pands){state = 3;}else{state = 7;}
                         break;
                     case 29:
                         hexData.BytetoHex(in);
@@ -704,7 +705,7 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
                         sendData(commsSerial.WriteByte(mt2Msg_write.writeSetup()));
                         state = 26;
                         break;
-                    case 30:
+                    case 30://sync times with logger
                         hexData.BytetoHex(in);
 
                         sendData(commsSerial.WriteByte(baseCMD.WriteRTC()));
@@ -722,7 +723,7 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
         };handler1.postDelayed(runnableCode,1);
     }
 
-
+    //used to display important messages to the user
     private void BuildDialogue(String str1, String str2, final int press){
         backpress = true;
         AlertDialog.Builder builder;
@@ -747,6 +748,7 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
                 .show();
     }
 
+    //progress dialog thats used when the parameters are getting read
     public void progressDialoge(){
 
         progress=new ProgressDialog(this);
@@ -782,6 +784,7 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
         t.start();
     }
 
+    //progress dialog thats used when the parameters are getting programmed
     public void progressDialoge2(){
 
         progress=new ProgressDialog(this);
@@ -815,6 +818,7 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
         t.start();
     }
 
+    //timeout.. BLE disconnect after 30 sec to save battery on the logger
     private void ThirtySecTimeout(){
         final Thread t = new Thread() {
             @Override
@@ -854,6 +858,7 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
         t.start();
     }
 
+    //after reading the logger the UI fields get filled with the logger information
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void SetUI(){
 
@@ -936,8 +941,8 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
 
     }
 
-
-
+    //The function that gets called first
+    //initalises the UI components and connect with XML file
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -1044,7 +1049,7 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
 
     }
 
-
+    //dynamically increase the time the BLE stay connected
     private void ScrollListener(){
         parameterscroll.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
             @Override
@@ -1054,6 +1059,8 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
         });
     }
 
+    //used to compare the two password fields //if the passwords do not match the second one turns red
+    //this comparison is done dynamically
     private void Passwordenter(){
         passwordtxt.addTextChangedListener(new TextWatcher() {
                @Override
@@ -1110,6 +1117,7 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
         );
     }
 
+    //button actions
     private void buttonAction(){
 
         Programparam.setOnClickListener(new View.OnClickListener() {
@@ -1172,6 +1180,8 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
         mTimePicker.show();
     }
 
+    //what happens when specific buttons are pressed on the UI
+    //for example stop on datetime can't be selected if startr on datetime is not selected
     private void uiSetupRules(){
 
 
@@ -1364,7 +1374,7 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
 
     }
 
-    //send email
+    //send emails with the picked data. NOt yet working properly
     protected void sendEmail() {
 
 
@@ -1390,7 +1400,7 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
         }
     }
 
-
+    //what gets sent when a email is sent
     public String EmailText(){
         String email = "Logger Family: " + QS.GetType(Integer.parseInt(Q_data.get(3)))+"\n"+
                 "Logger Serial Number: " + Q_data.get(0)+"\n\n"+
@@ -1405,6 +1415,7 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
         return email;
     }
 
+    //make a success or unsuccessful sound ---mainly used in the query activity
     private void makesound(Context context, int resid){
         if(soundon == true) {
             final MediaPlayer mp = MediaPlayer.create(context, resid);
@@ -1412,7 +1423,7 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
         }
     }
 
-
+    //settext on the start and stop button on the UI for hour of the day, minute and seconds
     @Override
     public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
         String time = " "+hourOfDay+":"+minute+"";
@@ -1426,6 +1437,7 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
         }
     }
 
+    //settext on the start and stop button on the UI for year month and day of the month
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
         String date = dayOfMonth+"/"+(monthOfYear+1)+"/"+year;
@@ -1439,6 +1451,7 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
         }
     }
 
+    //if the logger is password protected this will popup at the start to login
     private void promtPassword(){
         // get prompts.xml view
         LayoutInflater li = LayoutInflater.from(Activity_Parameter.this);
@@ -1479,6 +1492,7 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
         alertDialog.show();
     }
 
+    //reconnect to the logger when it is disconnected. this was introduced to make the flow of the app better
     private void reconnect(){
 
         if(!mConnected) {
@@ -1495,8 +1509,10 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
         }
     }
 
-
+    //fills the program parameter array with the data we want to program
+    // this function is called when the program parameter button is pressed
     private void programbutton(){
+
         byte[] data;
         reconnect();
         progressDialoge2();
@@ -1533,7 +1549,7 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
         data = baseCMD.Write_USERStartDelay(Integer.parseInt(QS.StringDatetoInt(startwithdelaybutton.getText().toString())[0])*60*60+ Integer.parseInt(QS.StringDatetoInt(startwithdelaybutton.getText().toString())[1])*60 + Integer.parseInt(QS.StringDatetoInt(startwithdelaybutton.getText().toString())[2]));
         UserReadtemp[26] = data[0]; UserReadtemp[27] = data[1];//start delay
 
-        Log.d("testing flags^^++^^", "COming in hereeeeeeeeeeeee22222  " +QS.getDatefromString(startondatetimebutton.getText().toString()).getTimeInMillis() + " current time " + (QS.getDatefromString(startondatetimebutton.getText().toString()).getTimeInMillis() - Calendar.getInstance().getTimeInMillis())  + " curret time / 1000 " + Calendar.getInstance().getTime().getTime()/1000 + " utc " + Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTimeInMillis() + " calender instance " + Calendar.getInstance().getTimeInMillis());
+
         data = baseCMD.Write_USERStartdatetimeDelay((QS.getDatefromString(startondatetimebutton.getText().toString()).getTimeInMillis()/1000 - Calendar.getInstance().getTimeInMillis()/1000));
         UserReadtemp[28] = data[0]; UserReadtemp[29] = data[1]; UserReadtemp[30] = data[2]; UserReadtemp[31] = data[3];
 
@@ -1546,10 +1562,8 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
         }else if(stopondatetime.isChecked()){
             if((QS.getDatefromString(startondatetimebutton.getText().toString()).compareTo(QS.getDatefromString(stopondatebutton.getText().toString()))) < 0){
                 long timediff  = ((QS.getDatefromString(stopondatebutton.getText().toString()).getTimeInMillis()/1000)-(QS.getDatefromString(startondatetimebutton.getText().toString()).getTimeInMillis())/1000);
-                Log.d("testing flags^^++^^", "COming in hereeeee22222 " + timediff);
                 int s =  Integer.parseInt(QS.StringDatetoInt(sampleperiodbutton.getText().toString())[0])*60*60+ Integer.parseInt(QS.StringDatetoInt(sampleperiodbutton.getText().toString())[1])*60 + Integer.parseInt(QS.StringDatetoInt(sampleperiodbutton.getText().toString())[2]);
                 int length = (int)timediff/s;
-                Log.d("testing flags^^++^^", "COming in hereeeee22222 " + length);
                 data = baseCMD.Write_USERStoponsample((int)length);
                 UserReadtemp[32] = data[0];
                 UserReadtemp[33] = data[1];
@@ -1565,7 +1579,6 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
         }
 
         if(passwordenabledcb.isChecked()) {
-            Log.d("testing flags^^++^^", "COming in hereeeeeeeeeeeee22222");
             UserReadtemp[36] = (byte) 0xEE;
             UserReadtemp[37] = (byte) 0xDC;
             UserReadtemp[38] = (byte) 0xFB;
@@ -1581,14 +1594,12 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
         for(int k = 78; k < 398; k++){
             UserReadtemp[k] = data[k-78];
         }
-        Log.d("testing flags^******^", "Reading RTC for the first time");
         sendData(commsSerial.WriteByte(baseCMD.ReadRTC()));
-        // Log.d(")))))))", "Sending RTCccccccccc");
 
         state = 30;
     }
 
-
+    //pop-up the date picking for start on date time
     private void startondatepopup(){
         timeoutdelay = timeoutdelay + 15;
         Calendar now = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
@@ -1599,7 +1610,7 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
             year = Integer.parseInt(QS.StringDatetoInt(startondatetimebutton.getText().toString())[2]);
             month = Integer.parseInt(QS.StringDatetoInt(startondatetimebutton.getText().toString())[1])-1;
             day = Integer.parseInt(QS.StringDatetoInt(startondatetimebutton.getText().toString())[0]);
-        }else if((QS.StringDatetoInt(startondatetimebutton.getText().toString()).length) == 0){
+        }else if((QS.StringDatetoInt(startondatetimebutton.getText().toString()).length) == 0){//if date and time is not picked properly
             hour = now.getMaximum(Calendar.HOUR);
             min = now.getMaximum(Calendar.MINUTE);
             year = now.getMaximum(Calendar.YEAR);
@@ -1655,7 +1666,7 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
 
 
     }
-
+    //pop-up the date picking for stop on date time
     private void stopondatepopup(){
         timeoutdelay = timeoutdelay + 15;
         Calendar now = Calendar.getInstance(TimeZone.getTimeZone("UTC"));

@@ -26,7 +26,7 @@ public class AboutActivity extends Activity {
         });
     }
 
-    private void visit() {
+    private void visit() {//Open the temprecord web page when the button is pressed
         String url = "http://temprecord.com/about/";
         Intent i = new Intent(Intent.ACTION_VIEW);
         Uri u = Uri.parse(url);

@@ -21,6 +21,11 @@
                 android:showAsAction="ifRoom"
                 android:title="Program Parameters" />
 
+            <item android:id="@+id/action_p_and_s"
+                android:icon="@drawable/ic_startb"
+                android:showAsAction="ifRoom"
+                android:title="Program and Start" />
+
             <item android:id="@+id/action_menu"
                 android:icon="@drawable/ic_menub"
                 android:showAsAction="ifRoom"
