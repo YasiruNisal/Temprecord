@@ -41,6 +41,7 @@ public class Activity_Settings extends Activity {
         ActionBar bar = getActionBar();
         bar.setBackgroundDrawable(new ColorDrawable(0xFFFFFFFF));
         bar.setTitle("Settings");
+        bar.setIcon(getResources().getDrawable(R.drawable.ic_settingsc));
         bar.setElevation(15);
 
 

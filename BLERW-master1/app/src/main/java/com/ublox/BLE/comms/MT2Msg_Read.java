@@ -56,7 +56,7 @@ public class MT2Msg_Read {
         retryAttempts = 0;
         successCount = 0;
 
-        RemainingSize = readSize - address;
+        RemainingSize = Math.abs(readSize - address);
         currentAddress = StartAddress;
         retryCount = allowedRetries;
 
