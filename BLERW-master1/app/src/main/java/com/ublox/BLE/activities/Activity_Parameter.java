@@ -436,42 +436,13 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
         Thread thread = new Thread() {
             @Override
             public void run() {
-                if (mConnected && !backpress && test != null && characteristicTX != null && characteristicRX != null && mBluetoothLeService != null) {
+                if (mConnected && test != null && characteristicTX != null && characteristicRX != null && mBluetoothLeService != null) {
                     mBluetoothLeService.writeCharacteristic(characteristicTX, test);
                     mBluetoothLeService.setCharacteristicNotification(characteristicRX,true);
                 }
             }
         };
         thread.start();
-    }
-
-    // disconnect from BLE from before going to the main menu.
-    @Override
-    public void onBackPressed() {
-        backpress = true;
-        //delays are introduced to make the disconnect process reliable
-        sendData(HexData.GO_TO_SLEEP);
-        try {
-            TimeUnit.MILLISECONDS.sleep(300);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            TimeUnit.MILLISECONDS.sleep(400);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        mBluetoothLeService.disconnect();
-        try {
-            TimeUnit.MILLISECONDS.sleep(300);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);//skips the device list page when going back
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
-        //super.onBackPressed();
     }
 
     //state machine used to send and receive data from the logger
@@ -540,6 +511,11 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
                             query = baseCMD.ReadByte(in);
                             Q_data = baseCMD.CMDQuery(query);
                             SetUI();
+                        }
+                        if(backpress){
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);//skips the device list page when going back
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
                         }
                         break;
                     case 8:
@@ -658,13 +634,15 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
                         break;
                     case 23:
                         if(mt2Msg_read.write_into_readByte(baseCMD.ReadByte(in))) {
-                            state = 24;
+                            sendData(HexData.BLE_ACK);
+                            state = 25;
                             System.arraycopy(mt2Msg_read.memoryData, 0, ExtraRead, 236, 48);
                             firsttime++;
                             hexData.BytetoHex(ExtraRead);
                             progresspercentage = 100;
                             progress.cancel();
                         }
+                        if(state == 25)
                         sendData(commsSerial.WriteByte(mt2Msg_read.Read_into_writeByte(false)));
                         break;
                     case 24:
@@ -721,6 +699,18 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
                 }
             }
         };handler1.postDelayed(runnableCode,1);
+    }
+
+    // disconnect from BLE from before going to the main menu.
+    @Override
+    public void onBackPressed() {
+        backpress = true;
+        //delays are introduced to make the disconnect process reliable
+        sendData(HexData.BLE_ACK);
+        state = 7;
+
+
+        //super.onBackPressed();
     }
 
     //used to display important messages to the user
@@ -863,80 +853,160 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
     public void SetUI(){
 
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd  HH:mm:ss");
-        String currentDateandTime = sdf.format(new Date());
-        time.setText(currentDateandTime);
-        Lstate.setText( QS.GetState(Integer.parseInt(Q_data.get(5))));
-        battery.setText(  R_data.get(17)+"%");
-        currentTemp.setText(R_data.get(9) + " °C");
-        currenthumidity.setText(R_data.get(11) + " %");
+        if(pands){
+            Lstate.setText( QS.GetState(Integer.parseInt(Q_data.get(5))));
+        }else {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd  HH:mm:ss");
+            String currentDateandTime = sdf.format(new Date());
+            time.setText(currentDateandTime);
+            Lstate.setText(QS.GetState(Integer.parseInt(Q_data.get(5))));
+            battery.setText(R_data.get(17) + "%");
+            currentTemp.setText(R_data.get(9) + " °C");
+            currenthumidity.setText(R_data.get(11) + " %");
 
-        if((R_data.get(0)).equals("Yes")){
-            //set the starttimedate here;
-        }
+            if ((R_data.get(0)).equals("Yes")) {
+                //set the starttimedate here;
+            }
 
-        if(Double.parseDouble(Q_data.get(6)) > 66){
-            bat.setBackgroundResource(R.drawable.bfull);
-        }else if(Double.parseDouble(Q_data.get(6)) > 33){
-            bat.setBackgroundResource(R.drawable.bhalf);
-        }else if(Double.parseDouble(Q_data.get(6)) > 0){
-            bat.setBackgroundResource(R.drawable.blow);
+            if (Double.parseDouble(Q_data.get(6)) > 66) {
+                bat.setBackgroundResource(R.drawable.bfull);
+            } else if (Double.parseDouble(Q_data.get(6)) > 33) {
+                bat.setBackgroundResource(R.drawable.bhalf);
+            } else if (Double.parseDouble(Q_data.get(6)) > 0) {
+                bat.setBackgroundResource(R.drawable.blow);
 
-        }
+            }
 
-        if(baseCMD.energysave){BLEenergysave.setChecked(true);}else{BLEenergysave.setChecked(false);}
-        if(baseCMD.ImperialUnit){fahrenheit.setChecked(true);}else {celsius.setChecked(true);}
-        if(baseCMD.LoopOverwrite){loopovewritecb.setChecked(true);}else{loopovewritecb.setChecked(false);}
-        if(baseCMD.StartwithButton){startwithbuttoncb.setChecked(true);}else{startwithbuttoncb.setChecked(false);}
-        if(baseCMD.StopwithButton){stopwithbuttoncb.setChecked(true);}else {stopwithbuttoncb.setChecked(false);}
-        if(baseCMD.ReUsewithButton){reusewithbuttoncb.setChecked(true);}else {reusewithbuttoncb.setChecked(false);}
-        if(baseCMD.AllowplacingTags){allowplacingtagcb.setChecked(true);}else {allowplacingtagcb.setChecked(false);}
-        if(baseCMD.EnableLCDMenu){enablelcdmenucb.setChecked(true);}else {enablelcdmenucb.setChecked(false);}
-        if(baseCMD.ExtendedLCDMenu){extendedlcdmenucb.setChecked(true);}else {extendedlcdmenucb.setChecked(false);}
-        if(baseCMD.passwordEnabled){passwordenabledcb.setChecked(true);}else {passwordenabledcb.setChecked(false);}
+            if (baseCMD.energysave) {
+                BLEenergysave.setChecked(true);
+            } else {
+                BLEenergysave.setChecked(false);
+            }
+            if (baseCMD.ImperialUnit) {
+                fahrenheit.setChecked(true);
+            } else {
+                celsius.setChecked(true);
+            }
+            if (baseCMD.LoopOverwrite) {
+                loopovewritecb.setChecked(true);
+            } else {
+                loopovewritecb.setChecked(false);
+            }
+            if (baseCMD.StartwithButton) {
+                startwithbuttoncb.setChecked(true);
+            } else {
+                startwithbuttoncb.setChecked(false);
+            }
+            if (baseCMD.StopwithButton) {
+                stopwithbuttoncb.setChecked(true);
+            } else {
+                stopwithbuttoncb.setChecked(false);
+            }
+            if (baseCMD.ReUsewithButton) {
+                reusewithbuttoncb.setChecked(true);
+            } else {
+                reusewithbuttoncb.setChecked(false);
+            }
+            if (baseCMD.AllowplacingTags) {
+                allowplacingtagcb.setChecked(true);
+            } else {
+                allowplacingtagcb.setChecked(false);
+            }
+            if (baseCMD.EnableLCDMenu) {
+                enablelcdmenucb.setChecked(true);
+            } else {
+                enablelcdmenucb.setChecked(false);
+            }
+            if (baseCMD.ExtendedLCDMenu) {
+                extendedlcdmenucb.setChecked(true);
+            } else {
+                extendedlcdmenucb.setChecked(false);
+            }
+            if (baseCMD.passwordEnabled) {
+                passwordenabledcb.setChecked(true);
+            } else {
+                passwordenabledcb.setChecked(false);
+            }
 
-        //if(baseCMD.StartwithDelay){startwithdelay.setChecked(true);}else {startwithdelay.setChecked(false);}
-        if(baseCMD.StartonDateTime){startondatetime.setChecked(true);}else {startwithdelay.setChecked(true);}
-        if(baseCMD.StopwhenFull){stopwhenfull.setChecked(true);}else {stopwhenfull.setChecked(false);}
-        if(baseCMD.StoponSample){stoponsample.setChecked(true);}else {stoponsample.setChecked(false);}
-        if(baseCMD.StoponDateTime){stopondatetime.setChecked(true);}else {stopondatetime.setChecked(false);}
-        if(!baseCMD.StopwhenFull & !baseCMD.StoponSample & !baseCMD.StoponDateTime){stopbyuser.setChecked(true);}else {stopbyuser.setChecked(false);}
+            //if(baseCMD.StartwithDelay){startwithdelay.setChecked(true);}else {startwithdelay.setChecked(false);}
+            if (baseCMD.StartonDateTime) {
+                startondatetime.setChecked(true);
+            } else {
+                startwithdelay.setChecked(true);
+            }
+            if (baseCMD.StopwhenFull) {
+                stopwhenfull.setChecked(true);
+            } else {
+                stopwhenfull.setChecked(false);
+            }
+            if (baseCMD.StoponSample) {
+                stoponsample.setChecked(true);
+            } else {
+                stoponsample.setChecked(false);
+            }
+            if (baseCMD.StoponDateTime) {
+                stopondatetime.setChecked(true);
+            } else {
+                stopondatetime.setChecked(false);
+            }
+            if (!baseCMD.StopwhenFull & !baseCMD.StoponSample & !baseCMD.StoponDateTime) {
+                stopbyuser.setChecked(true);
+            } else {
+                stopbyuser.setChecked(false);
+            }
 
 
-        if(baseCMD.ch1Enable){ch1enabledcb.setChecked(true);}else {ch1enabledcb.setChecked(false);}
-        if(baseCMD.ch1limitEnabled){ch1limitenabledcb.setChecked(true);}else{ch1limitenabledcb.setChecked(false);}
-        if(baseCMD.ch2Enable){ch2enabledcb.setChecked(true);}else{ch2enabledcb.setChecked(false);}
-        if(baseCMD.ch2limitEnabled){ch2limitenabledcb.setChecked(true);}else {ch2limitenabledcb.setChecked(false);}
+            if (baseCMD.ch1Enable) {
+                ch1enabledcb.setChecked(true);
+            } else {
+                ch1enabledcb.setChecked(false);
+            }
+            if (baseCMD.ch1limitEnabled) {
+                ch1limitenabledcb.setChecked(true);
+            } else {
+                ch1limitenabledcb.setChecked(false);
+            }
+            if (baseCMD.ch2Enable) {
+                ch2enabledcb.setChecked(true);
+            } else {
+                ch2enabledcb.setChecked(false);
+            }
+            if (baseCMD.ch2limitEnabled) {
+                ch2limitenabledcb.setChecked(true);
+            } else {
+                ch2limitenabledcb.setChecked(false);
+            }
 
-        startwithdelaybutton.setText(QS.Period(baseCMD.startDelay*1000));
-        sampleperiodbutton.setText(QS.Period(baseCMD.samplePeriod*1000));
-        stoponsamplebutton.setText(U_data.get(26));
-        //startondatetimebutton.setText(baseCMD.startdatetime+"");
+            startwithdelaybutton.setText(QS.Period(baseCMD.startDelay * 1000));
+            sampleperiodbutton.setText(QS.Period(baseCMD.samplePeriod * 1000));
+            stoponsamplebutton.setText(U_data.get(26));
+            //startondatetimebutton.setText(baseCMD.startdatetime+"");
 
-        ch1upperlimitnb.setText(baseCMD.ch1Hi/10.0+"");
-        ch1lowerlimitnb.setText(baseCMD.ch1Lo/10.0+"");
+            ch1upperlimitnb.setText(baseCMD.ch1Hi / 10.0 + "");
+            ch1lowerlimitnb.setText(baseCMD.ch1Lo / 10.0 + "");
 
-        ch2upperlimitnb.setText(baseCMD.ch2Hi/10.0+"");
-        ch2lowerlimitnb.setText(baseCMD.ch2Lo/10.0+"");
+            ch2upperlimitnb.setText(baseCMD.ch2Hi / 10.0 + "");
+            ch2lowerlimitnb.setText(baseCMD.ch2Lo / 10.0 + "");
 
-        startondatetimebutton.setText(QS.calendertoString(baseCMD.timestartstopdatetime));
-        if(stopondatetime.isChecked()) {
-            Calendar c = Calendar.getInstance();
-            c = baseCMD.timestartstopdatetime;
-            c.add(Calendar.SECOND, baseCMD.samplePeriod*baseCMD.numberstopon);
-            stopondatebutton.setText(QS.calendertoString(c));
-        }else{
-            stopondatebutton.setText(QS.calendertoString(baseCMD.timestartstopdatetime));
-        }
+            startondatetimebutton.setText(QS.calendertoString(baseCMD.timestartstopdatetime));
+            if (stopondatetime.isChecked()) {
+                Calendar c = Calendar.getInstance();
+                c = baseCMD.timestartstopdatetime;
+                c.add(Calendar.SECOND, baseCMD.samplePeriod * baseCMD.numberstopon);
+                stopondatebutton.setText(QS.calendertoString(c));
+            } else {
+                stopondatebutton.setText(QS.calendertoString(baseCMD.timestartstopdatetime));
+            }
 
-        if(baseCMD.passwordEnabled){
-            promtPassword();
-        }
+            if (baseCMD.passwordEnabled) {
+                promtPassword();
+            }
 
-        usercommenttxt.setText( U_data.get(27));
+            usercommenttxt.setText(U_data.get(27));
 
-        if(!baseCMD.ch2Enable){
-            currenthumidity.setText("--");
+            if (!baseCMD.ch2Enable) {
+                currenthumidity.setText("--");
+            }
         }
 
     }
@@ -948,6 +1018,7 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parameter);
         getActionBar().setBackgroundDrawable(new ColorDrawable(0xFFFFFFFF));
+        getActionBar().setIcon(getResources().getDrawable(R.drawable.ic_parametersc));
 
         AssetManager am = this.getAssets();
 

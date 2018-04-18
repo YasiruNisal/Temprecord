@@ -14,7 +14,7 @@ public class AboutActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActionBar().setTitle("About & Help");
-        getActionBar().setLogo(R.drawable.applogo);
+        getActionBar().setLogo(R.drawable.ic_helpc);
         getActionBar().setDisplayUseLogoEnabled(true);
         setContentView(R.layout.activity_about);
 

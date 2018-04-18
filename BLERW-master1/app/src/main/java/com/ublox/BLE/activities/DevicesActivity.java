@@ -51,7 +51,7 @@ public class DevicesActivity extends Activity implements AdapterView.OnItemClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActionBar().setTitle("Searching Devices..");
-        getActionBar().setLogo(R.drawable.applogo);
+        getActionBar().setLogo(R.drawable.ic_listc);
         getActionBar().setDisplayUseLogoEnabled(true);
         setContentView(R.layout.activity_devices);
 

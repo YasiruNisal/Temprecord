@@ -965,9 +965,9 @@ public class Activity_Query extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity__query);
-        getActionBar().setBackgroundDrawable(new ColorDrawable(0xFFFFFFFF));
-        AssetManager am = this.getAssets();
 
+        AssetManager am = this.getAssets();
+        getActionBar().setBackgroundDrawable(new ColorDrawable(0xFFFFFFFF));
 
         Typeface font = Typeface.createFromAsset(getAssets(), "Roboto-Light.ttf");
         Typeface font1 = Typeface.createFromAsset(getAssets(), "Roboto-Medium.ttf");
@@ -979,6 +979,21 @@ public class Activity_Query extends Activity {
         mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
         message = intent.getStringExtra(EXTRAS_MESSAGE);
         mDevices = intent.getParcelableArrayListExtra(EXTRAS_DEVICES);
+
+        if(message.equals("1")){
+            getActionBar().setIcon(getResources().getDrawable(R.drawable.ic_infoc));
+        }else if(message.equals("2")){
+            getActionBar().setIcon(getResources().getDrawable(R.drawable.ic_startc));
+        }else if(message.equals("3")){
+            getActionBar().setIcon(getResources().getDrawable(R.drawable.ic_stopc));
+        }else if(message.equals("4")){
+            getActionBar().setIcon(getResources().getDrawable(R.drawable.ic_reusec));
+        }else if(message.equals("5")){
+            getActionBar().setIcon(getResources().getDrawable(R.drawable.ic_tagc));
+        }else if(message.equals("8")){
+            getActionBar().setIcon(getResources().getDrawable(R.drawable.ic_searchc));
+        }
+
 
         linearLayout = (LinearLayout) findViewById(R.id.attop);
         mWrapperFL = (FrameLayout) findViewById(R.id.flWrapper);
