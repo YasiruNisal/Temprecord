@@ -416,7 +416,28 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/my_button_bg"
                     android:paddingLeft="16dp"
-                    android:maxLength="320"
+                    android:gravity="left|center_vertical"
+                    android:maxLength="300"
+                    android:text="" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/heading50"
+                    android:paddingTop="10dp"
+                    android:textSize="15sp"
+                    android:text="Bluetooth Name"
+                    android:textStyle="bold"
+                    android:paddingLeft="16dp"/>
+
+                <EditText
+                    android:id="@+id/editbluetoothname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/my_button_bg"
+                    android:paddingLeft="16dp"
+                    android:maxLength="20"
+                    android:paddingBottom="15dp"
                     android:text="" />
 
             </LinearLayout>

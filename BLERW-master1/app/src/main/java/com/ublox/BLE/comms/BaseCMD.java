@@ -326,6 +326,7 @@ public class BaseCMD {
             //Log.d("******0", msg.tripSamples.getValue()+"");
 
             startDateTime = msg.dateStarted.getValue();//**********************************************
+            Log.d("___________", startDateTime + "");
             String dstart = "" + msg.dateStarted.getValue().get(Calendar.YEAR)+"/"+(msg.dateStarted.getValue().get(Calendar.MONTH)+1)+"/"+msg.dateStarted.getValue().get(Calendar.DAY_OF_MONTH
             )+" "+ msg.dateStarted.getValue().get(Calendar.HOUR)+":"+msg.dateStarted.getValue().get(Calendar.MINUTE)+":"+msg.dateStarted.getValue().get(Calendar.SECOND)+" "+ queryStrings.PMorAM(msg.dateStarted.getValue().get(Calendar.AM_PM));
             returndata.add(dstart);
@@ -389,6 +390,7 @@ public class BaseCMD {
             startdatetime = msg.mt2_userData.startdatetime.getValue();
             commentTextsize = msg.mt2_userData.textsize.getValue();
             returndata.add(msg.mt2_userData.userString._value.toString());
+            returndata.add(msg.mt2_userData.blenameString._value.toString());
             timestartstopdatetime = msg.mt2_userData.timestartdadtetime.getValue();
 
         }
@@ -595,7 +597,26 @@ public class BaseCMD {
         msg.mt2_userData.userString.ToByte(data);
 
         int i = 0;
-        byte[] rd = new byte[640];
+        byte[] rd = new byte[300];
+        for (Byte current : data) {
+            rd[i] = current;
+            i++;
+        }
+
+        return rd;
+    }
+
+    public byte[] Write_BLEnameString(String comment) {
+        ArrayList<Byte> data = new ArrayList<Byte>();
+        classMessages.MT2_USERFlash msg = new classMessages.MT2_USERFlash();
+
+
+        msg.mt2_userData.blenameString._value = "";
+        msg.mt2_userData.blenameString._value = comment;
+        msg.mt2_userData.blenameString.ToByte(data);
+
+        int i = 0;
+        byte[] rd = new byte[40];
         for (Byte current : data) {
             rd[i] = current;
             i++;

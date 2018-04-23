@@ -963,9 +963,9 @@ public  class loggerType {
     public static class UserString extends baseType  //320
     {
         /// <summary>The bytes taken up to store this string on the device.</summary>
-        public static final int ByteSize = 320;
+        public static final int ByteSize = 300;
         /// <summary>The number of unicode characters that this string can support.</summary>
-        public final int CharSize = 160;
+        public final int CharSize = 150;
 
         /// <summary>The actual stored string value</summary>
         public String _value;
@@ -986,6 +986,68 @@ public  class loggerType {
         /// </summary>
         /// <param name="data">The byte list to read bytes from to initialize this class</param>
         public UserString(ArrayList<Byte> data){
+            super(ByteSize);
+            int i = 0;
+            byte[] rd = new byte[data.size()-20];
+            for (Byte current : data) {
+                rd[i] = current;
+                i++;
+                if(i == 300){
+                    break;
+                }
+            }
+
+            _value = new String(rd);
+            _value = _value.replaceAll("[\u0000-\u001f]", "");
+
+
+            for(int j = 0; j < ByteSize; j++){
+                data.remove(0);
+            }
+        }
+
+        /// <summary>
+        /// The method that converts this class into a list of bytes.
+        /// </summary>
+        /// <param name="data">The list of bytes to append this classes bytes to.</param>
+        @Override
+        public void ToByte(ArrayList<Byte> data)
+        {
+            byte[] b = _value.getBytes(Charset.forName("UTF-8"));
+            for(int j = 0; j < b.length; j++){
+                data.add(b[j]);
+            }
+        }
+
+    }
+
+
+    public static class BLEnameString extends baseType  //320
+    {
+        /// <summary>The bytes taken up to store this string on the device.</summary>
+        public static final int ByteSize = 20;
+        /// <summary>The number of unicode characters that this string can support.</summary>
+        public final int CharSize = 10;
+
+        /// <summary>The actual stored string value</summary>
+        public String _value;
+        /// <summary>The string value method that insures the stored string is in the correct format.</summary>
+
+
+        /// <summary>
+        /// Creates a new UserString object with a blank string
+        /// </summary>
+        public BLEnameString(){
+            super(ByteSize);
+            _value = "";
+        }
+
+
+        /// <summary>
+        /// Creates a new instance of this class by reading bytes from a list.
+        /// </summary>
+        /// <param name="data">The byte list to read bytes from to initialize this class</param>
+        public BLEnameString(ArrayList<Byte> data){
             super(ByteSize);
             int i = 0;
             byte[] rd = new byte[data.size()];

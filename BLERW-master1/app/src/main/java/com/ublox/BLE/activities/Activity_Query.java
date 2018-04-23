@@ -805,11 +805,12 @@ public class Activity_Query extends Activity {
         progress.setButton(DialogInterface.BUTTON_NEGATIVE, "Abort", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                mBluetoothLeService.disconnect();
-                dialog.dismiss();
+//                sendData(hexData.BLE_ACK);
+//                state = 7;
                 backpress = true;
                 if(family.getText().toString() == "")
                 BuildDialogue("Query Aborted", "Entries might be empty!\nGo back to menu and reconnect", 1);
+                dialog.dismiss();
             }
         });
         progress.setProgressNumberFormat("");

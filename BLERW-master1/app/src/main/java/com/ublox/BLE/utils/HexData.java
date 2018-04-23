@@ -20,8 +20,7 @@ public class HexData {
     public static final byte[] RTC = {0x00,0x55,0x0B,0x03,(byte) 0x00,(byte) 0x3E, 0x69 ,0x0D};
     public static final byte[] BLE_ACK = {0x00, 0x55, 0x24, 0x02, (byte) 0x6F,(byte) 0xF7, 0x0D};
     public static final byte[] FIND_L = {0x00, 0x55, 0x25, 0x02, (byte) 0x5E,(byte) 0xC4, 0x0D};
-
-
+    public static final byte[] DATA_MODE = {(byte)0xAA, 0x0005, 0x0044, (byte)0x2B2B2B, 0x55};
     public void BytetoHex(byte[] b){
         StringBuilder sb = new StringBuilder();
         for (byte b1 : b){

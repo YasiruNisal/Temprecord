@@ -29,6 +29,7 @@ public class MT2_USERData extends baseType.baseClass  {
     public loggerType.UserPassword password;
     public uVal16 textsize;
     public loggerType.UserString userString;
+    public loggerType.BLEnameString blenameString;
 
 
     public MT2_USERData(){
@@ -44,7 +45,7 @@ public class MT2_USERData extends baseType.baseClass  {
         password = new loggerType.UserPassword();
         textsize = new uVal16();
         userString = new loggerType.UserString();
-
+        blenameString = new loggerType.BLEnameString();
     }
 
     public MT2_USERData(ArrayList<Byte> data){
@@ -61,6 +62,8 @@ public class MT2_USERData extends baseType.baseClass  {
         for (int i = 0; i < 32; i++) data.remove(0);
         textsize = new uVal16(data);
         userString = new loggerType.UserString(data);
+        blenameString = new loggerType.BLEnameString(data);
+
 
 
     }
@@ -77,6 +80,8 @@ public class MT2_USERData extends baseType.baseClass  {
         for (int i = 0; i < 32; i++) data.add((byte)0x00);
         textsize.ToByte(data);
         userString.ToByte(data);
+        blenameString.ToByte(data);
+
     }
 
     public int CalculateSize(){
@@ -92,6 +97,7 @@ public class MT2_USERData extends baseType.baseClass  {
         i += 32;
         i += textsize.TypeSize;
         i += userString.TypeSize;
+        i += blenameString.TypeSize;
 
         return i;
     }

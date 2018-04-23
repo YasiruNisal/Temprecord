@@ -144,13 +144,13 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
     private Button startwithdelaybutton;
     private Button startondatetimebutton;
     private Button sampleperiodbutton;
-    private EditText stoponsamplebutton;
     private Button stopondatebutton;
 
+    private EditText stoponsamplebutton;
     private EditText ch1upperlimitnb;
     private EditText ch1lowerlimitnb;
     private EditText ch1alarmdelaynb;
-
+    private EditText BLE_Name;
     private EditText ch2upperlimitnb;
     private EditText ch2lowerlimitnb;
     private EditText ch2alarmdelaynb;
@@ -445,6 +445,35 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
         thread.start();
     }
 
+    // disconnect from BLE from before going to the main menu.
+    @Override
+    public void onBackPressed() {
+        backpress = true;
+        //delays are introduced to make the disconnect process reliable
+        sendData(HexData.GO_TO_SLEEP);
+        try {
+            TimeUnit.MILLISECONDS.sleep(300);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            TimeUnit.MILLISECONDS.sleep(400);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        mBluetoothLeService.disconnect();
+        try {
+            TimeUnit.MILLISECONDS.sleep(300);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);//skips the device list page when going back
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        //super.onBackPressed();
+    }
+
     //state machine used to send and receive data from the logger
     //always start on state one
     private void Function(final byte[] in){
@@ -511,11 +540,6 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
                             query = baseCMD.ReadByte(in);
                             Q_data = baseCMD.CMDQuery(query);
                             SetUI();
-                        }
-                        if(backpress){
-                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);//skips the device list page when going back
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(intent);
                         }
                         break;
                     case 8:
@@ -699,18 +723,6 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
                 }
             }
         };handler1.postDelayed(runnableCode,1);
-    }
-
-    // disconnect from BLE from before going to the main menu.
-    @Override
-    public void onBackPressed() {
-        backpress = true;
-        //delays are introduced to make the disconnect process reliable
-        sendData(HexData.BLE_ACK);
-        state = 7;
-
-
-        //super.onBackPressed();
     }
 
     //used to display important messages to the user
@@ -1003,6 +1015,7 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
             }
 
             usercommenttxt.setText(U_data.get(27));
+            BLE_Name.setText(U_data.get(28));
 
             if (!baseCMD.ch2Enable) {
                 currenthumidity.setText("--");
@@ -1088,6 +1101,7 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
         ch2upperlimitnb = (EditText) findViewById(R.id.ch2upperlimit);
         ch2lowerlimitnb = (EditText) findViewById(R.id.ch2lowerlimit);
         ch2alarmdelaynb = (EditText) findViewById(R.id.ch2alarmdelay);
+        BLE_Name = (EditText) findViewById(R.id.editbluetoothname);
 
         BLEenergysave = (CheckBox) findViewById(R.id.bleenergysave);
         loopovewritecb = (CheckBox) findViewById(R.id.loopoverwrite);
@@ -1660,10 +1674,22 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
             UserReadtemp[43] = (byte) 0xF9;
         }
 
+
         data = baseCMD.Write_USERString(usercommenttxt.getText().toString());
         //32 bytes are ignored in the middle;
-        for(int k = 78; k < 398; k++){
+        for(int k = 78; k < 378; k++){
             UserReadtemp[k] = data[k-78];
+        }
+        String name = BLE_Name.getText().toString();
+//        if(name.equals("")){
+//            name = "default_name";
+//        }else {
+            name = name.replaceAll("\\s+", "_");
+//        }
+        data = baseCMD.Write_BLEnameString(name);
+
+        for(int k = 378; k < 398; k++){
+            UserReadtemp[k] = data[k-378];
         }
         sendData(commsSerial.WriteByte(baseCMD.ReadRTC()));
 

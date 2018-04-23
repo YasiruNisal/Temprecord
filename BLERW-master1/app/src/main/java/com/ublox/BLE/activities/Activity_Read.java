@@ -689,7 +689,6 @@ public class Activity_Read extends Activity {
                         address = (int)((bytePointer / QS.PAGESIZE) + 1) * QS.PAGESIZE;
                         address += pageOffset;
                         bytesToRead = totalToRead - address;
-                        Log.d(TAG, "OOOOOOOOOOOOOOOOOOOOOO " + address + " " + bytesToRead + " "+ totalToRead );
                         mt2Msg_read = new MT2Msg_Read(commsChar.MEM_VAL, address, bytesToRead, 120, 3);
                         sendData(commsSerial.WriteByte(mt2Msg_read.Read_into_writeByte(true)));
                         state = 28;
@@ -700,7 +699,6 @@ public class Activity_Read extends Activity {
                             ReadValues2 = new byte[mt2Msg_read.memoryData.length];
                             byte[] combo = new byte[ReadValues2.length  + ReadValues1.length];
                             System.arraycopy(mt2Msg_read.memoryData, 0, ReadValues2, 0, mt2Msg_read.memoryData.length);
-                            Log.d(TAG, "OOOOOOOOOOOOOOOOOOOOOO " + ReadValues2.length  + " " + ReadValues1.length  + " " );
                             System.arraycopy(ReadValues2,0, combo,0,ReadValues2.length-1);
                             System.arraycopy(ReadValues1,0,combo,ReadValues2.length,ReadValues1.length);
                             //hexData.BytetoHex(ReadValues);
@@ -920,8 +918,10 @@ public class Activity_Read extends Activity {
         progress.setButton(DialogInterface.BUTTON_NEGATIVE, "Abort", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                mBluetoothLeService.disconnect();
+                sendData(hexData.BLE_ACK);
+                state = 7;
                 BuildDialogue("Read Aborted", "Entries might be empty!\nGo back to menu and reconnect",1);
+
                 dialog.dismiss();
             }
         });
