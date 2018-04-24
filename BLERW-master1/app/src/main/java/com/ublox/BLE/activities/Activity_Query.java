@@ -723,7 +723,7 @@ public class Activity_Query extends Activity {
                             System.arraycopy(mt2Msg_read.memoryData, 0, UserRead, 500, 12);
                             hexData.BytetoHex(UserRead);
                             U_data = baseCMD.CMDUserRead(UserRead);
-                            SetUI();
+
                         }
                         sendData(commsSerial.WriteByte(mt2Msg_read.Read_into_writeByte(false)));
                         break;
@@ -749,6 +749,7 @@ public class Activity_Query extends Activity {
                         if(mt2Msg_read.write_into_readByte(baseCMD.ReadByte(in))) {
                             if(firsttime>0){state = 7;}else{state = 24;}
                             System.arraycopy(mt2Msg_read.memoryData, 0, ExtraRead, 236, 48);
+                            SetUI();
                             firsttime++;
                             hexData.BytetoHex(ExtraRead);
                             progresspercentage = 100;

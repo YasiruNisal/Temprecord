@@ -844,7 +844,7 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
                 }
 
                 if(!backpress){
-                    Log.d(TAG, "coming here after a timeout");
+                    //Log.d(TAG, "coming here after a timeout");
                     mBluetoothLeService.disconnect();
 
                 }

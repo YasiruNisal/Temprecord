@@ -33,6 +33,7 @@ import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.media.Image;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
@@ -45,6 +46,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -59,6 +61,8 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.ublox.BLE.R;
 import com.ublox.BLE.comms.BaseCMD;
 import com.ublox.BLE.comms.CommsSerial;
@@ -168,6 +172,11 @@ public class Activity_Read extends Activity {
     private TextView samplesbelowLowerLimit2;
     private TextView timebelowLowerSamples2;
     private TextView percentagebelowLowerSample2;
+
+    private ImageButton zoomin;
+    private ImageButton zoomout;
+    private ImageButton zoomin1;
+    private ImageButton zoomout1;
 
     private LinearLayout Humidity;
     private LinearLayout Humidity2;
@@ -731,24 +740,25 @@ public class Activity_Read extends Activity {
 
                 for (int i = 0; i < mt2Mem_values.Data.size(); i++) {
 
-                    float x = (mt2Mem_values.Data.get(i).valTime.getTime()) - c.getTime().getTime();
+                    float x = (mt2Mem_values.Data.get(i).valTime.getTime()) ;
                     entries.add(i, new Entry(x, (mt2Mem_values.Data.get(i).valCh0 / 10f)));
                     //Log.d("___________", mt2Mem_values.Data.get(i).valTime.getTime() + "  " + (mt2Mem_values.Data.get(i).valCh0 / 10f) + " " + x);
                 }
 
                 LineDataSet dataSet = new LineDataSet(entries, "Temperature °C"); // add entries to dataset
                 dataSet.setCircleColor(Color.argb(150, 10, 109, 255));
-                dataSet.setValueTextSize(15f);
+                dataSet.setDrawValues(false);//disable y axis value appearing near the line
                 dataSet.setLineWidth(3f);
                 dataSet.setColor(Color.argb(150, 10, 12, 247));
                 dataSet.setCircleRadius(2f);
+                dataSet.setHighLightColor(Color.BLACK);
                 LineData lineData = new LineData(dataSet);
                 chart.setData(lineData);
                 chart.setDragEnabled(true);
                 chart.setScaleEnabled(true);
                 //chart.setVisibleXRangeMaximum(4000);
                 YAxis yAxis = chart.getAxisLeft();
-                yAxis.setLabelCount(6, true);
+                yAxis.setLabelCount(10, true);
 
 
                 LimitLine upperLimit = new LimitLine(baseCMD.ch1Hi / 10, "Upper Limit");
@@ -782,9 +792,34 @@ public class Activity_Read extends Activity {
                 leftAxis.enableGridDashedLine(10f, 10f, 0);
                 leftAxis.setDrawLimitLinesBehindData(true);
                 chart.getAxisRight().setEnabled(false);
-
                 chart.invalidate();
                 chart1.setVisibility(View.INVISIBLE);
+
+                chart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+                    @Override
+                    public void onValueSelected(Entry e, Highlight h) {
+                        Toast.makeText(Activity_Read.this,"Date/Time\t\t:" + chart.getXAxis().getValueFormatter().getFormattedValue(e.getX(), chart.getXAxis()) + "\nTemperature :\t" + Integer.parseInt(chart.getAxisLeft().getValueFormatter().getFormattedValue(e.getY()*10, chart.getAxisLeft()))/10.0 + " °C", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onNothingSelected() {
+
+                    }
+                });
+
+                zoomin.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        chart.zoomIn();
+                    }
+                });
+                zoomout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        chart.fitScreen();
+//                        chart.moveViewToX(mt2Mem_values.Data.get(0).valCh0 / 10f);
+                    }
+                });
             }
         });
 
@@ -808,10 +843,11 @@ public class Activity_Read extends Activity {
 
                 LineDataSet dataSet = new LineDataSet(entries, "Humidity %RH"); // add entries to dataset
                 dataSet.setCircleColor(Color.argb(150, 10, 109, 255));
-                dataSet.setValueTextSize(15f);
                 dataSet.setLineWidth(3f);
+                dataSet.setDrawValues(false);//disable y axis value appearing near the line
                 dataSet.setColor(Color.argb(150, 10, 12, 247));
                 dataSet.setCircleRadius(2f);
+                dataSet.setHighLightColor(Color.BLACK);
                 LineData lineData = new LineData(dataSet);
                 chart1.setData(lineData);
                 chart1.setDragEnabled(true);
@@ -851,6 +887,33 @@ public class Activity_Read extends Activity {
                 chart1.getAxisRight().setEnabled(false);
 
                 chart1.invalidate();
+
+                chart1.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+                    @Override
+                    public void onValueSelected(Entry e, Highlight h) {
+                        //Log.d("____", "VALUE IS SELECTED " +  + " " + );
+                        //Toast.makeText(Activity_Read.this, +"Temperature :\t" + Integer.parseInt(chart.getAxisLeft().getValueFormatter().getFormattedValue(e.getY()*10, chart.getAxisLeft()))/10.0)) + " " ,Toast.LENGTH_SHORT)).show();
+                        Toast.makeText(Activity_Read.this,"Date/Time :\t\t" + chart1.getXAxis().getValueFormatter().getFormattedValue(e.getX(), chart1.getXAxis()) + "\nHumidity :\t" + Integer.parseInt(chart1.getAxisLeft().getValueFormatter().getFormattedValue(e.getY()*10, chart1.getAxisLeft()))/10.0 + " %RH", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onNothingSelected() {
+
+                    }
+                });
+
+                zoomin1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        chart1.zoomIn();
+                    }
+                });
+                zoomout1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        chart1.fitScreen();
+                    }
+                });
                 //chart1.setVisibility(View.INVISIBLE);
             }
         });
@@ -1155,6 +1218,10 @@ public class Activity_Read extends Activity {
         timebelowLowerSamples2 = (TextView) findViewById(R.id.timebelowlowerlimit2);
         percentagebelowLowerSample2 = (TextView) findViewById(R.id.percentagebelowlowerlimit2);
 
+        zoomin = (ImageButton) findViewById(R.id.zoominButton);
+        zoomout = (ImageButton) findViewById(R.id.zoomoutButton);
+        zoomin1 = (ImageButton) findViewById(R.id.zoominButton1);
+        zoomout1 = (ImageButton) findViewById(R.id.zoomoutButton1);
 
         getActionBar().setTitle(mDevices.get(currentDevice).getName());
         //getActionBar().setDisplayHomeAsUpEnabled(true);

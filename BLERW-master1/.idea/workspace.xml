@@ -44,59 +44,36 @@
       <file leaf-file-name="Activity_Query.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/activities/Activity_Query.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="663">
-              <caret line="657" column="75" lean-forward="false" selection-start-line="657" selection-start-column="75" selection-end-line="657" selection-end-column="75" />
+            <state relative-caret-position="113">
+              <caret line="659" column="30" lean-forward="false" selection-start-line="659" selection-start-column="30" selection-end-line="659" selection-end-column="30" />
               <folding>
-                <element signature="e#0#47905#0" expanded="true" />
+                <element signature="e#0#47906#0" expanded="true" />
                 <element signature="method#updateConnectionState#0;class#Activity_Query#0" expanded="false" />
                 <element signature="method#displayGattServices#0;class#Activity_Query#0" expanded="false" />
                 <element signature="method#makeGattUpdateIntentFilter#0;class#Activity_Query#0" expanded="false" />
                 <element signature="e#16512#17010#0" expanded="true" />
                 <element signature="e#17009#17010#0" expanded="true" />
-                <element signature="e#34080#35278#0" expanded="true" />
-                <element signature="e#35277#35278#0" expanded="true" />
+                <element signature="method#onBackPressed#0;class#Activity_Query#0" expanded="false" />
+                <element signature="method#BuildDialogue#0;class#Activity_Query#0" expanded="false" />
+                <element signature="method#progressDialoge#0;class#Activity_Query#0" expanded="false" />
+                <element signature="method#FifteenSecTimeout#0;class#Activity_Query#0" expanded="false" />
+                <element signature="e#34081#35279#0" expanded="true" />
+                <element signature="e#35278#35279#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="HexData.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/utils/HexData.java">
+      <file leaf-file-name="activity__read.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity__read.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="184">
-              <caret line="22" column="92" lean-forward="false" selection-start-line="22" selection-start-column="55" selection-end-line="22" selection-end-column="92" />
+            <state relative-caret-position="576">
+              <caret line="1059" column="50" lean-forward="false" selection-start-line="1059" selection-start-column="50" selection-end-line="1059" selection-end-column="50" />
               <folding />
             </state>
           </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Activity_Read.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/activities/Activity_Read.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="218">
-              <caret line="805" column="86" lean-forward="false" selection-start-line="805" selection-start-column="21" selection-end-line="805" selection-end-column="86" />
-              <folding>
-                <element signature="class#8307:9153" expanded="false" />
-                <element signature="method#BytestoRead#0;class#Activity_Read#0" expanded="false" />
-                <element signature="method#BuildDialogue#0;class#Activity_Read#0" expanded="false" />
-                <element signature="e#39326#39692#0" expanded="true" />
-                <element signature="e#39691#39692#0" expanded="true" />
-                <element signature="method#SetUI#0;class#Activity_Read#0" expanded="false" />
-                <element signature="method#onCreate#0;class#Activity_Read#0" expanded="false" />
-                <element signature="method#sendEmail#0;class#Activity_Read#0" expanded="false" />
-                <element signature="method#EmailText#0;class#Activity_Read#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MT2Msg_Read.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/comms/MT2Msg_Read.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1173">
-              <caret line="143" column="0" lean-forward="false" selection-start-line="143" selection-start-column="0" selection-end-line="143" selection-end-column="0" />
-              <folding />
-            </state>
+          <provider editor-type-id="android-designer2">
+            <state />
           </provider>
         </entry>
       </file>
@@ -110,11 +87,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Activity_Parameter.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Activity_Parameter.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/activities/Activity_Parameter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="378">
-              <caret line="1687" column="11" lean-forward="false" selection-start-line="1687" selection-start-column="11" selection-end-line="1687" selection-end-column="11" />
+            <state relative-caret-position="225">
+              <caret line="700" column="117" lean-forward="false" selection-start-line="700" selection-start-column="89" selection-end-line="700" selection-end-column="117" />
               <folding>
                 <element signature="method#onServiceConnected#0;class#8113:8858" expanded="false" />
                 <element signature="method#updateConnectionState#0;class#Activity_Parameter#0" expanded="false" />
@@ -125,7 +102,7 @@
                 <element signature="method#progressDialoge2#0;class#Activity_Parameter#0" expanded="false" />
                 <element signature="method#ScrollListener#0;class#Activity_Parameter#0" expanded="false" />
                 <element signature="method#Passwordenter#0;class#Activity_Parameter#0" expanded="false" />
-                <element signature="class#48343:49537" expanded="false" />
+                <element signature="class#48345:49539" expanded="false" />
                 <element signature="method#buttonAction#0;class#Activity_Parameter#0" expanded="false" />
                 <element signature="method#showPicker#0;class#Activity_Parameter#0" expanded="false" />
                 <element signature="method#uiSetupRules#0;class#Activity_Parameter#0" expanded="false" />
@@ -196,6 +173,29 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="Activity_Read.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/activities/Activity_Read.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1675">
+              <caret line="819" column="2" lean-forward="false" selection-start-line="819" selection-start-column="2" selection-end-line="819" selection-end-column="2" />
+              <folding>
+                <element signature="class#8635:9481" expanded="false" />
+                <element signature="e#35028#35216#0" expanded="true" />
+                <element signature="e#35215#35216#0" expanded="true" />
+                <element signature="e#35262#35538#0" expanded="true" />
+                <element signature="e#35537#35538#0" expanded="true" />
+                <element signature="method#MT2ValueIn#0;class#Activity_Read#0" expanded="false" />
+                <element signature="method#BytestoRead#0;class#Activity_Read#0" expanded="false" />
+                <element signature="method#BuildDialogue#0;class#Activity_Read#0" expanded="false" />
+                <element signature="method#SetUI#0;class#Activity_Read#0" expanded="false" />
+                <element signature="method#onCreate#0;class#Activity_Read#0" expanded="false" />
+                <element signature="method#sendEmail#0;class#Activity_Read#0" expanded="false" />
+                <element signature="method#EmailText#0;class#Activity_Read#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
     </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
@@ -211,7 +211,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>logging</find>
       <find>QueryS</find>
       <find>max</find>
       <find>state = 0</find>
@@ -237,10 +236,11 @@
       <find>OOOOOOOOOOOOOOOOOOOOOO</find>
       <find>___________</find>
       <find>user</find>
-      <find>onBackPressed</find>
       <find>___&amp;&amp;__</find>
       <find>__&amp;</find>
       <find>user c</find>
+      <find>graph</find>
+      <find>onBackPressed</find>
     </findStrings>
   </component>
   <component name="GenerateSignedApkSettings">
@@ -4650,9 +4650,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/src/main/res/drawable/ic_start.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/drawable/ic_stop.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/drawable/ic_list.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/drawable/ic_reuse.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/drawable/ic_open.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/drawable/ic_help.xml" />
@@ -4692,20 +4689,23 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/activities/DevicesActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/drawable-xxxhdpi/ic_listc.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/comms/MT2Values.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/activities/Activity_Read.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/utils/HexData.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/activities/Activity_Query.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/comms/classMessages.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/comms/MT2_USERData.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/comms/BaseCMD.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/Types/loggerType.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_parameter.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/activities/Activity_Parameter.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/activities/Activity_Query.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/drawable/ic_zoom_out.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/drawable/ic_zoom_in.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity__read.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/activities/Activity_Read.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-8" />
+    <option name="x" value="1912" />
     <option name="y" value="-8" />
     <option name="width" value="1936" />
     <option name="height" value="1056" />
@@ -4759,6 +4759,24 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="layout" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidResFolderTypeNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Android-u-blox-BLE-master" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidResFolderNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="drawable" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidResFolderTypeNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -4898,6 +4916,7 @@
     <property name="android.project.structure.proportion" value="0.15" />
     <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file://C:/Users/Yasiru/Desktop/2018/work/Android-u-blox-BLE-master/app/src/main/java/com/ublox/BLE/utils/HexData.java" />
     <property name="android.profiler.active" value="true" />
+    <property name="VectorAssetImportPath" value="C:\Users\YasiruW\Desktop" />
   </component>
   <component name="RecentsManager">
     <key name="ExtractSuperBase.RECENT_KEYS">
@@ -4917,8 +4936,8 @@
       <recent name="" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\YasiruW\Desktop\2018\Android Projects\Backup\Android-u-blox-BLE-master\app\src\main\res\drawable-xxxhdpi" />
       <recent name="C:\Users\YasiruW\Desktop\2018\Android Projects\Backup\Android-u-blox-BLE-master\app\src\main\res\drawable" />
+      <recent name="C:\Users\YasiruW\Desktop\2018\Android Projects\Backup\Android-u-blox-BLE-master\app\src\main\res\drawable-xxxhdpi" />
       <recent name="C:\Users\YasiruW\Desktop\2018\Android Projects\Backup\Android-u-blox-BLE-master\app\src\main\res\drawable-xxhdpi" />
       <recent name="C:\Users\YasiruW\Desktop\2018\Android Projects\Backup\Android-u-blox-BLE-master\app\src\main\res\drawable-mdpi" />
       <recent name="C:\Users\Yasiru\Desktop\2018\work\Android-u-blox-BLE-master\app\src\main\assets" />
@@ -5015,7 +5034,7 @@
       <option name="ACTIVITY_CLASS" value="" />
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1524513442709" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1524534621310" />
       </method>
     </configuration>
     <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Instrumented Tests">
@@ -5063,7 +5082,7 @@
       </Profilers>
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1524513442709" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1524534621310" />
       </method>
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -5246,7 +5265,7 @@
       <option name="ACTIVITY_CLASS" value="" />
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1524513442710" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1524534621311" />
       </method>
     </configuration>
     <configuration default="false" name="MPChartExample" type="AndroidRunConfigurationType" factoryName="Android App" activateToolWindowBeforeRun="false">
@@ -5295,7 +5314,7 @@
       <option name="ACTIVITY_CLASS" value="" />
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1524513442710" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1524534621311" />
       </method>
     </configuration>
     <list size="2">
@@ -5344,7 +5363,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="1912" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Android Profiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.9230769" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -5424,30 +5443,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/comms/QueryStrings.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1479">
-          <caret line="22" column="36" lean-forward="false" selection-start-line="22" selection-start-column="28" selection-end-line="22" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/comms/MT2Msg_Write.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-34">
-          <caret line="12" column="13" lean-forward="false" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/comms/CRC16.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="13" lean-forward="false" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/comms/MT2ClassFlags.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-2958">
@@ -5810,41 +5805,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/activities/Activity_Read.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="218">
-          <caret line="805" column="86" lean-forward="false" selection-start-line="805" selection-start-column="21" selection-end-line="805" selection-end-column="86" />
-          <folding>
-            <element signature="class#8307:9153" expanded="false" />
-            <element signature="method#BytestoRead#0;class#Activity_Read#0" expanded="false" />
-            <element signature="method#BuildDialogue#0;class#Activity_Read#0" expanded="false" />
-            <element signature="e#39326#39692#0" expanded="true" />
-            <element signature="e#39691#39692#0" expanded="true" />
-            <element signature="method#SetUI#0;class#Activity_Read#0" expanded="false" />
-            <element signature="method#onCreate#0;class#Activity_Read#0" expanded="false" />
-            <element signature="method#sendEmail#0;class#Activity_Read#0" expanded="false" />
-            <element signature="method#EmailText#0;class#Activity_Read#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/activities/Activity_Query.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="663">
-          <caret line="657" column="75" lean-forward="false" selection-start-line="657" selection-start-column="75" selection-end-line="657" selection-end-column="75" />
-          <folding>
-            <element signature="e#0#47905#0" expanded="true" />
-            <element signature="method#updateConnectionState#0;class#Activity_Query#0" expanded="false" />
-            <element signature="method#displayGattServices#0;class#Activity_Query#0" expanded="false" />
-            <element signature="method#makeGattUpdateIntentFilter#0;class#Activity_Query#0" expanded="false" />
-            <element signature="e#16512#17010#0" expanded="true" />
-            <element signature="e#17009#17010#0" expanded="true" />
-            <element signature="e#34080#35278#0" expanded="true" />
-            <element signature="e#35277#35278#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/comms/BaseCMD.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="171">
@@ -5898,10 +5858,31 @@
         <state />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/activities/Activity_Query.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="113">
+          <caret line="659" column="30" lean-forward="false" selection-start-line="659" selection-start-column="30" selection-end-line="659" selection-end-column="30" />
+          <folding>
+            <element signature="e#0#47906#0" expanded="true" />
+            <element signature="method#updateConnectionState#0;class#Activity_Query#0" expanded="false" />
+            <element signature="method#displayGattServices#0;class#Activity_Query#0" expanded="false" />
+            <element signature="method#makeGattUpdateIntentFilter#0;class#Activity_Query#0" expanded="false" />
+            <element signature="e#16512#17010#0" expanded="true" />
+            <element signature="e#17009#17010#0" expanded="true" />
+            <element signature="method#onBackPressed#0;class#Activity_Query#0" expanded="false" />
+            <element signature="method#BuildDialogue#0;class#Activity_Query#0" expanded="false" />
+            <element signature="method#progressDialoge#0;class#Activity_Query#0" expanded="false" />
+            <element signature="method#FifteenSecTimeout#0;class#Activity_Query#0" expanded="false" />
+            <element signature="e#34081#35279#0" expanded="true" />
+            <element signature="e#35278#35279#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/activities/Activity_Parameter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="378">
-          <caret line="1687" column="11" lean-forward="false" selection-start-line="1687" selection-start-column="11" selection-end-line="1687" selection-end-column="11" />
+        <state relative-caret-position="225">
+          <caret line="700" column="117" lean-forward="false" selection-start-line="700" selection-start-column="89" selection-end-line="700" selection-end-column="117" />
           <folding>
             <element signature="method#onServiceConnected#0;class#8113:8858" expanded="false" />
             <element signature="method#updateConnectionState#0;class#Activity_Parameter#0" expanded="false" />
@@ -5912,7 +5893,7 @@
             <element signature="method#progressDialoge2#0;class#Activity_Parameter#0" expanded="false" />
             <element signature="method#ScrollListener#0;class#Activity_Parameter#0" expanded="false" />
             <element signature="method#Passwordenter#0;class#Activity_Parameter#0" expanded="false" />
-            <element signature="class#48343:49537" expanded="false" />
+            <element signature="class#48345:49539" expanded="false" />
             <element signature="method#buttonAction#0;class#Activity_Parameter#0" expanded="false" />
             <element signature="method#showPicker#0;class#Activity_Parameter#0" expanded="false" />
             <element signature="method#uiSetupRules#0;class#Activity_Parameter#0" expanded="false" />
@@ -5925,6 +5906,54 @@
             <element signature="method#reconnect#0;class#Activity_Parameter#0" expanded="false" />
             <element signature="method#startondatepopup#0;class#Activity_Parameter#0" expanded="false" />
             <element signature="method#stopondatepopup#0;class#Activity_Parameter#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/ic_zoom_out.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="0" lean-forward="true" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/ic_zoom_in.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="0" lean-forward="true" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity__read.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="576">
+          <caret line="1059" column="50" lean-forward="false" selection-start-line="1059" selection-start-column="50" selection-end-line="1059" selection-end-column="50" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/activities/Activity_Read.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1675">
+          <caret line="819" column="2" lean-forward="false" selection-start-line="819" selection-start-column="2" selection-end-line="819" selection-end-column="2" />
+          <folding>
+            <element signature="class#8635:9481" expanded="false" />
+            <element signature="e#35028#35216#0" expanded="true" />
+            <element signature="e#35215#35216#0" expanded="true" />
+            <element signature="e#35262#35538#0" expanded="true" />
+            <element signature="e#35537#35538#0" expanded="true" />
+            <element signature="method#MT2ValueIn#0;class#Activity_Read#0" expanded="false" />
+            <element signature="method#BytestoRead#0;class#Activity_Read#0" expanded="false" />
+            <element signature="method#BuildDialogue#0;class#Activity_Read#0" expanded="false" />
+            <element signature="method#SetUI#0;class#Activity_Read#0" expanded="false" />
+            <element signature="method#onCreate#0;class#Activity_Read#0" expanded="false" />
+            <element signature="method#sendEmail#0;class#Activity_Read#0" expanded="false" />
+            <element signature="method#EmailText#0;class#Activity_Read#0" expanded="false" />
           </folding>
         </state>
       </provider>
