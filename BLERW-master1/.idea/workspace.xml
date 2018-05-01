@@ -44,45 +44,22 @@
       <file leaf-file-name="Activity_Query.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/activities/Activity_Query.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="113">
-              <caret line="659" column="30" lean-forward="false" selection-start-line="659" selection-start-column="30" selection-end-line="659" selection-end-column="30" />
+            <state relative-caret-position="3315">
+              <caret line="269" column="18" lean-forward="false" selection-start-line="269" selection-start-column="18" selection-end-line="269" selection-end-column="18" />
               <folding>
-                <element signature="e#0#47906#0" expanded="true" />
+                <element signature="e#0#47908#0" expanded="false" />
+                <element signature="imports" expanded="false" />
                 <element signature="method#updateConnectionState#0;class#Activity_Query#0" expanded="false" />
                 <element signature="method#displayGattServices#0;class#Activity_Query#0" expanded="false" />
                 <element signature="method#makeGattUpdateIntentFilter#0;class#Activity_Query#0" expanded="false" />
-                <element signature="e#16512#17010#0" expanded="true" />
-                <element signature="e#17009#17010#0" expanded="true" />
                 <element signature="method#onBackPressed#0;class#Activity_Query#0" expanded="false" />
                 <element signature="method#BuildDialogue#0;class#Activity_Query#0" expanded="false" />
                 <element signature="method#progressDialoge#0;class#Activity_Query#0" expanded="false" />
                 <element signature="method#FifteenSecTimeout#0;class#Activity_Query#0" expanded="false" />
-                <element signature="e#34081#35279#0" expanded="true" />
-                <element signature="e#35278#35279#0" expanded="true" />
+                <element signature="method#SetUI#0;class#Activity_Query#0" expanded="false" />
+                <element signature="method#onCreate#0;class#Activity_Query#0" expanded="false" />
+                <element signature="method#tryAgain#0;class#Activity_Query#0" expanded="false" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="activity__read.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity__read.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="576">
-              <caret line="1059" column="50" lean-forward="false" selection-start-line="1059" selection-start-column="50" selection-end-line="1059" selection-end-column="50" />
-              <folding />
-            </state>
-          </provider>
-          <provider editor-type-id="android-designer2">
-            <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BaseCMD.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/comms/BaseCMD.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="171">
-              <caret line="608" column="18" lean-forward="false" selection-start-line="608" selection-start-column="18" selection-end-line="608" selection-end-column="18" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -90,84 +67,42 @@
       <file leaf-file-name="Activity_Parameter.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/activities/Activity_Parameter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="700" column="117" lean-forward="false" selection-start-line="700" selection-start-column="89" selection-end-line="700" selection-end-column="117" />
+            <state relative-caret-position="11798">
+              <caret line="1622" column="14" lean-forward="false" selection-start-line="1622" selection-start-column="14" selection-end-line="1622" selection-end-column="14" />
               <folding>
+                <element signature="e#0#79074#0" expanded="false" />
+                <element signature="imports" expanded="false" />
                 <element signature="method#onServiceConnected#0;class#8113:8858" expanded="false" />
+                <element signature="method#onOptionsItemSelected#0;class#Activity_Parameter#0" expanded="false" />
                 <element signature="method#updateConnectionState#0;class#Activity_Parameter#0" expanded="false" />
                 <element signature="method#displayGattServices#0;class#Activity_Parameter#0" expanded="false" />
                 <element signature="method#makeGattUpdateIntentFilter#0;class#Activity_Parameter#0" expanded="false" />
+                <element signature="method#Function#0;class#Activity_Parameter#0" expanded="false" />
                 <element signature="method#BuildDialogue#0;class#Activity_Parameter#0" expanded="false" />
                 <element signature="method#progressDialoge#0;class#Activity_Parameter#0" expanded="false" />
                 <element signature="method#progressDialoge2#0;class#Activity_Parameter#0" expanded="false" />
-                <element signature="method#ScrollListener#0;class#Activity_Parameter#0" expanded="false" />
+                <element signature="method#ThirtySecTimeout#0;class#Activity_Parameter#0" expanded="false" />
+                <element signature="method#SetUI#0;class#Activity_Parameter#0" expanded="false" />
+                <element signature="e#47140#47141#0" expanded="false" />
+                <element signature="e#47186#47187#0" expanded="false" />
                 <element signature="method#Passwordenter#0;class#Activity_Parameter#0" expanded="false" />
-                <element signature="class#48345:49539" expanded="false" />
+                <element signature="class#48347:49541" expanded="false" />
                 <element signature="method#buttonAction#0;class#Activity_Parameter#0" expanded="false" />
+                <element signature="e#50227#50228#0" expanded="false" />
+                <element signature="e#50294#50295#0" expanded="false" />
+                <element signature="e#50446#50447#0" expanded="false" />
+                <element signature="e#50511#50512#0" expanded="false" />
                 <element signature="method#showPicker#0;class#Activity_Parameter#0" expanded="false" />
-                <element signature="method#uiSetupRules#0;class#Activity_Parameter#0" expanded="false" />
                 <element signature="method#sendEmail#0;class#Activity_Parameter#0" expanded="false" />
                 <element signature="method#EmailText#0;class#Activity_Parameter#0" expanded="false" />
                 <element signature="method#makesound#0;class#Activity_Parameter#0" expanded="false" />
                 <element signature="method#onTimeSet#0;class#Activity_Parameter#0" expanded="false" />
                 <element signature="method#onDateSet#0;class#Activity_Parameter#0" expanded="false" />
                 <element signature="method#promtPassword#0;class#Activity_Parameter#0" expanded="false" />
-                <element signature="method#reconnect#0;class#Activity_Parameter#0" expanded="false" />
+                <element signature="e#64055#64056#0" expanded="false" />
+                <element signature="e#64134#64135#0" expanded="false" />
                 <element signature="method#startondatepopup#0;class#Activity_Parameter#0" expanded="false" />
                 <element signature="method#stopondatepopup#0;class#Activity_Parameter#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="activity_parameter.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_parameter.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="424">
-              <caret line="436" column="63" lean-forward="false" selection-start-line="436" selection-start-column="63" selection-end-line="436" selection-end-column="63" />
-              <folding />
-            </state>
-          </provider>
-          <provider editor-type-id="android-designer2">
-            <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="classMessages.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/comms/classMessages.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="358">
-              <caret line="280" column="36" lean-forward="false" selection-start-line="280" selection-start-column="36" selection-end-line="280" selection-end-column="36" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MT2_USERData.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/comms/MT2_USERData.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="222">
-              <caret line="64" column="0" lean-forward="false" selection-start-line="64" selection-start-column="0" selection-end-line="64" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="loggerType.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/Types/loggerType.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="256">
-              <caret line="1059" column="62" lean-forward="false" selection-start-line="1059" selection-start-column="62" selection-end-line="1059" selection-end-column="62" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#18199#18200#0" expanded="true" />
-                <element signature="e#18235#18236#0" expanded="true" />
-                <element signature="e#20255#20256#0" expanded="true" />
-                <element signature="e#20308#20309#0" expanded="true" />
-                <element signature="e#22737#22738#0" expanded="true" />
-                <element signature="e#22776#22777#0" expanded="true" />
-                <element signature="e#32312#32313#0" expanded="true" />
-                <element signature="e#32382#32383#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -176,23 +111,103 @@
       <file leaf-file-name="Activity_Read.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/activities/Activity_Read.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1675">
-              <caret line="819" column="2" lean-forward="false" selection-start-line="819" selection-start-column="2" selection-end-line="819" selection-end-column="2" />
+            <state relative-caret-position="1768">
+              <caret line="706" column="43" lean-forward="false" selection-start-line="706" selection-start-column="43" selection-end-line="706" selection-end-column="43" />
               <folding>
-                <element signature="class#8635:9481" expanded="false" />
-                <element signature="e#35028#35216#0" expanded="true" />
-                <element signature="e#35215#35216#0" expanded="true" />
-                <element signature="e#35262#35538#0" expanded="true" />
-                <element signature="e#35537#35538#0" expanded="true" />
-                <element signature="method#MT2ValueIn#0;class#Activity_Read#0" expanded="false" />
+                <element signature="e#7354#7362#0" expanded="true" />
+                <element signature="e#7418#7426#0" expanded="true" />
+                <element signature="e#7482#7490#0" expanded="true" />
+                <element signature="e#7546#7554#0" expanded="true" />
+                <element signature="class#8674:9520" expanded="false" />
+                <element signature="e#9972#11613#0" expanded="true" />
+                <element signature="e#10282#10300#0" expanded="true" />
+                <element signature="e#10507#10528#0" expanded="true" />
+                <element signature="e#11612#11613#0" expanded="true" />
+                <element signature="e#13887#14212#0" expanded="true" />
+                <element signature="e#14211#14212#0" expanded="true" />
+                <element signature="e#14611#14661#0" expanded="true" />
+                <element signature="e#14737#14762#0" expanded="true" />
+                <element signature="e#14950#14966#0" expanded="true" />
+                <element signature="method#sendData#0;class#Activity_Read#0" expanded="false" />
+                <element signature="e#16399#16898#0" expanded="true" />
+                <element signature="e#16897#16898#0" expanded="true" />
+                <element signature="method#onBackPressed#0;class#Activity_Read#0" expanded="false" />
+                <element signature="e#17667#31817#0" expanded="true" />
+                <element signature="e#31816#31817#0" expanded="true" />
+                <element signature="e#31922#36559#0" expanded="true" />
+                <element signature="e#32050#32057#0" expanded="true" />
+                <element signature="e#35915#36532#0" expanded="true" />
+                <element signature="e#36531#36532#0" expanded="true" />
+                <element signature="e#36558#36559#0" expanded="true" />
+                <element signature="e#36629#41079#0" expanded="true" />
+                <element signature="e#36757#36764#0" expanded="true" />
+                <element signature="e#40421#40996#0" expanded="true" />
+                <element signature="e#40995#40996#0" expanded="true" />
+                <element signature="e#41078#41079#0" expanded="true" />
+                <element signature="e#41178#41184#0" expanded="true" />
                 <element signature="method#BytestoRead#0;class#Activity_Read#0" expanded="false" />
-                <element signature="method#BuildDialogue#0;class#Activity_Read#0" expanded="false" />
+                <element signature="e#42507#43006#0" expanded="true" />
+                <element signature="e#43005#43006#0" expanded="true" />
+                <element signature="method#progressDialoge#0;class#Activity_Read#0" expanded="false" />
+                <element signature="e#43466#43832#0" expanded="true" />
+                <element signature="e#43831#43832#0" expanded="true" />
+                <element signature="e#43975#44244#0" expanded="true" />
+                <element signature="e#44243#44244#0" expanded="true" />
                 <element signature="method#SetUI#0;class#Activity_Read#0" expanded="false" />
                 <element signature="method#onCreate#0;class#Activity_Read#0" expanded="false" />
                 <element signature="method#sendEmail#0;class#Activity_Read#0" expanded="false" />
                 <element signature="method#EmailText#0;class#Activity_Read#0" expanded="false" />
               </folding>
             </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Chart.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/MPChartLib/src/main/java/com/github/mikephil/charting/charts/Chart.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="156">
+              <caret line="655" column="0" lean-forward="false" selection-start-line="655" selection-start-column="0" selection-end-line="655" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BaseCMD.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/comms/BaseCMD.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="3400">
+              <caret line="211" column="16" lean-forward="false" selection-start-line="211" selection-start-column="16" selection-end-line="211" selection-end-column="16" />
+              <folding>
+                <element signature="imports" expanded="false" />
+                <element signature="e#4787#4788#0" expanded="false" />
+                <element signature="e#4833#4834#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="QueryStrings.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/comms/QueryStrings.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="136">
+              <caret line="17" column="13" lean-forward="false" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
+              <folding>
+                <element signature="imports" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="activity__read.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity__read.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="8619">
+              <caret line="507" column="31" lean-forward="false" selection-start-line="507" selection-start-column="31" selection-end-line="507" selection-end-column="31" />
+              <folding />
+            </state>
+          </provider>
+          <provider editor-type-id="android-designer2">
+            <state />
           </provider>
         </entry>
       </file>
@@ -4650,13 +4665,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/src/main/res/drawable/ic_reuse.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/drawable/ic_open.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/drawable/ic_help.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/drawable/ic_search.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/drawable/ic_settings.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/drawable/reusebutton.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/drawable/stopbutton.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/drawable/startbutton.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/drawable/findloggerbutton.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/drawable/tagbutton.xml" />
@@ -4667,7 +4675,6 @@
         <option value="$PROJECT_DIR$/app/src/main/res/drawable/querybutton.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/drawable/readbutton.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/drawable/devicelistbutton.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/values/dimens.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity__query.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/comms/MT2ClassFlags.java" />
@@ -4695,11 +4702,19 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/comms/BaseCMD.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/Types/loggerType.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_parameter.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/activities/Activity_Parameter.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/activities/Activity_Query.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/drawable/ic_zoom_out.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/drawable/ic_zoom_in.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/drawable-xxxhdpi/graphbutton.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/values/dimens.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/activities/Activity_Query.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_graph.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/activity_graph.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/activities/activity_graph.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/drawable/ic_zoom_full.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity__read.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/activities/Activity_Parameter.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/activities/Activity_Graph.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/activities/Activity_Read.java" />
       </list>
     </option>
@@ -4725,9 +4740,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="ProjectPane" />
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="AndroidView">
         <subPane>
           <PATH>
@@ -4771,24 +4783,6 @@
               <option name="myItemId" value="app" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidModuleNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="res" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidResFolderNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="drawable" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidResFolderTypeNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Android-u-blox-BLE-master" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidModuleNode" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -4806,50 +4800,6 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="BLE" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Android-u-blox-BLE-master" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidSourceTypeNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BLE" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Types" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Android-u-blox-BLE-master" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidSourceTypeNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BLE" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="services" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -4896,8 +4846,25 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Android-u-blox-BLE-master" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="manifests" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidManifestsGroupNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
+      <pane id="ProjectPane" />
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="Scratches" />
     </panes>
   </component>
@@ -4906,7 +4873,7 @@
     <property name="settings.editor.selected.configurable" value="instant.run" />
     <property name="sync.plugin.last.upgrade.timestamp" value="1517771835916" />
     <property name="device.picker.selection" value="ce12171c79888c3304" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../Android-u-blox-BLE-master" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/app/src/main/res/drawable" />
     <property name="ExportApk.ApkPath" value="C:\Users\YasiruW\Desktop\2018\Android Projects\Android-u-blox-BLE-master" />
     <property name="ExportApk.Flavors" value="" />
@@ -4916,9 +4883,12 @@
     <property name="android.project.structure.proportion" value="0.15" />
     <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file://C:/Users/Yasiru/Desktop/2018/work/Android-u-blox-BLE-master/app/src/main/java/com/ublox/BLE/utils/HexData.java" />
     <property name="android.profiler.active" value="true" />
-    <property name="VectorAssetImportPath" value="C:\Users\YasiruW\Desktop" />
+    <property name="VectorAssetImportPath" value="C:\Users\YasiruW" />
   </component>
   <component name="RecentsManager">
+    <key name="android.template.parentActivityClass">
+      <recent name="" />
+    </key>
     <key name="ExtractSuperBase.RECENT_KEYS">
       <recent name="com.ublox.BLE.activities" />
     </key>
@@ -4930,14 +4900,15 @@
       <recent name="C:\Users\Yasiru\Desktop\2018\work\Android-u-blox-BLE-master\app\src\main\res\raw" />
     </key>
     <key name="android.template.packageName">
+      <recent name="com.ublox.BLE" />
       <recent name="com.ublox.BLE.activities" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\YasiruW\Desktop\2018\Android Projects\Backup\Android-u-blox-BLE-master\app\src\main\res\drawable" />
       <recent name="C:\Users\YasiruW\Desktop\2018\Android Projects\Backup\Android-u-blox-BLE-master\app\src\main\res\drawable-xxxhdpi" />
+      <recent name="C:\Users\YasiruW\Desktop\2018\Android Projects\Backup\Android-u-blox-BLE-master\app\src\main\res\drawable" />
       <recent name="C:\Users\YasiruW\Desktop\2018\Android Projects\Backup\Android-u-blox-BLE-master\app\src\main\res\drawable-xxhdpi" />
       <recent name="C:\Users\YasiruW\Desktop\2018\Android Projects\Backup\Android-u-blox-BLE-master\app\src\main\res\drawable-mdpi" />
       <recent name="C:\Users\Yasiru\Desktop\2018\work\Android-u-blox-BLE-master\app\src\main\assets" />
@@ -5034,7 +5005,7 @@
       <option name="ACTIVITY_CLASS" value="" />
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1524534621310" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1525218313766" />
       </method>
     </configuration>
     <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Instrumented Tests">
@@ -5082,7 +5053,7 @@
       </Profilers>
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1524534621310" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1525218313766" />
       </method>
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -5265,7 +5236,7 @@
       <option name="ACTIVITY_CLASS" value="" />
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1524534621311" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1525218313767" />
       </method>
     </configuration>
     <configuration default="false" name="MPChartExample" type="AndroidRunConfigurationType" factoryName="Android App" activateToolWindowBeforeRun="false">
@@ -5314,7 +5285,7 @@
       <option name="ACTIVITY_CLASS" value="" />
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1524534621311" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1525218313767" />
       </method>
     </configuration>
     <list size="2">
@@ -5363,33 +5334,31 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1912" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="1912" y="-8" width="1936" height="1056" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Android Profiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.9230769" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.0077951" sideWeight="0.50695187" order="13" side_tool="true" content_ui="tabs" />
-      <window_info id="Logcat" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32962137" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24973261" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Device File Explorer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32994652" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32936078" sideWeight="0.49786097" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.17118093" sideWeight="0.49304813" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19829424" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22210184" sideWeight="0.49572194" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.0077951" sideWeight="0.50695187" order="13" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24052005" sideWeight="0.49572194" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Logcat" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32962137" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="12" side_tool="true" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16791044" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32502708" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24973261" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Device File Explorer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32994652" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -5398,6 +5367,8 @@
       <window_info id="Find Sample Code" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5777027" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19829424" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32502708" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="Android Profiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -5443,111 +5414,10 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/comms/MT2ClassFlags.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2958">
-          <caret line="11" column="13" lean-forward="false" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/services/BluetoothLeService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="321" column="0" lean-forward="false" selection-start-line="321" selection-start-column="0" selection-end-line="321" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Android/Sdk/sources/android-27/java/lang/System.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="155">
-          <caret line="439" column="30" lean-forward="false" selection-start-line="439" selection-start-column="30" selection-end-line="439" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/querybutton.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="37" lean-forward="false" selection-start-line="4" selection-start-column="31" selection-end-line="4" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable-xxxhdpi/ic_infoc.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="0" lean-forward="true" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable-mdpi/ic_startb.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/startbutton.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="37" lean-forward="false" selection-start-line="4" selection-start-column="31" selection-end-line="4" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable-xxxhdpi/ic_startc.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="36" lean-forward="false" selection-start-line="6" selection-start-column="36" selection-end-line="6" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/stopbutton.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="37" lean-forward="false" selection-start-line="4" selection-start-column="31" selection-end-line="4" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable-xxxhdpi/ic_stopc.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="0" lean-forward="true" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/reusebutton.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="37" lean-forward="false" selection-start-line="5" selection-start-column="31" selection-end-line="5" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable-xxxhdpi/ic_reusec.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
           <caret line="6" column="36" lean-forward="false" selection-start-line="6" selection-start-column="36" selection-end-line="6" selection-end-column="36" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -5555,7 +5425,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
           <caret line="4" column="37" lean-forward="false" selection-start-line="4" selection-start-column="31" selection-end-line="4" selection-end-column="37" />
-          <folding />
         </state>
       </provider>
       <provider editor-type-id="android-designer2">
@@ -5566,7 +5435,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
           <caret line="9" column="0" lean-forward="false" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -5574,7 +5442,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
           <caret line="4" column="41" lean-forward="false" selection-start-line="4" selection-start-column="35" selection-end-line="4" selection-end-column="41" />
-          <folding />
         </state>
       </provider>
       <provider editor-type-id="android-designer2">
@@ -5585,7 +5452,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
           <caret line="9" column="0" lean-forward="true" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -5593,7 +5459,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
           <caret line="2" column="28" lean-forward="false" selection-start-line="2" selection-start-column="28" selection-end-line="2" selection-end-column="28" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -5601,7 +5466,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
           <caret line="4" column="37" lean-forward="false" selection-start-line="4" selection-start-column="31" selection-end-line="4" selection-end-column="37" />
-          <folding />
         </state>
       </provider>
       <provider editor-type-id="android-designer2">
@@ -5612,7 +5476,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
           <caret line="9" column="0" lean-forward="true" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -5620,7 +5483,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
           <caret line="4" column="37" lean-forward="false" selection-start-line="4" selection-start-column="31" selection-end-line="4" selection-end-column="37" />
-          <folding />
         </state>
       </provider>
       <provider editor-type-id="android-designer2">
@@ -5631,7 +5493,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
           <caret line="9" column="0" lean-forward="true" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -5639,7 +5500,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="391">
           <caret line="23" column="49" lean-forward="false" selection-start-line="23" selection-start-column="35" selection-end-line="23" selection-end-column="49" />
-          <folding />
         </state>
       </provider>
       <provider editor-type-id="android-designer2">
@@ -5650,7 +5510,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
           <caret line="4" column="37" lean-forward="false" selection-start-line="4" selection-start-column="31" selection-end-line="4" selection-end-column="37" />
-          <folding />
         </state>
       </provider>
       <provider editor-type-id="android-designer2">
@@ -5661,7 +5520,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
           <caret line="9" column="0" lean-forward="true" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -5669,7 +5527,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
           <caret line="4" column="37" lean-forward="false" selection-start-line="4" selection-start-column="31" selection-end-line="4" selection-end-column="37" />
-          <folding />
         </state>
       </provider>
       <provider editor-type-id="android-designer2">
@@ -5680,7 +5537,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
           <caret line="11" column="0" lean-forward="true" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -5696,7 +5552,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
           <caret line="16" column="50" lean-forward="false" selection-start-line="16" selection-start-column="50" selection-end-line="16" selection-end-column="50" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -5704,7 +5559,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -5712,29 +5566,16 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
           <caret line="4" column="37" lean-forward="false" selection-start-line="4" selection-start-column="31" selection-end-line="4" selection-end-column="37" />
-          <folding />
         </state>
       </provider>
       <provider editor-type-id="android-designer2">
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/activities/MainActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1690">
-          <caret line="223" column="0" lean-forward="false" selection-start-line="223" selection-start-column="0" selection-end-line="223" selection-end-column="0" />
-          <folding>
-            <element signature="e#6188#6617#0" expanded="false" />
-            <element signature="e#6616#6617#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable-xxxhdpi/ic_listc.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
           <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -5746,22 +5587,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="71">
-          <caret line="234" column="64" lean-forward="false" selection-start-line="234" selection-start-column="64" selection-end-line="234" selection-end-column="64" />
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/MPChartLib/src/main/java/com/github/mikephil/charting/utils/Transformer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="192">
           <caret line="177" column="0" lean-forward="false" selection-start-line="177" selection-start-column="0" selection-end-line="177" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -5769,7 +5598,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2669">
           <caret line="171" column="37" lean-forward="false" selection-start-line="171" selection-start-column="37" selection-end-line="171" selection-end-column="75" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -5777,7 +5605,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
           <caret line="18" column="13" lean-forward="false" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -5785,7 +5612,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-663">
           <caret line="12" column="13" lean-forward="false" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -5793,7 +5619,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="184">
           <caret line="22" column="92" lean-forward="false" selection-start-line="22" selection-start-column="55" selection-end-line="22" selection-end-column="92" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -5801,15 +5626,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1173">
           <caret line="143" column="0" lean-forward="false" selection-start-line="143" selection-start-column="0" selection-end-line="143" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/comms/BaseCMD.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="171">
-          <caret line="608" column="18" lean-forward="false" selection-start-line="608" selection-start-column="18" selection-end-line="608" selection-end-column="18" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -5817,7 +5633,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="358">
           <caret line="280" column="36" lean-forward="false" selection-start-line="280" selection-start-column="36" selection-end-line="280" selection-end-column="36" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -5825,7 +5640,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="222">
           <caret line="64" column="0" lean-forward="false" selection-start-line="64" selection-start-column="0" selection-end-line="64" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -5833,23 +5647,26 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="256">
           <caret line="1059" column="62" lean-forward="false" selection-start-line="1059" selection-start-column="62" selection-end-line="1059" selection-end-column="62" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#18199#18200#0" expanded="true" />
-            <element signature="e#18235#18236#0" expanded="true" />
-            <element signature="e#20255#20256#0" expanded="true" />
-            <element signature="e#20308#20309#0" expanded="true" />
-            <element signature="e#22737#22738#0" expanded="true" />
-            <element signature="e#22776#22777#0" expanded="true" />
-            <element signature="e#32312#32313#0" expanded="true" />
-            <element signature="e#32382#32383#0" expanded="true" />
-          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/ic_zoom_out.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="0" lean-forward="true" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/ic_zoom_in.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="0" lean-forward="true" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_parameter.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="424">
+        <state relative-caret-position="-1514">
           <caret line="436" column="63" lean-forward="false" selection-start-line="436" selection-start-column="63" selection-end-line="436" selection-end-column="63" />
           <folding />
         </state>
@@ -5858,78 +5675,121 @@
         <state />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable-mdpi/ic_reuseb.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/querybutton.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="37" lean-forward="false" selection-start-line="4" selection-start-column="31" selection-end-line="4" selection-end-column="37" />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable-xxxhdpi/graphbutton.xml">
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="7" lean-forward="false" selection-start-line="6" selection-start-column="7" selection-end-line="6" selection-end-column="7" />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="android-designer2">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/dimens.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="11" column="29" lean-forward="false" selection-start-line="11" selection-start-column="17" selection-end-line="11" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/query_option.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/activities/Activity_Query.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="113">
-          <caret line="659" column="30" lean-forward="false" selection-start-line="659" selection-start-column="30" selection-end-line="659" selection-end-column="30" />
+        <state relative-caret-position="3315">
+          <caret line="269" column="18" lean-forward="false" selection-start-line="269" selection-start-column="18" selection-end-line="269" selection-end-column="18" />
           <folding>
-            <element signature="e#0#47906#0" expanded="true" />
+            <element signature="e#0#47908#0" expanded="false" />
+            <element signature="imports" expanded="false" />
             <element signature="method#updateConnectionState#0;class#Activity_Query#0" expanded="false" />
             <element signature="method#displayGattServices#0;class#Activity_Query#0" expanded="false" />
             <element signature="method#makeGattUpdateIntentFilter#0;class#Activity_Query#0" expanded="false" />
-            <element signature="e#16512#17010#0" expanded="true" />
-            <element signature="e#17009#17010#0" expanded="true" />
             <element signature="method#onBackPressed#0;class#Activity_Query#0" expanded="false" />
             <element signature="method#BuildDialogue#0;class#Activity_Query#0" expanded="false" />
             <element signature="method#progressDialoge#0;class#Activity_Query#0" expanded="false" />
             <element signature="method#FifteenSecTimeout#0;class#Activity_Query#0" expanded="false" />
-            <element signature="e#34081#35279#0" expanded="true" />
-            <element signature="e#35278#35279#0" expanded="true" />
+            <element signature="method#SetUI#0;class#Activity_Query#0" expanded="false" />
+            <element signature="method#onCreate#0;class#Activity_Query#0" expanded="false" />
+            <element signature="method#tryAgain#0;class#Activity_Query#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/activities/Activity_Parameter.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="700" column="117" lean-forward="false" selection-start-line="700" selection-start-column="89" selection-end-line="700" selection-end-column="117" />
+        <state relative-caret-position="71">
+          <caret line="234" column="64" lean-forward="false" selection-start-line="234" selection-start-column="64" selection-end-line="234" selection-end-column="64" />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/activities/MainActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="86" column="58" lean-forward="false" selection-start-line="84" selection-start-column="17" selection-end-line="86" selection-end-column="58" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="41" column="51" lean-forward="true" selection-start-line="41" selection-start-column="51" selection-end-line="41" selection-end-column="51" />
           <folding>
-            <element signature="method#onServiceConnected#0;class#8113:8858" expanded="false" />
-            <element signature="method#updateConnectionState#0;class#Activity_Parameter#0" expanded="false" />
-            <element signature="method#displayGattServices#0;class#Activity_Parameter#0" expanded="false" />
-            <element signature="method#makeGattUpdateIntentFilter#0;class#Activity_Parameter#0" expanded="false" />
-            <element signature="method#BuildDialogue#0;class#Activity_Parameter#0" expanded="false" />
-            <element signature="method#progressDialoge#0;class#Activity_Parameter#0" expanded="false" />
-            <element signature="method#progressDialoge2#0;class#Activity_Parameter#0" expanded="false" />
-            <element signature="method#ScrollListener#0;class#Activity_Parameter#0" expanded="false" />
-            <element signature="method#Passwordenter#0;class#Activity_Parameter#0" expanded="false" />
-            <element signature="class#48345:49539" expanded="false" />
-            <element signature="method#buttonAction#0;class#Activity_Parameter#0" expanded="false" />
-            <element signature="method#showPicker#0;class#Activity_Parameter#0" expanded="false" />
-            <element signature="method#uiSetupRules#0;class#Activity_Parameter#0" expanded="false" />
-            <element signature="method#sendEmail#0;class#Activity_Parameter#0" expanded="false" />
-            <element signature="method#EmailText#0;class#Activity_Parameter#0" expanded="false" />
-            <element signature="method#makesound#0;class#Activity_Parameter#0" expanded="false" />
-            <element signature="method#onTimeSet#0;class#Activity_Parameter#0" expanded="false" />
-            <element signature="method#onDateSet#0;class#Activity_Parameter#0" expanded="false" />
-            <element signature="method#promtPassword#0;class#Activity_Parameter#0" expanded="false" />
-            <element signature="method#reconnect#0;class#Activity_Parameter#0" expanded="false" />
-            <element signature="method#startondatepopup#0;class#Activity_Parameter#0" expanded="false" />
-            <element signature="method#stopondatepopup#0;class#Activity_Parameter#0" expanded="false" />
+            <element signature="e#2312#2342#0" expanded="true" />
           </folding>
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/ic_zoom_out.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="0" lean-forward="true" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
-          <folding />
-        </state>
+      <provider editor-type-id="android-manifest">
+        <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/ic_zoom_in.xml">
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_graph.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" column="31" lean-forward="false" selection-start-line="3" selection-start-column="31" selection-end-line="3" selection-end-column="31" />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/ic_zoom_full.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
           <caret line="9" column="0" lean-forward="true" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity__read.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="576">
-          <caret line="1059" column="50" lean-forward="false" selection-start-line="1059" selection-start-column="50" selection-end-line="1059" selection-end-column="50" />
+        <state relative-caret-position="8619">
+          <caret line="507" column="31" lean-forward="false" selection-start-line="507" selection-start-column="31" selection-end-line="507" selection-end-column="31" />
           <folding />
         </state>
       </provider>
@@ -5937,19 +5797,129 @@
         <state />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/comms/BaseCMD.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3400">
+          <caret line="211" column="16" lean-forward="false" selection-start-line="211" selection-start-column="16" selection-end-line="211" selection-end-column="16" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#4787#4788#0" expanded="false" />
+            <element signature="e#4833#4834#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/comms/QueryStrings.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="17" column="13" lean-forward="false" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/activities/Activity_Graph.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="72" column="83" lean-forward="false" selection-start-line="72" selection-start-column="83" selection-end-line="72" selection-end-column="83" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/activities/Activity_Parameter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="11798">
+          <caret line="1622" column="14" lean-forward="false" selection-start-line="1622" selection-start-column="14" selection-end-line="1622" selection-end-column="14" />
+          <folding>
+            <element signature="e#0#79074#0" expanded="false" />
+            <element signature="imports" expanded="false" />
+            <element signature="method#onServiceConnected#0;class#8113:8858" expanded="false" />
+            <element signature="method#onOptionsItemSelected#0;class#Activity_Parameter#0" expanded="false" />
+            <element signature="method#updateConnectionState#0;class#Activity_Parameter#0" expanded="false" />
+            <element signature="method#displayGattServices#0;class#Activity_Parameter#0" expanded="false" />
+            <element signature="method#makeGattUpdateIntentFilter#0;class#Activity_Parameter#0" expanded="false" />
+            <element signature="method#Function#0;class#Activity_Parameter#0" expanded="false" />
+            <element signature="method#BuildDialogue#0;class#Activity_Parameter#0" expanded="false" />
+            <element signature="method#progressDialoge#0;class#Activity_Parameter#0" expanded="false" />
+            <element signature="method#progressDialoge2#0;class#Activity_Parameter#0" expanded="false" />
+            <element signature="method#ThirtySecTimeout#0;class#Activity_Parameter#0" expanded="false" />
+            <element signature="method#SetUI#0;class#Activity_Parameter#0" expanded="false" />
+            <element signature="e#47140#47141#0" expanded="false" />
+            <element signature="e#47186#47187#0" expanded="false" />
+            <element signature="method#Passwordenter#0;class#Activity_Parameter#0" expanded="false" />
+            <element signature="class#48347:49541" expanded="false" />
+            <element signature="method#buttonAction#0;class#Activity_Parameter#0" expanded="false" />
+            <element signature="e#50227#50228#0" expanded="false" />
+            <element signature="e#50294#50295#0" expanded="false" />
+            <element signature="e#50446#50447#0" expanded="false" />
+            <element signature="e#50511#50512#0" expanded="false" />
+            <element signature="method#showPicker#0;class#Activity_Parameter#0" expanded="false" />
+            <element signature="method#sendEmail#0;class#Activity_Parameter#0" expanded="false" />
+            <element signature="method#EmailText#0;class#Activity_Parameter#0" expanded="false" />
+            <element signature="method#makesound#0;class#Activity_Parameter#0" expanded="false" />
+            <element signature="method#onTimeSet#0;class#Activity_Parameter#0" expanded="false" />
+            <element signature="method#onDateSet#0;class#Activity_Parameter#0" expanded="false" />
+            <element signature="method#promtPassword#0;class#Activity_Parameter#0" expanded="false" />
+            <element signature="e#64055#64056#0" expanded="false" />
+            <element signature="e#64134#64135#0" expanded="false" />
+            <element signature="method#startondatepopup#0;class#Activity_Parameter#0" expanded="false" />
+            <element signature="method#stopondatepopup#0;class#Activity_Parameter#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MPChartLib/src/main/java/com/github/mikephil/charting/charts/Chart.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="156">
+          <caret line="655" column="0" lean-forward="false" selection-start-line="655" selection-start-column="0" selection-end-line="655" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ublox/BLE/activities/Activity_Read.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1675">
-          <caret line="819" column="2" lean-forward="false" selection-start-line="819" selection-start-column="2" selection-end-line="819" selection-end-column="2" />
+        <state relative-caret-position="1768">
+          <caret line="706" column="43" lean-forward="false" selection-start-line="706" selection-start-column="43" selection-end-line="706" selection-end-column="43" />
           <folding>
-            <element signature="class#8635:9481" expanded="false" />
-            <element signature="e#35028#35216#0" expanded="true" />
-            <element signature="e#35215#35216#0" expanded="true" />
-            <element signature="e#35262#35538#0" expanded="true" />
-            <element signature="e#35537#35538#0" expanded="true" />
-            <element signature="method#MT2ValueIn#0;class#Activity_Read#0" expanded="false" />
+            <element signature="e#7354#7362#0" expanded="true" />
+            <element signature="e#7418#7426#0" expanded="true" />
+            <element signature="e#7482#7490#0" expanded="true" />
+            <element signature="e#7546#7554#0" expanded="true" />
+            <element signature="class#8674:9520" expanded="false" />
+            <element signature="e#9972#11613#0" expanded="true" />
+            <element signature="e#10282#10300#0" expanded="true" />
+            <element signature="e#10507#10528#0" expanded="true" />
+            <element signature="e#11612#11613#0" expanded="true" />
+            <element signature="e#13887#14212#0" expanded="true" />
+            <element signature="e#14211#14212#0" expanded="true" />
+            <element signature="e#14611#14661#0" expanded="true" />
+            <element signature="e#14737#14762#0" expanded="true" />
+            <element signature="e#14950#14966#0" expanded="true" />
+            <element signature="method#sendData#0;class#Activity_Read#0" expanded="false" />
+            <element signature="e#16399#16898#0" expanded="true" />
+            <element signature="e#16897#16898#0" expanded="true" />
+            <element signature="method#onBackPressed#0;class#Activity_Read#0" expanded="false" />
+            <element signature="e#17667#31817#0" expanded="true" />
+            <element signature="e#31816#31817#0" expanded="true" />
+            <element signature="e#31922#36559#0" expanded="true" />
+            <element signature="e#32050#32057#0" expanded="true" />
+            <element signature="e#35915#36532#0" expanded="true" />
+            <element signature="e#36531#36532#0" expanded="true" />
+            <element signature="e#36558#36559#0" expanded="true" />
+            <element signature="e#36629#41079#0" expanded="true" />
+            <element signature="e#36757#36764#0" expanded="true" />
+            <element signature="e#40421#40996#0" expanded="true" />
+            <element signature="e#40995#40996#0" expanded="true" />
+            <element signature="e#41078#41079#0" expanded="true" />
+            <element signature="e#41178#41184#0" expanded="true" />
             <element signature="method#BytestoRead#0;class#Activity_Read#0" expanded="false" />
-            <element signature="method#BuildDialogue#0;class#Activity_Read#0" expanded="false" />
+            <element signature="e#42507#43006#0" expanded="true" />
+            <element signature="e#43005#43006#0" expanded="true" />
+            <element signature="method#progressDialoge#0;class#Activity_Read#0" expanded="false" />
+            <element signature="e#43466#43832#0" expanded="true" />
+            <element signature="e#43831#43832#0" expanded="true" />
+            <element signature="e#43975#44244#0" expanded="true" />
+            <element signature="e#44243#44244#0" expanded="true" />
             <element signature="method#SetUI#0;class#Activity_Read#0" expanded="false" />
             <element signature="method#onCreate#0;class#Activity_Read#0" expanded="false" />
             <element signature="method#sendEmail#0;class#Activity_Read#0" expanded="false" />

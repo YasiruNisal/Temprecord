@@ -168,6 +168,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:background="@color/chat_name_color"
+        android:id="@+id/scroll"
         >
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -495,21 +496,14 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <ImageButton
-                        android:id="@+id/zoomoutButton"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="@color/ublox_blue_color"
-                        android:layout_margin="10dp"
-                        android:src="@drawable/ic_zoom_out"/>
 
                     <ImageButton
                         android:id="@+id/zoominButton"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="@color/ublox_blue_color"
+                        android:layout_width="@dimen/Graph_button"
+                        android:layout_height="@dimen/Graph_button"
+                        android:background="@drawable/graphbutton"
                         android:layout_margin="10dp"
-                        android:src="@drawable/ic_zoom_in"/>
+                        android:src="@drawable/ic_zoom_full"/>
 
                 </LinearLayout>
             </LinearLayout>
@@ -1049,20 +1043,12 @@
                 android:orientation="horizontal">
 
                 <ImageButton
-                    android:id="@+id/zoomoutButton1"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="@color/ublox_blue_color"
-                    android:layout_margin="10dp"
-                    android:src="@drawable/ic_zoom_out"/>
-
-                <ImageButton
                     android:id="@+id/zoominButton1"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="@color/ublox_blue_color"
+                    android:layout_width="@dimen/Graph_button"
+                    android:layout_height="@dimen/Graph_button"
+                    android:background="@drawable/graphbutton"
                     android:layout_margin="10dp"
-                    android:src="@drawable/ic_zoom_in"/>
+                    android:src="@drawable/ic_zoom_full"/>
 
             </LinearLayout>
             </LinearLayout>

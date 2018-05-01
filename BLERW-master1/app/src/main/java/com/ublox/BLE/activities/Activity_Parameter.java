@@ -283,7 +283,7 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
                 mBluetoothLeService.setCharacteristicNotification(characteristicTX,true);
                 //mBluetoothLeService.setCharacteristicNotification(characteristicRX,true);
 
-                SystemClock.sleep(5);
+                //SystemClock.sleep(5);
                 sendData(HexData.STAY_UP);
             } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
                 //mBluetoothLeService.readCharacteristic(characteristicRX);
@@ -1269,6 +1269,17 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
     //for example stop on datetime can't be selected if startr on datetime is not selected
     private void uiSetupRules(){
 
+        loopovewritecb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    stoponsample.setEnabled(false);
+                }else{
+                    stoponsample.setEnabled(true);
+                }
+            }
+        });
+
 
         startoptions.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
@@ -1639,7 +1650,9 @@ public class Activity_Parameter extends Activity  implements TimePickerDialog.On
         UserReadtemp[28] = data[0]; UserReadtemp[29] = data[1]; UserReadtemp[30] = data[2]; UserReadtemp[31] = data[3];
 
         if(stoponsample.isChecked()) {
-            data = baseCMD.Write_USERStoponsample(Integer.parseInt(stoponsamplebutton.getText().toString()));
+            int val = 0;
+            if(Integer.parseInt(stoponsamplebutton.getText().toString()) > 65536)val = 65536;else val = Integer.parseInt(stoponsamplebutton.getText().toString());
+            data = baseCMD.Write_USERStoponsample(val);
             UserReadtemp[32] = data[0];
             UserReadtemp[33] = data[1];
             UserReadtemp[34] = data[2];

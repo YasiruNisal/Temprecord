@@ -33,14 +33,12 @@ import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
-import android.media.Image;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.os.SystemClock;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.Menu;
@@ -49,6 +47,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -75,6 +74,7 @@ import com.ublox.BLE.utils.CommsChar;
 import com.ublox.BLE.utils.GattAttributes;
 import com.ublox.BLE.utils.HexData;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -180,6 +180,7 @@ public class Activity_Read extends Activity {
 
     private LinearLayout Humidity;
     private LinearLayout Humidity2;
+    private ScrollView scrollView;
 
     private ProgressDialog progress;
     private int progresspercentage;
@@ -292,7 +293,7 @@ public class Activity_Read extends Activity {
                 mBluetoothLeService.setCharacteristicNotification(characteristicTX,true);
                 //mBluetoothLeService.setCharacteristicNotification(characteristicRX,true);
 
-                SystemClock.sleep(10);
+                //SystemClock.sleep(10);
                 sendData(HexData.STAY_UP);
 
             } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
@@ -654,6 +655,9 @@ public class Activity_Read extends Activity {
                     case 24:// the set up needs to change if loop over right is active.
 
                         if(baseCMD.numberofsamples == 0) {
+                            if(!(baseCMD.state == 4 || baseCMD.state == 5)){
+                                BuildDialogue("No Data","Logger is not in running or stop state to display data", 1);
+                            }else
                             SetUI();
                             progresspercentage = 100;
                             progress.cancel();
@@ -673,7 +677,10 @@ public class Activity_Read extends Activity {
                             //hexData.BytetoHex(ValueRead);
                             MT2ValueIn(ValueRead);
                             addDatatoGraph();
-                            SetUI();
+                            if(!(baseCMD.state == 4 || baseCMD.state == 5)){
+                                BuildDialogue("No Data","Logger is not in running or stop state to display data", 1);
+                            }else
+                                SetUI();
                             progresspercentage = 100;
                             progress.cancel();
                         }
@@ -697,8 +704,8 @@ public class Activity_Read extends Activity {
                         int pageOffset = bytePointer % QS.PAGESIZE;
                         address = (int)((bytePointer / QS.PAGESIZE) + 1) * QS.PAGESIZE;
                         address += pageOffset;
-                        bytesToRead = totalToRead - address;
-                        mt2Msg_read = new MT2Msg_Read(commsChar.MEM_VAL, address, bytesToRead, 120, 3);
+                        bytesToRead = 65535 - baseCMD.SamplePointer *2;
+                        mt2Msg_read = new MT2Msg_Read(commsChar.MEM_VAL, baseCMD.SamplePointer *2, bytesToRead, 120, 3);
                         sendData(commsSerial.WriteByte(mt2Msg_read.Read_into_writeByte(true)));
                         state = 28;
                         break;
@@ -713,7 +720,10 @@ public class Activity_Read extends Activity {
                             //hexData.BytetoHex(ReadValues);
                             MT2ValueIn(combo);
                             addDatatoGraph();
-                            SetUI();
+                            if(!(baseCMD.state == 4 || baseCMD.state == 5)){
+                                BuildDialogue("No Data","Logger is not in running or stop state to display data", 1);
+                            }else
+                                SetUI();
                             progresspercentage = 100;
                             progress.cancel();
                         }
@@ -734,13 +744,13 @@ public class Activity_Read extends Activity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                List<Entry> entries = new ArrayList<Entry>(mt2Mem_values.Data.size());
+                final List<Entry> entries = new ArrayList<Entry>(mt2Mem_values.Data.size());
                 Calendar c = new GregorianCalendar(2000, 1, 1, 12, 0, 0);
 
 
                 for (int i = 0; i < mt2Mem_values.Data.size(); i++) {
 
-                    float x = (mt2Mem_values.Data.get(i).valTime.getTime()) ;
+                    float x = (mt2Mem_values.Data.get(i).valTime.getTime()) - c.getTime().getTime();
                     entries.add(i, new Entry(x, (mt2Mem_values.Data.get(i).valCh0 / 10f)));
                     //Log.d("___________", mt2Mem_values.Data.get(i).valTime.getTime() + "  " + (mt2Mem_values.Data.get(i).valCh0 / 10f) + " " + x);
                 }
@@ -754,8 +764,8 @@ public class Activity_Read extends Activity {
                 dataSet.setHighLightColor(Color.BLACK);
                 LineData lineData = new LineData(dataSet);
                 chart.setData(lineData);
-                chart.setDragEnabled(true);
-                chart.setScaleEnabled(true);
+                chart.setDragEnabled(false);
+                chart.setScaleEnabled(false);
                 //chart.setVisibleXRangeMaximum(4000);
                 YAxis yAxis = chart.getAxisLeft();
                 yAxis.setLabelCount(10, true);
@@ -792,13 +802,18 @@ public class Activity_Read extends Activity {
                 leftAxis.enableGridDashedLine(10f, 10f, 0);
                 leftAxis.setDrawLimitLinesBehindData(true);
                 chart.getAxisRight().setEnabled(false);
+
                 chart.invalidate();
                 chart1.setVisibility(View.INVISIBLE);
-
                 chart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
                     @Override
                     public void onValueSelected(Entry e, Highlight h) {
-                        Toast.makeText(Activity_Read.this,"Date/Time\t\t:" + chart.getXAxis().getValueFormatter().getFormattedValue(e.getX(), chart.getXAxis()) + "\nTemperature :\t" + Integer.parseInt(chart.getAxisLeft().getValueFormatter().getFormattedValue(e.getY()*10, chart.getAxisLeft()))/10.0 + " °C", Toast.LENGTH_SHORT).show();
+                        Intent myIntent = new Intent(Activity_Read.this, Activity_Graph.class);
+                        myIntent.putExtra("Graph", (Serializable) entries);
+                        myIntent.putExtra("High", baseCMD.ch1Hi);
+                        myIntent.putExtra("Low", baseCMD.ch1Lo);
+                        myIntent.putExtra("Number", 0);
+                        Activity_Read.this.startActivity(myIntent);
                     }
 
                     @Override
@@ -807,19 +822,20 @@ public class Activity_Read extends Activity {
                     }
                 });
 
+
                 zoomin.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        chart.zoomIn();
+                        //chart.zoomIn();
+                        Intent myIntent = new Intent(Activity_Read.this, Activity_Graph.class);
+                        myIntent.putExtra("Graph", (Serializable) entries);
+                        myIntent.putExtra("High", baseCMD.ch1Hi);
+                        myIntent.putExtra("Low", baseCMD.ch1Lo);
+                        myIntent.putExtra("Number", 0);
+                        Activity_Read.this.startActivity(myIntent);
                     }
                 });
-                zoomout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        chart.fitScreen();
-//                        chart.moveViewToX(mt2Mem_values.Data.get(0).valCh0 / 10f);
-                    }
-                });
+
             }
         });
 
@@ -830,7 +846,7 @@ public class Activity_Read extends Activity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                List<Entry> entries = new ArrayList<Entry>(mt2Mem_values.Data.size());
+                final List<Entry> entries = new ArrayList<Entry>(mt2Mem_values.Data.size());
                 Calendar c = new GregorianCalendar(2000, 1, 1, 12, 0, 0);
 
 
@@ -850,8 +866,8 @@ public class Activity_Read extends Activity {
                 dataSet.setHighLightColor(Color.BLACK);
                 LineData lineData = new LineData(dataSet);
                 chart1.setData(lineData);
-                chart1.setDragEnabled(true);
-                chart1.setScaleEnabled(true);
+                chart1.setDragEnabled(false);
+                chart1.setScaleEnabled(false);
 
 
                 LimitLine upperLimit = new LimitLine(baseCMD.ch2Hi / 10, "Upper Limit");
@@ -881,7 +897,7 @@ public class Activity_Read extends Activity {
                 leftAxis.addLimitLine(upperLimit);
                 leftAxis.addLimitLine(lowerLimit);
                 leftAxis.setAxisMaximum(120f);
-                leftAxis.setAxisMinimum(-90f);
+                leftAxis.setAxisMinimum(-10f);
                 leftAxis.enableGridDashedLine(10f, 10f, 0);
                 leftAxis.setDrawLimitLinesBehindData(true);
                 chart1.getAxisRight().setEnabled(false);
@@ -891,9 +907,12 @@ public class Activity_Read extends Activity {
                 chart1.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
                     @Override
                     public void onValueSelected(Entry e, Highlight h) {
-                        //Log.d("____", "VALUE IS SELECTED " +  + " " + );
-                        //Toast.makeText(Activity_Read.this, +"Temperature :\t" + Integer.parseInt(chart.getAxisLeft().getValueFormatter().getFormattedValue(e.getY()*10, chart.getAxisLeft()))/10.0)) + " " ,Toast.LENGTH_SHORT)).show();
-                        Toast.makeText(Activity_Read.this,"Date/Time :\t\t" + chart1.getXAxis().getValueFormatter().getFormattedValue(e.getX(), chart1.getXAxis()) + "\nHumidity :\t" + Integer.parseInt(chart1.getAxisLeft().getValueFormatter().getFormattedValue(e.getY()*10, chart1.getAxisLeft()))/10.0 + " %RH", Toast.LENGTH_SHORT).show();
+                        Intent myIntent = new Intent(Activity_Read.this, Activity_Graph.class);
+                        myIntent.putExtra("Graph", (Serializable) entries);
+                        myIntent.putExtra("High", baseCMD.ch2Hi);
+                        myIntent.putExtra("Low", baseCMD.ch2Lo);
+                        myIntent.putExtra("Number", 1);
+                        Activity_Read.this.startActivity(myIntent);
                     }
 
                     @Override
@@ -901,19 +920,18 @@ public class Activity_Read extends Activity {
 
                     }
                 });
-
                 zoomin1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        chart1.zoomIn();
+                        Intent myIntent = new Intent(Activity_Read.this, Activity_Graph.class);
+                        myIntent.putExtra("Graph", (Serializable) entries);
+                        myIntent.putExtra("High", baseCMD.ch2Hi);
+                        myIntent.putExtra("Low", baseCMD.ch2Lo);
+                        myIntent.putExtra("Number", 1);
+                        Activity_Read.this.startActivity(myIntent);
                     }
                 });
-                zoomout1.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        chart1.fitScreen();
-                    }
-                });
+
                 //chart1.setVisibility(View.INVISIBLE);
             }
         });
@@ -1173,6 +1191,7 @@ public class Activity_Read extends Activity {
 
         Humidity = (LinearLayout) findViewById(R.id.humidity);
         Humidity2 = (LinearLayout) findViewById(R.id.humidity2);
+        scrollView = (ScrollView) findViewById(R.id.scroll);
 
 
         channel1 = (TextView) findViewById(R.id.channel1);
@@ -1219,9 +1238,7 @@ public class Activity_Read extends Activity {
         percentagebelowLowerSample2 = (TextView) findViewById(R.id.percentagebelowlowerlimit2);
 
         zoomin = (ImageButton) findViewById(R.id.zoominButton);
-        zoomout = (ImageButton) findViewById(R.id.zoomoutButton);
         zoomin1 = (ImageButton) findViewById(R.id.zoominButton1);
-        zoomout1 = (ImageButton) findViewById(R.id.zoomoutButton1);
 
         getActionBar().setTitle(mDevices.get(currentDevice).getName());
         //getActionBar().setDisplayHomeAsUpEnabled(true);

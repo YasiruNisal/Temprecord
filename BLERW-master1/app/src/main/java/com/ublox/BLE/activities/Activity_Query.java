@@ -267,7 +267,7 @@ public class Activity_Query extends Activity {
                 mBluetoothLeService.setCharacteristicNotification(characteristicTX,true);
                 //mBluetoothLeService.setCharacteristicNotification(characteristicRX,true);
 
-                SystemClock.sleep(5);
+                //SystemClock.sleep(5);
                 sendData(HexData.STAY_UP);
             } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
                 //mBluetoothLeService.readCharacteristic(characteristicRX);

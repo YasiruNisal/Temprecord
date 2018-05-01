@@ -8,4 +8,7 @@
     <dimen name="menu_gap">30dp</dimen>
     <dimen name="menu_text_gap">8dp</dimen>
     <dimen name="menu_icon">32dp</dimen>
+
+    <dimen name="Graph_button">50dp</dimen>
+
 </resources>

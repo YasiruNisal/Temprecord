@@ -19,6 +19,7 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -26,6 +27,7 @@
         <service
             android:name=".services.BluetoothLeService"
             android:enabled="true" />
+
         <activity
             android:name=".activities.AboutActivity"
             android:label=""
@@ -50,14 +52,17 @@
             android:name=".activities.Activity_Settings"
             android:label=""
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activities.Activity_Parameter"
             android:label=""
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="stateHidden" />
         />
-
+        <activity
+            android:name=".activities.Activity_Graph"
+            android:label="@string/title_activity_graph"
+            android:screenOrientation="landscape"></activity>
     </application>
 
 </manifest>
