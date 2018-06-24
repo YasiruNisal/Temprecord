@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/MPChartLib/MPChartLib.iml" filepath="$PROJECT_DIR$/MPChartLib/MPChartLib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Temprecord.iml" filepath="$PROJECT_DIR$/Temprecord.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libraryMenu/libraryMenu.iml" filepath="$PROJECT_DIR$/libraryMenu/libraryMenu.iml" />
+      <module fileurl="file://$PROJECT_DIR$/timePickerWithSeconds/timePickerWithSeconds.iml" filepath="$PROJECT_DIR$/timePickerWithSeconds/timePickerWithSeconds.iml" />
+    </modules>
+  </component>
+</project>
