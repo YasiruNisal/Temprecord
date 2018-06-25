@@ -18,7 +18,9 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.os.SystemClock;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
@@ -59,6 +61,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import static com.example.yasiruw.temprecord.fragments.BLEQueryFragment.EXTRAS_MESSAGE;
 
@@ -97,6 +100,8 @@ public class MainActivity extends Activity implements
     private int ones = 0;
     private Menu mainmenu;
     ProgressDialog progressDialog;
+    private static final Handler mainThreadHandler = new Handler();
+    Runnable delayedTask;
 
     //====================layout variables==============================================================
     LinearLayout r1;
@@ -111,6 +116,7 @@ public class MainActivity extends Activity implements
     TextView type;
     TextView serial;
     TextView battery;
+    TextView BLEname;
     ImageView connecttype;
 
     LinearLayout starttext;
@@ -165,6 +171,7 @@ public class MainActivity extends Activity implements
         type = (TextView) findViewById(R.id.type);
         serial = (TextView) findViewById(R.id.serial);
         battery = (TextView) findViewById(R.id.battery);
+        BLEname = (TextView) findViewById(R.id.blename);
         connecttype = (ImageView) findViewById(R.id.connecttype);
         starttext = (LinearLayout) findViewById(R.id.starttext);
         parametertext = (LinearLayout) findViewById(R.id.parametertext);
@@ -232,6 +239,7 @@ public class MainActivity extends Activity implements
             if(mUSBConnected){
                 Toast.makeText(MainActivity.this, "Unavailable while USB is connected", Toast.LENGTH_SHORT).show();
             }else
+                mainThreadHandler.removeCallbacksAndMessages(null);
                 appStartState();
         }
         });
@@ -244,7 +252,7 @@ public class MainActivity extends Activity implements
                 usbReadFragment = new USBReadFragment().GET_INSTANCE(m_bundle_data); //Use bundle to pass data
                 FragmentNumber = 5;
                 getFragmentManager().beginTransaction().replace(R.id.Fragment_Container, usbReadFragment).commit();
-            } else {
+            } else if(mConnected) {
                 Update_UI_state(3);
                 m_bundle_data.putString(EXTRAS_MESSAGE, "6"); //put string, int, etc in bundle with a key value
                 bleReadFragment = new BLEReadFragment().GET_INSTANCE(m_bundle_data); //Use bundle to pass data
@@ -263,7 +271,7 @@ public class MainActivity extends Activity implements
                 usbParameterFragment = new USBParameterFragment().GET_INSTANCE(m_bundle_data); //Use bundle to pass data
                 FragmentNumber = 6;
                 getFragmentManager().beginTransaction().replace(R.id.Fragment_Container, usbParameterFragment).commit();
-            } else {
+            } else if(mConnected) {
                 Update_UI_state(3);
                 m_bundle_data.putString(EXTRAS_MESSAGE, "7"); //put string, int, etc in bundle with a key value
                 bleParameterFragment = new BLEParameterFragment().GET_INSTANCE(m_bundle_data); //Use bundle to pass data
@@ -281,7 +289,7 @@ public class MainActivity extends Activity implements
                 usbQueryFragment = new USBQueryFragment().GET_INSTANCE(m_bundle_data); //Use bundle to pass data
                 FragmentNumber = 4;
                 getFragmentManager().beginTransaction().replace(R.id.Fragment_Container, usbQueryFragment).commit();
-            }else {
+            }else if(mConnected) {
                 Update_UI_state(3);
                 m_bundle_data.putString(EXTRAS_MESSAGE, "1"); //put string, int, etc in bundle with a key value
                 bleQueryFragment = new BLEQueryFragment().GET_INSTANCE(m_bundle_data); //Use bundle to pass data
@@ -300,7 +308,7 @@ public class MainActivity extends Activity implements
                 usbQueryFragment = new USBQueryFragment().GET_INSTANCE(m_bundle_data); //Use bundle to pass data
                 FragmentNumber = 4;
                 getFragmentManager().beginTransaction().replace(R.id.Fragment_Container, usbQueryFragment).commit();
-            } else {
+            } else if(mConnected) {
                 Update_UI_state(3);
                 m_bundle_data.putString(EXTRAS_MESSAGE, "5"); //put string, int, etc in bundle with a key value
                 bleQueryFragment = new BLEQueryFragment().GET_INSTANCE(m_bundle_data); //Use bundle to pass data
@@ -321,7 +329,7 @@ public class MainActivity extends Activity implements
                 usbQueryFragment = new USBQueryFragment().GET_INSTANCE(m_bundle_data); //Use bundle to pass data
                 FragmentNumber = 4;
                 getFragmentManager().beginTransaction().replace(R.id.Fragment_Container, usbQueryFragment).commit();
-            } else {
+            } else if(mConnected) {
                 Update_UI_state(3);
                 m_bundle_data.putString(EXTRAS_MESSAGE, "2"); //put string, int, etc in bundle with a key value
                 bleQueryFragment = new BLEQueryFragment().GET_INSTANCE(m_bundle_data); //Use bundle to pass data
@@ -341,7 +349,7 @@ public class MainActivity extends Activity implements
                 usbQueryFragment = new USBQueryFragment().GET_INSTANCE(m_bundle_data); //Use bundle to pass data
                 FragmentNumber = 4;
                 getFragmentManager().beginTransaction().replace(R.id.Fragment_Container, usbQueryFragment).commit();
-            } else {
+            } else if(mConnected) {
                 Update_UI_state(3);
                 m_bundle_data.putString(EXTRAS_MESSAGE, "3"); //put string, int, etc in bundle with a key value
                 bleQueryFragment = new BLEQueryFragment().GET_INSTANCE(m_bundle_data); //Use bundle to pass data
@@ -362,7 +370,7 @@ public class MainActivity extends Activity implements
                 usbQueryFragment = new USBQueryFragment().GET_INSTANCE(m_bundle_data); //Use bundle to pass data
                 FragmentNumber = 4;
                 getFragmentManager().beginTransaction().replace(R.id.Fragment_Container, usbQueryFragment).commit();
-            } else {
+            } else if(mConnected) {
                 Update_UI_state(3);
                 m_bundle_data.putString(EXTRAS_MESSAGE, "4"); //put string, int, etc in bundle with a key value
                 bleQueryFragment = new BLEQueryFragment().GET_INSTANCE(m_bundle_data); //Use bundle to pass data
@@ -385,7 +393,7 @@ public class MainActivity extends Activity implements
 //                  FragmentNumber = 4;
 //                  getFragmentManager().beginTransaction().replace(R.id.Fragment_Container, usbQueryFragment).commit();
                   Toast.makeText(MainActivity.this, "Invalid for this device", Toast.LENGTH_SHORT).show();
-              } else {
+              } else if(mConnected) {
                   Update_UI_state(3);
                   m_bundle_data.putString(EXTRAS_MESSAGE, "8"); //put string, int, etc in bundle with a key value
                   bleQueryFragment = new BLEQueryFragment().GET_INSTANCE(m_bundle_data); //Use bundle to pass data
@@ -438,7 +446,7 @@ public class MainActivity extends Activity implements
                             mBluetoothLeService.readCharacteristic(characteristicRX);
                             Update_UI_state(2);
                         } else {
-                            Intent intent = getIntent();
+                            Intent intent = new Intent(MainActivity.this, MainActivity.class);
                             unregisterReceiver(mGattUpdateReceiver);
                             unbindService(mServiceConnection);
                             finish();
@@ -455,7 +463,7 @@ public class MainActivity extends Activity implements
                             mBluetoothLeService.readCharacteristic(characteristicRX);
                             Update_UI_state(2);
                         } else {
-                            Intent intent = getIntent();
+                            Intent intent = new Intent(MainActivity.this, MainActivity.class);
                             unregisterReceiver(mGattUpdateReceiver);
                             unbindService(mServiceConnection);
                             finish();
@@ -471,7 +479,7 @@ public class MainActivity extends Activity implements
                             mBluetoothLeService.readCharacteristic(characteristicRX);
                             Update_UI_state(2);
                         } else {
-                            Intent intent = getIntent();
+                            Intent intent = new Intent(MainActivity.this, MainActivity.class);
                             unregisterReceiver(mGattUpdateReceiver);
                             unbindService(mServiceConnection);
                             finish();
@@ -486,7 +494,7 @@ public class MainActivity extends Activity implements
                             m_usb.Send_Command(HexData.QUARY_USB);
                             Update_UI_state(2);
                         } else {
-                            Intent intent = getIntent();
+                            Intent intent = new Intent(MainActivity.this, MainActivity.class);
                             m_usb.unregister_receiver(this);
                             LocalBroadcastManager.getInstance(this).unregisterReceiver(INTERNAL_BROADCAST_RECEIVER);
                             finish();
@@ -501,7 +509,7 @@ public class MainActivity extends Activity implements
                             m_usb.Send_Command(HexData.QUARY_USB);
                             Update_UI_state(2);
                         } else {
-                            Intent intent = getIntent();
+                            Intent intent = new Intent(MainActivity.this, MainActivity.class);
                             m_usb.unregister_receiver(this);
                             LocalBroadcastManager.getInstance(this).unregisterReceiver(INTERNAL_BROADCAST_RECEIVER);
                             finish();
@@ -516,7 +524,7 @@ public class MainActivity extends Activity implements
                             m_usb.Send_Command(HexData.QUARY_USB);
                             Update_UI_state(2);
                         } else {
-                            Intent intent = getIntent();
+                            Intent intent = new Intent(MainActivity.this, MainActivity.class);
                             m_usb.unregister_receiver(this);
                             LocalBroadcastManager.getInstance(this).unregisterReceiver(INTERNAL_BROADCAST_RECEIVER);
                             finish();
@@ -549,6 +557,8 @@ public class MainActivity extends Activity implements
                 ones = 0;
                 break;
             case 2:
+                if(mConnected)
+                    testMethod();
                 //after connection to a logger over BLE
                 Log.i("YAS", "UI UPDATE STATE " + baseCMD.state);
                 FragmentNumber = 0;
@@ -563,6 +573,7 @@ public class MainActivity extends Activity implements
                 main_state = 2;
                 break;
             case 3:
+                mainThreadHandler.removeCallbacksAndMessages(null);
                 //when query or read fragment is selected
                 menubuttons.setVisibility(View.GONE);
                 r1.setVisibility(View.GONE);
@@ -644,7 +655,8 @@ public class MainActivity extends Activity implements
             if (mConnected) {
                 type.setText("BLE Active");
                 connecttype.setImageDrawable(getResources().getDrawable(R.drawable.ic_bluetooth_logo));
-
+                BLEname.setText(mDevices.get(0).getName());
+                BLEname.setTypeface(font);
             } else if(mUSBConnected){
                 type.setText("USB Active");
                 connecttype.setImageDrawable(getResources().getDrawable(R.drawable.ic_usb_logo));
@@ -668,7 +680,8 @@ public class MainActivity extends Activity implements
                 //still in the main activity so access the UI elements directly=
 
                 fillBlueBanner(data);
-                Update_UI_state(2);
+                if(mConnected)
+                Update_UI_state(2);// updates the buttons concidering what state the logger is in
                 progressDialog.cancel();
                 break;
             case 1:
@@ -874,7 +887,6 @@ public class MainActivity extends Activity implements
             mScanning = false;
         }
         mDevices = devices;
-
         selectedPositions.clear();
         getActionBar().setTitle(mDevices.get(0).getName());
 
@@ -932,7 +944,6 @@ public class MainActivity extends Activity implements
                 send_to_active_Fragment(R.string.disconnected, 0);
             } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
                 displayGattServices(mBluetoothLeService.getSupportedGattServices());
-
                 mBluetoothLeService.setCharacteristicNotification(characteristicTX, true);
                 mBluetoothLeService.setCharacteristicNotification(characteristicRX, true);
                 mBluetoothLeService.writeCharacteristic(characteristicTX, hexData.STAY_UP);
@@ -1241,7 +1252,7 @@ public class MainActivity extends Activity implements
     private void spinnerProgressDialog() {
 
         progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Connecting.....");
+        progressDialog.setMessage("Connecting...");
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.setIndeterminate(false);
         progressDialog.setProgress(0);
@@ -1259,13 +1270,14 @@ public class MainActivity extends Activity implements
     //Going back to the initial state of the app
     //=============================================================================================//
     private void appStartState(){
-        Intent intent = getIntent();
+        Intent intent = new Intent(MainActivity.this, MainActivity.class);
         Log.d("TAG", mConnected + " m connected value");
         if ((mConnected == true)) {
             mBluetoothLeService.writeCharacteristic(characteristicTX, hexData.GO_TO_SLEEP);
             Log.d("TAG", "Sending to sleep");
             SystemClock.sleep(1000);
         }
+
         if (mGattUpdateReceiver != null) unregisterReceiver(mGattUpdateReceiver);
 
         if (mServiceConnection != null) unbindService(mServiceConnection);
@@ -1273,4 +1285,21 @@ public class MainActivity extends Activity implements
         startActivity(intent);
     }
 
+    public void testMethod(){
+        delayedTask = new Runnable() {
+            @Override
+            public void run() {
+                if ((mConnected == true)) {
+                    type.setText("Timed Out");
+                    mBluetoothLeService.writeCharacteristic(characteristicTX, hexData.GO_TO_SLEEP);
+                    Log.d("TAG", "Sending to sleep");
+                    SystemClock.sleep(1000);
+                }
+
+                mBluetoothLeService.disconnect();
+                Log.d("TAG","IN the delayed task");
+            }
+        };
+        mainThreadHandler.postDelayed(delayedTask, 20000);
+    }
 }

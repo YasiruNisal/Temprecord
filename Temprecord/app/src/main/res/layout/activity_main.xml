@@ -142,6 +142,18 @@
                             android:textColor="@color/white_color"
                             android:textSize="@dimen/Heading_size"/>
 
+                        <TextView
+                            android:id="@+id/blename"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="10dp"
+                            android:paddingTop="1dp"
+                            android:paddingBottom="5dp"
+                            android:gravity="center"
+                            android:text=""
+                            android:textColor="@color/white_color"
+                            android:textSize="15sp"/>
+
 
                         </LinearLayout>
 
@@ -154,14 +166,13 @@
 
             </LinearLayout>
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="20dp" />
+
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
+                android:layout_marginTop="20dp"
                 android:background="@color/white_color1"
                 android:gravity="center"
                 android:id="@+id/Menubuttons">
