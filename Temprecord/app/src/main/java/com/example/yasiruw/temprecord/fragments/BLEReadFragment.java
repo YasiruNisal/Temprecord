@@ -24,7 +24,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.JavascriptInterface;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -44,6 +47,9 @@ import com.example.yasiruw.temprecord.services.StoreKeyService;
 import com.example.yasiruw.temprecord.utils.CommsChar;
 import com.example.yasiruw.temprecord.utils.HexData;
 import com.github.mikephil.charting.charts.LineChart;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -189,6 +195,8 @@ public class BLEReadFragment extends Fragment {
     LineChart chart1;
 
     private Handler handler1 =new Handler();
+    public static final Handler mainThreadHandler = new Handler();
+    Runnable delayedTask;
     private final String LIST_NAME = "NAME";
     private final String LIST_UUID = "UUID";
 
@@ -351,12 +359,8 @@ public class BLEReadFragment extends Fragment {
         zoomin1 = (ImageButton) view.findViewById(R.id.zoominButton1);
 
         Graph1 = (WebView) view.findViewById(R.id.graphone);
-        Graph1.getSettings().setJavaScriptEnabled(true);
-        Graph1.loadUrl("file:///android_asset/index.html");
 
         Graph2 = (WebView) view.findViewById(R.id.graphtwo);
-        Graph2.getSettings().setJavaScriptEnabled(true);
-        Graph2.loadUrl("file:///android_asset/index.html");
 
         progressDialoge();
 
@@ -365,6 +369,28 @@ public class BLEReadFragment extends Fragment {
         bleFragmentI.onBLERead();
 
         return view;
+    }
+
+    double[] data = new double[] {42.6, 24, 17, 15.4};
+
+    /** This passes our data out to the JS */
+    @JavascriptInterface
+    public String getData() {
+        Log.d(TAG, "getData() called");
+        return a1dToJson(data).toString();
+    }
+
+    private String a1dToJson(double[] data) {
+        StringBuffer sb = new StringBuffer();
+        sb.append("[");
+        for (int i = 0; i < data.length; i++) {
+            double d = data[i];
+            if (i > 0)
+                sb.append(",");
+            sb.append(d);
+        }
+        sb.append("]");
+        return sb.toString();
     }
 
     @Override
@@ -378,11 +404,6 @@ public class BLEReadFragment extends Fragment {
         switch(item.getItemId()) {
             case R.id.menu_about:
                 //sendEmail();
-                return true;
-            case R.id.menu_refresh:
-                frommenu = true;
-                //do a ble ack here
-                state = 1;
                 return true;
                 default:
                     return false;
@@ -802,16 +823,45 @@ public class BLEReadFragment extends Fragment {
 
     }
 
+    public void plotGraph1(){
+        Graph1.getSettings().setJavaScriptEnabled(true);
+        Graph1.addJavascriptInterface(this,"android");
+        Graph1.requestFocusFromTouch();
+        Graph1.setWebViewClient(new WebViewClient());
+        Graph1.setWebChromeClient(new WebChromeClient());
+        Graph1.loadUrl("file:///android_asset/canvasJS.html");
+    }
+
+    public void plotGraph2(){
+        Graph2.getSettings().setJavaScriptEnabled(true);
+        Graph2.addJavascriptInterface(this,"android");
+        Graph2.requestFocusFromTouch();
+        Graph2.setWebViewClient(new WebViewClient());
+        Graph2.setWebChromeClient(new WebChromeClient());
+        Graph2.loadUrl("file:///android_asset/canvasJS.html");
+
+    }
+
+
+
+    private void MT2ValueIn(byte[] value){
+        ArrayList<Byte> data = new ArrayList<Byte>();
+        for(int  i = 0; i < value.length; i++) data.add(value[i]);
+        //calculating first loged sample
+        Calendar calendar = baseCMD.startDateTime;
+        calendar.add(Calendar.SECOND, baseCMD.startDelay);
+        try {
+            mt2Mem_values = new MT2Values.MT2Mem_values(data, calendar, baseCMD.ch1Hi/10, baseCMD.ch1Lo/10, baseCMD.ch2Hi/10, baseCMD.ch2Lo/10, baseCMD.samplePeriod, baseCMD.ch1Enable, baseCMD.ch2Enable );
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+    }
     private void FifteenSecTimeout(){
-        final Thread t = new Thread() {
+        delayedTask = new Runnable() {
             @Override
             public void run() {
 
-                try {
-                    TimeUnit.SECONDS.sleep(20);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
                 bleFragmentI.onBLEWrite(HexData.GO_TO_SLEEP);
                 try {
                     TimeUnit.MILLISECONDS.sleep(400);
@@ -831,21 +881,7 @@ public class BLEReadFragment extends Fragment {
                 }
             }
         };
-        t.start();
-
-    }
-
-    private void MT2ValueIn(byte[] value){
-        ArrayList<Byte> data = new ArrayList<Byte>();
-        for(int  i = 0; i < value.length; i++) data.add(value[i]);
-        //calculating first loged sample
-        Calendar calendar = baseCMD.startDateTime;
-        calendar.add(Calendar.SECOND, baseCMD.startDelay);
-        try {
-            mt2Mem_values = new MT2Values.MT2Mem_values(data, calendar, baseCMD.ch1Hi/10, baseCMD.ch1Lo/10, baseCMD.ch2Hi/10, baseCMD.ch2Lo/10, baseCMD.samplePeriod, baseCMD.ch1Enable, baseCMD.ch2Enable );
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        mainThreadHandler.postDelayed(delayedTask, 20000);
 
     }
 
@@ -871,7 +907,6 @@ public class BLEReadFragment extends Fragment {
                 .setIcon(R.drawable.ic_message)
                 .show();
     }
-
 
     public void progressDialoge(){
 

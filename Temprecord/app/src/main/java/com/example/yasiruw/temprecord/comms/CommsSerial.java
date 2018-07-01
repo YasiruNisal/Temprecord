@@ -174,7 +174,7 @@ public class CommsSerial {
 
         //Log.d("INFO", msgData.get(1) +" "+b[1]+ "------------ " + msgData.size() +" "+ b.length);
 
-        BytetoHex(b);
+        //BytetoHex(b);
 
         return b;
 
@@ -228,7 +228,7 @@ public class CommsSerial {
 
     public byte[] ReadUSBByte(byte[] rawBytes){
         Log.i("USB","IN READ USB++++++++");
-        BytetoHex(rawBytes);
+        //BytetoHex(rawBytes);
         byte[] b = new byte[0];
         int rawLength;
         List<Byte> msgData = new ArrayList<Byte>();
@@ -276,7 +276,7 @@ public class CommsSerial {
 
         //Log.d("INFO", msgData.get(1) +" "+b[1]+ "------------ " + msgData.size() +" "+ b.length);
         Log.i("USB", "IN USB READ DATA");
-        BytetoHex(b);
+       // BytetoHex(b);
 
         return b;
 
@@ -358,7 +358,7 @@ public class CommsSerial {
             k++;
         }
 
-        BytetoHex(temp2);
+       // BytetoHex(temp2);
         return temp2;
     }
 

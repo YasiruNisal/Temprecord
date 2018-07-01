@@ -179,6 +179,8 @@ public class BLEParameterFragment extends Fragment implements com.wdullaer.mater
     private byte[] returndata;
 
     private Handler handler1 =new Handler();
+    public static final Handler mainThreadHandler = new Handler();
+    Runnable delayedTask;
 
     private final String LIST_NAME = "NAME";
     private final String LIST_UUID = "UUID";
@@ -355,6 +357,7 @@ public class BLEParameterFragment extends Fragment implements com.wdullaer.mater
             case R.id.action_program://code that run when the program button is pressed
                 if(baseCMD.state == 2) {
                     programbutton();
+                    BuildDialogue("Parameters Programmed", "Logger needs to be started from the main menu",3);
                 }else{//can't program if the logger is not in the ready state
                     BuildDialogue("Can't Program parameters", "Parameters can't be programed when the logger is in "+QS.GetState(baseCMD.state)+" state.\nPut the logger in to ready state!",2);
                 }
@@ -363,12 +366,7 @@ public class BLEParameterFragment extends Fragment implements com.wdullaer.mater
                 //sendEmail();
                 return true;
             case R.id.action_p_and_s:
-                pands = true;
-                if(baseCMD.state == 2) {
-                    programbutton();
-                }else{//can't program if the logger is not in the ready state
-                    BuildDialogue("Can't Program parameters", "Parameters can't be programed when the logger is in "+QS.GetState(baseCMD.state)+" state.\nPut the logger in to ready state!",2);
-                }
+                BuildDialogue("", "Are you sure you want to program parameters and start the logger?",4);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -458,6 +456,7 @@ public class BLEParameterFragment extends Fragment implements com.wdullaer.mater
         startwithdelaybutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(getActivity(), "Start with Delay\nHH:MM:SS", Toast.LENGTH_LONG).show();
                 showPicker(v, startwithdelaybutton);
             }
         });
@@ -465,6 +464,7 @@ public class BLEParameterFragment extends Fragment implements com.wdullaer.mater
         sampleperiodbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(getActivity(), "Sample Period\nHH:MM:SS", Toast.LENGTH_LONG).show();
                 showPicker(v, sampleperiodbutton);
             }
         });
@@ -983,31 +983,27 @@ public class BLEParameterFragment extends Fragment implements com.wdullaer.mater
     }
 
     private void ThirtySecTimeout(){
-        final Thread t = new Thread() {
+        delayedTask = new Runnable() {
             @Override
             public void run() {
 
-                try {
-                    TimeUnit.SECONDS.sleep(40);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+
                 try {
                     TimeUnit.SECONDS.sleep(timeoutdelay/10);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                bleFragmentI.onBLEWrite(HexData.GO_TO_SLEEP);
-                try {
-                    TimeUnit.MILLISECONDS.sleep(400);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                Log.d("TAG", "30 sec time out");
                 if(getFragmentManager() != null){
+                    bleFragmentI.onBLEWrite(HexData.GO_TO_SLEEP);
+                    try {
+                        TimeUnit.MILLISECONDS.sleep(400);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d("TAG", "30 sec time out");
+
                     bleFragmentI.BLEDisconnect();
 //                    unbindService(mServiceConnection);
-
                 }
                 try {
                     TimeUnit.MILLISECONDS.sleep(300);
@@ -1016,8 +1012,7 @@ public class BLEParameterFragment extends Fragment implements com.wdullaer.mater
                 }
             }
         };
-        t.start();
-
+        mainThreadHandler.postDelayed(delayedTask, 40000);
     }
 
     //after reading the logger the UI fields get filled with the logger information
@@ -1194,20 +1189,38 @@ public class BLEParameterFragment extends Fragment implements com.wdullaer.mater
         } else {
             builder = new AlertDialog.Builder(getActivity());
         }
-        builder.setTitle(str1)
-                .setMessage(str2)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        if(press == 1){
-                            Intent intent = new Intent(getActivity(), MainActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(intent);
+        if(press == 4){
+            builder.setTitle(str1)
+                    .setMessage(str2)
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            pands = true;
+                            programbutton();
                         }
-                        // continue with delete
-                    }
-                })
-                .setIcon(R.drawable.ic_message)
-                .show();
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            pands = false;
+                        }
+                    })
+                    .setIcon(R.drawable.ic_message)
+                    .show();
+        }else {
+            builder.setTitle(str1)
+                    .setMessage(str2)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (press == 1) {
+                                Intent intent = new Intent(getActivity(), MainActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                            }
+                            // continue with delete
+                        }
+                    })
+                    .setIcon(R.drawable.ic_message)
+                    .show();
+        }
     }
 
     //progress dialog thats used when the parameters are getting read

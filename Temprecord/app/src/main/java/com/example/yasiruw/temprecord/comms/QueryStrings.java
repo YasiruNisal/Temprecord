@@ -3,6 +3,7 @@ package com.example.yasiruw.temprecord.comms;
 
 import com.example.yasiruw.temprecord.utils.CommsChar;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -86,6 +87,17 @@ public class QueryStrings {
         return yesorno;
     }
 
+
+    public String TrueorFalse(boolean in){
+        String trueorfalse = "";
+        if(in == true){
+            trueorfalse =  "true";
+        }else if(in == false){
+            trueorfalse = "false";
+        }
+        return trueorfalse;
+    }
+
     public String Startby(MT2ClassFlags.MT2_LoggerFlags data){
         String r = "";
         if(data.startDateTime.getValue()){
@@ -164,6 +176,19 @@ public class QueryStrings {
         String formatted = sdf.format(cal.getTime());
 
         return formatted;
+    }
+
+    public String datetoString(Date today){
+        // Create an instance of SimpleDateFormat used for formatting
+        // the string representation of date (month/day/year)
+        DateFormat df = new SimpleDateFormat("Mdyyyyhms");
+        df.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+        // Get the date today using Calendar object.
+        //today = Calendar.getInstance().getTime();
+        // Using DateFormat format method we can create a string
+        // representation of a date with the defined format.
+        return df.format(today);
     }
 
 

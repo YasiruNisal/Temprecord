@@ -165,8 +165,6 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
         android:background="@color/chat_name_color"
         android:id="@+id/scroll"
         >
@@ -478,7 +476,7 @@
                 </LinearLayout>
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="400dp"
+                    android:layout_height="500px"
                     android:paddingBottom="5dp"
                     android:paddingTop="5dp">
 

@@ -28,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.yasiruw.temprecord.R;
 import com.example.yasiruw.temprecord.activities.MainActivity;
@@ -150,6 +151,8 @@ public class BLEQueryFragment extends Fragment {
     MT2Msg_Read mt2Msg_read;
     QueryStrings QS = new QueryStrings();
     CommsChar commsChar = new CommsChar();
+    public static final Handler mainThreadHandler = new Handler();
+    Runnable delayedTask;
 
     BLEFragmentI bleFragmentI;
 
@@ -189,8 +192,10 @@ public class BLEQueryFragment extends Fragment {
     //==========================================================//
     @Override
     public void onPause()
-    {
-        super.onPause();
+    {   super.onPause();
+        Log.i("TAG", "COMING ON TO ON PAUSE");
+        mainThreadHandler.removeCallbacksAndMessages(null);
+
     }
     //==========================================================//
 
@@ -348,32 +353,48 @@ public class BLEQueryFragment extends Fragment {
                 progressDialoge();
                 return true;
             case R.id.action_start:
-                bleFragmentI.onBLEWrite(HexData.BLE_ACK);
-                bleFragmentI.onBLERead();
-                message = "2";
-                state = 1;
-                progressDialoge();
+                if(baseCMD.state == 2) {
+                    bleFragmentI.onBLEWrite(HexData.BLE_ACK);
+                    bleFragmentI.onBLERead();
+                    message = "2";
+                    state = 1;
+                    progressDialoge();
+                }else{
+                    Toast.makeText(getActivity(), "Can't use this functionality in the current state", Toast.LENGTH_SHORT).show();
+                }
                 return true;
             case R.id.action_stop:
-                bleFragmentI.onBLEWrite(HexData.BLE_ACK);
-                bleFragmentI.onBLERead();
-                message = "3";
-                state = 1;
-                progressDialoge();
+                if(baseCMD.state == 4) {
+                    bleFragmentI.onBLEWrite(HexData.BLE_ACK);
+                    bleFragmentI.onBLERead();
+                    message = "3";
+                    state = 1;
+                    progressDialoge();
+                }else{
+                    Toast.makeText(getActivity(), "Can't use this functionality in the current state", Toast.LENGTH_SHORT).show();
+                }
                 return true;
             case R.id.action_reuse:
-                bleFragmentI.onBLEWrite(HexData.BLE_ACK);
-                bleFragmentI.onBLERead();
-                message = "4";
-                state = 1;
-                progressDialoge();
+                if(baseCMD.state == 5) {
+                    bleFragmentI.onBLEWrite(HexData.BLE_ACK);
+                    bleFragmentI.onBLERead();
+                    message = "4";
+                    state = 1;
+                    progressDialoge();
+                }else{
+                    Toast.makeText(getActivity(), "Can't use this functionality in the current state", Toast.LENGTH_SHORT).show();
+                }
                 return true;
             case R.id.action_tag:
-                bleFragmentI.onBLEWrite(HexData.BLE_ACK);
-                bleFragmentI.onBLERead();
-                message = "5";
-                state = 1;
-                progressDialoge();
+                if(baseCMD.state == 4) {
+                    bleFragmentI.onBLEWrite(HexData.BLE_ACK);
+                    bleFragmentI.onBLERead();
+                    message = "5";
+                    state = 1;
+                    progressDialoge();
+                }else{
+                    Toast.makeText(getActivity(), "Can't use this functionality in the current state", Toast.LENGTH_SHORT).show();
+                }
                 return true;
             case R.id.menu_about:
                 //sendEmail();
@@ -688,7 +709,7 @@ public class BLEQueryFragment extends Fragment {
                         break;
                     case 25:
                         hexData.BytetoHex(in);
-                        //FifteenSecTimeout();
+                        FifteenSecTimeout();
                         break;
 
                 }
@@ -791,31 +812,25 @@ public class BLEQueryFragment extends Fragment {
     }
 
     private void FifteenSecTimeout(){
-         t = new Thread() {
+        delayedTask = new Runnable() {
             @Override
             public void run() {
 
-                try {
-                    TimeUnit.SECONDS.sleep(20);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+
                 try {
                     TimeUnit.SECONDS.sleep(timeoutdelay/10);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                bleFragmentI.onBLEWrite(HexData.GO_TO_SLEEP);
-                try {
-                    TimeUnit.MILLISECONDS.sleep(400);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                Log.d("TAG", "15 sec time out");
-                if (getFragmentManager() == null) {
+                if (getFragmentManager() != null) {
+                    bleFragmentI.onBLEWrite(HexData.GO_TO_SLEEP);
+                    try {
+                        TimeUnit.MILLISECONDS.sleep(400);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d("TAG", "15 sec time out");
                     bleFragmentI.BLEDisconnect();
-//                    unbindService(mServiceConnection);
-
                 }
 
                 try {
@@ -825,7 +840,7 @@ public class BLEQueryFragment extends Fragment {
                 }
             }
         };
-        t.start();
+        mainThreadHandler.postDelayed(delayedTask, 20000);
 
     }
 

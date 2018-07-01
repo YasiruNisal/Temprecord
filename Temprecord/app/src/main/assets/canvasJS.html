@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GRAPH</title>
+    <script type="text/javascript" src="jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script type="text/javascript">
+
+var dataPoint = [];
+var Temp;
+var num = 0;
+var UL = 20;
+var LL = -10;
+var HUL = 60;
+var HLL = 45;
+var chart;
+
+var showData = function()
+{
+    fromJava = android.getData();
+    fromJava = JSON.parse(fromJava);
+    Temp = getData(fromJava);
+    alert("dATA");
+    chart.render();
+}
+
+window.onload = function()
+{
+
+	//Temp = getData();
+
+	chart = new CanvasJS.Chart("myChart", {
+	//theme: "theme2",
+	zoomEnabled: true,
+	animationEnabled: true,
+	exportEnabled: true,
+	zoomType: 'xy',
+	backgroundColor: '#262728',
+    title:
+    {
+         text: "canvasJS",
+         fontColor: "white",
+         fontSize: 28,
+         fontFamily: "oswald",
+         horizontalAlign: "center",
+    },
+
+    subtitles:[{
+    	text:"RT0001344",
+    	fontColor: "#dce0e8",
+    	fontSize: 14,
+    	fontFamily: "oswald",
+    	horizontalAlign: "center",
+    }],
+
+    toolTip:{
+    	shared: true,
+    	content: " <strong> {name}  </strong>: {y}\xB0C ",
+    	//backgroundColor: '#ffbadd',
+    	//fontColor:'#cc5591'
+    },
+
+    legend: {
+    	cursor: "pointer",
+    	itemclick: toogleDataSeries,
+    	fontColor: 'white',
+    	fontSize: 12,
+    	horizontalAlign: "center",
+    	verticalAlign: "top",
+    	fontFamily: "oswald",
+    	fontWeight: "normal"
+    },
+
+    axisX: {
+    title: "DATE",
+	titleFontColor: "#c9c9c9",
+	titleFontSize: 20,
+	titleFontFamily: "oswald",
+	intervalType: "hour",
+	valueFormatString: "DD/MM/YY \n hh:mm TT",
+	labelFontColor: "#c9c9c9",
+	labelFontSize: 12,
+	minTick: 20,
+	crosshair: {
+				enabled: true,
+				snapToDataPoint: true,
+	},
+	tickColor:'#c9c9c9',
+	gridColor: "#8c9199" ,
+    gridThickness: 2
+	},
+
+	axisY: [{
+			title: "TEMPERATURE",
+			titleFontColor: "#c9c9c9",
+			titleFontSize: 20,
+			titleFontFamily: "oswald",
+			tickColor:'#c9c9c9',
+			ticklength: 10,
+			labelFontColor: "#c9c9c9",
+			//interval: 5,
+			labelFontSize: 12,
+			includeZero: false,
+
+			crosshair: {
+				enabled: true,
+				snapToDataPoint: true,
+				labelFormatter: function(e) {
+					//return CanvasJS.formatNumber(e.value, "##0.00") + '\xB0C';
+				}
+			},
+
+			stripLines:[
+			{
+				value: UL,
+				//label: "",
+				labelFontColor: '#ffd439',
+				color: '#ffd747'
+			},
+			{
+				startValue: UL,
+				endValue: 40,
+				label: "\xB0C UPPER LIMIT",
+				labelFontSize: 12,
+				labelFontWeight: "normal",
+				labelFontColor: '#ffd439',
+				labelBackgroundColor: 'none',
+				labelFontFamily: "oswald",
+				color: '#ffd747', //yellow
+				opacity: .1,
+			},
+
+			{
+				value: LL,
+				//label: "MIN TEMP",
+				labelFontColor: '#105499',
+				color: '#96beff'       //blue
+			},
+			{
+				startValue: LL,
+				endValue: -40,
+				labelBackgroundColor: 'none',
+				label: "\xB0C LOWER LIMIT",
+				labelFontColor: '#8db8fc',
+				labelFontFamily: "oswald",
+				labelFontSize: 12,
+				color: '#96beff',
+				opacity: .1,
+			},
+			],
+			suffix : '\xB0C',
+			gridColor: "#8c9199"
+	}],
+
+	axisY2: [{
+			title: "HUMIDITY",
+			titleFontColor: "#c9c9c9",
+			titleFontSize: 20,
+			titleFontFamily: "oswald",
+			tickColor:'#c9c9c9',
+			ticklength: 10,
+			labelFontColor: "#c9c9c9",
+			//interval: 5,
+			labelFontSize: 12,
+			includeZero: false,
+
+			crosshair: {
+				enabled: true,
+				snapToDataPoint: true,
+				labelFormatter: function(e) {
+					return CanvasJS.formatNumber(e.value, "##0.00") + '%';
+				}
+			},
+
+			stripLines:[
+			{
+				value: HUL,
+				//label: "",
+				labelFontColor: '#ffd439',
+				color: '#ffd747'
+			},
+			{
+				startValue: HUL,
+				endValue: 100,
+				label: "% UPPER LIMIT",
+				labelFontSize: 12,
+				labelFontWeight: "normal",
+				labelFontColor: '#ffd439',
+				labelBackgroundColor: 'none',
+				labelFontFamily: "oswald",
+				color: '#ffd747', //yellow
+				opacity: .1,
+			},
+
+			{
+				value: HLL,
+				//label: "MIN TEMP",
+				labelFontColor: '#105499',
+				color: '#96beff'       //blue
+			},
+			{
+				startValue: HLL,
+				endValue: 0,
+				labelBackgroundColor: 'none',
+				label: "% LOWER LIMIT",
+				labelFontColor: '#8db8fc',
+				labelFontFamily: "oswald",
+				labelFontSize: 12,
+				color: '#96beff',
+				opacity: .1,
+			},
+			],
+			suffix : '%',
+			gridColor: "#8c9199"
+	}],
+
+    data: Temp
+
+ 	});
+
+ 	chart.render();
+
+ 	function toogleDataSeries(e){
+		if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+			e.dataSeries.visible = false;
+		}
+		else{
+			e.dataSeries.visible = true;
+		}
+
+		chart.render();
+	}
+
+function onClick(e){
+	console.log(e);
+if(e.dataPoint.toolTipContent !=  ""){
+	var remove = confirm('Do you want to remove this Comment? ')
+
+	if(remove == true)
+	{
+		chart.options.data[0].dataPoints[e.dataPointIndex].markerType = 'circle';
+		chart.options.data[0].dataPoints[e.dataPointIndex].markerSize = 2;
+		chart.options.data[0].dataPoints[e.dataPointIndex].markerColor = e.dataPoint.lineColor;
+		chart.options.data[0].dataPoints[e.dataPointIndex].toolTipContent = '',
+		chart.render();
+	}
+
+}
+else
+{
+	var newComment = prompt("COMMENT:",)
+	console.log(newComment);
+
+	if (newComment.length > 0)
+		{
+			chart.options.data[0].dataPoints[e.dataPointIndex].markerType = 'triangle';
+			chart.options.data[0].dataPoints[e.dataPointIndex].markerSize = 20;
+			chart.options.data[0].dataPoints[e.dataPointIndex].markerColor = '#1a8927';
+			chart.options.data[0].dataPoints[e.dataPointIndex].toolTipContent = '<b>USER:</b> ' + 'JiMin <br>' + '<b>COMMENT: </b>'+  newComment + ' <br>' + '<b> TEMP: </b>' + e.dataPoint.y + '\xB0C',
+			chart.render();
+		}
+}
+}
+}
+
+var j = 0;
+var dataPoint = [];
+var Tag;
+
+//use following for Click, add Comment
+//					toolTipContent: 'TAG',
+//	                markerColor: 'red',
+//	                markerType : 'cross',
+//	                markerSize: 10
+//					dataPointIndex
+
+function getData(fromJava)
+{
+	var data = [];
+    var datas = [];
+	var points = date = year = time = [];
+	var highest, lowest;
+	var Color;
+	var ColorH;
+
+    alert(fromJava);
+    alert(fromJava.length);
+    dataPoint[j] =
+    {
+    	name: "Temperature " + j,
+    	type: "line",
+		legendText: "TEMPERATURE \xB0C",
+		showInLegend: true,
+		dataPoints: datas,
+	}
+
+    points = fromJava.split(",");
+
+    for (var a = 0; a < (points.length)/4; a+4)
+			date = points[a+3];
+            alert(date);
+			if(parseFloat(points[a])> UL)
+				Color = '#ffd747';
+			else if (parseFloat(points[a])< LL )
+				Color = '#96beff';
+			else
+				Color = '#c9c9c9';
+
+			if(points[a+2] == '0') //tag is present
+			{
+				datas.push
+				({
+					x: a+b,//new Date(year[0],date[1],date[0],time[0],time[1]),
+					y: parseFloat(points[a]),
+					indexLabel: 'TAG',
+					indexLabelFontColor: 'white',
+					indexFontFamily: "oswald",
+					markerColor: 'white',
+					markerType : 'cross',
+					markerSize: 10,
+					lineColor: Color,
+					click: onClick,
+					toolTipContent: '<strong> TAG </strong> <br>  <strong> {name}  </strong>: {y}\xB0C'
+				});
+
+			}
+			else
+			{
+				datas.push
+				({
+					x: a+b, //new Date(year[0],date[1],date[0],time[0],time[1]),
+					y: parseFloat(points[a]),
+					indexLabel: '',
+					lineColor: Color,
+					markerType: "circle",
+					markerSize: 2,
+					markerColor: Color,
+					click: onClick,
+					toolTipContent: '',
+				});
+			}
+
+			if(points[a+1] != '')
+			{
+				if(parseFloat(points[a+1])> HUL)
+				Color = '#ffd747';
+				else if (parseFloat(points[a+1])< HLL )
+					Color = '#96beff';
+				else
+					Color = '#c9c9c9';
+
+				if(a==0)
+				{
+					k = j+1;
+					dataPoint[k] =
+					{
+						name: "HUMIDITIY " + k,
+						type: "line",
+						legendText: "HUMIDITY  %",
+						axisYType: "secondary",
+						showInLegend: true,
+						dataPoints: data,
+					}
+				}
+
+
+				data.push
+				({
+					x: a+b, //new Date(year[0],date[1],date[0],time[0],time[1]),
+					y: parseFloat(points[a+1]),
+					indexLabel: '',
+					lineColor: Color,
+					markerType: "square",
+					markerSize: 2,
+					markerColor: Color,
+					click: onClick,
+					toolTipContent: '',
+				});
+
+			}
+    j++;
+    return dataPoint;
+}
+</script>
+</head>
+<body>
+<input type="button" value="loadGraph" onclick="showData()">
+<div id="myChart" style="width:100%; height: 100%;"></div>
+</body>
+</html>

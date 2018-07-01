@@ -351,6 +351,7 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
             case R.id.action_program://code that run when the program button is pressed
                 if(baseCMD.state == 2) {
                     programbutton();
+                    BuildDialogue("Parameters Programmed", "Logger needs to be started from the main menu",3);
                 }else{//can't program if the logger is not in the ready state
                     BuildDialogue("Can't Program parameters", "Parameters can't be programed when the logger is in "+QS.GetState(baseCMD.state)+" state.\nPut the logger in to ready state!",2);
                 }
@@ -359,12 +360,7 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
                 //sendEmail();
                 return true;
             case R.id.action_p_and_s:
-                pands = true;
-                if(baseCMD.state == 2) {
-                    programbutton();
-                }else{//can't program if the logger is not in the ready state
-                    BuildDialogue("Can't Program parameters", "Parameters can't be programed when the logger is in "+QS.GetState(baseCMD.state)+" state.\nPut the logger in to ready state!",2);
-                }
+              BuildDialogue("", "Are you sure you want to program parameters and start the logger?",4);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -444,6 +440,7 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
         startwithdelaybutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(getActivity(), "Start with Delay\nHH:MM:SS", Toast.LENGTH_LONG).show();
                 showPicker(v, startwithdelaybutton);
             }
         });
@@ -451,6 +448,7 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
         sampleperiodbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(getActivity(), "Sample Period\nHH:MM:SS", Toast.LENGTH_LONG).show();
                 showPicker(v, sampleperiodbutton);
             }
         });
@@ -478,6 +476,8 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
 
     public void showPicker(View v, final Button b){
         MyTimePickerDialog mTimePicker = new MyTimePickerDialog(getActivity(), new MyTimePickerDialog.OnTimeSetListener() {
+
+
 
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute, int seconds) {
@@ -734,7 +734,7 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
                         state = 8;
                         break;
                     case 3:
-                        usbFragmentI.onUSBWrite(HexData.START_L);
+                        usbFragmentI.onUSBWrite(HexData.START_USB);
                         Toast.makeText(getActivity(),"Started Successfully", Toast.LENGTH_SHORT).show();
                         state = 4;
                         break;
@@ -743,7 +743,11 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
                         state = 7;
                         break;
                     case 7:
-
+                        if(pands){
+                            query = commsSerial.ReadUSBByte(in);
+                            Q_data = baseCMD.CMDQuery(query);
+                            SetUI();
+                        }
                         break;
                     case 8:
                         hexData.BytetoHex(in);
@@ -935,7 +939,7 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
 
 
         if(pands){
-            Lstate.setText( QS.GetState(Integer.parseInt(Q_data.get(5))));
+            Lstate.setText(QS.GetState(baseCMD.state));
         }else {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd  HH:mm:ss");
             String currentDateandTime = sdf.format(new Date());
@@ -1093,6 +1097,7 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
 
     }
 
+
     private void BuildDialogue(String str1, String str2, final int press){
         backpress = true;
         AlertDialog.Builder builder;
@@ -1101,20 +1106,38 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
         } else {
             builder = new AlertDialog.Builder(getActivity());
         }
-        builder.setTitle(str1)
-                .setMessage(str2)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        if(press == 1){
-                            Intent intent = new Intent(getActivity(), MainActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(intent);
+        if(press == 4){
+            builder.setTitle(str1)
+                    .setMessage(str2)
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            pands = true;
+                            programbutton();
                         }
-                        // continue with delete
-                    }
-                })
-                .setIcon(R.drawable.ic_message)
-                .show();
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            pands = false;
+                        }
+                    })
+                    .setIcon(R.drawable.ic_message)
+                    .show();
+        }else {
+            builder.setTitle(str1)
+                    .setMessage(str2)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (press == 1) {
+                                Intent intent = new Intent(getActivity(), MainActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                            }
+                            // continue with delete
+                        }
+                    })
+                    .setIcon(R.drawable.ic_message)
+                    .show();
+        }
     }
 
     //progress dialog thats used when the parameters are getting read

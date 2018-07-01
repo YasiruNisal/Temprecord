@@ -59,6 +59,8 @@ public class BaseCMD {
     public int commentTextsize;
     public Calendar timestartstopdatetime;
     public int state;
+    public String usercomment;
+    public String serialno;
 
 
     public int CMDStart(byte[] start){
@@ -115,6 +117,7 @@ public class BaseCMD {
             if(data.size() == classMessages.Msg_Query.ByteSize){
                 msg = new classMessages.Msg_Query(data);
                 returndata.add(msg.serial_12.ToString());
+                serialno = msg.serial_12.ToString();
                 returndata.add(msg.firmware.ToString());
                 returndata.add(msg.type.getGenString());
                 returndata.add(msg.type.getTyString());
@@ -292,6 +295,7 @@ public class BaseCMD {
             startdatetime = msg.mt2_userData.startdatetime.getValue();
             commentTextsize = msg.mt2_userData.textsize.getValue();
             returndata.add(msg.mt2_userData.userString._value.toString());
+            usercomment = msg.mt2_userData.userString._value.toString();
             returndata.add(msg.mt2_userData.blenameString._value.toString());
             timestartstopdatetime = msg.mt2_userData.timestartdadtetime.getValue();
 

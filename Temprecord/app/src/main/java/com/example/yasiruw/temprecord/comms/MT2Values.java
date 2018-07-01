@@ -116,9 +116,9 @@ public class MT2Values  {
             Calendar sampleDateTime = firstLoggedSample;
             //when both channels are enabled
             if(ch1Enable && ch0Enable){
-                Log.i("READ" , " Coming into Channel 1 and channel 2 "+ rawData.size());
+                //Log.i("READ" , " Coming into Channel 1 and channel 2 "+ rawData.size());
                 for(int i = 0; i < rawData.size(); i++) {
-                    Log.i("READ" , "inside the for loop " + i);
+
                     sample1 = (short)(rawData.get(i) & 0xff);
                     i++;
                     sample1 |= (short) (rawData.get(i) << 8);
@@ -328,6 +328,8 @@ public class MT2Values  {
         {
              return valCh1 / 10.0;
         }
+
+
 
     }
 

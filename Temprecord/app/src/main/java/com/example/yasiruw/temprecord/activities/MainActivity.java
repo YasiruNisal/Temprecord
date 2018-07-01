@@ -1,6 +1,6 @@
 package com.example.yasiruw.temprecord.activities;
 
-import android.app.ActionBar;
+
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
@@ -17,12 +17,15 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.SystemClock;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -53,9 +56,11 @@ import com.example.yasiruw.temprecord.fragments.USBParameterFragment;
 import com.example.yasiruw.temprecord.fragments.USBQueryFragment;
 import com.example.yasiruw.temprecord.fragments.USBReadFragment;
 import com.example.yasiruw.temprecord.services.BluetoothLeService;
+import com.example.yasiruw.temprecord.services.TXT_FILE;
 import com.example.yasiruw.temprecord.services.USB;
 import com.example.yasiruw.temprecord.utils.GattAttributes;
 import com.example.yasiruw.temprecord.utils.HexData;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -64,6 +69,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import static com.example.yasiruw.temprecord.fragments.BLEQueryFragment.EXTRAS_MESSAGE;
+
 
 public class MainActivity extends Activity implements
         AdapterView.OnItemClickListener,
@@ -102,6 +108,7 @@ public class MainActivity extends Activity implements
     ProgressDialog progressDialog;
     private static final Handler mainThreadHandler = new Handler();
     Runnable delayedTask;
+
 
     //====================layout variables==============================================================
     LinearLayout r1;
@@ -192,6 +199,7 @@ public class MainActivity extends Activity implements
         help = (ImageButton) findViewById(R.id.help);
         findlogger = (ImageButton) findViewById(R.id.find);
         settings = (ImageButton) findViewById(R.id.settings);
+        getActionBar().setBackgroundDrawable(new ColorDrawable(0xFFFFFFFF));
 
         Update_UI_state(1);
 
@@ -204,8 +212,10 @@ public class MainActivity extends Activity implements
 
         // Initializes a Bluetooth adapter.  For API level 18 and above, get a reference to
         // BluetoothAdapter through BluetoothManager.
-        final BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
-        mBluetoothAdapter = bluetoothManager.getAdapter();
+        if(!mUSBConnected) {
+            final BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+            mBluetoothAdapter = bluetoothManager.getAdapter();
+        }
 
         // Checks if Bluetooth is supported on the device.
         if (mBluetoothAdapter == null) {
@@ -213,6 +223,8 @@ public class MainActivity extends Activity implements
             finish();
             return;
         }
+
+
 
         //filter with required action
         final IntentFilter intentFilter = new IntentFilter();
@@ -277,7 +289,8 @@ public class MainActivity extends Activity implements
                 bleParameterFragment = new BLEParameterFragment().GET_INSTANCE(m_bundle_data); //Use bundle to pass data
                 FragmentNumber = 3;
                 getFragmentManager().beginTransaction().replace(R.id.Fragment_Container, bleParameterFragment).commit();
-            }Toast.makeText(MainActivity.this, "Parameters Selected", Toast.LENGTH_SHORT).show();
+            }
+            Toast.makeText(MainActivity.this, "Parameters Selected", Toast.LENGTH_SHORT).show();
         }
         });
 
@@ -316,7 +329,7 @@ public class MainActivity extends Activity implements
                 getFragmentManager().beginTransaction().replace(R.id.Fragment_Container, bleQueryFragment).commit();
                 Toast.makeText(MainActivity.this, "Tag Selected", Toast.LENGTH_SHORT).show();
             }
-            Toast.makeText(MainActivity.this, "Must be in Running state to Tag", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "Tag Selected", Toast.LENGTH_SHORT).show();
 
         }
         });
@@ -335,9 +348,9 @@ public class MainActivity extends Activity implements
                 bleQueryFragment = new BLEQueryFragment().GET_INSTANCE(m_bundle_data); //Use bundle to pass data
                 FragmentNumber = 1;
                 getFragmentManager().beginTransaction().replace(R.id.Fragment_Container, bleQueryFragment).commit();
-                Toast.makeText(MainActivity.this, "Start Selected", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, "Start Selected", Toast.LENGTH_SHORT).show();
             }
-            Toast.makeText(MainActivity.this, "Must be in Ready state to Start", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "Start Selected", Toast.LENGTH_SHORT).show();
         }
         });
 
@@ -355,9 +368,9 @@ public class MainActivity extends Activity implements
                 bleQueryFragment = new BLEQueryFragment().GET_INSTANCE(m_bundle_data); //Use bundle to pass data
                 FragmentNumber = 1;
                 getFragmentManager().beginTransaction().replace(R.id.Fragment_Container, bleQueryFragment).commit();
-                Toast.makeText(MainActivity.this, "Stop Selected", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, "Stop Selected", Toast.LENGTH_SHORT).show();
             }
-            Toast.makeText(MainActivity.this, "Must be in Running state to Stop", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "Stop Selected", Toast.LENGTH_SHORT).show();
 
         }
         });
@@ -376,9 +389,9 @@ public class MainActivity extends Activity implements
                 bleQueryFragment = new BLEQueryFragment().GET_INSTANCE(m_bundle_data); //Use bundle to pass data
                 FragmentNumber = 1;
                 getFragmentManager().beginTransaction().replace(R.id.Fragment_Container, bleQueryFragment).commit();
-                Toast.makeText(MainActivity.this, "Re-Use Selected", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, "Re-Use Selected", Toast.LENGTH_SHORT).show();
             }
-            Toast.makeText(MainActivity.this, "Must be in Stop state to Re-Use", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "Re-Use Selected", Toast.LENGTH_SHORT).show();
 
         }
         });
@@ -399,8 +412,9 @@ public class MainActivity extends Activity implements
                   bleQueryFragment = new BLEQueryFragment().GET_INSTANCE(m_bundle_data); //Use bundle to pass data
                   FragmentNumber = 1;
                   getFragmentManager().beginTransaction().replace(R.id.Fragment_Container, bleQueryFragment).commit();
-                  Toast.makeText(MainActivity.this, "Find Logger Selected", Toast.LENGTH_SHORT).show();
+
               }
+              Toast.makeText(MainActivity.this, "Find Logger Selected", Toast.LENGTH_SHORT).show();
         }
         });
 
@@ -438,6 +452,7 @@ public class MainActivity extends Activity implements
                 switch (FragmentNumber) {
                     case 1:
                         //coming back from the query page
+                        bleQueryFragment.mainThreadHandler.removeCallbacksAndMessages(null);
                         for (int i = 0; i < getFragmentManager().getBackStackEntryCount(); ++i) {
                             getFragmentManager().popBackStack();
                         }
@@ -455,6 +470,7 @@ public class MainActivity extends Activity implements
                         break;
                     case 2:
                         //coming back from the read page
+                        bleReadFragment.mainThreadHandler.removeCallbacksAndMessages(null);
                         for (int i = 0; i < getFragmentManager().getBackStackEntryCount(); ++i) {
                             getFragmentManager().popBackStack();
                         }
@@ -470,7 +486,8 @@ public class MainActivity extends Activity implements
                             startActivity(intent);
                         }
                         break;
-                    case 3:
+                    case 3://comming back from the parameter page
+                        bleParameterFragment.mainThreadHandler.removeCallbacksAndMessages(null);
                         for (int i = 0; i < getFragmentManager().getBackStackEntryCount(); ++i) {
                             getFragmentManager().popBackStack();
                         }
@@ -641,6 +658,10 @@ public class MainActivity extends Activity implements
     private void fillBlueBanner(byte[] data) {
         //commsSerial.BytetoHex(commsSerial.ReadUSBByte(data));
         Typeface font = Typeface.createFromAsset(this.getAssets(), "Roboto-Light.ttf");
+        if(data[0] == 0xFF){
+            mBluetoothLeService.writeCharacteristic(characteristicTX, hexData.QUARY);
+            mBluetoothLeService.readCharacteristic(characteristicRX);
+        }
         if(!mUSBConnected)
             Q_data = baseCMD.CMDQuery(commsSerial.ReadByte(data));
         else
@@ -680,7 +701,7 @@ public class MainActivity extends Activity implements
                 //still in the main activity so access the UI elements directly=
 
                 fillBlueBanner(data);
-                if(mConnected)
+                if(mConnected || mUSBConnected)
                 Update_UI_state(2);// updates the buttons concidering what state the logger is in
                 progressDialog.cancel();
                 break;
@@ -747,7 +768,7 @@ public class MainActivity extends Activity implements
     public boolean onCreateOptionsMenu(Menu menu) {
         mainmenu = menu;
         getMenuInflater().inflate(R.menu.menu_devices, menu);
-        if ((mConnected || mUSBConnected) && FragmentNumber > 0) {//Fix fot the weired menu behaviour
+        if ( FragmentNumber > 0) {//Fix fot the weired menu behaviour
             menu.findItem(R.id.menu_scan).setVisible(false);
             menu.findItem(R.id.menu_stop).setVisible(false);
         } else {
@@ -997,7 +1018,7 @@ public class MainActivity extends Activity implements
                                     scanLeDevice(false);
                                     mScanning = false;
                                     mUSBConnected = true;
-                                   // Update_UI_state(2);
+                                    //Update_UI_state(2);
                                     m_usb.Send_Command(HexData.QUARY_USB);
                                     invalidateOptionsMenu();
                                     break;
@@ -1291,6 +1312,7 @@ public class MainActivity extends Activity implements
             public void run() {
                 if ((mConnected == true)) {
                     type.setText("Timed Out");
+                    type.setTextColor(getColor(R.color.colorRED));
                     mBluetoothLeService.writeCharacteristic(characteristicTX, hexData.GO_TO_SLEEP);
                     Log.d("TAG", "Sending to sleep");
                     SystemClock.sleep(1000);

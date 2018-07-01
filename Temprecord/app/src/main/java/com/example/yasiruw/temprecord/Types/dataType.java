@@ -4,6 +4,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.TimeZone;
 
 /**
  * Created by Yasiru on 23/02/2018.
@@ -14,7 +15,7 @@ public class dataType {
 
     public static class dateRtc extends baseType {
 
-        public Calendar value = Calendar.getInstance();
+        public Calendar value = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
 
         /// <summary>
         /// The RTC DateTime fits within 6 bytes on the device
@@ -59,7 +60,7 @@ public class dataType {
                     Log.d("******3", " " + data.get(2));
                     Log.d("******3", " " + data.get(3));
                     Log.d("******3", " " + data.get(4));
-
+                    value.setTimeZone(TimeZone.getTimeZone("UTC"));
                     value.set(year, month, data.get(2), data.get(3), data.get(4), data.get(5));
 
                     Log.d("******3", " " + value);

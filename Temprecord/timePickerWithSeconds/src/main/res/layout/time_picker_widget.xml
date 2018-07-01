@@ -31,6 +31,29 @@
         android:layout_height="wrap_content"
         android:layoutDirection="ltr">
 
+        <TextView
+            android:layout_width="70dip"
+            android:layout_height="match_parent"
+            android:setText="H"/>
+
+        <TextView
+            android:layout_width="70dip"
+            android:layout_height="match_parent"
+            android:setText="M"/>
+
+        <TextView
+            android:layout_width="70dip"
+            android:layout_height="match_parent"
+            android:setText="S"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layoutDirection="ltr">
+
         <!-- hour -->
         <NumberPicker
             android:id="@+id/hour"

@@ -130,14 +130,14 @@ public class Yo_Library
     //====================================================================//
 
     //====================================================================//
-    static void Error_Log(String[] m_error_message)
+    public static void Error_Log(String[] m_error_message)
     {
         Log.i("YO","#"+m_error_message[0]+m_error_message[1]+" ERROR : " + m_error_message[2] + " T: " + Get_Current_Time_in_MilliSecond());
     }
     //====================================================================//
 
     //====================================================================//
-    static void Comment_Log(String[] m_comment_message)
+    public static void Comment_Log(String[] m_comment_message)
     {
 
         Log.i("YO","#"+m_comment_message[0]+" : " + m_comment_message[1] + " T: " + Get_Current_Time_in_MilliSecond());
@@ -258,7 +258,7 @@ public class Yo_Library
     //==========================================================//
 
     //==========================================================//
-    static String Convert_UNIX_To_Date(long date_time)
+    public static String Convert_UNIX_To_Date(long date_time)
     {
         Date date = new Date(date_time * 1000L);
         return new SimpleDateFormat("dd/MM/yyyy").format(date);
@@ -266,7 +266,7 @@ public class Yo_Library
     //==========================================================//
 
     //==========================================================//
-    static String Convert_UNIX_To_Time(long date_time)
+    public static String Convert_UNIX_To_Time(long date_time)
     {
 
 

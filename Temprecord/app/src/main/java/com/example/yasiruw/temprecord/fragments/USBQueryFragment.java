@@ -29,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.yasiruw.temprecord.R;
 import com.example.yasiruw.temprecord.activities.MainActivity;
@@ -343,28 +344,44 @@ public class USBQueryFragment extends Fragment {
                 progressDialoge();
                 return true;
             case R.id.action_start:
-                usbFragmentI.onUSBWrite(HexData.BLE_ACK);
-                message = "2";
-                state = 1;
-                progressDialoge();
+                if(baseCMD.state == 2) {
+                    usbFragmentI.onUSBWrite(HexData.BLE_ACK);
+                    message = "2";
+                    state = 1;
+                    progressDialoge();
+                }else{
+                    Toast.makeText(getActivity(), "Can't use this functionality in the current state", Toast.LENGTH_SHORT).show();
+                }
                 return true;
             case R.id.action_stop:
-                usbFragmentI.onUSBWrite(HexData.BLE_ACK);
-                message = "3";
-                state = 1;
-                progressDialoge();
+                if(baseCMD.state == 4) {
+                    usbFragmentI.onUSBWrite(HexData.BLE_ACK);
+                    message = "3";
+                    state = 1;
+                    progressDialoge();
+                }else{
+                    Toast.makeText(getActivity(), "Can't use this functionality in the current state", Toast.LENGTH_SHORT).show();
+                }
                 return true;
             case R.id.action_reuse:
-                usbFragmentI.onUSBWrite(HexData.BLE_ACK);
-                message = "4";
-                state = 1;
-                progressDialoge();
+                if(baseCMD.state == 5) {
+                    usbFragmentI.onUSBWrite(HexData.BLE_ACK);
+                    message = "4";
+                    state = 1;
+                    progressDialoge();
+                }else{
+                    Toast.makeText(getActivity(), "Can't use this functionality in the current state", Toast.LENGTH_SHORT).show();
+                }
                 return true;
             case R.id.action_tag:
-                usbFragmentI.onUSBWrite(HexData.BLE_ACK);
-                message = "5";
-                state = 1;
-                progressDialoge();
+                if(baseCMD.state == 4) {
+                    usbFragmentI.onUSBWrite(HexData.BLE_ACK);
+                    message = "5";
+                    state = 1;
+                    progressDialoge();
+                }else{
+                    Toast.makeText(getActivity(), "Can't use this functionality in the current state", Toast.LENGTH_SHORT).show();
+                }
                 return true;
             case R.id.menu_about:
                 //sendEmail();
@@ -519,7 +536,7 @@ public class USBQueryFragment extends Fragment {
 
                         break;
                     case 8:
-                        hexData.BytetoHex(in);
+                        //hexData.BytetoHex(in);
 
                         query = commsSerial.ReadUSBByte(in);
                         Q_data = baseCMD.CMDQuery(query);
@@ -550,7 +567,7 @@ public class USBQueryFragment extends Fragment {
                         if(mt2Msg_read.write_into_readByte(commsSerial.ReadUSBByte(in))){
                             state = 12;
                             System.arraycopy(mt2Msg_read.memoryData, 0, TWFlash, 120, 24);
-                            hexData.BytetoHex(TWFlash);
+                           // hexData.BytetoHex(TWFlash);
                             F_data = baseCMD.CMDFlash(TWFlash);
 
                             // call the decoding functon here to decode all we need and send the data back in an string array so that they can be desplayed in appropriate textviews
@@ -579,7 +596,7 @@ public class USBQueryFragment extends Fragment {
                         if(mt2Msg_read.write_into_readByte(commsSerial.ReadUSBByte(in))) {
 
                             System.arraycopy(mt2Msg_read.memoryData, 0, RamRead, 0, 100);
-                            hexData.BytetoHex(RamRead);
+                            //hexData.BytetoHex(RamRead);
                             R_data = baseCMD.CMDRamRead(RamRead);
                             state = 16;
                         }
@@ -608,7 +625,7 @@ public class USBQueryFragment extends Fragment {
                         if(mt2Msg_read.write_into_readByte(commsSerial.ReadUSBByte(in))) {
                             state = 20;
                             System.arraycopy(mt2Msg_read.memoryData, 0, UserRead, 500, 12);
-                            hexData.BytetoHex(UserRead);
+                          //  hexData.BytetoHex(UserRead);
                             U_data = baseCMD.CMDUserRead(UserRead);
 
                         }
@@ -637,7 +654,7 @@ public class USBQueryFragment extends Fragment {
                             state = 24;
                             System.arraycopy(mt2Msg_read.memoryData, 0, ExtraRead, 236, 48);
                             SetUI();
-                            hexData.BytetoHex(ExtraRead);
+                         //   hexData.BytetoHex(ExtraRead);
                             progresspercentage = 100;
                             progress.cancel();
                         }
@@ -648,7 +665,7 @@ public class USBQueryFragment extends Fragment {
                         state = 25;
                         break;
                     case 25:
-                        hexData.BytetoHex(in);
+                       // hexData.BytetoHex(in);
                         //FifteenSecTimeout();
                         break;
 

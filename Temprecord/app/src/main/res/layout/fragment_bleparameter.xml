@@ -168,8 +168,6 @@
         android:id="@+id/parametersscroll"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
         android:background="@color/chat_name_color"
         >
 

@@ -22,7 +22,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.JavascriptInterface;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -38,7 +41,9 @@ import com.example.yasiruw.temprecord.comms.MT2Msg_Read;
 import com.example.yasiruw.temprecord.comms.MT2Values;
 import com.example.yasiruw.temprecord.comms.QueryStrings;
 import com.example.yasiruw.temprecord.comms.USBFragmentI;
+import com.example.yasiruw.temprecord.services.Json_Data;
 import com.example.yasiruw.temprecord.services.StoreKeyService;
+import com.example.yasiruw.temprecord.services.TXT_FILE;
 import com.example.yasiruw.temprecord.services.USB;
 import com.example.yasiruw.temprecord.utils.CommsChar;
 import com.example.yasiruw.temprecord.utils.HexData;
@@ -176,6 +181,10 @@ public class USBReadFragment extends Fragment {
     MT2Msg_Read mt2Msg_read;
     QueryStrings QS = new QueryStrings();
     CommsChar commsChar = new CommsChar();
+    Json_Data json_data;
+    TXT_FILE txt_file = new TXT_FILE();
+    static final String FILENAME = "json_file.txt";
+
     private List<BluetoothDevice> mDevices = new ArrayList<>();
     private int currentDevice = 0;
 
@@ -250,9 +259,10 @@ public class USBReadFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_bleread, container, false);
         getActivity().closeContextMenu();
         getActivity().getActionBar().show();
+        getActivity().getActionBar().setIcon(R.drawable.ic_readc);
         getActivity().getActionBar().setTitle("Read Logger");
         getActivity().getActionBar().setBackgroundDrawable(new ColorDrawable(0xFFFFFFFF));
-
+        txt_file.Verify_Storage_Permissions(getActivity());
         AssetManager am = getActivity().getAssets();
 
 
@@ -352,12 +362,8 @@ public class USBReadFragment extends Fragment {
         usbFragmentI.onUSBWrite(HexData.QUARY_USB);
 
         Graph1 = (WebView) view.findViewById(R.id.graphone);
-        Graph1.getSettings().setJavaScriptEnabled(true);
-        Graph1.loadUrl("file:///android_asset/index.html");
 
         Graph2 = (WebView) view.findViewById(R.id.graphtwo);
-        Graph2.getSettings().setJavaScriptEnabled(true);
-        Graph2.loadUrl("file:///android_asset/index.html");
 
         return view;
     }
@@ -373,11 +379,6 @@ public class USBReadFragment extends Fragment {
         switch(item.getItemId()) {
             case R.id.menu_about:
                 //sendEmail();
-                return true;
-            case R.id.menu_refresh:
-                frommenu = true;
-                //do a ble ack here
-                state = 1;
                 return true;
             default:
                 return false;
@@ -580,6 +581,7 @@ public class USBReadFragment extends Fragment {
                             System.arraycopy(mt2Msg_read.memoryData, 0, ValueRead, 0, mt2Msg_read.memoryData.length);
                             //hexData.BytetoHex(ValueRead);
                             MT2ValueIn(ValueRead);
+                            plotGraph1();
                             //addDatatoGraph();
                             if(!(baseCMD.state == 4 || baseCMD.state == 5)){
                                 BuildDialogue("No Data","Logger is not in running or stop state to display data", 1);
@@ -644,6 +646,73 @@ public class USBReadFragment extends Fragment {
             }
         };handler1.postDelayed(runnableCode,1);
     }
+
+
+    public void plotGraph1(){
+        Graph1.getSettings().setJavaScriptEnabled(true);
+        Graph1.addJavascriptInterface(this,"android");
+        Graph1.requestFocusFromTouch();
+        Graph1.setWebViewClient(new WebViewClient());
+        Graph1.setWebChromeClient(new WebChromeClient());
+        Handler handler = new Handler();
+        json_data = new Json_Data(mt2Mem_values, baseCMD);
+        String jobj = json_data.CreateObject();
+        txt_file.Open_Write_and_Close_Txt_File(getActivity(), null, FILENAME, jobj, true);
+        Log.i("GRAPH", jobj);
+        //Log.i("GRAPH", txt_file.Read_and_Display_Txt_File(getActivity(), FILENAME));
+
+//        handler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                    Graph1.loadUrl("file:///android_asset/canvasJS.html");
+//            }
+//        }, 0);
+    }
+
+    public void plotGraph2(){
+        Graph2.getSettings().setJavaScriptEnabled(true);
+        Graph2.addJavascriptInterface(this,"android");
+        Graph2.requestFocusFromTouch();
+        Graph2.setWebViewClient(new WebViewClient());
+        Graph2.setWebChromeClient(new WebChromeClient());
+        Graph2.loadUrl("file:///android_asset/canvasJS.html");
+
+    }
+
+    //private ArrayList<> data = new ArrayList<String>();
+
+
+    /** This passes our data out to the JS */
+    @JavascriptInterface
+    public String getData() {
+        Log.d(TAG, "getData() called");
+        ArrayList<String> data = new ArrayList<>();
+        for (int i = 0; i < mt2Mem_values.Data.size(); i++) {
+            data.add( String.valueOf(mt2Mem_values.Data.get(i).valueCh0()));    //CH0
+            data.add(String.valueOf(mt2Mem_values.Data.get(i).valueCh1()));     //CH1
+            data.add(String.valueOf(mt2Mem_values.Data.get(i).intTag()));       //TAG
+            data.add(QS.datetoString(mt2Mem_values.Data.get(i).valTime));       //TIME
+        }
+
+        Log.d(TAG, "" + a1dToJson(data).toString());
+        return a1dToJson(data).toString();
+    }
+
+    private String a1dToJson(ArrayList<String> data) {
+        StringBuffer sb = new StringBuffer();
+        //ArrayList<Double> d = new ArrayList<>();
+        sb.append("[");
+        Log.d(TAG, "data size: " + data.size());
+        for (int i = 0; i < data.size(); i++) {
+            if (i > 0)
+                sb.append(",");
+            sb.append(data.get(i));
+        }
+        sb.append("]");
+
+        return sb.toString();
+    }
+
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void SetUI(){
@@ -762,6 +831,7 @@ public class USBReadFragment extends Fragment {
         for(int  i = 0; i < value.length; i++) data.add(value[i]);
         //calculating first loged sample
         Calendar calendar = baseCMD.startDateTime;
+        Log.i("TIME", baseCMD.startDateTime.toString());
         calendar.add(Calendar.SECOND, baseCMD.startDelay);
         try {
             mt2Mem_values = new MT2Values.MT2Mem_values(data, calendar, baseCMD.ch1Hi/10, baseCMD.ch1Lo/10, baseCMD.ch2Hi/10, baseCMD.ch2Lo/10, baseCMD.samplePeriod, baseCMD.ch1Enable, baseCMD.ch2Enable );
@@ -830,4 +900,7 @@ public class USBReadFragment extends Fragment {
         };
         t.start();
     }
+
+
+
 }

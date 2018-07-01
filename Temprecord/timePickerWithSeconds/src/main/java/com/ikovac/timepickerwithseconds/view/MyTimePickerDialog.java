@@ -101,17 +101,19 @@ public class MyTimePickerDialog extends AlertDialog implements OnClickListener,
         mInitialSeconds = seconds;
         mIs24HourView = is24HourView;
 
+
         mDateFormat = DateFormat.getTimeFormat(context);
         mCalendar = Calendar.getInstance();
-        updateTitle(mInitialHourOfDay, mInitialMinute, mInitialSeconds);
+        updateTitle(mInitialHourOfDay, mInitialMinute, mInitialSeconds, "");
         
         setButton(context.getText(R.string.time_set), this);
         setButton2(context.getText(R.string.cancel), (OnClickListener) null);
         //setIcon(android.R.drawable.ic_dialog_time);
-        
+        setMessage("H:M:S");
+
         LayoutInflater inflater = 
                 (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.time_picker_dialog, null);
+        View view = inflater.inflate(R.layout.time_picker_widget, null);
         setView(view);
         mTimePicker = (TimePicker) view.findViewById(R.id.timePicker);
 
@@ -132,7 +134,7 @@ public class MyTimePickerDialog extends AlertDialog implements OnClickListener,
     }
 
     public void onTimeChanged(TimePicker view, int hourOfDay, int minute, int seconds) {
-        updateTitle(hourOfDay, minute, seconds);
+        updateTitle(hourOfDay, minute, seconds, "");
     }
     
     public void updateTime(int hourOfDay, int minutOfHour, int seconds) {
@@ -141,7 +143,7 @@ public class MyTimePickerDialog extends AlertDialog implements OnClickListener,
         mTimePicker.setCurrentSecond(seconds);
     }
     
-    private void updateTitle(int hour, int minute, int seconds) {
+    private void updateTitle(int hour, int minute, int seconds, String title) {
         String sHour = String.format("%02d", hour);
         String sMin = String.format("%02d", minute);
         String sSec = String.format("%02d", seconds);
@@ -169,7 +171,7 @@ public class MyTimePickerDialog extends AlertDialog implements OnClickListener,
         mTimePicker.setCurrentSecond(seconds);
         mTimePicker.setIs24HourView(savedInstanceState.getBoolean(IS_24_HOUR));
         mTimePicker.setOnTimeChangedListener(this);
-        updateTitle(hour, minute, seconds);
+        updateTitle(hour, minute, seconds, "");
     }
     
    
