@@ -3,9 +3,6 @@ package com.example.yasiruw.temprecord.comms;
 
 public class CRC16 {
 
-    public byte crcHi;
-
-    public byte crcLo;
 
     private int crc = 0xFFFF;
 
@@ -15,9 +12,8 @@ public class CRC16 {
 
         // byte[] testBytes = "123456789".getBytes("ASCII");
 
-        byte[] bytes = data;
 
-        for (byte b : bytes) {
+        for (byte b : data) {
             for (int i = 0; i < 8; i++) {
                 boolean bit = ((b   >> (7-i) & 1) == 1);
                 boolean c15 = ((crc >> 15    & 1) == 1);

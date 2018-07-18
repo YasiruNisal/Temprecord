@@ -56,6 +56,52 @@
     </LinearLayout>
 
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="0dp"
+        android:background="@drawable/layout_txtbg"
+        android:orientation="vertical">
+
+
+
+
+        <TextView
+            android:id="@+id/info19"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="3dp"
+            android:paddingTop="10dp"
+            android:text="App Units"
+            android:textColorHighlight="@color/ublox_blue_color"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:paddingTop="3dp"
+            android:background="@android:color/darker_gray"/>
+
+
+        <Switch
+            android:id="@+id/imperial"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:paddingLeft="5dp"
+            android:paddingTop="5dp"
+            android:text="Metric Units"
+            android:thumbTint="@color/ublox_blue_color" />
+
+
+
+
+    </LinearLayout>
+
+
 
 
     <LinearLayout

@@ -178,7 +178,7 @@ public class classMessages {
             i+= dateRtc.TypeSize;
             i+= uVal16.ByteSize;
             i+= uVal16.ByteSize;
-            i+= mt2_chData.ByteSize;
+            i+= MT2_CHData.ByteSize;
             return i;
         }
     }

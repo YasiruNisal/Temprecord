@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import static android.content.ContentValues.TAG;
+
 /**
  * Created by Yasiru on 7/03/2018.
  */
@@ -75,14 +77,14 @@ public class MT2Values  {
 
 
             HasBeenRead = false;
-            RawData = new ArrayList<Byte>();
-            Data = new ArrayList<sVal_Data>();
-            TagData = new ArrayList<sVal_TagData>();
+            RawData = new ArrayList<>();
+            Data = new ArrayList<>();
+            TagData = new ArrayList<>();
             ch0Stats = new sVal_MKTStats(60,-30);
             ch1Stats = new sVal_Stats(90, 20);
         }
 
-        public MT2Mem_values(ArrayList<Byte> data, Calendar firstLogSample, int Ch0Hi, int Ch0Lo, int Ch1Hi, int Ch1Lo, int samplePeriod,
+        public MT2Mem_values(ArrayList<Byte> data, Date firstLogSample, int Ch0Hi, int Ch0Lo, int Ch1Hi, int Ch1Lo, int samplePeriod,
         boolean ch0Enable, boolean ch1Enable) throws ParseException {
             super(ByteSize);
 
@@ -91,21 +93,20 @@ public class MT2Values  {
 
             if(data == null || data.size() == 0){
                 HasBeenRead = false;
-                RawData = new ArrayList<Byte>();
-                Data = new ArrayList<sVal_Data>();
-                TagData = new ArrayList<sVal_TagData>();
+                RawData = new ArrayList<>();
+                Data = new ArrayList<>();
+                TagData = new ArrayList<>();
             }else{
                 HasBeenRead = true;
                 RawData = data;
-                Log.i("READ" , " Raw data size" + RawData.size());
+                //Log.i("READ" , " Raw data size" + RawData.size());
                 FillData(RawData, firstLogSample, samplePeriod, ch0Enable, ch1Enable);
             }
         }
 
-        private void FillData(ArrayList<Byte> rawData, Calendar firstLoggedSample, int samplePeriod, boolean ch0Enable, boolean ch1Enable) throws ParseException {
-            Data = new ArrayList<sVal_Data>();
-            TagData = new ArrayList<sVal_TagData>();
-
+        private void FillData(ArrayList<Byte> rawData, Date firstLoggedSample, int samplePeriod, boolean ch0Enable, boolean ch1Enable) throws ParseException {
+            Data = new ArrayList<>();
+            TagData = new ArrayList<>();
             boolean hasFlag = false;
             short sample1 = 0;
             short sample2 = 0;
@@ -113,7 +114,7 @@ public class MT2Values  {
             sVal_Data tempData;
 
             long SamplePeriod = samplePeriod;
-            Calendar sampleDateTime = firstLoggedSample;
+            Date sampleDateTime = firstLoggedSample;
             //when both channels are enabled
             if(ch1Enable && ch0Enable){
                 //Log.i("READ" , " Coming into Channel 1 and channel 2 "+ rawData.size());
@@ -129,16 +130,18 @@ public class MT2Values  {
                     hasFlag = ((sample1 & (0x0002)) != 0);
 
 
-                    tempData = new sVal_Data(sample, sampleDateTime.getTime(), hasFlag, (sample1 >> 2), (sample2 >> 2));
-                    ch0Stats.Update(tempData.valCh0, sample, sampleDateTime.getTime());
-                    ch1Stats.Update(tempData.valCh1, sample, sampleDateTime.getTime());
+                    tempData = new sVal_Data(sample, sampleDateTime, hasFlag, (sample1 >> 2), (sample2 >> 2));
+                    ch0Stats.Update(tempData.valCh0, sample, sampleDateTime);
+                    ch1Stats.Update(tempData.valCh1, sample, sampleDateTime);
                     Data.add(tempData);
                     if (hasFlag) {
                         TagData.add(new sVal_TagData(sampleDateTime));
                     }
-                    Log.i("READ" , " Sample size " + sample);
+                    //Log.i("READ" , " Sample size " + sample);
                     sample++;
-                    sampleDateTime.add(Calendar.SECOND,samplePeriod);
+                    Calendar calendar = queryStrings.toCalendar(sampleDateTime);
+                    calendar.add(Calendar.SECOND, samplePeriod);
+                    sampleDateTime = calendar.getTime();
                 }
 
                 ch0Stats.Finalize(rawData.size() / 4, samplePeriod);
@@ -153,8 +156,8 @@ public class MT2Values  {
                     hasFlag = ((sample1 & (0x0002)) != 0);
 
 
-                    tempData = new sVal_Data(sample, sampleDateTime.getTime(), hasFlag, (sample1 >> 2), 0);
-                    ch0Stats.Update(tempData.valCh0, sample, sampleDateTime.getTime());
+                    tempData = new sVal_Data(sample, sampleDateTime, hasFlag, (sample1 >> 2), 0);
+                    ch0Stats.Update(tempData.valCh0, sample, sampleDateTime);
                     Data.add(tempData);
                     if (hasFlag)
                     {
@@ -162,9 +165,9 @@ public class MT2Values  {
                     }
 
                     sample++;
-                    Calendar calendar = sampleDateTime;
+                    Calendar calendar = queryStrings.toCalendar(sampleDateTime);
                     calendar.add(Calendar.SECOND, samplePeriod);
-                    sampleDateTime = calendar;
+                    sampleDateTime = calendar.getTime();
 
                 }
 
@@ -179,8 +182,8 @@ public class MT2Values  {
                     sample2 |= (short)(rawData.get(i) << 8);
                     hasFlag = ((sample2 & (0x0002)) != 0);
 
-                    tempData = new sVal_Data(sample, sampleDateTime.getTime(), hasFlag, 0, (sample2 >> 2));
-                    ch1Stats.Update(tempData.valCh1, sample, sampleDateTime.getTime());
+                    tempData = new sVal_Data(sample, sampleDateTime, hasFlag, 0, (sample2 >> 2));
+                    ch1Stats.Update(tempData.valCh1, sample, sampleDateTime);
                     Data.add(tempData);
                     if (hasFlag)
                     {
@@ -188,7 +191,9 @@ public class MT2Values  {
                     }
 
                     sample++;
-                    sampleDateTime.add(Calendar.SECOND,samplePeriod);
+                    Calendar calendar = queryStrings.toCalendar(sampleDateTime);
+                    calendar.add(Calendar.SECOND, samplePeriod);
+                    sampleDateTime = calendar.getTime();
                 }
 
                 ch1Stats.Finalize(rawData.size() / 2, samplePeriod);
@@ -229,22 +234,22 @@ public class MT2Values  {
         /// The tag data constructor. Just requires a timestamp for when the tag was placed.
         /// </summary>
         /// <param name="time">The timestamp indicating the time the tag was placed/added</param>
-        public sVal_TagData(Calendar time)
+        public sVal_TagData(Date time)
         {
             valTime = time;
         }
 
         /// <summary>An internal UTC timestamp used in the constructor to indicate the timestamp when the tag was placed/added</summary>
-        protected Calendar valTime;
+        protected Date valTime;
 
         /// <summary>The UTC timestamp for the tag</summary>
-        public Calendar ValTimeUTC()
+        public Date ValTimeUTC()
         {
              return valTime;
         }
 
         /// <summary>The local PC timestamp for the tag</summary>
-        public Calendar ValTimeLocal()
+        public Date ValTimeLocal()
         {
             return valTime;
         }
@@ -269,8 +274,8 @@ public class MT2Values  {
         public sVal_Data(int number, Date time, boolean tag, int ch0, int ch1)
         {
             ValSample = number;
-
             valTime = time;
+            Log.i(TAG, "date " + time.getTime()/1000 + " +++++++++++++++++++");
             ValTag = tag;
             valCh0 = ch0;
             //valueCh0F = AppConstants.UnitConv(valueCh0);
@@ -407,7 +412,7 @@ public class MT2Values  {
             TotalPercentWithin = 100.0 - TotalPercent;
             TotalTimeWithin = queryStrings.Period(samplePeriod * TotalLimitWithin*1000);
 
-            Log.d("____++++++++++++_______", TotalTimeWithin +" "+ samplePeriod+ " "+TotalLimitWithin );
+            //Log.d("____++++++++++++_______", TotalTimeWithin +" "+ samplePeriod+ " "+TotalLimitWithin );
         }
 
 

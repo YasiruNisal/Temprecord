@@ -7,8 +7,7 @@ import android.bluetooth.BluetoothGattCharacteristic;
  */
 
 public interface BLEFragmentI {
-    public void onBLERead();
-    public void onBLEWrite( byte[] value);
-    public boolean onConnectionchange();
-    public void BLEDisconnect();
+     void onBLERead();
+     void onBLEWrite( byte[] value);
+     void BLEDisconnect();
 }

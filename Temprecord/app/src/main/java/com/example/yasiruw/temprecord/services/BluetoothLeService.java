@@ -16,6 +16,7 @@ import android.os.Binder;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.example.yasiruw.temprecord.utils.BLEQueue;
@@ -70,7 +71,7 @@ public class BluetoothLeService extends Service {
 
             String intentAction;
             if (newState == BluetoothProfile.STATE_CONNECTED) {
-                Log.d("TAG", "Going in to gatt connect");
+                //Log.d("TAG", "Going in to gatt connect");
                 intentAction = ACTION_GATT_CONNECTED;
                 mConnectionState = STATE_CONNECTED;
                 broadcastUpdate(intentAction);
@@ -128,7 +129,8 @@ public class BluetoothLeService extends Service {
      */
     private void broadcastUpdate(final String action) {
         final Intent intent = new Intent(action);
-        sendBroadcast(intent);
+        //sendBroadcast(intent);
+        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
     }
 
     /**
@@ -138,7 +140,7 @@ public class BluetoothLeService extends Service {
     private void broadcastRssi(int rssi) {
         Intent intent = new Intent(ACTION_RSSI_UPDATE);
         intent.putExtra(EXTRA_RSSI, rssi);
-        sendBroadcast(intent);
+        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
     }
 
     /**
@@ -154,7 +156,7 @@ public class BluetoothLeService extends Service {
         intent.putExtra(EXTRA_DATA, characteristic.getValue());
         intent.putExtra(EXTRA_TYPE, itemType);
 
-        sendBroadcast(intent);
+        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
     }
 
     public class LocalBinder extends Binder {
@@ -181,14 +183,14 @@ public class BluetoothLeService extends Service {
         if (mBluetoothManager == null) {
             mBluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
             if (mBluetoothManager == null) {
-                Log.e(TAG, "Unable to initialize BluetoothManager.");
+                //Log.e(TAG, "Unable to initialize BluetoothManager.");
                 return false;
             }
         }
 
         mBluetoothAdapter = mBluetoothManager.getAdapter();
         if (mBluetoothAdapter == null) {
-            Log.e(TAG, "Unable to obtain a BluetoothAdapter.");
+            //Log.e(TAG, "Unable to obtain a BluetoothAdapter.");
             return false;
         }
 
@@ -218,7 +220,7 @@ public class BluetoothLeService extends Service {
      * @return Return true if the connection is initiated successfully.
      */
     public boolean connect(final String address) {
-        Log.d("TAG", "Connect to BLE service");
+        //Log.d("TAG", "Connect to BLE service");
         // Init the request queue for this device
         bleQueue = new BLEQueue();
 
@@ -246,9 +248,9 @@ public class BluetoothLeService extends Service {
         // We want to directly connect to the device, so we are setting the autoConnect
         // parameter to false.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            mBluetoothGatt = device.connectGatt(this, false, mGattCallback, TRANSPORT_LE);
+            mBluetoothGatt = device.connectGatt(this, true, mGattCallback, TRANSPORT_LE);
         } else {
-            mBluetoothGatt = device.connectGatt(this, false, mGattCallback);
+            mBluetoothGatt = device.connectGatt(this, true, mGattCallback);
         }
         mBluetoothDeviceAddress = address;
         mConnectionState = STATE_CONNECTING;

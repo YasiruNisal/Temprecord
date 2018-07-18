@@ -1,16 +1,22 @@
 package com.example.yasiruw.temprecord.comms;
 
+import android.content.Context;
 import android.util.Log;
 
 
 import com.example.yasiruw.temprecord.Types.dataType;
+import com.example.yasiruw.temprecord.activities.MainActivity;
 import com.example.yasiruw.temprecord.utils.CHUserData;
 import com.example.yasiruw.temprecord.utils.CommsChar;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.zip.DataFormatException;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by Yasiru on 13-Dec-17.
@@ -40,11 +46,11 @@ public class BaseCMD {
     public boolean energysave;
     public boolean isLoopOverwriteOverFlow;
     public String Password;
-    public Calendar startDateTime;
-    public Calendar stoponDateTime;
+    public Date startDateTime;
+    //public Calendar stoponDateTime;
     public int startDelay;
     public int samplePeriod;
-    public int startdatetime;
+    private int startdatetime;
     public String password;
     public int ch1Hi;
     public int numberstopon;
@@ -56,11 +62,21 @@ public class BaseCMD {
     public int SamplePointer;
     public boolean ch1Enable;
     public boolean ch2Enable;
-    public int commentTextsize;
-    public Calendar timestartstopdatetime;
+    private int commentTextsize;
+    public Date timestartstopdatetime;
     public int state;
     public String usercomment;
     public String serialno;
+    public String firmware;
+    private Context context;
+
+    public Date dstart;
+    public Date dstop;
+    public Date dmanu;
+    public Date dman;
+    public int PAGESIZE = 512;
+    public int TOTALMEMORY = 16384;
+
 
 
     public int CMDStart(byte[] start){
@@ -119,6 +135,7 @@ public class BaseCMD {
                 returndata.add(msg.serial_12.ToString());
                 serialno = msg.serial_12.ToString();
                 returndata.add(msg.firmware.ToString());
+                firmware = msg.firmware.ToString();
                 returndata.add(msg.type.getGenString());
                 returndata.add(msg.type.getTyString());
                 returndata.add(msg.type.getVarientString());
@@ -132,8 +149,8 @@ public class BaseCMD {
 
     public ArrayList<String> CMDFlash(byte[] flash){
         //dont need to check if the first byte is ACk here since its already done before putting data in here
-        ArrayList<Byte> data = new ArrayList<Byte>();
-        ArrayList<String> returndata = new ArrayList<String>();
+        ArrayList<Byte> data = new ArrayList<>();
+        ArrayList<String> returndata = new ArrayList<>();
         classMessages.TWFlash msg = null;
         for(int  i = 0; i < flash.length; i++) data.add(flash[i]);
         //removing the first 46 bytes since its used for usbproductstring. we can always add it later on
@@ -143,11 +160,8 @@ public class BaseCMD {
         if(data.size() == classMessages.TWFlash.ByteSize){
             msg = new classMessages.TWFlash(data);
             msg.dateRtc.getValue();
-            String manudate = "" + msg.dateRtc.getValue().get(Calendar.YEAR)+"/"+(msg.dateRtc.getValue().get(Calendar.MONTH)+1)+"/"+msg.dateRtc.getValue().get(Calendar.DAY_OF_MONTH
-            )+" "+ msg.dateRtc.getValue().get(Calendar.HOUR)+":"+msg.dateRtc.getValue().get(Calendar.MINUTE)+":"+msg.dateRtc.getValue().get(Calendar.SECOND)+" "+ queryStrings.PMorAM(msg.dateRtc.getValue().get(Calendar.AM_PM));
-
-
-            returndata.add(manudate);
+            dmanu = msg.dateRtc.getValue();
+            returndata.add("");
             returndata.add(""+msg.uval16.getValue()+"");
             MemorySizeMax = msg.MemorySizeMax.getValue();
             //Log.d("******0", " " + msg.uval16.getValue());
@@ -158,8 +172,8 @@ public class BaseCMD {
 
     public ArrayList<String> CMDRamRead(byte[] ram){
         //dont need to check if the first byte is ACk here since its already done before putting data in here
-        ArrayList<Byte> data = new ArrayList<Byte>();
-        ArrayList<String> returndata = new ArrayList<String>();
+        ArrayList<Byte> data = new ArrayList<>();
+        ArrayList<String> returndata = new ArrayList<>();
         classMessages.RamRead msg = null;
         for(int  i = 0; i < ram.length; i++) data.add(ram[i]);
 
@@ -182,10 +196,8 @@ public class BaseCMD {
             numberofsamples = msg.uval32.getValue();
 
             msg.dateRtc.getValue();
-            String manudate = "" + msg.dateRtc.getValue().get(Calendar.YEAR)+"/"+(msg.dateRtc.getValue().get(Calendar.MONTH)+1)+"/"+msg.dateRtc.getValue().get(Calendar.DAY_OF_MONTH
-            )+" "+ msg.dateRtc.getValue().get(Calendar.HOUR)+":"+msg.dateRtc.getValue().get(Calendar.MINUTE)+":"+msg.dateRtc.getValue().get(Calendar.SECOND)+" "+ queryStrings.PMorAM(msg.dateRtc.getValue().get(Calendar.AM_PM));
-
-            returndata.add(manudate);
+            dman = msg.dateRtc.getValue();
+            returndata.add("");
             if((msg.mt2_chRam.chValue.getDoubleValue()/10) > 3000){
                 returndata.add("0");
                 returndata.add("0");
@@ -202,9 +214,9 @@ public class BaseCMD {
                 returndata.add("0");
                 returndata.add("0");
             }else{
-                returndata.add("" + (msg.mt2_chRam1.chValue.getDoubleValue()));
-                returndata.add("" + (msg.mt2_chRam1.valHi.getDoubleValue()));
-                returndata.add("" + (msg.mt2_chRam1.valLo.getDoubleValue()));
+                returndata.add("" + (msg.mt2_chRam1.chValue.getDoubleValue()/ 10));
+                returndata.add("" + (msg.mt2_chRam1.valHi.getDoubleValue()/ 10));
+                returndata.add("" + (msg.mt2_chRam1.valLo.getDoubleValue()/ 10));
             }
             returndata.add("" + msg.mt2_chRam1.delayHi.value);
             returndata.add(""+msg.batLife.value);//17
@@ -217,8 +229,8 @@ public class BaseCMD {
     }
 
     public ArrayList<String> CMDUserRead(byte[] user){
-        ArrayList<Byte> data = new ArrayList<Byte>();
-        ArrayList<String> returndata = new ArrayList<String>();
+        ArrayList<Byte> data = new ArrayList<>();
+        ArrayList<String> returndata = new ArrayList<>();
         classMessages.MT2_USERFlash msg = null;
         for(int  i = 0; i < user.length; i++) data.add(user[i]);
 
@@ -231,13 +243,10 @@ public class BaseCMD {
             //Log.d("******0", msg.tripSamples.getValue()+"");
 
             startDateTime = msg.dateStarted.getValue();//**********************************************
-            Log.d("___________", startDateTime + "");
-            String dstart = "" + msg.dateStarted.getValue().get(Calendar.YEAR)+"/"+(msg.dateStarted.getValue().get(Calendar.MONTH)+1)+"/"+msg.dateStarted.getValue().get(Calendar.DAY_OF_MONTH
-            )+" "+ msg.dateStarted.getValue().get(Calendar.HOUR)+":"+msg.dateStarted.getValue().get(Calendar.MINUTE)+":"+msg.dateStarted.getValue().get(Calendar.SECOND)+" "+ queryStrings.PMorAM(msg.dateStarted.getValue().get(Calendar.AM_PM));
-            returndata.add(dstart);
-            String dstop = "" + msg.dateStopped.getValue().get(Calendar.YEAR)+"/"+(msg.dateStopped.getValue().get(Calendar.MONTH)+1)+"/"+msg.dateStopped.getValue().get(Calendar.DAY_OF_MONTH
-            )+" "+ msg.dateStopped.getValue().get(Calendar.HOUR)+":"+msg.dateStopped.getValue().get(Calendar.MINUTE)+":"+msg.dateStopped.getValue().get(Calendar.SECOND)+" "+ queryStrings.PMorAM(msg.dateStopped.getValue().get(Calendar.AM_PM));
-            returndata.add(dstop);
+            dstart = msg.dateStarted.getValue();
+            returndata.add("");
+            dstop = msg.dateStopped.getValue();
+            returndata.add("");
 
             returndata.add(msg.totalTrips.getValue()+"");
             returndata.add(msg.totalSamples.getValue()+"");
@@ -294,9 +303,9 @@ public class BaseCMD {
             numberstopon = msg.mt2_userData.stoponsamples.getValue();
             startdatetime = msg.mt2_userData.startdatetime.getValue();
             commentTextsize = msg.mt2_userData.textsize.getValue();
-            returndata.add(msg.mt2_userData.userString._value.toString());
-            usercomment = msg.mt2_userData.userString._value.toString();
-            returndata.add(msg.mt2_userData.blenameString._value.toString());
+            returndata.add(msg.mt2_userData.userString._value);
+            usercomment = msg.mt2_userData.userString._value;
+            returndata.add(msg.mt2_userData.blenameString._value);
             timestartstopdatetime = msg.mt2_userData.timestartdadtetime.getValue();
 
         }
@@ -308,9 +317,9 @@ public class BaseCMD {
     public ArrayList<String> CMDState(byte[] state){
 
         classMessages.Msg_Bat_state msg = null;
-        ArrayList<String> returndata = new ArrayList<String>();
+        ArrayList<String> returndata = new ArrayList<>();
         if(state[0] == commsChar.CMD_ACK){
-            ArrayList<Byte> data = new ArrayList<Byte>();
+            ArrayList<Byte> data = new ArrayList<>();
             for(int  i = 0; i < state.length; i++) data.add(state[i]);
 
             data.remove(0);
@@ -335,13 +344,13 @@ public class BaseCMD {
 
     void printarray(ArrayList<Byte> data){
         for(int i = 0; i < data.size(); i++) {
-            Log.d("INFO2",data.get(i) +"++++++++++");
+            //Log.d("INFO2",data.get(i) +"++++++++++");
         }
     }
 
 
     public byte[] Write_USERFlags(boolean[] flags) {
-        ArrayList<Byte> data = new ArrayList<Byte>();
+        ArrayList<Byte> data = new ArrayList<>();
         classMessages.MT2_USERFlash msg = new classMessages.MT2_USERFlash();
 
         msg.mt2_userData.mt2_userFlags.imperialUnits.setValue(flags[0]);
@@ -376,7 +385,7 @@ public class BaseCMD {
 
 
     public byte[] Write_USERCH1(CHUserData chUserData) {
-        ArrayList<Byte> data = new ArrayList<Byte>();
+        ArrayList<Byte> data = new ArrayList<>();
         classMessages.MT2_USERFlash msg = new classMessages.MT2_USERFlash();
 
         msg.mt2_userData.mt2_chUser.enable.setValue(chUserData.getCh1enable());
@@ -407,7 +416,7 @@ public class BaseCMD {
 
 
     public byte[] Write_USERSamplePeriod(long seconds) {
-        ArrayList<Byte> data = new ArrayList<Byte>();
+        ArrayList<Byte> data = new ArrayList<>();
         classMessages.MT2_USERFlash msg = new classMessages.MT2_USERFlash();
 
         msg.mt2_userData.samplePeriod.value = (int)seconds;
@@ -425,7 +434,7 @@ public class BaseCMD {
 
 
     public byte[] Write_USERStartDelay(long seconds) {
-        ArrayList<Byte> data = new ArrayList<Byte>();
+        ArrayList<Byte> data = new ArrayList<>();
         classMessages.MT2_USERFlash msg = new classMessages.MT2_USERFlash();
 
         msg.mt2_userData.startDelay.value = (int)seconds;
@@ -442,7 +451,7 @@ public class BaseCMD {
     }
 
     public byte[] Write_USERStartdatetimeDelay(long seconds) {
-        ArrayList<Byte> data = new ArrayList<Byte>();
+        ArrayList<Byte> data = new ArrayList<>();
         classMessages.MT2_USERFlash msg = new classMessages.MT2_USERFlash();
 
         msg.mt2_userData.startdatetime.value = (int)seconds;
@@ -460,7 +469,7 @@ public class BaseCMD {
 
 
     public byte[] Write_USERStoponsample(int samples) {
-        ArrayList<Byte> data = new ArrayList<Byte>();
+        ArrayList<Byte> data = new ArrayList<>();
         classMessages.MT2_USERFlash msg = new classMessages.MT2_USERFlash();
 
         msg.mt2_userData.stoponsamples.value = samples;
@@ -477,7 +486,7 @@ public class BaseCMD {
     }
 
     public byte[] Write_USERpassword(String pass) {
-        ArrayList<Byte> data = new ArrayList<Byte>();
+        ArrayList<Byte> data = new ArrayList<>();
         classMessages.MT2_USERFlash msg = new classMessages.MT2_USERFlash();
 
         msg.mt2_userData.password.setHasPassword(pass);
@@ -494,7 +503,7 @@ public class BaseCMD {
     }
 
     public byte[] Write_USERString(String comment) {
-        ArrayList<Byte> data = new ArrayList<Byte>();
+        ArrayList<Byte> data = new ArrayList<>();
         classMessages.MT2_USERFlash msg = new classMessages.MT2_USERFlash();
 
 
@@ -513,7 +522,7 @@ public class BaseCMD {
     }
 
     public byte[] Write_BLEnameString(String comment) {
-        ArrayList<Byte> data = new ArrayList<Byte>();
+        ArrayList<Byte> data = new ArrayList<>();
         classMessages.MT2_USERFlash msg = new classMessages.MT2_USERFlash();
 
 
@@ -531,13 +540,13 @@ public class BaseCMD {
         return rd;
     }
 
-    public byte[] WriteRTCStartDateTime(Calendar date){
+    public byte[] WriteRTCStartDateTime(Date date){
 
-
-        ArrayList<Byte> data = new ArrayList<Byte>();
+        Log.i(TAG,"DateRTC+++++++ " + date);
+        ArrayList<Byte> data = new ArrayList<>();
         classMessages.MT2_USERFlash msg = new classMessages.MT2_USERFlash();
 
-        msg.mt2_userData.timestartdadtetime.value = date;
+        msg.mt2_userData.timestartdadtetime.value = queryStrings.toCalendar(date);
         msg.mt2_userData.timestartdadtetime.ToByte(data);
 
         int i = 0;
@@ -554,13 +563,16 @@ public class BaseCMD {
 
     public byte[] WriteRTC(){
 
-        ArrayList<Byte> date = new ArrayList<Byte>();
+        ArrayList<Byte> date = new ArrayList<>();
 
         date.add(commsChar.CMD_RTC);
         date.add(commsChar.RTC_SET);
 
-        Calendar cal = Calendar.getInstance();
-        Log.d("======================", " "+ cal.get(Calendar.YEAR) + " " + cal.get(Calendar.DAY_OF_MONTH) + " " + cal.get(Calendar.HOUR) + " " + cal.get(Calendar.HOUR_OF_DAY));
+//        Date d = Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime();
+        //Log.i(TAG,"DateRTC+ " + d);
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));//queryStrings.toCalendar(d);
+        //cal.setTimeZone(TimeZone.getTimeZone("UTC"));
+        //Log.d("======================", " "+ cal.get(Calendar.YEAR) + " " + cal.get(Calendar.DAY_OF_MONTH) + " " + cal.get(Calendar.HOUR) + " " + cal.get(Calendar.HOUR_OF_DAY));
         new dataType.dateRtc(cal).ToByte(date);
 
         int i = 0;
@@ -572,11 +584,12 @@ public class BaseCMD {
 
 
 
+
         return rd;
     }
 
     public byte[] ReadRTC(){
-        ArrayList<Byte> date = new ArrayList<Byte>();
+        ArrayList<Byte> date = new ArrayList<>();
 
         date.add(commsChar.CMD_RTC);
         date.add(commsChar.RTC_GET);
@@ -597,7 +610,7 @@ public class BaseCMD {
 
 
     public byte[] WritePassword(){
-        ArrayList<Byte> date = new ArrayList<Byte>();
+        ArrayList<Byte> date = new ArrayList<>();
 
 
         date.add((byte)0x08);
@@ -609,7 +622,7 @@ public class BaseCMD {
         date.add((byte)0xC4);
         date.add((byte)0x9B);
         date.add((byte)0x19);
-        date.add((byte)0xF9);
+        date.add((byte)0xF9);//10
 
 
         int i = 0;

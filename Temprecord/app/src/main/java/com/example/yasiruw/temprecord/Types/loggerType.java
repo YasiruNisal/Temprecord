@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.example.yasiruw.temprecord.utils.CommsChar;
 
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 
@@ -62,10 +63,10 @@ public  class loggerType {
             super(ByteSize);
             Minor = data.get(0);
             Major = data.get(1);
-            Log.d("INFO4", "__________________________" + data.size() + " " +data.get(0) + " " +data.get(1) );
+            //Log.d("INFO4", "__________________________" + data.size() + " " +data.get(0) + " " +data.get(1) );
             data.remove(0);
             data.remove(0);
-            Log.d("INFO4", "__________________________" + data.size());
+            //Log.d("INFO4", "__________________________" + data.size());
         }
 
         /// <summary>
@@ -183,7 +184,7 @@ public  class loggerType {
         /// <param name="data">The list of bytes to extract the LoggerType from</param>
         public LoggerType(ArrayList<Byte> data){
             super(ByteSize);
-            Log.d("INFO99", "000000000 "+ data.get(0));
+            //Log.d("INFO99", "000000000 "+ data.get(0));
 
 
 //
@@ -1014,10 +1015,12 @@ public  class loggerType {
         @Override
         public void ToByte(ArrayList<Byte> data)
         {
-            byte[] b = _value.getBytes(Charset.forName("UTF-8"));
+            byte[] b = _value.getBytes(Charset.forName("UTF-16LE"));
             for(int j = 0; j < b.length; j++){
-                data.add(b[j]);
+                    data.add(b[j]);
             }
+
+
         }
 
     }

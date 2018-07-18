@@ -20,15 +20,15 @@ android {
 
 dependencies {
 
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:support-v4:27.0.2'
-    compile 'com.android.support:design:27.0.2'
-    compile project(':libraryMenu')
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:support-v13:27.1.1'
+    implementation 'com.android.support:design:27.1.1'
+    implementation project(':libraryMenu')
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
-    compile 'com.google.code.gson:gson:2.7'
-    compile 'com.kovachcode:timePickerWithSeconds:1.0.1'
-    compile 'com.wdullaer:materialdatetimepicker:3.5.1'
+    implementation 'com.google.code.gson:gson:2.8.0'
+    implementation 'com.kovachcode:timePickerWithSeconds:1.0.1'
+    implementation 'com.wdullaer:materialdatetimepicker:3.5.1'
 
 
 }

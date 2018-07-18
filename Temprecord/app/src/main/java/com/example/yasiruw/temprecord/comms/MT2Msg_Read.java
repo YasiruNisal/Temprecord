@@ -43,6 +43,9 @@ public class MT2Msg_Read {
     /// <summary>The remaining size of bytes to read from the memory.</summary>
     public int RemainingSize;
 
+    public int reached = 0;
+    public int top = 32768;
+    int s= 0;
 
 
     public MT2Msg_Read(byte location, int address, int readSize, int bufferSize, int allowedRetries)
@@ -80,14 +83,12 @@ public class MT2Msg_Read {
     {
         int readSize = msg[2];
 
-        short s = (short) ((msg[3] & 0xff) | (msg[4] << 8));
 
+        //int s =  Math.abs((msg[3] & 0xff) | (msg[4] << 8));
+        int s = ((msg[4] & 0xff) << 8) | (msg[3] & 0xff);
         int readAddress = (int) s;
-//        int readAddress = (0xFF & msg[3]);
-//        readAddress += ((0xFF & msg[4])<< 8);
-        //int readAddress = (int)((short)(msg[3]) + (short)(msg[4] << 8));
 
-        Log.d("++++", readAddress+ " == "+ currentAddress + " ///  "+ RemainingSize+ " -- " + msg.length);
+        //Log.d("++++", readAddress+ " == "+ currentAddress + " ///  "+ RemainingSize+ " -- " +  Math.abs(msg[4] << 8) + " " + (msg[3] & 0xff));
         //Check that the readAddress returned matches the currentAddress pointer in this class
         if (readAddress == currentAddress)
         {
@@ -95,10 +96,10 @@ public class MT2Msg_Read {
             System.arraycopy(msg, 5, memoryData, readAddress, readSize);
             currentAddress += readSize;
             RemainingSize -= readSize;
-            Log.d("++++", readSize+ " == "+ currentBuffer + " /  "+ RemainingSize);
+            //Log.d("++++", readSize+ " == "+ currentBuffer + " /  "+ RemainingSize);
             //Check that the readSize matches what we expected from the current buffer
             if (readSize == currentBuffer)
-            {
+            {   reached = 0;
                 return true;
             }
             return Boolean.parseBoolean(null);
@@ -144,7 +145,7 @@ public class MT2Msg_Read {
         if(msgIn[0] == commsChar.CMD_ACK){
             boolean updateStatus = UpdateMessage(msgIn);
             //All good!
-            Log.i("USB", "update staus true/false " + updateStatus);
+            //Log.i("USB", "update staus true/false " + updateStatus);
             if (updateStatus == true) {
 
                 if (RemainingSize == 0) {

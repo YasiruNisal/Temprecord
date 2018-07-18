@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -263,6 +264,7 @@ public class TXT_FILE
 //            }
 //return REPORT;
         }
+//        Log.i("parameters", m_Data);
         return m_Data;
     }
 }

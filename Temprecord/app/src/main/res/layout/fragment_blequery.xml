@@ -35,7 +35,7 @@
                     android:paddingLeft="10dp"
                     android:paddingTop="1dp"
                     android:text=""
-                    android:layout_weight=".5"
+                    android:layout_weight=".6"
                     android:textColor="@color/white_color"
                     android:textSize="20sp" />
 
@@ -47,7 +47,7 @@
                     android:paddingTop="1dp"
                     android:gravity="right"
                     android:text=""
-                    android:layout_weight=".5"
+                    android:layout_weight=".4"
                     android:textColor="@color/white_color" />
 
             </LinearLayout>
@@ -234,7 +234,7 @@
                         android:paddingLeft="3dp"
                         android:paddingBottom="3dp"
                         android:paddingTop="10dp"
-                        android:text="Logger Details"
+                        android:text="@string/LoggerDetails"
                         android:textSize="@dimen/Heading_size"
                         android:textStyle="bold" />
 
@@ -253,7 +253,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Logger Family : "
+                        android:text="@string/LoggerFamily"
                         android:textSize="15sp" />
 
                     <TextView
@@ -278,7 +278,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Logger Model : "
+                        android:text="@string/LoggerModel"
                         android:textSize="15sp" />
 
                     <TextView
@@ -301,7 +301,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Logger Firmware : "
+                        android:text="@string/LoggerFirmware"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/firmware"
@@ -324,7 +324,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Logger Serial No. : "
+                        android:text="@string/LoggerSerialNo"
                         android:textSize="15sp" />
 
                     <TextView
@@ -348,7 +348,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Logger Memory : "
+                        android:text="@string/LoggerMemory"
                         android:textSize="15sp" />
 
                     <TextView
@@ -372,7 +372,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Manufacture Data : "
+                        android:text="@string/LoggerManDate"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/manudate"
@@ -393,7 +393,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Total Samples : "
+                        android:text="@string/TotalSamples"
                         android:textSize="15sp" />
 
 
@@ -416,7 +416,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Total Trips : "
+                        android:text="@string/TotalTrips"
                         android:textSize="15sp" />
 
                     <TextView
@@ -428,6 +428,7 @@
 
 
                 <LinearLayout
+                    android:id="@+id/bleenegy"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -439,7 +440,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Bluetooth Energy Save : "
+                        android:text="@string/BLEEnergySave"
                         android:textSize="15sp" />
 
                     <TextView
@@ -484,7 +485,7 @@
                         android:paddingLeft="3dp"
                         android:paddingBottom="3dp"
                         android:paddingTop="10dp"
-                        android:text="Trip Information"
+                        android:text="@string/TripInfo"
                         android:textSize="@dimen/Heading_size"
                         android:textStyle="bold" />
 
@@ -504,7 +505,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Logging :"
+                        android:text="@string/Logging"
                         android:textSize="15sp" />
 
                     <TextView
@@ -528,7 +529,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Logger Units :"
+                        android:text="@string/LoggerUnits"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/units"
@@ -550,7 +551,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Start Delay : "
+                        android:text="@string/StartDelay"
                         android:textSize="15sp" />
 
                     <TextView
@@ -574,7 +575,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Sample Period : "
+                        android:text="@string/SamplePeriod"
                         android:textSize="15sp" />
 
                     <TextView
@@ -597,7 +598,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Trip Samples : "
+                        android:text="@string/TripSample"
                         android:textSize="15sp" />
 
                     <TextView
@@ -620,7 +621,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Logged Samples : "
+                        android:text="@string/LoggedSample"
                         android:textSize="15sp" />
 
                     <TextView
@@ -632,6 +633,7 @@
 
 
                 <LinearLayout
+                    android:id="@+id/st_at"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -643,7 +645,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Started at : "
+                        android:text="@string/StartedAt"
                         android:textSize="15sp" />
 
 
@@ -656,6 +658,7 @@
 
 
                 <LinearLayout
+                    android:id="@+id/st_by"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -667,7 +670,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Started by : "
+                        android:text="@string/StartedBy"
                         android:textSize="15sp" />
 
                     <TextView
@@ -679,6 +682,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/sp_at"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -690,7 +694,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Stopped at : "
+                        android:text="@string/StoppedAt"
                         android:textSize="15sp" />
 
                     <TextView
@@ -702,6 +706,7 @@
 
 
                 <LinearLayout
+                    android:id="@+id/sp_by"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -713,7 +718,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Stopped by : "
+                        android:text="@string/StoppedBy"
                         android:textSize="15sp" />
 
                     <TextView
@@ -724,50 +729,50 @@
                 </LinearLayout>
 
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="1.0">
+                <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="horizontal"-->
+                    <!--android:weightSum="1.0">-->
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight=".50"
-                        android:paddingLeft="10dp"
-                        android:paddingTop="10dp"
-                        android:text="First Sample : "
-                        android:textSize="15sp" />
-                    <TextView
-                        android:id="@+id/firstsample"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="15sp" />
+                    <!--<TextView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_weight=".50"-->
+                        <!--android:paddingLeft="10dp"-->
+                        <!--android:paddingTop="10dp"-->
+                        <!--android:text="@string/FirstSample"-->
+                        <!--android:textSize="15sp" />-->
+                    <!--<TextView-->
+                        <!--android:id="@+id/firstsample"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:textSize="15sp" />-->
 
-                </LinearLayout>
+                <!--</LinearLayout>-->
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="1.0">
+                <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="horizontal"-->
+                    <!--android:weightSum="1.0">-->
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight=".50"
-                        android:paddingLeft="10dp"
-                        android:paddingTop="10dp"
-                        android:text="Last Sample : "
-                        android:textSize="15sp" />
+                    <!--<TextView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_weight=".50"-->
+                        <!--android:paddingLeft="10dp"-->
+                        <!--android:paddingTop="10dp"-->
+                        <!--android:text="@string/LastSample"-->
+                        <!--android:textSize="15sp" />-->
 
-                    <TextView
-                        android:id="@+id/lastsample"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="15sp" />
+                    <!--<TextView-->
+                        <!--android:id="@+id/lastsample"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:textSize="15sp" />-->
 
-                </LinearLayout>
+                <!--</LinearLayout>-->
 
                 <Space
                     android:layout_width="match_parent"
@@ -785,7 +790,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Start with Button : "
+                        android:text="@string/StartwithButton"
                         android:textSize="15sp" />
 
                     <TextView
@@ -808,7 +813,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Start on Date Time : "
+                        android:text="@string/StartonDateTime"
                         android:textSize="15sp" />
 
                     <TextView
@@ -831,7 +836,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Loop Overwrite : "
+                        android:text="@string/LoopOverwrite"
                         android:textSize="15sp" />
 
                     <TextView
@@ -854,7 +859,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Allow placing Tags : "
+                        android:text="@string/AllowPlacingTag"
                         android:textSize="15sp" />
 
                     <TextView
@@ -877,7 +882,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Re-Use with Button : "
+                        android:text="@string/ReuseWithButton"
                         android:textSize="15sp" />
 
                     <TextView
@@ -901,7 +906,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Password Protected : "
+                        android:text="@string/PaswordProtected"
                         android:textSize="15sp" />
 
                     <TextView
@@ -929,7 +934,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Stop with Button : "
+                        android:text="@string/StopWithButton"
                         android:textSize="15sp" />
 
                     <TextView
@@ -952,7 +957,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Stop on Date Time : "
+                        android:text="@string/StoponDateTime"
                         android:textSize="15sp" />
 
                     <TextView
@@ -976,7 +981,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Stop on Sample : "
+                        android:text="@string/StoponSample"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/stoponsample"
@@ -998,7 +1003,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Stop when Full : "
+                        android:text="@string/StopWhenFull"
                         android:textSize="15sp" />
 
                     <TextView
@@ -1022,7 +1027,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Enable LCD Menu : "
+                        android:text="@string/EnableLCDMenu"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/enablelcdmenu"
@@ -1044,7 +1049,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Extended LCD Menu : "
+                        android:text="@string/ExtendLCDMenu"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/extendedlcdmenu"
@@ -1091,7 +1096,7 @@
                         android:layout_height="wrap_content"
                         android:paddingLeft="3dp"
                         android:paddingTop="10dp"
-                        android:text="Channel Information"
+                        android:text="@string/ChannelInfo"
                         android:textSize="@dimen/Heading_size"
                         android:textStyle="bold" />
 
@@ -1111,7 +1116,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Channel 1 :"
+                        android:text="@string/Channel1"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/channel1"
@@ -1134,7 +1139,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Enabled : "
+                        android:text="@string/Enabled"
                         android:textSize="15sp" />
 
                     <TextView
@@ -1158,7 +1163,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Enable Limits : "
+                        android:text="@string/EnableLimits"
                         android:textSize="15sp" />
 
                     <TextView
@@ -1181,7 +1186,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Alarm Delay : "
+                        android:text="@string/AlarmDelay"
                         android:textSize="15sp" />
 
 
@@ -1206,7 +1211,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Upper Limit : "
+                        android:text="@string/UpperLimit"
                         android:textSize="15sp" />
 
 
@@ -1231,7 +1236,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Lower Limit : "
+                        android:text="@string/LowerLimit"
                         android:textSize="15sp" />
 
                     <TextView
@@ -1259,7 +1264,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Channel 2 :"
+                        android:text="@string/Channel2"
                         android:textSize="15sp" />
 
                     <TextView
@@ -1284,7 +1289,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Enabled : "
+                        android:text="@string/Enabled"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/c2enabled"
@@ -1307,7 +1312,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Enable Limits : "
+                        android:text="@string/EnableLimits"
                         android:textSize="15sp" />
 
                     <TextView
@@ -1332,7 +1337,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Alarm Delay : "
+                        android:text="@string/AlarmDelay"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/alarmdelay2"
@@ -1355,7 +1360,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Upper Limit : "
+                        android:text="@string/UpperLimit"
                         android:textSize="15sp" />
 
                     <TextView
@@ -1380,7 +1385,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Lower Limit : "
+                        android:text="@string/LowerLimit"
                         android:textSize="15sp" />
 
                     <TextView
@@ -1429,7 +1434,7 @@
                         android:layout_height="wrap_content"
                         android:paddingLeft="3dp"
                         android:paddingTop="10dp"
-                        android:text="User Comments"
+                        android:text="@string/UserComments"
                         android:textSize="@dimen/Heading_size"
                         android:textStyle="bold" />
 

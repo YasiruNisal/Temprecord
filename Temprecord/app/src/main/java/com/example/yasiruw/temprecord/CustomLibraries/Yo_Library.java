@@ -109,7 +109,7 @@ public class Yo_Library
         }
         catch (ParseException e)
         {
-            Log.i("YO", "CONVERSION DATE ERROR !");
+            //Log.i("YO", "CONVERSION DATE ERROR !");
         }
         return(m_date);
     }
@@ -132,7 +132,7 @@ public class Yo_Library
     //====================================================================//
     public static void Error_Log(String[] m_error_message)
     {
-        Log.i("YO","#"+m_error_message[0]+m_error_message[1]+" ERROR : " + m_error_message[2] + " T: " + Get_Current_Time_in_MilliSecond());
+       // Log.i("YO","#"+m_error_message[0]+m_error_message[1]+" ERROR : " + m_error_message[2] + " T: " + Get_Current_Time_in_MilliSecond());
     }
     //====================================================================//
 
@@ -140,7 +140,7 @@ public class Yo_Library
     public static void Comment_Log(String[] m_comment_message)
     {
 
-        Log.i("YO","#"+m_comment_message[0]+" : " + m_comment_message[1] + " T: " + Get_Current_Time_in_MilliSecond());
+        //Log.i("YO","#"+m_comment_message[0]+" : " + m_comment_message[1] + " T: " + Get_Current_Time_in_MilliSecond());
     }
     //====================================================================//
 
@@ -207,7 +207,7 @@ public class Yo_Library
     //==========================================================//
     private static void New_Send_Update_internal_intent(Context context, String Package, Bundle parameters)
     {
-        Intent panel_internal_intent = new Intent("panel_internal_intent");
+        Intent panel_internal_intent = new Intent("temprecord_action_receiver");
         panel_internal_intent.setPackage(Package);
         panel_internal_intent.putExtras(parameters);
         LocalBroadcastManager.getInstance(context).sendBroadcast(panel_internal_intent);

@@ -7,161 +7,6 @@
     android:orientation="vertical"
     >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="@color/ublox_blue_color"
-        android:orientation="vertical"
-        android:paddingBottom="5dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="5dp">
-        <!--android:weightSum="1.0"-->
-        >
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="1.0">
-
-            <TextView
-                android:id="@+id/state"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingTop="1dp"
-                android:text=""
-                android:layout_weight=".5"
-                android:textColor="@color/white_color"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/time"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingTop="1dp"
-                android:gravity="right"
-                android:text=""
-                android:layout_weight=".5"
-                android:textColor="@color/white_color" />
-
-        </LinearLayout>
-
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="1.0">
-
-            <LinearLayout
-                android:layout_width="57dp"
-                android:layout_height="wrap_content"
-                android:layout_weight=".33"
-                android:gravity="left"
-                android:orientation="vertical">
-
-
-                <ImageView
-                    android:id="@+id/imageView2"
-                    android:layout_width="70dp"
-                    android:layout_height="43dp"
-                    android:gravity="left"
-                    android:paddingLeft="5dp"
-                    android:scaleX="0.7"
-                    android:scaleY="0.7"
-                    android:src="@drawable/temperature" />
-
-                <TextView
-                    android:id="@+id/temperature"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="left"
-                    android:paddingLeft="10dp"
-                    android:paddingTop="1dp"
-                    android:text=""
-                    android:textColor="@color/white_color"
-                    android:textSize="20sp" />
-
-            </LinearLayout>
-
-
-
-
-
-            <LinearLayout
-                android:layout_width="57dp"
-                android:layout_height="wrap_content"
-                android:layout_weight=".33"
-                android:gravity="center"
-                android:orientation="vertical">
-
-
-                <ImageView
-                    android:id="@+id/imageView3"
-                    android:layout_width="70dp"
-                    android:layout_height="43dp"
-                    android:gravity="center"
-                    android:paddingLeft="5dp"
-                    android:scaleX="0.7"
-                    android:scaleY="0.7"
-                    android:src="@drawable/humidity" />
-
-                <TextView
-                    android:id="@+id/humiditytop"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="10dp"
-                    android:paddingTop="1dp"
-                    android:text=""
-                    android:gravity="center"
-                    android:textColor="@color/white_color"
-                    android:textSize="20sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="57dp"
-                android:layout_height="wrap_content"
-                android:layout_weight=".33"
-                android:gravity="right"
-                android:orientation="vertical">
-
-
-                <ImageView
-                    android:id="@+id/imageView1"
-                    android:layout_width="70dp"
-                    android:layout_height="40dp"
-                    android:gravity="center"
-                    android:paddingLeft="5dp"
-                    android:scaleX="0.7"
-                    android:scaleY="0.7"
-                    android:src="@drawable/bfull" />
-
-                <TextView
-                    android:id="@+id/battery"
-                    android:layout_width="70dp"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_toStartOf="@+id/imageView"
-                    android:gravity="center"
-                    android:paddingTop="0dp"
-                    android:text=""
-                    android:textColor="@color/white_color"
-                    android:textSize="20sp" />
-
-            </LinearLayout>
-
-
-
-        </LinearLayout>
-
-
-    </LinearLayout>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
@@ -169,11 +14,172 @@
         android:id="@+id/scroll"
         >
 
+
+
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:background="@color/ublox_blue_color"
+                android:orientation="vertical"
+                android:paddingBottom="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="5dp">
+                <!--android:weightSum="1.0"-->
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:id="@+id/state"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="1dp"
+                        android:text=""
+                        android:layout_weight=".6"
+                        android:textColor="@color/white_color"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/time"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="1dp"
+                        android:gravity="right"
+                        android:text=""
+                        android:layout_weight=".4"
+                        android:textColor="@color/white_color" />
+
+                </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <LinearLayout
+                        android:layout_width="57dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".33"
+                        android:gravity="left"
+                        android:orientation="vertical">
+
+
+                        <ImageView
+                            android:id="@+id/imageView2"
+                            android:layout_width="70dp"
+                            android:layout_height="43dp"
+                            android:gravity="left"
+                            android:paddingLeft="5dp"
+                            android:scaleX="0.7"
+                            android:scaleY="0.7"
+                            android:src="@drawable/temperature" />
+
+                        <TextView
+                            android:id="@+id/temperature"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="left"
+                            android:paddingLeft="10dp"
+                            android:paddingTop="1dp"
+                            android:text=""
+                            android:textColor="@color/white_color"
+                            android:textSize="20sp" />
+
+                    </LinearLayout>
+
+
+
+
+
+                    <LinearLayout
+                        android:layout_width="57dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".33"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+
+                        <ImageView
+                            android:id="@+id/imageView3"
+                            android:layout_width="70dp"
+                            android:layout_height="43dp"
+                            android:gravity="center"
+                            android:paddingLeft="5dp"
+                            android:scaleX="0.7"
+                            android:scaleY="0.7"
+                            android:src="@drawable/humidity" />
+
+                        <TextView
+                            android:id="@+id/humiditytop"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="10dp"
+                            android:paddingTop="1dp"
+                            android:text=""
+                            android:gravity="center"
+                            android:textColor="@color/white_color"
+                            android:textSize="20sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="57dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".33"
+                        android:gravity="right"
+                        android:orientation="vertical">
+
+
+                        <ImageView
+                            android:id="@+id/imageView1"
+                            android:layout_width="70dp"
+                            android:layout_height="40dp"
+                            android:gravity="center"
+                            android:paddingLeft="5dp"
+                            android:scaleX="0.7"
+                            android:scaleY="0.7"
+                            android:src="@drawable/bfull" />
+
+                        <TextView
+                            android:id="@+id/battery"
+                            android:layout_width="70dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_toStartOf="@+id/imageView"
+                            android:gravity="center"
+                            android:paddingTop="0dp"
+                            android:text=""
+                            android:textColor="@color/white_color"
+                            android:textSize="20sp" />
+
+                    </LinearLayout>
+
+
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
 
 
             <LinearLayout
@@ -232,7 +238,7 @@
                         android:layout_height="wrap_content"
                         android:paddingLeft="3dp"
                         android:paddingTop="10dp"
-                        android:text="Logger Details"
+                        android:text="@string/LoggerDetails"
                         android:textSize="@dimen/Heading_size"
                         android:textStyle="bold" />
 
@@ -252,7 +258,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Logger Serial No. : "
+                        android:text="@string/LoggerSerialNo"
                         android:textSize="15sp" />
 
                     <TextView
@@ -276,7 +282,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Logger Memory : "
+                        android:text="@string/LoggerMemory"
                         android:textSize="15sp" />
 
                     <TextView
@@ -300,7 +306,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Total Logged Time : "
+                        android:text="@string/TotalLoggedTime"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/totalloggedtime"
@@ -321,7 +327,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Logged Samples : "
+                        android:text="@string/LoggedSample"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/loggedsamples"
@@ -343,7 +349,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Logged Tags : "
+                        android:text="@string/LoggedTags"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/loggedtags"
@@ -364,7 +370,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="First Sample : "
+                        android:text="@string/FirstSample"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/firstsample"
@@ -386,7 +392,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="First Logged Sample : "
+                        android:text="@string/FirstLoggedSample"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/firstloggedsample"
@@ -407,7 +413,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Last Sample Taken : "
+                        android:text="@string/LastSampleTaken"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/lastsample"
@@ -428,7 +434,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Last Logged Sample : "
+                        android:text="@string/LastLoggedSample"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/lastloggedsample"
@@ -470,20 +476,21 @@
                         android:layout_height="wrap_content"
                         android:paddingLeft="3dp"
                         android:paddingTop="10dp"
-                        android:text="Temperature Graph"
+                        android:text="@string/Graph"
                         android:textSize="@dimen/Heading_size"
                         android:textStyle="bold" />
                 </LinearLayout>
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="500px"
+                    android:layout_height="350dp"
                     android:paddingBottom="5dp"
                     android:paddingTop="5dp">
 
                     <WebView
                         android:id="@+id/graphone"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"></WebView>
+                        android:layout_height="match_parent"
+                        ></WebView>
 
                     <!--<com.github.mikephil.charting.charts.LineChart-->
                         <!--android:id="@+id/chart"-->
@@ -539,7 +546,7 @@
                         android:layout_height="wrap_content"
                         android:paddingLeft="3dp"
                         android:paddingTop="10dp"
-                        android:text="Channel 1 Stats"
+                        android:text="@string/Channel1Stats"
                         android:textSize="@dimen/Heading_size"
                         android:textStyle="bold" />
 
@@ -559,7 +566,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Channel 1 : "
+                        android:text="@string/Channel1"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/channel1"
@@ -580,7 +587,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Upper Limit : "
+                        android:text="@string/UpperLimit"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/upperlimit1"
@@ -601,7 +608,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Lower Limit : "
+                        android:text="@string/LowerLimit"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/lowerlimit1"
@@ -622,7 +629,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Mean : "
+                        android:text="@string/Mean"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/mean1"
@@ -643,7 +650,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="MKT : "
+                        android:text="@string/MKT"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/mkt1"
@@ -664,7 +671,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Max : "
+                        android:text="@string/MAX"
                         android:textSize="15sp" />
 
                     <TextView
@@ -689,7 +696,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Min : "
+                        android:text="@string/Min"
                         android:textSize="15sp" />
 
                     <TextView
@@ -716,7 +723,7 @@
                         android:layout_weight=".30"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Total Samples within Limits : "
+                        android:text="@string/TotalSamplewithinLimits"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/totalwithinlimits"
@@ -737,7 +744,7 @@
                         android:layout_weight=".30"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Total Time within Limits : "
+                        android:text="@string/TotalTimewithinLimits"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/totaltimewithinlimits"
@@ -759,7 +766,7 @@
                         android:layout_weight=".30"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Total Percentage within Limits : "
+                        android:text="@string/TotalPercentagewithinLimits"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/totslpercentagewithinlimits"
@@ -785,7 +792,7 @@
                         android:layout_weight=".30"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Total Samples out of Limits : "
+                        android:text="@string/TotalSamplesoutofLimits"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/totalsamplesoutoflimits"
@@ -806,7 +813,7 @@
                         android:layout_weight=".30"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Total Time out of Limits : "
+                        android:text="@string/TotalTimeoutofLimits"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/totaltimeoutoflimits"
@@ -827,7 +834,7 @@
                         android:layout_weight=".30"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Total Percentage out of Limits : "
+                        android:text="@string/TotalPercentageoutofLimits"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/totalpercentageoutoflimits"
@@ -853,7 +860,7 @@
                         android:layout_weight=".30"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Samples above upper Limit : "
+                        android:text="@string/SamplesaboveUpperLimits"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/samplesaboveupperlimit"
@@ -874,7 +881,7 @@
                         android:layout_weight=".30"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Time above Upper Limit : "
+                        android:text="@string/TimeaboveUpperLimit"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/timeaboveupperlimit"
@@ -895,7 +902,7 @@
                         android:layout_weight=".30"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Percentage above Upper Limit : "
+                        android:text="@string/PercentageaboveUpperLimit"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/percentageaboveupperlimit"
@@ -921,7 +928,7 @@
                         android:layout_weight=".30"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Samples below Lower Limit : "
+                        android:text="@string/SamplesbelowLowerLimits"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/samplesbelowlowerlimit"
@@ -942,7 +949,7 @@
                         android:layout_weight=".30"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Time below Lower Limit : "
+                        android:text="@string/TimebelowLowerLimit"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/timebelowlowerlimit"
@@ -963,7 +970,7 @@
                         android:layout_weight=".30"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Percentage below Lower Limit : "
+                        android:text="@string/PercentagebelowLowerLimit"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/percentagebelowlowerlimit"
@@ -976,78 +983,7 @@
 
 
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="3dp"
-                android:paddingBottom="25dp"
-                android:orientation="vertical"
-                android:id="@+id/humidity"
-                android:background="@drawable/layout_txtbg">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="1.0">
-                    <ImageView
-                        android:id="@+id/im4"
-                        android:layout_width="70dp"
-                        android:layout_height="40dp"
-                        android:gravity="center"
-                        android:paddingLeft="5dp"
-                        android:scaleX="0.7"
-                        android:scaleY="0.7"
-                        android:src="@drawable/humidity_graph" />
-
-                    <TextView
-                        android:id="@+id/info3"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="3dp"
-                        android:paddingTop="10dp"
-                        android:text="Humidity Graph"
-                        android:textSize="@dimen/Heading_size"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
-
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="400dp"
-                    android:paddingBottom="5dp"
-                    android:paddingTop="5dp">
-
-                    <WebView
-                        android:id="@+id/graphtwo"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"></WebView>
-
-                    <!--<com.github.mikephil.charting.charts.LineChart-->
-                        <!--android:id="@+id/chart1"-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:paddingTop="5dp"-->
-                        <!--android:layout_height="match_parent" />-->
-
-                </RelativeLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <ImageButton
-                        android:id="@+id/zoominButton1"
-                        android:layout_width="@dimen/Graph_button"
-                        android:layout_height="@dimen/Graph_button"
-                        android:background="@drawable/graphbutton"
-                        android:layout_margin="10dp"
-                        android:src="@drawable/ic_zoom_full"/>
-
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
+           <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="3dp"
@@ -1076,7 +1012,7 @@
                         android:layout_height="wrap_content"
                         android:paddingLeft="3dp"
                         android:paddingTop="10dp"
-                        android:text="Channel 2 Stats"
+                        android:text="@string/Channel2Stats"
                         android:textSize="@dimen/Heading_size"
                         android:textStyle="bold" />
 
@@ -1095,7 +1031,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Channel 2 : "
+                        android:text="@string/Channel2"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/channel2"
@@ -1116,7 +1052,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Upper Limit : "
+                        android:text="@string/UpperLimit"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/upperlimit2"
@@ -1137,7 +1073,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Lower Limit : "
+                        android:text="@string/LowerLimit"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/lowerlimit2"
@@ -1158,7 +1094,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Mean : "
+                        android:text="@string/Mean"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/mean2"
@@ -1180,7 +1116,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Max : "
+                        android:text="@string/MAX"
                         android:textSize="15sp" />
 
                     <TextView
@@ -1205,7 +1141,7 @@
                         android:layout_weight=".50"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Min : "
+                        android:text="@string/Min"
                         android:textSize="15sp" />
 
                     <TextView
@@ -1232,7 +1168,7 @@
                         android:layout_weight=".30"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Total Samples within Limits : "
+                        android:text="@string/TotalSamplewithinLimits"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/totalwithinlimits2"
@@ -1253,7 +1189,7 @@
                         android:layout_weight=".30"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Total Time within Limits : "
+                        android:text="@string/TotalTimewithinLimits"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/totaltimewithinlimits2"
@@ -1275,7 +1211,7 @@
                         android:layout_weight=".30"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Total Percentage within Limits : "
+                        android:text="@string/TotalPercentagewithinLimits"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/totslpercentagewithinlimits2"
@@ -1301,7 +1237,7 @@
                         android:layout_weight=".30"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Total Samples out of Limits : "
+                        android:text="@string/TotalSamplesoutofLimits"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/totalsamplesoutoflimits2"
@@ -1322,7 +1258,7 @@
                         android:layout_weight=".30"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Total Time out of Limits : "
+                        android:text="@string/TotalTimeoutofLimits"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/totaltimeoutoflimits2"
@@ -1343,7 +1279,7 @@
                         android:layout_weight=".30"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Total Percentage out of Limits : "
+                        android:text="@string/TotalPercentageoutofLimits"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/totalpercentageoutoflimits2"
@@ -1369,7 +1305,7 @@
                         android:layout_weight=".30"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Samples above upper Limit : "
+                        android:text="@string/SamplesaboveUpperLimits"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/samplesaboveupperlimit2"
@@ -1390,7 +1326,7 @@
                         android:layout_weight=".30"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Time above Upper Limit : "
+                        android:text="@string/TimeaboveUpperLimit"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/timeaboveupperlimit2"
@@ -1411,7 +1347,7 @@
                         android:layout_weight=".30"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Percentage above Upper Limit : "
+                        android:text="@string/PercentageaboveUpperLimit"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/percentageaboveupperlimit2"
@@ -1437,7 +1373,7 @@
                         android:layout_weight=".30"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Samples below Lower Limit : "
+                        android:text="@string/SamplesbelowLowerLimits"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/samplesbelowlowerlimit2"
@@ -1458,7 +1394,7 @@
                         android:layout_weight=".30"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Time below Lower Limit : "
+                        android:text="@string/TimebelowLowerLimit"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/timebelowlowerlimit2"
@@ -1479,7 +1415,7 @@
                         android:layout_weight=".30"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:text="Percentage below Lower Limit : "
+                        android:text="@string/PercentagebelowLowerLimit"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/percentagebelowlowerlimit2"

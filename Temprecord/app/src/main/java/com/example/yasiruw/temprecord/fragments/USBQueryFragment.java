@@ -24,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -41,6 +42,7 @@ import com.example.yasiruw.temprecord.comms.USBFragmentI;
 import com.example.yasiruw.temprecord.services.StoreKeyService;
 import com.example.yasiruw.temprecord.utils.CommsChar;
 import com.example.yasiruw.temprecord.utils.HexData;
+import com.example.yasiruw.temprecord.utils.Screenshot;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -56,6 +58,11 @@ public class USBQueryFragment extends Fragment {
     private ScrollView queryScroll;
     private FrameLayout mWrapperFL;
     private LinearLayout linearLayout;
+    private LinearLayout bleenegy;
+    private LinearLayout st_at;
+    private LinearLayout st_by;
+    private LinearLayout sp_at;
+    private LinearLayout sp_by;
     private TextView currentTemp;
     private TextView currenthumidity;
     private ImageView bat;
@@ -222,26 +229,32 @@ public class USBQueryFragment extends Fragment {
 
         if(message.equals("1")){
             getActivity().getActionBar().setIcon(getResources().getDrawable(R.drawable.ic_infoc));
-            getActivity().getActionBar().setTitle("Query Logger");
+            getActivity().getActionBar().setTitle(R.string.QueryLogger);
         }else if(message.equals("2")){
             getActivity().getActionBar().setIcon(getResources().getDrawable(R.drawable.ic_startc));
-            getActivity().getActionBar().setTitle("Start Logger");
+            getActivity().getActionBar().setTitle(R.string.StartLogger);
         }else if(message.equals("3")){
             getActivity().getActionBar().setIcon(getResources().getDrawable(R.drawable.ic_stopc));
-            getActivity().getActionBar().setTitle("Stop Logger");
+            getActivity().getActionBar().setTitle(R.string.StopLogger);
         }else if(message.equals("4")){
             getActivity().getActionBar().setIcon(getResources().getDrawable(R.drawable.ic_reusec));
-            getActivity().getActionBar().setTitle("Re-Use Logger");
+            getActivity().getActionBar().setTitle(R.string.ReuseLogger);
         }else if(message.equals("5")){
             getActivity().getActionBar().setIcon(getResources().getDrawable(R.drawable.ic_tagc));
-            getActivity().getActionBar().setTitle("Tag Logger");
+            getActivity().getActionBar().setTitle(R.string.TagLogger);
         }else if(message.equals("8")){
             getActivity().getActionBar().setIcon(getResources().getDrawable(R.drawable.ic_searchc));
-            getActivity().getActionBar().setTitle("Search Logger");
+            getActivity().getActionBar().setTitle(R.string.SearchLogger);
         }
 
 
-        linearLayout = (LinearLayout) view.findViewById(R.id.attop);
+        linearLayout =  view.findViewById(R.id.attop);
+        st_at = view.findViewById(R.id.st_at);
+        st_by = view.findViewById(R.id.st_by);
+        sp_at = view.findViewById(R.id.sp_at);
+        sp_by = view.findViewById(R.id.sp_by);
+        bleenegy = view.findViewById(R.id.bleenegy);
+        bleenegy.setVisibility(view.GONE);
         mWrapperFL = (FrameLayout) view.findViewById(R.id.flWrapper);
         queryScroll = (ScrollView) view.findViewById(R.id.queryscroll);
 //        m.setText(message);
@@ -311,7 +324,8 @@ public class USBQueryFragment extends Fragment {
         ch2ul = (TextView) view.findViewById(R.id.upperlimit2);
         ch2ll = (TextView) view.findViewById(R.id.lowerlimit2);
 
-        mConnectionState.setText("USB Connected");
+
+        mConnectionState.setText(getString(R.string.USB_Connected));
 
         progressDialoge();
         //ScrollListener();
@@ -338,6 +352,7 @@ public class USBQueryFragment extends Fragment {
 
         switch(item.getItemId()) {
             case R.id.action_requery:
+                getActivity().getActionBar().setTitle(R.string.QueryLogger);
                 usbFragmentI.onUSBWrite(HexData.BLE_ACK);
                 message = "1";
                 state = 1;
@@ -345,48 +360,54 @@ public class USBQueryFragment extends Fragment {
                 return true;
             case R.id.action_start:
                 if(baseCMD.state == 2) {
+                    getActivity().getActionBar().setTitle(R.string.StartLogger);
                     usbFragmentI.onUSBWrite(HexData.BLE_ACK);
                     message = "2";
                     state = 1;
                     progressDialoge();
                 }else{
-                    Toast.makeText(getActivity(), "Can't use this functionality in the current state", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getString(R.string.Not_Available_in_Current_State), Toast.LENGTH_SHORT).show();
                 }
                 return true;
             case R.id.action_stop:
                 if(baseCMD.state == 4) {
+                    getActivity().getActionBar().setTitle(R.string.StopLogger);
                     usbFragmentI.onUSBWrite(HexData.BLE_ACK);
                     message = "3";
                     state = 1;
                     progressDialoge();
                 }else{
-                    Toast.makeText(getActivity(), "Can't use this functionality in the current state", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getString(R.string.Not_Available_in_Current_State), Toast.LENGTH_SHORT).show();
                 }
                 return true;
             case R.id.action_reuse:
                 if(baseCMD.state == 5) {
+                    getActivity().getActionBar().setTitle(R.string.ReuseLogger);
                     usbFragmentI.onUSBWrite(HexData.BLE_ACK);
                     message = "4";
                     state = 1;
                     progressDialoge();
                 }else{
-                    Toast.makeText(getActivity(), "Can't use this functionality in the current state", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getString(R.string.Not_Available_in_Current_State), Toast.LENGTH_SHORT).show();
                 }
                 return true;
             case R.id.action_tag:
                 if(baseCMD.state == 4) {
+                    getActivity().getActionBar().setTitle(R.string.TagLogger);
                     usbFragmentI.onUSBWrite(HexData.BLE_ACK);
                     message = "5";
                     state = 1;
                     progressDialoge();
                 }else{
-                    Toast.makeText(getActivity(), "Can't use this functionality in the current state", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getString(R.string.Not_Available_in_Current_State), Toast.LENGTH_SHORT).show();
                 }
                 return true;
             case R.id.menu_about:
                 //sendEmail();
+                new Screenshot(queryScroll,baseCMD,getActivity()).print();
                 return true;
             case R.id.action_find:
+                getActivity().getActionBar().setTitle(R.string.FindLogger);
                 usbFragmentI.onUSBWrite(HexData.BLE_ACK);
                 message = "8";
                 state = 1;
@@ -425,10 +446,16 @@ public class USBQueryFragment extends Fragment {
                             usbFragmentI.onUSBWrite(HexData.START_USB);
                             state = 2;
                         } else if (message.equals("3")) {
-                            usbFragmentI.onUSBWrite(HexData.STOP_USB);
+                            if(baseCMD.passwordEnabled)
+                                promtPassword(3);
+                            else
+                                usbFragmentI.onUSBWrite(HexData.STOP_USB);
                             state = 3;
                         } else if (message.equals("4")) {
-                            usbFragmentI.onUSBWrite(HexData.REUSE_USB);
+                            if(baseCMD.passwordEnabled)
+                                promtPassword(4);
+                            else
+                                usbFragmentI.onUSBWrite(HexData.REUSE_USB);
                             state = 4;
                         } else if (message.equals("5")) {
                             usbFragmentI.onUSBWrite(HexData.TAG_USB);
@@ -449,13 +476,12 @@ public class USBQueryFragment extends Fragment {
                         //firsttime = 0;
                         break;
                     case 2:
-                        Log.i("YAS", "CommsI in message start logger");
                         commsSerial.BytetoHex(in);
                         if (in[0] == 0x00) {
-                            BuildDialogue("Start", "The Logger has started successfully.", 0);
+                            BuildDialogue(getString(R.string.Start), getString(R.string.StartSuccessfull), 0);
                             makesound(getActivity(), R.raw.definite);
                         } else {
-                            BuildDialogue("Start", "Start not successful.\n\nThe logger is either running or is in stopped state", 0);
+                            BuildDialogue(getString(R.string.Start), getString(R.string.StartNotSuccessfull), 0);
                             makesound(getActivity(), R.raw.unsure);
                         }
                         SystemClock.sleep(1000);
@@ -464,13 +490,12 @@ public class USBQueryFragment extends Fragment {
                         state = 8;
                         break;
                     case 3:
-                        Log.i("YAS", "CommsI in message stop logger");
                         commsSerial.BytetoHex(in);
                         if (in[0] == 0x00) {
-                            BuildDialogue("Stop", "The Logger has stopped successfully.", 0);
+                            BuildDialogue(getString(R.string.Stop), getString(R.string.StopSuccessfull), 0);
                             makesound(getActivity(), R.raw.definite);
                         } else {
-                            BuildDialogue("Stop", "Stop not successful.\n\nThe logger is either in ready or already has stopped", 0);
+                            BuildDialogue(getString(R.string.Stop), getString(R.string.StopNotSuccessfull), 0);
                             makesound(getActivity(), R.raw.unsure);
                         }
                         SystemClock.sleep(1000);
@@ -479,13 +504,12 @@ public class USBQueryFragment extends Fragment {
                         state = 8;
                         break;
                     case 4:
-                        Log.i("YAS", "CommsI in message reuse logger");
                         commsSerial.BytetoHex(in);
                         if (in[0] == 0x00) {
-                            BuildDialogue("Re-Use", "The Logger has been successfully re-used.", 0);
+                            BuildDialogue(getString(R.string.Reuse), getString(R.string.ReuseSuccessfull), 0);
                             makesound(getActivity(), R.raw.definite);
                         } else {
-                            BuildDialogue("Re-Use", "Re-use unsuccessful.\n\nTry stopping the logger first", 0);
+                            BuildDialogue(getString(R.string.Reuse), getString(R.string.ReuseNotSuccessfull), 0);
                             makesound(getActivity(), R.raw.unsure);
                         }
                         SystemClock.sleep(1000);
@@ -494,22 +518,21 @@ public class USBQueryFragment extends Fragment {
                         state = 8;
                         break;
                     case 5:
-                        Log.i("YAS", "CommsI in message find logger or tag logger");
                         commsSerial.BytetoHex(in);
                         if (message.equals("8")) {
                             if (in[0] == 0x00) {
-                                BuildDialogue("Find Logger", "Green LED should be blinking on the logger now.", 0);
+                                BuildDialogue(getString(R.string.FindLogger), getString(R.string.FindSuccessfull), 0);
                                 makesound(getActivity(), R.raw.definite);
                             } else {
-                                BuildDialogue("Find Logger", "An error occurred", 0);
+                                BuildDialogue(getString(R.string.FindLogger), getString(R.string.FindNotSuccessfull), 0);
                                 makesound(getActivity(), R.raw.unsure);
                             }
                         }else{
                             if (in[0] == 0x00) {
-                                BuildDialogue("Tag", "The Logger has been successfully tagged.", 0);
+                                BuildDialogue(getString(R.string.Tag), getString(R.string.TagSuccessfull), 0);
                                 makesound(getActivity(), R.raw.definite);
                             } else {
-                                BuildDialogue("Tag", "Tagging unsuccessful.\n\nTry starting the logger first", 0);
+                                BuildDialogue(getString(R.string.Tag), getString(R.string.TagNotSuccessfull), 0);
                                 makesound(getActivity(), R.raw.unsure);
                             }
                         }
@@ -676,6 +699,7 @@ public class USBQueryFragment extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void SetUI(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd  hh:mm:ss aa");
         serialno.setText(Q_data.get(0));
         firmware.setText(Q_data.get(1));
         model.setText(QS.GetGeneration(Integer.parseInt(Q_data.get(2))));
@@ -683,10 +707,18 @@ public class USBQueryFragment extends Fragment {
 
         Lstate.setText( QS.GetState(Integer.parseInt(Q_data.get(5))));
         battery.setText(  R_data.get(17)+"%");
-        currentTemp.setText(R_data.get(9) + " °C");
-        currenthumidity.setText(R_data.get(11) + " %");
+        if (storeKeyService.getDefaults("UNITS", getActivity().getApplication()) != null && storeKeyService.getDefaults("UNITS", getActivity().getApplication()).equals("1")) {
+            currentTemp.setText(R_data.get(9) + " °C");
+            ch1ul.setText(U_data.get(15) + " °C");
+            ch1ll.setText(U_data.get(16) + " °C");
+        }else {
+            currentTemp.setText(QS.returnF(R_data.get(9)) + " °F");
+            ch1ul.setText(QS.returnF(U_data.get(15)) + " °F");
+            ch1ll.setText(QS.returnF(U_data.get(16)) + " °F");
+        }
+        currenthumidity.setText(R_data.get(13) + " %");
 
-        manudate.setText(F_data.get(0));
+        manudate.setText(sdf.format(baseCMD.dmanu));
         memory.setText(F_data.get(1));
         startondatetime.setText(R_data.get(0));
         startwithbutton.setText(R_data.get(1));
@@ -694,19 +726,40 @@ public class USBQueryFragment extends Fragment {
         stopwhenfull.setText(R_data.get(5));
         stoponsample.setText(R_data.get(6));
 
-        startedby.setText(R_data.get(2));
-        stoppedby.setText(R_data.get(4));
+
+
 
         loggedsamples.setText(R_data.get(7));
         tripsamples.setText(R_data.get(7));
-        lastsample.setText(R_data.get(8));
+        //lastsample.setText(R_data.get(8));
+
 
         sampleno.setText(U_data.get(5));
         trips.setText(U_data.get(3));
-        energysave.setText(QS.YesorNo(baseCMD.energysave));
+        //energysave.setText(QS.YesorNo(baseCMD.energysave));
 
-        startedat.setText(U_data.get(1));
-        stoppedat.setText(U_data.get(2));
+        if(baseCMD.state == 4){
+            st_at.setVisibility(View.VISIBLE);
+            st_by.setVisibility(View.VISIBLE);
+            sp_at.setVisibility(View.GONE);
+            sp_by.setVisibility(View.GONE);
+            startedat.setText(sdf.format(baseCMD.dstart));
+            startedby.setText(R_data.get(2));
+        }else if(baseCMD.state == 5){
+            st_at.setVisibility(View.VISIBLE);
+            st_by.setVisibility(View.VISIBLE);
+            sp_at.setVisibility(View.VISIBLE);
+            sp_by.setVisibility(View.VISIBLE);
+            startedat.setText(sdf.format(baseCMD.dstart));
+            startedby.setText(R_data.get(2));
+            stoppedat.setText(sdf.format(baseCMD.dstop));
+            stoppedby.setText(R_data.get(4));
+        }else{
+            st_at.setVisibility(View.GONE);
+            st_by.setVisibility(View.GONE);
+            sp_at.setVisibility(View.GONE);
+            sp_by.setVisibility(View.GONE);
+        }
 
         loopoverwrite.setText(U_data.get(6));
         enablelcdmenu.setText(U_data.get(7));
@@ -719,8 +772,6 @@ public class USBQueryFragment extends Fragment {
 
         channel1enable.setText(U_data.get(13));
         ch1enablelimits.setText(U_data.get(14));
-        ch1ul.setText(U_data.get(15)+ " °C");
-        ch1ll.setText(U_data.get(16)+ " °C");
 
         channel2enable.setText(U_data.get(18));
         ch2enablelimits.setText(U_data.get(19));
@@ -736,19 +787,19 @@ public class USBQueryFragment extends Fragment {
 
 
         if((U_data.get(18)).equals("Yes")){
-            logging.setText("Temperature + Humidity");
+            logging.setText(getString(R.string.TempHum));
         }else{
-            logging.setText("Temperature");
+            logging.setText(getString(R.string.Temp));
         }
 
-        units.setText("°C");
+        units.setText(QS.imperial(baseCMD.ImperialUnit));
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd  HH:mm:ss");
+
         String currentDateandTime = sdf.format(new Date());
         time.setText(currentDateandTime);
 
-        ch1alarmdelay.setText( R_data.get(12)+ " Samples");
-        ch2alarmdelay.setText( R_data.get(16)+ " Samples");
+        ch1alarmdelay.setText( R_data.get(12)+getString(R.string.Samples));
+        ch2alarmdelay.setText( R_data.get(16)+getString(R.string.Samples));
 
 
         if(Double.parseDouble(Q_data.get(6)) > 66){
@@ -771,19 +822,19 @@ public class USBQueryFragment extends Fragment {
     public void progressDialoge(){
 
         progress=new ProgressDialog(getActivity());
-        progress.setMessage("Querying Logger");
+        progress.setMessage(getString(R.string.QueryingLogger));
         progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progress.setIndeterminate(false);
         progress.setProgress(0);
         progress.setCancelable(false);
-        progress.setButton(DialogInterface.BUTTON_NEGATIVE, "Abort", new DialogInterface.OnClickListener() {
+        progress.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.Abort), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 //                sendData(hexData.BLE_ACK);
 //                state = 7;
 
                 if(family.getText().toString() == "")
-                    BuildDialogue("Query Aborted", "Entries might be empty!\nGo back to menu and reconnect", 1);
+                    BuildDialogue(getString(R.string.QueryAborted), getString(R.string.Go_back_and_reconnect), 1);
                 dialog.dismiss();
             }
         });
@@ -854,6 +905,55 @@ public class USBQueryFragment extends Fragment {
             mp.start();
         }
     }
+
+    //if the logger is password protected this will popup at the start to login
+    private void promtPassword(final int command){
+        // get prompts.xml view
+        LayoutInflater li = LayoutInflater.from(getActivity());
+        View promptsView = li.inflate(R.layout.prompts, null);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                getActivity());
+
+        // set prompts.xml to alertdialog builder
+        alertDialogBuilder.setView(promptsView);
+
+        final EditText userInput = (EditText) promptsView
+                .findViewById(R.id.editTextDialogUserInput);
+
+        // set dialog message
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton(getString(R.string.Ok),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                // get user input and set it to result
+                                // edit text
+                                //this is where the command is sent
+                                usbFragmentI.onUSBWrite(commsSerial.WriteUSBByte(baseCMD.WritePassword()));
+                                if(command == 3){
+                                    usbFragmentI.onUSBWrite(HexData.STOP_USB);
+                                }else if(command == 4){
+                                    usbFragmentI.onUSBWrite(HexData.REUSE_USB);
+                                }
+                                //bleFragmentI.onBLERead();
+                                dialog.cancel();
+                            }
+                        })
+                .setNegativeButton(getString(R.string.Cancel),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
+    }
+
 
 
 }

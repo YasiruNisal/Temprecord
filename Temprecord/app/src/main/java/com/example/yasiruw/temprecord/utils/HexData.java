@@ -35,7 +35,7 @@ public class HexData {
             sb.append(String.format("%02X ", b1));
 
         }
-        Log.d("HEX", sb.toString());
+        //Log.d("HEX", sb.toString());
     }
 
     public void BytetoHex2(ArrayList<Byte> b){
@@ -43,6 +43,6 @@ public class HexData {
         for (byte b1 : b){
             sb.append(String.format("%02X ", b1));
         }
-        Log.d("HEX11", sb.toString());
+        //Log.d("HEX11", sb.toString());
     }
 }

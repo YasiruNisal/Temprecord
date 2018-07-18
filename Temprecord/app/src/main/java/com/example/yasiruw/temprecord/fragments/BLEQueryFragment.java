@@ -23,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -40,6 +41,7 @@ import com.example.yasiruw.temprecord.comms.QueryStrings;
 import com.example.yasiruw.temprecord.services.StoreKeyService;
 import com.example.yasiruw.temprecord.utils.CommsChar;
 import com.example.yasiruw.temprecord.utils.HexData;
+import com.example.yasiruw.temprecord.utils.Screenshot;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -61,6 +63,10 @@ public class BLEQueryFragment extends Fragment {
     private ScrollView queryScroll;
     private FrameLayout mWrapperFL;
     private LinearLayout linearLayout;
+    private LinearLayout st_at;
+    private LinearLayout st_by;
+    private LinearLayout sp_at;
+    private LinearLayout sp_by;
     private TextView currentTemp;
     private TextView currenthumidity;
     private ImageView bat;
@@ -193,7 +199,6 @@ public class BLEQueryFragment extends Fragment {
     @Override
     public void onPause()
     {   super.onPause();
-        Log.i("TAG", "COMING ON TO ON PAUSE");
         mainThreadHandler.removeCallbacksAndMessages(null);
 
     }
@@ -220,6 +225,7 @@ public class BLEQueryFragment extends Fragment {
         getActivity().getActionBar().show();
         getActivity().getActionBar().setBackgroundDrawable(new ColorDrawable(0xFFFFFFFF));
 
+
         Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "Roboto-Light.ttf");
         Typeface font1 = Typeface.createFromAsset(getActivity().getAssets(), "Roboto-Medium.ttf");
 
@@ -232,22 +238,22 @@ public class BLEQueryFragment extends Fragment {
 
         if(message.equals("1")){
             getActivity().getActionBar().setIcon(getResources().getDrawable(R.drawable.ic_infoc));
-            getActivity().getActionBar().setTitle("Query Logger");
+            getActivity().getActionBar().setTitle(R.string.QueryLogger);
         }else if(message.equals("2")){
             getActivity().getActionBar().setIcon(getResources().getDrawable(R.drawable.ic_startc));
-            getActivity().getActionBar().setTitle("Start Logger");
+            getActivity().getActionBar().setTitle(R.string.StartLogger);
         }else if(message.equals("3")){
             getActivity().getActionBar().setIcon(getResources().getDrawable(R.drawable.ic_stopc));
-            getActivity().getActionBar().setTitle("Stop Logger");
+            getActivity().getActionBar().setTitle(R.string.StopLogger);
         }else if(message.equals("4")){
             getActivity().getActionBar().setIcon(getResources().getDrawable(R.drawable.ic_reusec));
-            getActivity().getActionBar().setTitle("Re-Use Logger");
+            getActivity().getActionBar().setTitle(R.string.ReuseLogger);
         }else if(message.equals("5")){
             getActivity().getActionBar().setIcon(getResources().getDrawable(R.drawable.ic_tagc));
-            getActivity().getActionBar().setTitle("Tag Logger");
+            getActivity().getActionBar().setTitle(R.string.TagLogger);
         }else if(message.equals("8")){
             getActivity().getActionBar().setIcon(getResources().getDrawable(R.drawable.ic_searchc));
-            getActivity().getActionBar().setTitle("Search Logger");
+            getActivity().getActionBar().setTitle(R.string.SearchLogger);
         }
 
 
@@ -261,6 +267,10 @@ public class BLEQueryFragment extends Fragment {
         temp = (ImageView) view.findViewById(R.id.imageView2);
         hu = (ImageView) view.findViewById(R.id.imageView3);
 
+        st_at = view.findViewById(R.id.st_at);
+        st_by = view.findViewById(R.id.st_by);
+        sp_at = view.findViewById(R.id.sp_at);
+        sp_by = view.findViewById(R.id.sp_by);
         currentTemp = (TextView) view.findViewById(R.id.temperature);
         currentTemp.setTypeface(font);
         currenthumidity = (TextView) view.findViewById(R.id.humiditytop);
@@ -325,7 +335,6 @@ public class BLEQueryFragment extends Fragment {
         //ScrollListener();
         queryScroll.getViewTreeObserver().addOnScrollChangedListener(new ScrollPositionObserver());
 
-        Log.d("TAG", "am i coming to this place 11  " + bleFragmentI);
         bleFragmentI.onBLEWrite(HexData.BLE_ACK);
         bleFragmentI.onBLERead();
 
@@ -346,6 +355,8 @@ public class BLEQueryFragment extends Fragment {
 
         switch(item.getItemId()) {
             case R.id.action_requery:
+                mainThreadHandler.removeCallbacksAndMessages(null);
+                getActivity().getActionBar().setTitle(R.string.QueryLogger);
                 bleFragmentI.onBLEWrite(HexData.BLE_ACK);
                 bleFragmentI.onBLERead();
                 message = "1";
@@ -353,53 +364,66 @@ public class BLEQueryFragment extends Fragment {
                 progressDialoge();
                 return true;
             case R.id.action_start:
+                mainThreadHandler.removeCallbacksAndMessages(null);
                 if(baseCMD.state == 2) {
+
+                    getActivity().getActionBar().setTitle(R.string.StartLogger);
                     bleFragmentI.onBLEWrite(HexData.BLE_ACK);
                     bleFragmentI.onBLERead();
                     message = "2";
                     state = 1;
                     progressDialoge();
                 }else{
-                    Toast.makeText(getActivity(), "Can't use this functionality in the current state", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getString(R.string.Not_Available_in_Current_State), Toast.LENGTH_SHORT).show();
                 }
                 return true;
             case R.id.action_stop:
+                mainThreadHandler.removeCallbacksAndMessages(null);
                 if(baseCMD.state == 4) {
+
+                    getActivity().getActionBar().setTitle(R.string.StopLogger);
                     bleFragmentI.onBLEWrite(HexData.BLE_ACK);
                     bleFragmentI.onBLERead();
                     message = "3";
                     state = 1;
                     progressDialoge();
                 }else{
-                    Toast.makeText(getActivity(), "Can't use this functionality in the current state", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getString(R.string.Not_Available_in_Current_State), Toast.LENGTH_SHORT).show();
                 }
                 return true;
             case R.id.action_reuse:
+                mainThreadHandler.removeCallbacksAndMessages(null);
                 if(baseCMD.state == 5) {
+                    getActivity().getActionBar().setTitle(R.string.ReuseLogger);
                     bleFragmentI.onBLEWrite(HexData.BLE_ACK);
                     bleFragmentI.onBLERead();
                     message = "4";
                     state = 1;
                     progressDialoge();
                 }else{
-                    Toast.makeText(getActivity(), "Can't use this functionality in the current state", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getString(R.string.Not_Available_in_Current_State), Toast.LENGTH_SHORT).show();
                 }
                 return true;
             case R.id.action_tag:
+                mainThreadHandler.removeCallbacksAndMessages(null);
                 if(baseCMD.state == 4) {
+                    getActivity().getActionBar().setTitle(R.string.TagLogger);
                     bleFragmentI.onBLEWrite(HexData.BLE_ACK);
                     bleFragmentI.onBLERead();
                     message = "5";
                     state = 1;
                     progressDialoge();
                 }else{
-                    Toast.makeText(getActivity(), "Can't use this functionality in the current state", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getString(R.string.Not_Available_in_Current_State), Toast.LENGTH_SHORT).show();
                 }
                 return true;
             case R.id.menu_about:
                 //sendEmail();
+                new Screenshot(queryScroll,baseCMD,getActivity()).print();
                 return true;
             case R.id.action_find:
+                mainThreadHandler.removeCallbacksAndMessages(null);
+                getActivity().getActionBar().setTitle(R.string.FindLogger);
                 bleFragmentI.onBLEWrite(HexData.BLE_ACK);
                 bleFragmentI.onBLERead();
                 message = "8";
@@ -440,12 +464,20 @@ public class BLEQueryFragment extends Fragment {
                             bleFragmentI.onBLERead();
                             state = 2;
                         } else if (message.equals("3")) {
-                            bleFragmentI.onBLEWrite(HexData.STOP_L);
-                            bleFragmentI.onBLERead();
+                            if (baseCMD.passwordEnabled) {
+                                promtPassword(3);
+                            }else {
+                                bleFragmentI.onBLEWrite(HexData.STOP_L);
+                                bleFragmentI.onBLERead();
+                            }
                             state = 3;
                         } else if (message.equals("4")) {
-                            bleFragmentI.onBLEWrite(HexData.REUSE_L);
-                            bleFragmentI.onBLERead();
+                            if (baseCMD.passwordEnabled) {
+                                promtPassword(4);
+                            }else {
+                                bleFragmentI.onBLEWrite(HexData.REUSE_L);
+                                bleFragmentI.onBLERead();
+                            }
                             state = 4;
                         } else if (message.equals("5")) {
                             bleFragmentI.onBLEWrite(HexData.TAG_L);
@@ -464,19 +496,22 @@ public class BLEQueryFragment extends Fragment {
                         break;
                     case 1:
 
-                        state = 0;
+
                         bleFragmentI.onBLEWrite(HexData.QUARY);
                         bleFragmentI.onBLERead();
                         //firsttime = 0;
+
+                        //bleFragmentI.onBLERead();
+                        state = 0;
                         break;
                     case 2:
-                        Log.i("YAS", "CommsI in message start logger");
+
                         commsSerial.BytetoHex(in);
                         if (in[0] == 0x00) {
-                            BuildDialogue("Start", "The Logger has started successfully.", 0);
+                            BuildDialogue(getString(R.string.Start), getString(R.string.StartSuccessfull), 0);
                             makesound(getActivity(), R.raw.definite);
                         } else {
-                            BuildDialogue("Start", "Start not successful.\n\nThe logger is either running or is in stopped state", 0);
+                            BuildDialogue(getString(R.string.Start), getString(R.string.StartNotSuccessfull), 0);
                             makesound(getActivity(), R.raw.unsure);
                         }
                         SystemClock.sleep(1000);
@@ -486,13 +521,13 @@ public class BLEQueryFragment extends Fragment {
                         state = 8;
                         break;
                     case 3:
-                        Log.i("YAS", "CommsI in message stop logger");
+                        hexData.BytetoHex(in);
                         commsSerial.BytetoHex(in);
                         if (in[0] == 0x00) {
-                            BuildDialogue("Stop", "The Logger has stopped successfully.", 0);
+                            BuildDialogue(getString(R.string.Stop), getString(R.string.StopSuccessfull), 0);
                             makesound(getActivity(), R.raw.definite);
                         } else {
-                            BuildDialogue("Stop", "Stop not successful.\n\nThe logger is either in ready or already has stopped", 0);
+                            BuildDialogue(getString(R.string.Stop), getString(R.string.StopNotSuccessfull), 0);
                             makesound(getActivity(), R.raw.unsure);
                         }
                         SystemClock.sleep(1000);
@@ -502,13 +537,12 @@ public class BLEQueryFragment extends Fragment {
                         state = 8;
                         break;
                     case 4:
-                        Log.i("YAS", "CommsI in message reuse logger");
                         commsSerial.BytetoHex(in);
                         if (in[0] == 0x00) {
-                            BuildDialogue("Re-Use", "The Logger has been successfully re-used.", 0);
+                            BuildDialogue(getString(R.string.Reuse), getString(R.string.ReuseSuccessfull), 0);
                             makesound(getActivity(), R.raw.definite);
                         } else {
-                            BuildDialogue("Re-Use", "Re-use unsuccessful.\n\nTry stopping the logger first", 0);
+                            BuildDialogue(getString(R.string.Reuse), getString(R.string.ReuseNotSuccessfull), 0);
                             makesound(getActivity(), R.raw.unsure);
                         }
                         SystemClock.sleep(1000);
@@ -518,22 +552,21 @@ public class BLEQueryFragment extends Fragment {
                         state = 8;
                         break;
                     case 5:
-                        Log.i("YAS", "CommsI in message find logger or tag logger");
                         commsSerial.BytetoHex(in);
                         if (message.equals("8")) {
                             if (in[0] == 0x00) {
-                                BuildDialogue("Find Logger", "Green LED should be blinking on the logger now.", 0);
+                                BuildDialogue(getString(R.string.FindLogger), getString(R.string.FindSuccessfull), 0);
                                 makesound(getActivity(), R.raw.definite);
                             } else {
-                                BuildDialogue("Find Logger", "An error occurred", 0);
+                                BuildDialogue(getString(R.string.FindLogger), getString(R.string.FindNotSuccessfull), 0);
                                 makesound(getActivity(), R.raw.unsure);
                             }
                         }else{
                             if (in[0] == 0x00) {
-                                BuildDialogue("Tag", "The Logger has been successfully tagged.", 0);
+                                BuildDialogue(getString(R.string.Tag), getString(R.string.TagSuccessfull), 0);
                                 makesound(getActivity(), R.raw.definite);
                             } else {
-                                BuildDialogue("Tag", "Tagging unsuccessful.\n\nTry starting the logger first", 0);
+                                BuildDialogue(getString(R.string.Tag), getString(R.string.TagNotSuccessfull), 0);
                                 makesound(getActivity(), R.raw.unsure);
                             }
                         }
@@ -706,10 +739,14 @@ public class BLEQueryFragment extends Fragment {
                         bleFragmentI.onBLEWrite(HexData.BLE_ACK);
                         bleFragmentI.onBLERead();
                         state = 25;
+//                        if (baseCMD.passwordEnabled) {
+//                            promtPassword();
+//                        }
                         break;
                     case 25:
                         hexData.BytetoHex(in);
                         FifteenSecTimeout();
+
                         break;
 
                 }
@@ -719,6 +756,7 @@ public class BLEQueryFragment extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void SetUI(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd  hh:mm:ss aa");
         serialno.setText(Q_data.get(0));
         firmware.setText(Q_data.get(1));
         model.setText(QS.GetGeneration(Integer.parseInt(Q_data.get(2))));
@@ -726,10 +764,20 @@ public class BLEQueryFragment extends Fragment {
 
         Lstate.setText( QS.GetState(Integer.parseInt(Q_data.get(5))));
         battery.setText(  R_data.get(17)+"%");
-        currentTemp.setText(R_data.get(9) + " °C");
-        currenthumidity.setText(R_data.get(11) + " %");
 
-        manudate.setText(F_data.get(0));
+        if (storeKeyService.getDefaults("UNITS", getActivity().getApplication()) != null && storeKeyService.getDefaults("UNITS", getActivity().getApplication()).equals("1")) {
+            currentTemp.setText(R_data.get(9) + " °C");
+            ch1ul.setText(U_data.get(15) + " °C");
+            ch1ll.setText(U_data.get(16) + " °C");
+        }else {
+            currentTemp.setText(QS.returnF(R_data.get(9)) + " °F");
+            ch1ul.setText(QS.returnF(U_data.get(15)) + " °F");
+            ch1ll.setText(QS.returnF(U_data.get(16)) + " °F");
+        }
+
+        currenthumidity.setText(R_data.get(13) + " %");
+
+        manudate.setText(sdf.format(baseCMD.dmanu));
         memory.setText(F_data.get(1));
         startondatetime.setText(R_data.get(0));
         startwithbutton.setText(R_data.get(1));
@@ -737,19 +785,36 @@ public class BLEQueryFragment extends Fragment {
         stopwhenfull.setText(R_data.get(5));
         stoponsample.setText(R_data.get(6));
 
-        startedby.setText(R_data.get(2));
-        stoppedby.setText(R_data.get(4));
-
         loggedsamples.setText(R_data.get(7));
         tripsamples.setText(R_data.get(7));
-        lastsample.setText(R_data.get(8));
+
 
         sampleno.setText(U_data.get(5));
         trips.setText(U_data.get(3));
         energysave.setText(QS.YesorNo(baseCMD.energysave));
+        if(baseCMD.state == 4){
+            st_at.setVisibility(View.VISIBLE);
+            st_by.setVisibility(View.VISIBLE);
+            sp_at.setVisibility(View.GONE);
+            sp_by.setVisibility(View.GONE);
+            startedat.setText(sdf.format(baseCMD.dstart));
+            startedby.setText(R_data.get(2));
+        }else if(baseCMD.state == 5){
+            st_at.setVisibility(View.VISIBLE);
+            st_by.setVisibility(View.VISIBLE);
+            sp_at.setVisibility(View.VISIBLE);
+            sp_by.setVisibility(View.VISIBLE);
+            startedat.setText(sdf.format(baseCMD.dstart));
+            startedby.setText(R_data.get(2));
+            stoppedat.setText(sdf.format(baseCMD.dstop));
+            stoppedby.setText(R_data.get(4));
+        }else{
+            st_at.setVisibility(View.GONE);
+            st_by.setVisibility(View.GONE);
+            sp_at.setVisibility(View.GONE);
+            sp_by.setVisibility(View.GONE);
+        }
 
-        startedat.setText(U_data.get(1));
-        stoppedat.setText(U_data.get(2));
 
         loopoverwrite.setText(U_data.get(6));
         enablelcdmenu.setText(U_data.get(7));
@@ -762,8 +827,7 @@ public class BLEQueryFragment extends Fragment {
 
         channel1enable.setText(U_data.get(13));
         ch1enablelimits.setText(U_data.get(14));
-        ch1ul.setText(U_data.get(15)+ " °C");
-        ch1ll.setText(U_data.get(16)+ " °C");
+
 
         channel2enable.setText(U_data.get(18));
         ch2enablelimits.setText(U_data.get(19));
@@ -779,19 +843,19 @@ public class BLEQueryFragment extends Fragment {
 
 
         if((U_data.get(18)).equals("Yes")){
-            logging.setText("Temperature + Humidity");
+            logging.setText(getString(R.string.TempHum));
         }else{
-            logging.setText("Temperature");
+            logging.setText(getString(R.string.Temp));
         }
 
-        units.setText("°C");
+        units.setText(QS.imperial(baseCMD.ImperialUnit));
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd  HH:mm:ss");
+
         String currentDateandTime = sdf.format(new Date());
         time.setText(currentDateandTime);
 
-        ch1alarmdelay.setText( R_data.get(12)+ " Samples");
-        ch2alarmdelay.setText( R_data.get(16)+ " Samples");
+        ch1alarmdelay.setText( R_data.get(12)+ getString(R.string.Samples));
+        ch2alarmdelay.setText( R_data.get(16)+ getString(R.string.Samples));
 
 
         if(Double.parseDouble(Q_data.get(6)) > 66){
@@ -817,11 +881,11 @@ public class BLEQueryFragment extends Fragment {
             public void run() {
 
 
-                try {
-                    TimeUnit.SECONDS.sleep(timeoutdelay/10);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+//                try {
+//                    TimeUnit.SECONDS.sleep(timeoutdelay/10);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
                 if (getFragmentManager() != null) {
                     bleFragmentI.onBLEWrite(HexData.GO_TO_SLEEP);
                     try {
@@ -829,7 +893,6 @@ public class BLEQueryFragment extends Fragment {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    Log.d("TAG", "15 sec time out");
                     bleFragmentI.BLEDisconnect();
                 }
 
@@ -860,20 +923,21 @@ public class BLEQueryFragment extends Fragment {
     public void progressDialoge(){
 
         progress=new ProgressDialog(getActivity());
-        progress.setMessage("Querying Logger");
+        progress.setMessage(getString(R.string.QueryingLogger));
         progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progress.setIndeterminate(false);
         progress.setProgress(0);
         progress.setCancelable(false);
-        progress.setButton(DialogInterface.BUTTON_NEGATIVE, "Abort", new DialogInterface.OnClickListener() {
+        progress.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.Abort), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 //                sendData(hexData.BLE_ACK);
 //                state = 7;
 
                 if(family.getText().toString() == "")
-                    BuildDialogue("Query Aborted", "Entries might be empty!\nGo back to menu and reconnect", 1);
+                    BuildDialogue(getString(R.string.QueryAborted), getString(R.string.Go_back_and_reconnect), 1);
                 dialog.dismiss();
+                ((MainActivity)getActivity()).appStartState();
             }
         });
         progress.setProgressNumberFormat("");
@@ -942,6 +1006,56 @@ public class BLEQueryFragment extends Fragment {
             final MediaPlayer mp = MediaPlayer.create(context, resid);
             mp.start();
         }
+    }
+
+    //if the logger is password protected this will popup at the start to login
+    private void promtPassword(final int command){
+        // get prompts.xml view
+        LayoutInflater li = LayoutInflater.from(getActivity());
+        View promptsView = li.inflate(R.layout.prompts, null);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                getActivity());
+
+        // set prompts.xml to alertdialog builder
+        alertDialogBuilder.setView(promptsView);
+
+        final EditText userInput = (EditText) promptsView
+                .findViewById(R.id.editTextDialogUserInput);
+
+        // set dialog message
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton(getString(R.string.Ok),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                // get user input and set it to result
+                                // edit text
+                                //this is where the command is sent
+                                bleFragmentI.onBLEWrite(commsSerial.WriteByte(baseCMD.WritePassword()));
+                                if(command == 3){
+                                    bleFragmentI.onBLEWrite(HexData.STOP_L);
+                                    bleFragmentI.onBLERead();
+                                }else if(command == 4){
+                                    bleFragmentI.onBLEWrite(HexData.REUSE_L);
+                                    bleFragmentI.onBLERead();
+                                }
+                                //bleFragmentI.onBLERead();
+                                dialog.cancel();
+                            }
+                        })
+                .setNegativeButton(getString(R.string.Cancel),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
     }
 
 

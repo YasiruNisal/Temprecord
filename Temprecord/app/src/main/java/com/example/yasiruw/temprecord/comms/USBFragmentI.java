@@ -7,6 +7,5 @@ package com.example.yasiruw.temprecord.comms;
 public interface USBFragmentI {
 
    // public void onUSBRead();
-    public void onUSBWrite( byte[] value);
-    public boolean USBDisconnect();
+     void onUSBWrite( byte[] value);
 }

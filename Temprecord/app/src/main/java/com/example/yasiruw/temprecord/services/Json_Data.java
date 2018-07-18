@@ -1,5 +1,8 @@
 package com.example.yasiruw.temprecord.services;
 
+import android.content.Context;
+import android.util.Log;
+
 import com.example.yasiruw.temprecord.comms.BaseCMD;
 import com.example.yasiruw.temprecord.comms.MT2Values;
 import com.example.yasiruw.temprecord.comms.QueryStrings;
@@ -10,36 +13,49 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import static android.content.ContentValues.TAG;
+
 public class Json_Data {
 
     static final String VERSION = "1.0";
+    static final String LANGUAGE = "english";
     static final String THEME = "Yasiru";
     static final String TEMP_TITLE = "Temperature";
     static final String HU_TITLE = "Humidity";
-    static final String LOCKED = "false";
+    static final String LOCKED = "true";
+    static final String TYPE = "mobile";
 
     private MT2Values.MT2Mem_values mt2Mem_values;
     private BaseCMD baseCMD;
     private QueryStrings QS = new QueryStrings();
     private Graph_Info graph_info = new Graph_Info();
+    private int viewtype;
+    private int numchannel = 0;
+    StoreKeyService storeKeyService;
+    Context context;
 
 
-    public Json_Data(MT2Values.MT2Mem_values mt2Mem_values, BaseCMD baseCMD){
+
+    public Json_Data(MT2Values.MT2Mem_values mt2Mem_values, BaseCMD baseCMD, int viewtype, Context context){
         this.mt2Mem_values = mt2Mem_values;
         this.baseCMD = baseCMD;
+        this.viewtype = viewtype;
+        this.context = context;
     }
 
     public String CreateObject(){
 
+        JSONArray Devicea = new JSONArray();
+        JSONObject Device = new JSONObject();
+/**/        JSONObject DataPacket = new JSONObject();
+/**/
 
-
-/**/    JSONObject DataPacket = new JSONObject();
-/**/        JSONObject H = new JSONObject();
-
-
-            JSONArray logger = new JSONArray();
-/**/        JSONObject L = new JSONObject();
+            JSONObject H = new JSONObject();
+            JSONArray channel = new JSONArray();
+/**/
 /**/            JSONObject data = new JSONObject();
+                JSONObject data1 = new JSONObject();
+                JSONObject data2 = new JSONObject();
 
                         JSONArray timea = new JSONArray();
                         JSONArray tempa = new JSONArray();
@@ -64,11 +80,13 @@ public class Json_Data {
                             JSONArray lhighh = new JSONArray();
                             JSONArray lmidh = new JSONArray();
                             JSONArray llowh = new JSONArray();
-                JSONObject D = new JSONObject();
-                    JSONObject tempg = new JSONObject();
+                            JSONObject limit = new JSONObject();
+                    JSONObject D = new JSONObject();
+
                     JSONObject graph = new JSONObject();
-                        JSONObject limit = new JSONObject();
-                    JSONObject humg = new JSONObject();
+                        JSONObject tempg = new JSONObject();
+                        JSONObject humg = new JSONObject();
+                        JSONObject tagg = new JSONObject();
 
         try {
 
@@ -78,101 +96,140 @@ public class Json_Data {
 
 
             H.put("version", VERSION);
+            H.accumulate("language", LANGUAGE);
             H.accumulate("theme", THEME);
             H.accumulate("title", TEMP_TITLE);
+            H.accumulate("serial", baseCMD.serialno);
+            for (int i = 0; i < mt2Mem_values.Data.size(); i++) {
+                timea.put(i, String.valueOf((mt2Mem_values.Data.get(i).valTime.getTime()) / 1000));
+                //Log.i(TAG, "date " + mt2Mem_values.Data.get(i).valTime + " +++++++++++++++++++");
+            }
+            H.accumulate("datetime", timea);
+            H.accumulate("mainyaxis", QS.imperial(baseCMD.ImperialUnit));
+            H.accumulate("comment", baseCMD.usercomment);
+            H.accumulate("firmwareversion", baseCMD.firmware);
+            H.accumulate("type", TYPE);
             H.accumulate("ampm", "true");
-            H.accumulate("celcius", QS.TrueorFalse(baseCMD.ImperialUnit));
-            H.accumulate("showlimit", QS.TrueorFalse((baseCMD.ch1limitEnabled|| baseCMD.ch2limitEnabled)));
-            H.accumulate("locked", LOCKED);
-
+            H.accumulate("showlimit", QS.TrueorFalse((baseCMD.ch1limitEnabled || baseCMD.ch2limitEnabled)));
+            if(viewtype == 1)
+                H.accumulate("locked", "true");
+            else if(viewtype == 2)
+                H.accumulate("locked", "false");
 
 //================================================================================================//
-            //Logger
+// Channel 1 temperature
 //================================================================================================//
-
-            //============================data====================================================//
-            for(int i = 0; i < mt2Mem_values.Data.size(); i++){
-                timea.put(i,  String.valueOf((mt2Mem_values.Data.get(i).valTime.getTime())/1000));
-            }
-            data.put("datetime", timea);
-
-
-            for(int i = 0; i < mt2Mem_values.Data.size(); i++){
-                tempa.put(i,  String.valueOf(mt2Mem_values.Data.get(i).valueCh0()));
-            }
-            data.accumulate("temp",tempa);
-
-
-            if(baseCMD.ch2Enable) {
+            if(baseCMD.ch1Enable){
                 for (int i = 0; i < mt2Mem_values.Data.size(); i++) {
-                    huma.put(i, String.valueOf(mt2Mem_values.Data.get(i).valueCh1()));
+                    if (storeKeyService.getDefaults("UNITS", context) != null && storeKeyService.getDefaults("UNITS", context).equals("1")) {
+                        tempa.put(i, String.valueOf(mt2Mem_values.Data.get(i).valueCh0()));
+                    }else{
+                        tempa.put(i, QS.returnF(String.valueOf(mt2Mem_values.Data.get(i).valueCh0())));
+                    }
                 }
-                data.accumulate("hum", huma);
-            }else{
-                data.accumulate("hum", "null");
-            }
+                data.put("value", tempa);
+                if (storeKeyService.getDefaults("UNITS", context) != null && storeKeyService.getDefaults("UNITS", context).equals("1")) {
+                    data.accumulate("units", QS.imperial(false));
+                }else{
+                    data.accumulate("units", QS.imperial(true));
+                }
+                //date time will be left out for now
 
-            for(int i = 0; i < mt2Mem_values.Data.size(); i++){
-                taga.put(i,  String.valueOf(mt2Mem_values.Data.get(i).ValTag));
-            }
-            data.accumulate("tag",taga);
-            L.put("data", data);
-
-            //============================limits==================================================//
+                //============================limits==================================================//
 
                 //======================temperature===============================================//
 
-                    //===================================upper limits=============================//
+                //===================================upper limits=============================//
 
 
                 uhight.put(0, "null");
                 uhight.put(1, "null");
                 uhight.put(2, "null");
 
-            luppert.put("high", uhight);
+                luppert.put("high", uhight);
 
                 umidt.put(0, String.valueOf(baseCMD.ch1Hi / 10.0));
                 umidt.put(1, "#FF0000");
                 umidt.put(2, "dash");
 
-            luppert.put("mid", umidt);
+                luppert.put("mid", umidt);
 
                 ulowt.put(0, "null");
                 ulowt.put(1, "null");
                 ulowt.put(2, "null");
 
-            luppert.put("low", ulowt);
+                luppert.put("low", ulowt);
 
                 ltemp.put("upper", luppert);
 
-                    //==============================lower limits==================================//
+                //==============================lower limits==================================//
 
                 lhight.put(0, "null");
                 lhight.put(1, "null");
                 lhight.put(2, "null");
 
-            llowert.put("high", lhight);
+                llowert.put("high", lhight);
 
-                lmidt.put(0, String.valueOf(baseCMD.ch1Lo/10.0));
+                lmidt.put(0, String.valueOf(baseCMD.ch1Lo / 10.0));
                 lmidt.put(1, "#FF0000");
                 lmidt.put(2, "dash");
 
-            llowert.put("mid", lmidt);
+                llowert.put("mid", lmidt);
 
                 llowt.put(0, "null");
                 llowt.put(1, "null");
                 llowt.put(2, "null");
 
-            llowert.put("low", llowt);
+                llowert.put("low", llowt);
 
 
                 ltemp.put("lower", llowert);
 
-                limit.put("temp", ltemp);
+                data.put("limits", ltemp);
 
-//            //=============================humidity===============================================//
-            if(baseCMD.ch2Enable ) {
-                //===================================upper limits=============================//
+                //================================================================================//
+                //Graph
+                //================================================================================//
+
+
+                tempg.put("linecolor", graph_info.TEMP_LINECOLOR);
+                tempg.put("linethickness", graph_info.TEMP_LINETHICKNESS);
+                tempg.put("linetype", graph_info.TEMP_LINETYPE);
+                tempg.put("upperlimitlinecolor", graph_info.TEMP_LIMITLINECOLOR);
+                tempg.put("upperlimitlinethickness", graph_info.TEMP_LIMITLINETHICKNESS);
+                tempg.put("upperlimitlinetype", graph_info.TEMP_LIMITLINETYPE);
+                tempg.put("lowerlimitlinecolor", graph_info.TEMP_LIMITLINECOLOR);
+                tempg.put("lowerlimitlinethickness", graph_info.TEMP_LIMITLINETHICKNESS);
+                tempg.put("lowerlimitlinetype", graph_info.TEMP_LIMITLINETYPE);
+                tempg.put("markercolor", graph_info.TEMP_MARKERCOLOR);
+                tempg.put("markersize", graph_info.TEMP_MARKERSIZE);
+                tempg.put("markertype", graph_info.TEMP_MARKERTYPE);
+
+                data.accumulate("graph", tempg);
+                channel.put(numchannel,data);
+                numchannel++;
+            }
+
+
+
+//================================================================================================//
+//Channel 2 Humidity
+//================================================================================================//
+
+            if(baseCMD.ch2Enable){
+
+                for (int i = 0; i < mt2Mem_values.Data.size(); i++) {
+                    huma.put(i, String.valueOf(mt2Mem_values.Data.get(i).valueCh1()));
+                }
+                data1.put("value", huma);
+                data1.accumulate("units", " %");
+                //date time is not used for now
+
+                //============================limits==================================================//
+
+                //=============================humidity===============================================//
+
+                    //===================================upper limits=============================//
                 uhighh.put(0, "null");
                 uhighh.put(1, "null");
                 uhighh.put(2, "null");
@@ -216,67 +273,72 @@ public class Json_Data {
 
                 lhum.put("lower", llowerh);
 
-                limit.accumulate("hum", lhum);
-            }
+                data1.accumulate("limits", lhum);
 
-                L.put("limits", limit);
-
-//================================================================================================//
-            //Details
-//================================================================================================//
-
-            D.put("name", baseCMD.usercomment);
-            D.put("serial", baseCMD.serialno);
-
-            L.put("details", D);
-
-
-//================================================================================================//
-            //Graph
-//================================================================================================//
-
-            //===================================temp=============================================//
-
-
-            tempg.put("linecolor", graph_info.TEMP_LINECOLOR);
-            tempg.put("linethickness", graph_info.TEMP_LINETHICKNESS);
-            tempg.put("linetype", graph_info.TEMP_LINETYPE);
-            tempg.put("limitlinecolor", graph_info.TEMP_LIMITLINECOLOR);
-            tempg.put("limitlinethickness", graph_info.TEMP_LINETHICKNESS);
-            tempg.put("limitlinetype", graph_info.TEMP_LIMITLINETYPE);
-            tempg.put("markercolor", graph_info.TEMP_MARKERCOLOR);
-            tempg.put("markersize", graph_info.TEMP_MARKERSIZE);
-            tempg.put("markertype", graph_info.TEMP_MARKERTYPE);
-
-            graph.put("temp", tempg);
-
-            if(baseCMD.ch2Enable) {
-
+                //================================================================================//
+                                //Graph
+                //================================================================================//
                 humg.put("linecolor", graph_info.HUM_LINECOLOR);
                 humg.put("linethickness", graph_info.HUM_LINETHICKNESS);
                 humg.put("linetype", graph_info.HUM_LINETYPE);
-                humg.put("limitlinecolor", graph_info.HUM_LIMITLINECOLOR);
-                humg.put("limitlinethickness", graph_info.HUM_LINETHICKNESS);
-                humg.put("limitlinetype", graph_info.HUM_LIMITLINETYPE);
+                humg.put("upperlimitlinecolor", graph_info.HUM_LIMITLINECOLOR);
+                humg.put("upperlimitlinethickness", graph_info.HUM_LIMITLINETHICKNESS);
+                humg.put("upperlimitlinetype", graph_info.HUM_LIMITLINETYPE);
+                humg.put("lowerlimitlinecolor", graph_info.HUM_LIMITLINECOLOR);
+                humg.put("lowerlimitlinethickness", graph_info.HUM_LIMITLINETHICKNESS);
+                humg.put("lowerlimitlinetype", graph_info.HUM_LIMITLINETYPE);
                 humg.put("markercolor", graph_info.HUM_MARKERCOLOR);
                 humg.put("markersize", graph_info.HUM_MARKERSIZE);
                 humg.put("markertype", graph_info.HUM_MARKERTYPE);
 
-                graph.put("hum", humg);
+                data1.accumulate("graph", humg);
+                channel.put(numchannel,data1);
+                numchannel++;
 
             }
-            L.put("graph", graph);
-            //====================================================================================//
-            logger.put(0,L);
+
+//================================================================================================//
+// Tags
+//================================================================================================//
+
+            if(mt2Mem_values.TagCount()>0){
+
+                for (int i = 0; i < mt2Mem_values.Data.size(); i++) {
+                    taga.put(i, String.valueOf(mt2Mem_values.Data.get(i).ValTag));
+                }
+                data2.put("value", taga);
+                data2.accumulate("units", "");
+                //date time is empty
+                data2.accumulate("limits","");
+
+                //================================================================================//
+                //Graph
+                //================================================================================//
+
+                tagg.put("tagcolor", graph_info.TAG_COLOR);
+                tagg.put("tagsize", graph_info.TAG_SIZE);
+                tagg.put("tagtype", graph_info.TAG_TYPE);
+
+                data2.accumulate("graph", tagg);
+                channel.put(numchannel,data2);
+                numchannel++;
+            }
+
+
+
 
             DataPacket.put("header", H);
-            DataPacket.put("logger", logger);
+            DataPacket.put("channel", channel);
+
+            Devicea.put(0, DataPacket);
+
+            Device.put("device",Devicea);
 
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        return DataPacket.toString();
+        return Device.toString();
     }
 }

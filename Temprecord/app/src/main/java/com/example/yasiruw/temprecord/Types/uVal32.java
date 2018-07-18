@@ -38,7 +38,7 @@ public class uVal32 extends baseType {
         int val;
 
 
-        long s = (long) ((data.get(0) & 0xff) | (data.get(1) << 8) | ((data.get(2)) << 16) | ((data.get(3)) << 24));
+        int s = ((data.get(0) & 0xff) | ((data.get(1)& 0xff) << 8) | ((data.get(2)& 0xffff) << 16) | ((data.get(3)& 0xffffff) << 24));
         val = (int) s;
         value = val;
 //        int byte1 = 0xFF & data.get(0);

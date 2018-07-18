@@ -1,6 +1,11 @@
 package com.example.yasiruw.temprecord.comms;
 
 
+import android.content.res.Resources;
+import android.util.Log;
+
+import com.example.yasiruw.temprecord.App;
+import com.example.yasiruw.temprecord.R;
 import com.example.yasiruw.temprecord.utils.CommsChar;
 
 import java.text.DateFormat;
@@ -9,6 +14,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by Yasiru on 14-Dec-17.
@@ -55,23 +62,23 @@ public class QueryStrings {
     public String GetState(int str){
         String state = "";
         if(str == 0){
-            state = "Sleeping";
+            state = App.getContext().getString(R.string.Sleeping);
         }else if(str == 1){
-            state = "No Config";
+            state = App.getContext().getString(R.string.NoConfig);
         }else if(str == 2){
-            state = "Ready";
+            state = App.getContext().getString(R.string.Ready);
         }else if(str == 3){
-            state = "Start Delay";
+            state = App.getContext().getString(R.string.Start_Delay);
         }else if(str == 4){
-            state = "Running";
+            state = App.getContext().getString(R.string.Running);
         }else if(str == 5){
-            state = "Stopped";
+            state = App.getContext().getString(R.string.Stopped);
         }else if(str == 6){
-            state = "Reuse";
+            state = App.getContext().getString(R.string.Reuse_);
         }else if(str == 7){
-            state = "Error";
+            state = App.getContext().getString(R.string.Error);
         }else if(str == 8){
-            state = "Unknown";
+            state = App.getContext().getString(R.string.Unknown);
         }
 
         return state;
@@ -79,10 +86,10 @@ public class QueryStrings {
 
     public String YesorNo(boolean in){
         String yesorno = "";
-        if(in == true){
-            yesorno =  "Yes";
-        }else if(in == false){
-            yesorno = "No";
+        if(in){
+            yesorno =  App.getContext().getString(R.string.Yes);
+        }else if(!in){
+            yesorno = App.getContext().getString(R.string.No);
         }
         return yesorno;
     }
@@ -90,10 +97,10 @@ public class QueryStrings {
 
     public String TrueorFalse(boolean in){
         String trueorfalse = "";
-        if(in == true){
-            trueorfalse =  "true";
-        }else if(in == false){
-            trueorfalse = "false";
+        if(in){
+            trueorfalse =  App.getContext().getString(R.string.true_);
+        }else if(!in){
+            trueorfalse = App.getContext().getString(R.string.false_);
         }
         return trueorfalse;
     }
@@ -101,11 +108,11 @@ public class QueryStrings {
     public String Startby(MT2ClassFlags.MT2_LoggerFlags data){
         String r = "";
         if(data.startDateTime.getValue()){
-            r = "Date Time";
+            r = App.getContext().getString(R.string.DateTime);
         }else if(data.buttonStart.getValue()){
-            r = "Button";
+            r = App.getContext().getString(R.string.Button);
         }else if(data.softwareStart.getValue()){
-            r = "Software";
+            r = App.getContext().getString(R.string.Software);
         }
 
         return r;
@@ -114,13 +121,13 @@ public class QueryStrings {
     public String Stopby(MT2ClassFlags.MT2_LoggerFlags data){
         String r = "";
         if(data.buttonStop.getValue()){
-            r = "Button";
+            r = App.getContext().getString(R.string.Button);
         }else if(data.softwareStop.getValue()){
-            r = "Software";
+            r = App.getContext().getString(R.string.Software);
         }else if(data.sampleStop.getValue()){
-            r = "Sample Count";
+            r = App.getContext().getString(R.string.SampleCount);
         }else if(data.fullStop.getValue()){
-            r = "Memory Full";
+            r = App.getContext().getString(R.string.MemoryFull);
         }
 
         return r;
@@ -145,15 +152,55 @@ public class QueryStrings {
         return M;
     }
 
+    public String imperial(boolean imperial){
+        String M = "";
+        if(!imperial){
+            M = " °C";
+        }else if(imperial){
+            M = " °F";
+        }
+
+        return M;
+    }
+
+    public String returnF(String celsius){
+        double fahrenheit;
+
+        fahrenheit = 32 + (Double.parseDouble(celsius) * 9 / 5);
+
+        return String.valueOf(fahrenheit);
+    }
+
+    public double returnC(double fahrenheit){
+        return  ((fahrenheit - 32)*5)/9;
+    }
+
+    public Double returnFD(double celsius){
+        double fahrenheit;
+
+        fahrenheit = 32 + (celsius * 9 / 5);
+
+        return fahrenheit;
+    }
+
+
+
     public String[] StringDatetoInt(String string){
         String[] parts = string.split(":|\\/|\\ ");
+        Log.i(TAG, parts.length + " " + parts[0] + "=============================");
         return parts;
     }
 
-    public Calendar getDatefromString(String date){
+    public static Calendar toCalendar(Date date){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return cal;
+    }
+
+    public Date getDatefromString(String date){
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-        //sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
 
 
         Date d = null;
@@ -163,10 +210,9 @@ public class QueryStrings {
             e.printStackTrace();
         }
 
-        Calendar c = Calendar.getInstance();
-        c.setTime(d);
 
-        return c;
+
+        return d;
     }
 
     public String calendertoString(Calendar cal){

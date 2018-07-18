@@ -21,7 +21,7 @@ public class CommsSerial {
 
     private CRC16 crc = new CRC16();
     private CommsChar commsChar = new CommsChar();
-    private BaseCMD baseCMD = new BaseCMD();
+
 
     public byte[] WriteByte(byte[] b){
         ArrayList<Byte> msgData   = new ArrayList<Byte>();
@@ -61,7 +61,7 @@ public class CommsSerial {
                     msgData.remove(j);
                     msgData.add(j,commsChar.CHAR_ESC);
                     j++;
-                    msgData.add(j, commsChar.CESC_ESC);
+                    msgData.add(j, CommsChar.CESC_ESC);
                     j++;
                     break;
                 //Return character
@@ -69,7 +69,7 @@ public class CommsSerial {
                     msgData.remove(j);
                     msgData.add(j,commsChar.CHAR_ESC);
                     j++;
-                    msgData.add(j, commsChar.CESC_RET);
+                    msgData.add(j, CommsChar.CESC_RET);
                     j++;
                     break;
                 //Clear character
@@ -77,7 +77,7 @@ public class CommsSerial {
                     msgData.remove(j);
                     msgData.add(j,commsChar.CHAR_ESC);
                     j++;
-                    msgData.add(j, commsChar.CESC_CLR);
+                    msgData.add(j, CommsChar.CESC_CLR);
                     j++;
                     break;
                 //All other characters
@@ -106,7 +106,7 @@ public class CommsSerial {
     public byte[] ReadByte(byte[] rawBytes){
         byte[] b = new byte[0];
         int rawLength;
-        List<Byte> msgData = new ArrayList<Byte>();
+        List<Byte> msgData = new ArrayList<>();
 
         rawLength = rawBytes.length;
         byte[] crc = new byte[rawLength-2];
@@ -186,7 +186,7 @@ public class CommsSerial {
         for (byte b1 : b){
             sb.append(String.format("%02X ", b1));
         }
-        Log.d("HEX", sb.toString());
+        //Log.d("HEX", sb.toString());
     }
 
     public byte[] int2byte(int[]src) {
@@ -196,7 +196,7 @@ public class CommsSerial {
         for (int i=0; i<srcLength; i++) {
             int x = src[i];
             int j = i << 2;
-            dst[j++] = (byte) ((x >>> 0) & 0xff);
+            dst[j++] = (byte) ((x) & 0xff);
             dst[j++] = (byte) ((x >>> 8) & 0xff);
             dst[j++] = (byte) ((x >>> 16) & 0xff);
             dst[j++] = (byte) ((x >>> 24) & 0xff);
@@ -206,7 +206,7 @@ public class CommsSerial {
 
     public byte[] convertIntegersToBytes (int[] integers) {
         if (integers != null) {
-            Log.i("INT", Arrays.toString(integers));
+            //Log.i("INT", Arrays.toString(integers));
             byte[] outputBytes = new byte[integers.length * 4];
             byte[] outputarray = new byte[integers.length];
 
@@ -227,11 +227,11 @@ public class CommsSerial {
     }
 
     public byte[] ReadUSBByte(byte[] rawBytes){
-        Log.i("USB","IN READ USB++++++++");
+        //Log.i("USB","IN READ USB++++++++");
         //BytetoHex(rawBytes);
         byte[] b = new byte[0];
         int rawLength;
-        List<Byte> msgData = new ArrayList<Byte>();
+        List<Byte> msgData = new ArrayList<>();
 
         rawLength = rawBytes.length;
         byte[] crc = new byte[rawLength-2];
@@ -275,7 +275,7 @@ public class CommsSerial {
         }
 
         //Log.d("INFO", msgData.get(1) +" "+b[1]+ "------------ " + msgData.size() +" "+ b.length);
-        Log.i("USB", "IN USB READ DATA");
+        //Log.i("USB", "IN USB READ DATA");
        // BytetoHex(b);
 
         return b;
@@ -283,7 +283,7 @@ public class CommsSerial {
     }
 
     public byte[] WriteUSBByte(byte[] b){
-        ArrayList<Byte> msgData   = new ArrayList<Byte>();
+        ArrayList<Byte> msgData   = new ArrayList<>();
         for (int i = 0; i < b.length; i ++){
             msgData.add(b[i]);
         }

@@ -3,12 +3,12 @@
 
     <item android:id="@+id/menu_about"
         android:orderInCategory="100"
-        android:title="About"
-        android:icon="@drawable/ic_share_black_24dp"
+        android:title="@string/About"
+        android:icon="@drawable/ic_screenshotb"
         android:showAsAction="always"/>
     <item
         android:id="@+id/menu"
-        android:title="Options"
+        android:title="@string/Options"
         android:icon="@drawable/query_option"
         android:orderInCategory="101"
         android:showAsAction="always">
@@ -18,31 +18,31 @@
             <item android:id="@+id/action_requery"
                 android:icon="@drawable/ic_infob"
                 android:showAsAction="ifRoom"
-                android:title="Re-Query" />
+                android:title="@string/ReQuery" />
 
             <item android:id="@+id/action_start"
                 android:icon="@drawable/ic_startb"
                 android:showAsAction="ifRoom"
-                android:title="Start" />
+                android:title="@string/StartLogger" />
 
             <item android:id="@+id/action_stop"
                 android:icon="@drawable/ic_stopb"
                 android:showAsAction="ifRoom"
-                android:title="Stop" />
+                android:title="@string/StopLogger" />
 
             <item android:id="@+id/action_reuse"
                 android:icon="@drawable/ic_reuseb"
                 android:showAsAction="ifRoom"
-                android:title="Re-Use" />
+                android:title="@string/ReuseLogger" />
 
             <item android:id="@+id/action_tag"
                 android:icon="@drawable/ic_tagb"
                 android:showAsAction="ifRoom"
-                android:title="Tag" />
+                android:title="@string/TagLogger" />
             <item android:id="@+id/action_find"
                 android:icon="@drawable/ic_findb"
                 android:showAsAction="ifRoom"
-                android:title="Find Logger" />
+                android:title="@string/FindLogger" />
 
 
 

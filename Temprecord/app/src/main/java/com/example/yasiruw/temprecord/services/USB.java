@@ -152,10 +152,12 @@ public class USB
                         String action = intent.getAction();
                         if (UsbManager.ACTION_USB_DEVICE_ATTACHED.equals(action))
                         {
+                            //Log.i("USB", "COMING INTO USB ACTION ATTACH");
                             Update_UI(m_context,"U02 <- onReceive ACTION_USB_DEVICE_ATTACHED","UI_update",null,null);
                         }
                         if (UsbManager.ACTION_USB_DEVICE_DETACHED.equals(action))
                         {
+                            //Log.i("USB", "COMING INTO USB ACTION DEEEEEEATTACH");
                             Update_UI(m_context,"U03 <- onReceive DETACHED","UI_update",null,null);
 //=========================//
                             USB_close_connection();
@@ -214,8 +216,8 @@ public class USB
                      nb_interface++)
                 {
                     m_usb_interface[nb_interface] = m_usb_device.getInterface(nb_interface);
-                    Log.i("YO","=====> m_usb_interface["+nb_interface+"] = " +
-                            m_usb_interface[nb_interface]+"\r\n");
+                    //Log.i("YO","=====> m_usb_interface["+nb_interface+"] = " +
+                            //m_usb_interface[nb_interface]+"\r\n");
                     if (m_usb_connection.claimInterface(m_usb_interface[nb_interface], true))
                     {
                         switch (m_usb_interface[nb_interface].getInterfaceProtocol())
@@ -259,7 +261,7 @@ public class USB
 //====================================================================//
     private void USB_close_connection()
     {
-        Log.i("YO","=========== USB_close !!!!!!!!!!");
+        //Log.i("YO","=========== USB_close !!!!!!!!!!");
         unregister_receiver(m_context);
         if (m_usb_connection != null)
         {
@@ -284,7 +286,7 @@ public class USB
     //====================================================================//
     public void Send_Command(byte[] write)
     {
-        Log.i("USB", "Sendcommand====");
+        //Log.i("USB", "Sendcommand====");
         //commsSerial.BytetoHex((write));
         if (m_usb_connection!= null)
         {

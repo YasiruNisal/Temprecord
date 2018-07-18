@@ -29,6 +29,7 @@ public class SettingsActivity extends Activity {
     Button emailcc;
     Button name;
     Switch sound;
+    Switch units;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -37,45 +38,52 @@ public class SettingsActivity extends Activity {
         setContentView(R.layout.activity__settings);
         ActionBar bar = getActionBar();
         bar.setBackgroundDrawable(new ColorDrawable(0xFFFFFFFF));
-        bar.setTitle("Settings");
+        bar.setTitle(getString(R.string.settings));
         bar.setIcon(getResources().getDrawable(R.drawable.ic_settingsc));
         bar.setElevation(15);
 
 
-        emailto = (Button) findViewById(R.id.emailto);
-        emailcc = (Button) findViewById(R.id.emailcc);
-        name = (Button) findViewById(R.id.name);
-        sound = (Switch) findViewById(R.id.sound);
+        emailto =  findViewById(R.id.emailto);
+        emailcc =  findViewById(R.id.emailcc);
+        name =  findViewById(R.id.name);
+        sound =  findViewById(R.id.sound);
+        units = findViewById(R.id.imperial);
+        sound.setChecked(true);
 
-        Log.d("WHAT", "********************************" + storeKeyService.getDefaults("NAME", getApplication())+"88");
+        //Log.d("WHAT", "********************************" + StoreKeyService.getDefaults("NAME", getApplication())+"88");
         if(storeKeyService != null) {
-            if (storeKeyService.getDefaults("EMAIL_TO", getApplication()).equals("")) {
+            if (StoreKeyService.getDefaults("EMAIL_TO", getApplication()).equals("")) {
                 emailto.setText("Enter e-mail to send logger data");
                 emailto.setTextColor(getResources().getColor(R.color.list_title_color));
             } else {
-                emailto.setText(storeKeyService.getDefaults("EMAIL_TO", getApplicationContext()));
+                emailto.setText(StoreKeyService.getDefaults("EMAIL_TO", getApplicationContext()));
             }
 
-            if (storeKeyService.getDefaults("EMAIL_CC", getApplicationContext()).equals("")) {
+            if (StoreKeyService.getDefaults("EMAIL_CC", getApplicationContext()).equals("")) {
                 emailcc.setText("Enter CC e-mail to send logger data");
                 emailcc.setTextColor(getResources().getColor(R.color.list_title_color));
             } else {
-                emailcc.setText(storeKeyService.getDefaults("EMAIL_CC", getApplicationContext()));
+                emailcc.setText(StoreKeyService.getDefaults("EMAIL_CC", getApplicationContext()));
             }
 
-            if (storeKeyService.getDefaults("NAME", getApplicationContext()).equals("")) {
+            if (StoreKeyService.getDefaults("NAME", getApplicationContext()).equals("")) {
                 name.setText("Enter your name");
                 name.setTextColor(getResources().getColor(R.color.list_title_color));
             } else {
-                name.setText(storeKeyService.getDefaults("NAME", getApplicationContext()));
+                name.setText(StoreKeyService.getDefaults("NAME", getApplicationContext()));
             }
         }
 //        emailcc.setText(storeKeyService.getDefaults("EMAIL_CC", getApplication()));
 //        name.setText(storeKeyService.getDefaults("NAME", getApplication()));
-        if(storeKeyService.getDefaults("SOUND", getApplicationContext()) != null && storeKeyService.getDefaults("SOUND", getApplicationContext()).equals("1"))
+        if(StoreKeyService.getDefaults("SOUND", getApplicationContext()) != null && StoreKeyService.getDefaults("SOUND", getApplicationContext()).equals("1"))
             sound.setChecked(true);
         else
             sound.setChecked(false);
+
+        if(StoreKeyService.getDefaults("UNITS", getApplicationContext()) != null && StoreKeyService.getDefaults("UNITS", getApplicationContext()).equals("1"))
+            units.setChecked(true);
+        else
+            units.setChecked(false);
 
         buttonClick();
 
@@ -112,16 +120,23 @@ public class SettingsActivity extends Activity {
         switch(item.getItemId()) {
             case R.id.apply:
                 String sond;
-                if(sound.isChecked() == true)
+                String unit;
+                if(sound.isChecked())
                     sond = "1";
                 else
                     sond = "0";
 
+                if(units.isChecked())
+                    unit = "1";
+                else
+                    unit = "0";
 
-                storeKeyService.setDefaults("EMAIL_TO", emailto.getText().toString(), getApplication());
-                storeKeyService.setDefaults("EMAIL_CC", emailcc.getText().toString(), getApplication());
-                storeKeyService.setDefaults("NAME", name.getText().toString(), getApplication());
-                storeKeyService.setDefaults("SOUND", sond, getApplicationContext());
+
+                StoreKeyService.setDefaults("EMAIL_TO", emailto.getText().toString(), getApplication());
+                StoreKeyService.setDefaults("EMAIL_CC", emailcc.getText().toString(), getApplication());
+                StoreKeyService.setDefaults("NAME", name.getText().toString(), getApplication());
+                StoreKeyService.setDefaults("SOUND", sond, getApplicationContext());
+                StoreKeyService.setDefaults("UNITS", unit, getApplicationContext());
                 //emailcc.setText(storeKeyService.getDefaults("EMAIL_TO", getApplication()));
                 //apply settings
 

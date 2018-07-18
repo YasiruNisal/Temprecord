@@ -4,8 +4,8 @@ package com.example.yasiruw.temprecord.fragments;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.NotificationManager;
 import android.app.ProgressDialog;
-import android.bluetooth.BluetoothDevice;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.AssetManager;
@@ -15,11 +15,10 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.NotificationCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -39,7 +38,6 @@ import android.widget.Toast;
 
 import com.example.yasiruw.temprecord.R;
 import com.example.yasiruw.temprecord.activities.MainActivity;
-import com.example.yasiruw.temprecord.comms.BLEFragmentI;
 import com.example.yasiruw.temprecord.comms.BaseCMD;
 import com.example.yasiruw.temprecord.comms.CommsSerial;
 import com.example.yasiruw.temprecord.comms.MT2Msg_Read;
@@ -50,6 +48,7 @@ import com.example.yasiruw.temprecord.services.StoreKeyService;
 import com.example.yasiruw.temprecord.utils.CHUserData;
 import com.example.yasiruw.temprecord.utils.CommsChar;
 import com.example.yasiruw.temprecord.utils.HexData;
+import com.example.yasiruw.temprecord.utils.Screenshot;
 import com.ikovac.timepickerwithseconds.MyTimePickerDialog;
 import com.ikovac.timepickerwithseconds.TimePicker;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
@@ -60,10 +59,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.TimeZone;
 
-import static android.graphics.Color.GREEN;
-import static android.graphics.Color.RED;
+import static android.content.Context.NOTIFICATION_SERVICE;
 
 public class USBParameterFragment extends Fragment implements com.wdullaer.materialdatetimepicker.time.TimePickerDialog.OnTimeSetListener, com.wdullaer.materialdatetimepicker.date.DatePickerDialog.OnDateSetListener {
 
@@ -79,6 +78,7 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
     private TextView Lstate;
     private TextView battery;
     private TextView currenthumidity;
+    private TextView tempheading;
 
     private TextView passwordtxt;
     private TextView passwordconfirmtxt;
@@ -131,7 +131,7 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
 
     private int whichbutton;
     private int timeoutdelay;
-
+    private boolean Complete = true;
 
     private boolean humidityenabled = false;
 
@@ -146,10 +146,6 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
     private byte[] UserRead = new byte[512];
     private byte[] UserReadtemp = new byte[398];
     private byte[] ExtraRead = new byte[284];
-    private String mDeviceName;
-    private String mDeviceAddress;
-    private String message;
-    private String BLE_Address;
     private int firsttime = 0;
 
     private boolean soundon = true;
@@ -169,17 +165,9 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
     MT2Msg_Write mt2Msg_write;
     QueryStrings QS = new QueryStrings();
     CommsChar commsChar = new CommsChar();
-    private List<BluetoothDevice> mDevices = new ArrayList<>();
-    private int currentDevice = 0;
-
-    private IBinder iBinder;
-
-    private byte[] returndata;
 
     private Handler handler1 =new Handler();
 
-    private final String LIST_NAME = "NAME";
-    private final String LIST_UUID = "UUID";
 
     USBFragmentI usbFragmentI;
 
@@ -243,7 +231,7 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_bleparameter, container, false);
         getActivity().getActionBar().show();
-        getActivity().getActionBar().setTitle("Logger Parameters");
+        getActivity().getActionBar().setTitle(R.string.LoggerParameters);
         getActivity().getActionBar().setBackgroundDrawable(new ColorDrawable(0xFFFFFFFF));
         getActivity().getActionBar().setIcon(getResources().getDrawable(R.drawable.ic_parametersc));
 
@@ -305,6 +293,7 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
         BLE_Name = (EditText) view.findViewById(R.id.editbluetoothname);
 
         BLEenergysave = (CheckBox) view.findViewById(R.id.bleenergysave);
+        BLEenergysave.setVisibility(View.INVISIBLE);
         loopovewritecb = (CheckBox) view.findViewById(R.id.loopoverwrite);
         startwithbuttoncb = (CheckBox) view.findViewById(R.id.startwithbutton);
         stopwithbuttoncb = (CheckBox) view.findViewById(R.id.stopwithbutton);
@@ -324,9 +313,10 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
         ch2upperlimitnb.setEnabled(false);
         ch2lowerlimitnb.setEnabled(false);
         ch2alarmdelaynb.setEnabled(false);
+        tempheading = view.findViewById(R.id.heading39);
 
         Programparam = (Button) view.findViewById(R.id.done);
-        mConnectionState.setText("USB Connected");
+        mConnectionState.setText(getString(R.string.USB_Connected));
         progressDialoge();
         uiSetupRules();
         buttonAction();
@@ -344,6 +334,7 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
         super.onCreateOptionsMenu(menu,inflater);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         progresspercentage = 0;
@@ -351,19 +342,40 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
             case R.id.action_program://code that run when the program button is pressed
                 if(baseCMD.state == 2) {
                     programbutton();
-                    BuildDialogue("Parameters Programmed", "Logger needs to be started from the main menu",3);
-                }else{//can't program if the logger is not in the ready state
-                    BuildDialogue("Can't Program parameters", "Parameters can't be programed when the logger is in "+QS.GetState(baseCMD.state)+" state.\nPut the logger in to ready state!",2);
-                }
+                    showHeadsUpNotification();
+                    //BuildDialogue(getString(R.string.Parametersprogrammed), getString(R.string.NeedstartLogger),3);
+                }else
+                    Toast.makeText(getActivity(),getString(R.string.incomplete), Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.menu_about://email the data
                 //sendEmail();
+                new Screenshot(parameterscroll,baseCMD,getActivity()).print();
                 return true;
             case R.id.action_p_and_s:
-              BuildDialogue("", "Are you sure you want to program parameters and start the logger?",4);
+              BuildDialogue("", getString(R.string.WantstartLogger),4);
+                return true;
+            case R.id.action_load_previous:
+                SetUI();
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void showHeadsUpNotification() {
+        int notificationId = new Random().nextInt();//use this to get different notification popups
+        // NotificationCompat Builder takes care of backwards compatibility and
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getActivity())
+                .setSmallIcon(R.drawable.ic_start)
+                .setContentTitle("Parameters")
+                .setContentText("Remember to start Logger " + baseCMD.serialno)
+                .setPriority(NotificationCompat.PRIORITY_MAX).setVibrate(new long[0])
+                .setAutoCancel(true);
+
+
+        // Obtain NotificationManager system service in order to show the notification
+        NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(NOTIFICATION_SERVICE);
+
+        notificationManager.notify(notificationId, mBuilder.build());
     }
 
     //used to compare the two password fields //if the passwords do not match the second one turns red
@@ -379,15 +391,18 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
                                                                            int count){
                                                    if(!passwordtxt.getText().toString().equals(passwordconfirmtxt.getText().toString())){
                                                        passwordconfirmtxt.setBackgroundColor(Color.RED);
-                                                   }else
+                                                       Complete = false;
+                                                   }else {
                                                        passwordconfirmtxt.setBackgroundColor(Color.WHITE);
+                                                       Complete = true;
+                                                   }
 
                                                    timeoutdelay = timeoutdelay + 10;
 
                                                }
                                                @Override
                                                public void afterTextChanged ( final Editable s){
-                                                   Log.d(")))))))", "AFTERRRR text change");
+
                                                }
                                            }
 
@@ -403,8 +418,10 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
                                                                                   int count){
                                                           if(passwordtxt.getText().toString().equals(passwordconfirmtxt.getText().toString())){
                                                               passwordconfirmtxt.setBackgroundColor(Color.WHITE);
+                                                              Complete = true;
                                                           }else{
                                                               passwordconfirmtxt.setBackgroundColor(Color.RED);
+                                                              Complete = false;
                                                           }
                                                           timeoutdelay = timeoutdelay + 10;
 
@@ -413,8 +430,10 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
                                                       public void afterTextChanged ( final Editable s){
                                                           if(passwordtxt.getText().toString().equals(passwordconfirmtxt.getText().toString())){
                                                               passwordconfirmtxt.setBackgroundColor(Color.WHITE);
+                                                              Complete = true;
                                                           }else{
                                                               passwordconfirmtxt.setBackgroundColor(Color.RED);
+                                                              Complete = false;
                                                           }
 
                                                       }
@@ -431,16 +450,16 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
             public void onClick(View v) {
                 if(baseCMD.state == 2) {
                     programbutton();
-                }else{
-                    BuildDialogue("Can't Program parameters", "Parameters can't be programed when the logger is in "+QS.GetState(baseCMD.state)+" state.\nPut the logger in to ready state!",2);
-                }
+                }else
+                    Toast.makeText(getActivity(),getString(R.string.incomplete), Toast.LENGTH_SHORT).show();
+
             }
         });
 
         startwithdelaybutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Start with Delay\nHH:MM:SS", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), getString(R.string.StartwithdelayF), Toast.LENGTH_LONG).show();
                 showPicker(v, startwithdelaybutton);
             }
         });
@@ -448,7 +467,7 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
         sampleperiodbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Sample Period\nHH:MM:SS", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), getString(R.string.SampleperiodF), Toast.LENGTH_LONG).show();
                 showPicker(v, sampleperiodbutton);
             }
         });
@@ -535,11 +554,18 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId){
 
+
                     case R.id.celsius:
                         celsiusfahrenheit  = false;
+                        tempheading.setText(getString(R.string.Channel1Temperature) + " °C");
+                        ch1upperlimitnb.setText(baseCMD.ch1Hi / 10.0 + "");
+                        ch1lowerlimitnb.setText(baseCMD.ch1Lo / 10.0 + "");
                         break;
                     case R.id.fahrenheit:
                         celsiusfahrenheit = true;
+                        tempheading.setText(getString(R.string.Channel1Temperature) + " °F");
+                        ch1upperlimitnb.setText(String.format("%.1f",QS.returnFD(baseCMD.ch1Hi / 10.0)) + "");
+                        ch1lowerlimitnb.setText(String.format("%.1f",QS.returnFD(baseCMD.ch1Lo / 10.0)) + "");
                         break;
                 }
             }
@@ -735,7 +761,7 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
                         break;
                     case 3:
                         usbFragmentI.onUSBWrite(HexData.START_USB);
-                        Toast.makeText(getActivity(),"Started Successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(),getString(R.string.StartedSuccessfully), Toast.LENGTH_SHORT).show();
                         state = 4;
                         break;
                     case 4:
@@ -905,19 +931,23 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
                         break;
                     case 28:
                         usbFragmentI.onUSBWrite(commsSerial.WriteUSBByte(mt2Msg_write.writeFlash()));
-                        Toast.makeText(getActivity(),"Programmed Successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(),getString(R.string.ProgrammedSuccessfully), Toast.LENGTH_SHORT).show();
                         if(pands){state = 3;}else{state = 7;}
                         break;
                     case 29:
+
                         hexData.BytetoHex(in);
                         mt2Msg_write = new MT2Msg_Write();
                         mt2Msg_write.MT2Msg_WriteUSB(UserReadtemp);
-                        usbFragmentI.onUSBWrite(commsSerial.WriteUSBByte(mt2Msg_write.writeSetup()));
+                        if(baseCMD.passwordEnabled){
+                            promtPassword(1);
+                        }else {
+                            usbFragmentI.onUSBWrite(commsSerial.WriteUSBByte(mt2Msg_write.writeSetup()));
+                        }
                         state = 26;
                         break;
                     case 30://sync times with logger
                         hexData.BytetoHex(in);
-
                         usbFragmentI.onUSBWrite(commsSerial.WriteUSBByte(baseCMD.WriteRTC()));
                         state  = 31;
                         break;
@@ -926,7 +956,6 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
                         usbFragmentI.onUSBWrite(commsSerial.WriteUSBByte(baseCMD.ReadRTC()));
                         state  = 29;
                         break;
-
                 }
             }
         };handler1.postDelayed(runnableCode,1);
@@ -941,13 +970,13 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
         if(pands){
             Lstate.setText(QS.GetState(baseCMD.state));
         }else {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd  HH:mm:ss");
-            String currentDateandTime = sdf.format(new Date());
+            SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss aa");
+            String currentDateandTime = sdf1.format(new Date());
             time.setText(currentDateandTime);
             Lstate.setText(QS.GetState(Integer.parseInt(Q_data.get(5))));
             battery.setText(R_data.get(17) + "%");
-            currentTemp.setText(R_data.get(9) + " °C");
-            currenthumidity.setText(R_data.get(11) + " %");
+            currentTemp.setText("--");
+            currenthumidity.setText(R_data.get(13) + " %");
 
             if ((R_data.get(0)).equals("Yes")) {
                 //set the starttimedate here;
@@ -1067,24 +1096,27 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
             stoponsamplebutton.setText(U_data.get(26));
             //startondatetimebutton.setText(baseCMD.startdatetime+"");
 
-            ch1upperlimitnb.setText(baseCMD.ch1Hi / 10.0 + "");
-            ch1lowerlimitnb.setText(baseCMD.ch1Lo / 10.0 + "");
+            if (baseCMD.ImperialUnit) {
+                ch1upperlimitnb.setText(String.format("%.1f",QS.returnFD(baseCMD.ch1Hi / 10.0)) + "");
+                ch1lowerlimitnb.setText(String.format("%.1f",QS.returnFD(baseCMD.ch1Lo / 10.0)) + "");
+            }else{
+                ch1upperlimitnb.setText(baseCMD.ch1Hi / 10.0 + "");
+                ch1lowerlimitnb.setText(baseCMD.ch1Lo / 10.0 + "");
+            }
 
             ch2upperlimitnb.setText(baseCMD.ch2Hi / 10.0 + "");
             ch2lowerlimitnb.setText(baseCMD.ch2Lo / 10.0 + "");
-
-            startondatetimebutton.setText(QS.calendertoString(baseCMD.timestartstopdatetime));
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            startondatetimebutton.setText(sdf.format(baseCMD.startDateTime));
             if (stopondatetime.isChecked()) {
-                Calendar c = Calendar.getInstance();
-                c = baseCMD.timestartstopdatetime;
-                c.add(Calendar.SECOND, baseCMD.samplePeriod * baseCMD.numberstopon);
-                stopondatebutton.setText(QS.calendertoString(c));
-            } else {
-                stopondatebutton.setText(QS.calendertoString(baseCMD.timestartstopdatetime));
-            }
 
-            if (baseCMD.passwordEnabled) {
-                promtPassword();
+                Date date = baseCMD.startDateTime;
+                Calendar calendar = QS.toCalendar(date);
+                calendar.add(Calendar.SECOND, baseCMD.samplePeriod * baseCMD.numberstopon);
+                date = calendar.getTime();
+                stopondatebutton.setText(sdf.format(date));
+            } else {
+                stopondatebutton.setText(sdf.format(baseCMD.startDateTime));
             }
 
             usercommenttxt.setText(U_data.get(27));
@@ -1112,7 +1144,10 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             pands = true;
-                            programbutton();
+                            if(Complete)
+                                programbutton();
+                            else
+                                Toast.makeText(getActivity(),getString(R.string.incomplete), Toast.LENGTH_SHORT).show();
                         }
                     })
                     .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -1144,18 +1179,18 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
     public void progressDialoge(){
 
         progress=new ProgressDialog(getActivity());
-        progress.setMessage("Loading Parameters");
+        progress.setMessage(getString(R.string.LoadingParameters));
         progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progress.setIndeterminate(false);
         progress.setProgress(0);
         progress.setCancelable(false);
-        progress.setButton(DialogInterface.BUTTON_NEGATIVE, "Abort", new DialogInterface.OnClickListener() {
+        progress.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.Abort), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
 
                 dialog.dismiss();
-                BuildDialogue("Parameter Read Aborted", "Entries might be empty!\nGo back to menu and reconnect", 1);
+                BuildDialogue(getString(R.string.ParameterReadAborted), getString(R.string.Go_back_and_reconnect), 1);
             }
         });
         progress.setProgressNumberFormat("");
@@ -1180,12 +1215,12 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
     public void progressDialoge2(){
 
         progress=new ProgressDialog(getActivity());
-        progress.setMessage("Programming Parameters");
+        progress.setMessage(getString(R.string.ProgramingParameters));
         progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progress.setIndeterminate(false);
         progress.setProgress(0);
         progress.setCancelable(false);
-        progress.setButton(DialogInterface.BUTTON_NEGATIVE, "Abort", new DialogInterface.OnClickListener() {
+        progress.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.Abort), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
@@ -1215,7 +1250,6 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
     private void programbutton(){
 
         byte[] data;
-        progressDialoge2();
         boolean[] flags = {fahrenheit.isChecked(),loopovewritecb.isChecked(),enablelcdmenucb.isChecked(),allowplacingtagcb.isChecked(),startwithbuttoncb.isChecked(),stopwithbuttoncb.isChecked(),
                 reusewithbuttoncb.isChecked(),false,false,BLEenergysave.isChecked(),startondatetime.isChecked(), passwordenabledcb.isChecked(),stopwhenfull.isChecked(),stoponsample.isChecked(),stopondatetime.isChecked(),extendedlcdmenucb.isChecked()};
 
@@ -1234,7 +1268,16 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
         UserReadtemp[6] = data[0];
         UserReadtemp[7] = data[1];//two flag bytes
 
-        CHUserData chUserData = new CHUserData(ch1enabledcb.isChecked(), ch1limitenabledcb.isChecked(), Double.parseDouble(ch1upperlimitnb.getText().toString())*10, Double.parseDouble(ch1lowerlimitnb.getText().toString())*10,Integer.parseInt(ch1alarmdelaynb.getText().toString()),
+        double ch1upper = 0, ch1lower = 0;
+        if(celsiusfahrenheit){//if fahrenheit is entered convert it to celsius
+            ch1upper = QS.returnC(Double.parseDouble(ch1upperlimitnb.getText().toString()))*10;
+            ch1lower = QS.returnC(Double.parseDouble(ch1lowerlimitnb.getText().toString()))*10;
+        }else{
+            ch1upper = Double.parseDouble(ch1upperlimitnb.getText().toString())*10;
+            ch1lower = Double.parseDouble(ch1lowerlimitnb.getText().toString())*10;
+        }
+
+        CHUserData chUserData = new CHUserData(ch1enabledcb.isChecked(), ch1limitenabledcb.isChecked(), ch1upper, ch1lower,Integer.parseInt(ch1alarmdelaynb.getText().toString()),
                 ch2enabledcb.isChecked(), ch2limitenabledcb.isChecked(), Double.parseDouble(ch2upperlimitnb.getText().toString())*10, Double.parseDouble(ch2lowerlimitnb.getText().toString())*10,Integer.parseInt(ch2alarmdelaynb.getText().toString()));
 
         data = baseCMD.Write_USERCH1(chUserData);
@@ -1250,9 +1293,15 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
         UserReadtemp[26] = data[0]; UserReadtemp[27] = data[1];//start delay
 
 
-        data = baseCMD.Write_USERStartdatetimeDelay((QS.getDatefromString(startondatetimebutton.getText().toString()).getTimeInMillis()/1000 - Calendar.getInstance().getTimeInMillis()/1000));
+        data = baseCMD.Write_USERStartdatetimeDelay((QS.getDatefromString(startondatetimebutton.getText().toString()).getTime()/1000 - Calendar.getInstance().getTimeInMillis()/1000));
         UserReadtemp[28] = data[0]; UserReadtemp[29] = data[1]; UserReadtemp[30] = data[2]; UserReadtemp[31] = data[3];
-
+        if(startondatetime.isChecked()) {
+            if(Calendar.getInstance().compareTo(QS.toCalendar(QS.getDatefromString(startondatetimebutton.getText().toString()))) < 0){
+                Complete = true;
+            }else{
+                Complete = false;
+            }
+        }
         if(stoponsample.isChecked()) {
             int val = 0;
             if(Integer.parseInt(stoponsamplebutton.getText().toString()) > 65536)val = 65536;else val = Integer.parseInt(stoponsamplebutton.getText().toString());
@@ -1263,7 +1312,7 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
             UserReadtemp[35] = data[3];
         }else if(stopondatetime.isChecked()){
             if((QS.getDatefromString(startondatetimebutton.getText().toString()).compareTo(QS.getDatefromString(stopondatebutton.getText().toString()))) < 0){
-                long timediff  = ((QS.getDatefromString(stopondatebutton.getText().toString()).getTimeInMillis()/1000)-(QS.getDatefromString(startondatetimebutton.getText().toString()).getTimeInMillis())/1000);
+                long timediff  = ((QS.getDatefromString(stopondatebutton.getText().toString()).getTime()/1000)-(QS.getDatefromString(startondatetimebutton.getText().toString()).getTime())/1000);
                 int s =  Integer.parseInt(QS.StringDatetoInt(sampleperiodbutton.getText().toString())[0])*60*60+ Integer.parseInt(QS.StringDatetoInt(sampleperiodbutton.getText().toString())[1])*60 + Integer.parseInt(QS.StringDatetoInt(sampleperiodbutton.getText().toString())[2]);
                 int length = (int)timediff/s;
                 data = baseCMD.Write_USERStoponsample((int)length);
@@ -1271,6 +1320,8 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
                 UserReadtemp[33] = data[1];
                 UserReadtemp[34] = data[2];
                 UserReadtemp[35] = data[3];
+            }else{
+                Complete = false;
             }
         }else{
             data = baseCMD.Write_USERStoponsample(Integer.parseInt(stoponsamplebutton.getText().toString()));
@@ -1305,13 +1356,16 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
         for(int k = 378; k < 398; k++){
             UserReadtemp[k] = data[k-378];
         }
-        usbFragmentI.onUSBWrite(commsSerial.WriteUSBByte(baseCMD.ReadRTC()));
-
+        if(Complete) {
+            usbFragmentI.onUSBWrite(commsSerial.WriteUSBByte(baseCMD.ReadRTC()));
+            progressDialoge2();
+        }else
+                Toast.makeText(getActivity(),getString(R.string.incomplete), Toast.LENGTH_SHORT).show();
         state = 30;
     }
 
     //if the logger is password protected this will popup at the start to login
-    private void promtPassword(){
+    private void promtPassword(final int command){
         // get prompts.xml view
         LayoutInflater li = LayoutInflater.from(getActivity());
         View promptsView = li.inflate(R.layout.prompts, null);
@@ -1328,16 +1382,18 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
         // set dialog message
         alertDialogBuilder
                 .setCancelable(false)
-                .setPositiveButton("OK",
+                .setPositiveButton(getString(R.string.Ok),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,int id) {
                                 // get user input and set it to result
                                 // edit text
                                 //this is where the command is sent
                                 usbFragmentI.onUSBWrite(commsSerial.WriteUSBByte(baseCMD.WritePassword()));
+                                if(command == 1)
+                                    usbFragmentI.onUSBWrite(commsSerial.WriteUSBByte(mt2Msg_write.writeSetup()));
                             }
                         })
-                .setNegativeButton("Cancel",
+                .setNegativeButton(getString(R.string.Cancel),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,int id) {
                                 dialog.cancel();
@@ -1355,7 +1411,8 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
     //pop-up the date picking for start on date time
     private void startondatepopup(){
         timeoutdelay = timeoutdelay + 15;
-        Calendar now = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        Date date = new Date();
+        Calendar now = QS.toCalendar(date);
         int hour = 0; int min = 0; int day = 0; int month = 0; int year = 0;
         if((QS.StringDatetoInt(startondatetimebutton.getText().toString()).length) == 5){
             hour = Integer.parseInt(QS.StringDatetoInt(startondatetimebutton.getText().toString())[3]);
@@ -1364,25 +1421,25 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
             month = Integer.parseInt(QS.StringDatetoInt(startondatetimebutton.getText().toString())[1])-1;
             day = Integer.parseInt(QS.StringDatetoInt(startondatetimebutton.getText().toString())[0]);
         }else if((QS.StringDatetoInt(startondatetimebutton.getText().toString()).length) == 0){//if date and time is not picked properly
-            hour = now.getMaximum(Calendar.HOUR);
+            hour = now.getMaximum(Calendar.HOUR_OF_DAY);
             min = now.getMaximum(Calendar.MINUTE);
             year = now.getMaximum(Calendar.YEAR);
             month = now.getMaximum(Calendar.MONTH);
             day = now.getMaximum(Calendar.DATE);
         }else if((QS.StringDatetoInt(startondatetimebutton.getText().toString()).length) == 1){
-            hour = now.getMaximum(Calendar.HOUR);
+            hour = now.getMaximum(Calendar.HOUR_OF_DAY);
             min = now.getMaximum(Calendar.MINUTE);
             year = now.getMaximum(Calendar.YEAR);
             month = now.getMaximum(Calendar.MONTH);
             day = Integer.parseInt(QS.StringDatetoInt(startondatetimebutton.getText().toString())[0]);
         }else if((QS.StringDatetoInt(startondatetimebutton.getText().toString()).length) == 2){
-            hour = now.getMaximum(Calendar.HOUR);
+            hour = now.getMaximum(Calendar.HOUR_OF_DAY);
             min = now.getMaximum(Calendar.MINUTE);
             year = now.getMaximum(Calendar.YEAR);
             month = Integer.parseInt(QS.StringDatetoInt(startondatetimebutton.getText().toString())[1])-1;
             day = Integer.parseInt(QS.StringDatetoInt(startondatetimebutton.getText().toString())[0]);
         }else if((QS.StringDatetoInt(startondatetimebutton.getText().toString()).length) == 3){
-            hour = now.getMaximum(Calendar.HOUR);
+            hour = now.getMaximum(Calendar.HOUR_OF_DAY);
             min = now.getMaximum(Calendar.MINUTE);
             year = Integer.parseInt(QS.StringDatetoInt(startondatetimebutton.getText().toString())[2]);
             month = Integer.parseInt(QS.StringDatetoInt(startondatetimebutton.getText().toString())[1])-1;
@@ -1422,7 +1479,8 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
     //pop-up the date picking for stop on date time
     private void stopondatepopup(){
         timeoutdelay = timeoutdelay + 15;
-        Calendar now = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        Date date = new Date();
+        Calendar now = QS.toCalendar(date);
         int hour = 0; int min = 0; int day = 0; int month = 0; int year = 0;
         if((QS.StringDatetoInt(stopondatebutton.getText().toString()).length) == 5){
             hour = Integer.parseInt(QS.StringDatetoInt(stopondatebutton.getText().toString())[3]);
@@ -1431,25 +1489,25 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
             month = Integer.parseInt(QS.StringDatetoInt(stopondatebutton.getText().toString())[1])-1;
             day = Integer.parseInt(QS.StringDatetoInt(stopondatebutton.getText().toString())[0]);
         }else if((QS.StringDatetoInt(stopondatebutton.getText().toString()).length) == 0){
-            hour = now.getMaximum(Calendar.HOUR);
+            hour = now.getMaximum(Calendar.HOUR_OF_DAY);
             min = now.getMaximum(Calendar.MINUTE);
             year = now.getMaximum(Calendar.YEAR);
             month = now.getMaximum(Calendar.MONTH);
             day = now.getMaximum(Calendar.DATE);
         }else if((QS.StringDatetoInt(stopondatebutton.getText().toString()).length) == 1){
-            hour = now.getMaximum(Calendar.HOUR);
+            hour = now.getMaximum(Calendar.HOUR_OF_DAY);
             min = now.getMaximum(Calendar.MINUTE);
             year = now.getMaximum(Calendar.YEAR);
             month = now.getMaximum(Calendar.MONTH);
             day = Integer.parseInt(QS.StringDatetoInt(stopondatebutton.getText().toString())[0]);
         }else if((QS.StringDatetoInt(stopondatebutton.getText().toString()).length) == 2){
-            hour = now.getMaximum(Calendar.HOUR);
+            hour = now.getMaximum(Calendar.HOUR_OF_DAY);
             min = now.getMaximum(Calendar.MINUTE);
             year = now.getMaximum(Calendar.YEAR);
             month = Integer.parseInt(QS.StringDatetoInt(stopondatebutton.getText().toString())[1])-1;
             day = Integer.parseInt(QS.StringDatetoInt(stopondatebutton.getText().toString())[0]);
         }else if((QS.StringDatetoInt(stopondatebutton.getText().toString()).length) == 3){
-            hour = now.getMaximum(Calendar.HOUR);
+            hour = now.getMaximum(Calendar.HOUR_OF_DAY);
             min = now.getMaximum(Calendar.MINUTE);
             year = Integer.parseInt(QS.StringDatetoInt(stopondatebutton.getText().toString())[2]);
             month = Integer.parseInt(QS.StringDatetoInt(stopondatebutton.getText().toString())[1])-1;

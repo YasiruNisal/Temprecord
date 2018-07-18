@@ -35,6 +35,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.example.yasiruw.temprecord.R;
+import com.example.yasiruw.temprecord.activities.GraphAcivity;
 import com.example.yasiruw.temprecord.activities.MainActivity;
 import com.example.yasiruw.temprecord.comms.BLEFragmentI;
 import com.example.yasiruw.temprecord.comms.BaseCMD;
@@ -43,9 +44,11 @@ import com.example.yasiruw.temprecord.comms.MT2Msg_Read;
 import com.example.yasiruw.temprecord.comms.MT2Values;
 import com.example.yasiruw.temprecord.comms.QueryStrings;
 import com.example.yasiruw.temprecord.services.BluetoothLeService;
+import com.example.yasiruw.temprecord.services.Json_Data;
 import com.example.yasiruw.temprecord.services.StoreKeyService;
 import com.example.yasiruw.temprecord.utils.CommsChar;
 import com.example.yasiruw.temprecord.utils.HexData;
+import com.example.yasiruw.temprecord.utils.Screenshot;
 import com.github.mikephil.charting.charts.LineChart;
 
 import org.json.JSONArray;
@@ -141,6 +144,13 @@ public class BLEReadFragment extends Fragment {
     private ImageButton zoomin1;
     private ImageButton zoomout1;
 
+    //==========================LoopOverWrite READ======
+    int address;
+    int bytesToRead;
+    int totalToRead;
+    int bytePointer;
+    int pageOffset;
+
     private WebView Graph1;
     private WebView Graph2;
 
@@ -168,7 +178,7 @@ public class BLEReadFragment extends Fragment {
     private int firsttime = 0;
     private boolean backpress = false;
     private boolean frommenu = false;
-
+    Json_Data json_data;
     private boolean soundon = true;
 
     private int state = 1;
@@ -264,7 +274,7 @@ public class BLEReadFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_bleread, container, false);
         getActivity().closeContextMenu();
         getActivity().getActionBar().show();
-        getActivity().getActionBar().setTitle("Read Logger");
+        getActivity().getActionBar().setTitle(R.string.ReadLogger);
         getActivity().getActionBar().setBackgroundDrawable(new ColorDrawable(0xFFFFFFFF));
 
         AssetManager am = getActivity().getAssets();
@@ -307,7 +317,7 @@ public class BLEReadFragment extends Fragment {
         LastSample = (TextView) view.findViewById(R.id.lastsample);
         LastLoggedSample = (TextView) view.findViewById(R.id.lastloggedsample);
 
-        Humidity = (LinearLayout) view.findViewById(R.id.humidity);
+        //Humidity = (LinearLayout) view.findViewById(R.id.humidity);
         Humidity2 = (LinearLayout) view.findViewById(R.id.humidity2);
         scrollView = (ScrollView) view.findViewById(R.id.scroll);
 
@@ -356,42 +366,27 @@ public class BLEReadFragment extends Fragment {
         percentagebelowLowerSample2 = (TextView) view.findViewById(R.id.percentagebelowlowerlimit2);
 
         zoomin = (ImageButton) view.findViewById(R.id.zoominButton);
-        zoomin1 = (ImageButton) view.findViewById(R.id.zoominButton1);
+        zoomin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), GraphAcivity.class);
+                intent.putExtra("VALUE", new Json_Data(mt2Mem_values, baseCMD, 0,getActivity()).CreateObject());
+                startActivity(intent);
+            }
+        });
 
         Graph1 = (WebView) view.findViewById(R.id.graphone);
 
-        Graph2 = (WebView) view.findViewById(R.id.graphtwo);
+
 
         progressDialoge();
 
-        Log.d("TAG", "am i coming to this place 11  " + bleFragmentI);
         bleFragmentI.onBLEWrite(HexData.BLE_ACK);
         bleFragmentI.onBLERead();
 
         return view;
     }
 
-    double[] data = new double[] {42.6, 24, 17, 15.4};
-
-    /** This passes our data out to the JS */
-    @JavascriptInterface
-    public String getData() {
-        Log.d(TAG, "getData() called");
-        return a1dToJson(data).toString();
-    }
-
-    private String a1dToJson(double[] data) {
-        StringBuffer sb = new StringBuffer();
-        sb.append("[");
-        for (int i = 0; i < data.length; i++) {
-            double d = data[i];
-            if (i > 0)
-                sb.append(",");
-            sb.append(d);
-        }
-        sb.append("]");
-        return sb.toString();
-    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -404,6 +399,7 @@ public class BLEReadFragment extends Fragment {
         switch(item.getItemId()) {
             case R.id.menu_about:
                 //sendEmail();
+                new Screenshot(scrollView,baseCMD,getActivity()).print();
                 return true;
                 default:
                     return false;
@@ -620,7 +616,7 @@ public class BLEReadFragment extends Fragment {
 
                         if(baseCMD.numberofsamples == 0) {
                             if(!(baseCMD.state == 4 || baseCMD.state == 5)){
-                                BuildDialogue("No Data","Logger is not in running or stop state to display data", 1);
+                                //BuildDialogue("No Data","Logger is not in running or stop state to display data", 1);
                             }else
                                 SetUI();
                             progresspercentage = 100;
@@ -629,10 +625,21 @@ public class BLEReadFragment extends Fragment {
                             bleFragmentI.onBLERead();
                             state = 29;
                         }else {
-                            mt2Msg_read = new MT2Msg_Read(commsChar.MEM_VAL, 0, baseCMD.SamplePointer *2, 120, 3);
+                            if(baseCMD.LoopOverwrite && !baseCMD.isLoopOverwriteOverFlow){
+                                state = 26;
+                                totalToRead = baseCMD.MemorySizeMax*2;
+                                bytePointer = baseCMD.SamplePointer *2;
+                                pageOffset = bytePointer % baseCMD.PAGESIZE;
+                                address = (int)((bytePointer / baseCMD.PAGESIZE) + 1) * baseCMD.PAGESIZE;
+                                address += pageOffset; //Fix up loop overwrite
+                                bytesToRead = totalToRead - address;
+                                mt2Msg_read = new MT2Msg_Read(commsChar.MEM_VAL, address, baseCMD.MemorySizeMax *2, 120, 3);
+                            }else{
+                                state = 25;
+                                mt2Msg_read = new MT2Msg_Read(commsChar.MEM_VAL, 0, baseCMD.SamplePointer *2, 120, 3);
+                            }
                             bleFragmentI.onBLEWrite(commsSerial.WriteByte(mt2Msg_read.Read_into_writeByte(true)));
                             bleFragmentI.onBLERead();
-                            if(baseCMD.LoopOverwrite && !baseCMD.isLoopOverwriteOverFlow){state = 26;}else{state = 25;}
                         }
                         break;
                     case 25://
@@ -640,11 +647,10 @@ public class BLEReadFragment extends Fragment {
                             state = 29;
                             byte[] ValueRead = new byte[mt2Msg_read.memoryData.length];
                             System.arraycopy(mt2Msg_read.memoryData, 0, ValueRead, 0, mt2Msg_read.memoryData.length);
-                            //hexData.BytetoHex(ValueRead);
                             MT2ValueIn(ValueRead);
-                            //addDatatoGraph();
+                            plotGraph1(1);
                             if(!(baseCMD.state == 4 || baseCMD.state == 5)){
-                                BuildDialogue("No Data","Logger is not in running or stop state to display data", 1);
+                                //BuildDialogue("No Data","Logger is not in running or stop state to display data", 1);
                             }else
                                 SetUI();
                             progresspercentage = 100;
@@ -658,24 +664,13 @@ public class BLEReadFragment extends Fragment {
                             state = 27;
                             ReadValues1 = new byte[mt2Msg_read.memoryData.length];
                             System.arraycopy(mt2Msg_read.memoryData, 0, ReadValues1, 0, mt2Msg_read.memoryData.length);
-                            //hexData.BytetoHex(ValueRead);
                         }
                         bleFragmentI.onBLEWrite(commsSerial.WriteByte(mt2Msg_read.Read_into_writeByte(false)));
                         bleFragmentI.onBLERead();
                         firstRead = mt2Msg_read.memoryData.length;
                         break;
                     case 27:
-                        int bytesToRead;
-                        int address;
-                        int totalToRead = baseCMD.MemorySizeMax*2;
-                        int bytePointer = baseCMD.SamplePointer *2;
-                        int pageOffset = bytePointer % QS.PAGESIZE;
-                        address = (int)((bytePointer / QS.PAGESIZE) + 1) * QS.PAGESIZE;
-                        address += pageOffset;
-                        bytesToRead = totalToRead - baseCMD.SamplePointer *2;
-                        Log.d(TAG, "OOOOOOOOOOOOOOOOOOOOOO " + address + " " + bytesToRead + " "+ totalToRead + " " + pageOffset +" " + baseCMD.SamplePointer *2);
-
-                        mt2Msg_read = new MT2Msg_Read(commsChar.MEM_VAL, baseCMD.SamplePointer *2, bytesToRead, 120, 3);
+                        mt2Msg_read = new MT2Msg_Read(commsChar.MEM_VAL, 0, bytePointer, 120, 3);
                         bleFragmentI.onBLEWrite(commsSerial.WriteByte(mt2Msg_read.Read_into_writeByte(true)));
                         bleFragmentI.onBLERead();
                         state = 28;
@@ -686,13 +681,12 @@ public class BLEReadFragment extends Fragment {
                             ReadValues2 = new byte[mt2Msg_read.memoryData.length];
                             byte[] combo = new byte[ReadValues2.length  + ReadValues1.length];
                             System.arraycopy(mt2Msg_read.memoryData, 0, ReadValues2, 0, mt2Msg_read.memoryData.length);
-                            System.arraycopy(ReadValues2,0, combo,0,ReadValues2.length-1);
-                            System.arraycopy(ReadValues1,0,combo,ReadValues2.length,ReadValues1.length);
-                            //hexData.BytetoHex(ReadValues);
+                            System.arraycopy(ReadValues1,0,combo,0,ReadValues1.length-1);
+                            System.arraycopy(ReadValues2,0,combo,ReadValues1.length,ReadValues2.length);
                             MT2ValueIn(combo);
-                            //addDatatoGraph();
+                            plotGraph1(1);
                             if(!(baseCMD.state == 4 || baseCMD.state == 5)){
-                                BuildDialogue("No Data","Logger is not in running or stop state to display data", 1);
+                                //BuildDialogue("No Data","Logger is not in running or stop state to display data", 1);
                             }else
                                 SetUI();
                             progresspercentage = 100;
@@ -710,6 +704,36 @@ public class BLEReadFragment extends Fragment {
             }
         };handler1.postDelayed(runnableCode,1);
     }
+
+
+    public void plotGraph1(int viewtype){
+        Graph1.getSettings().setJavaScriptEnabled(true);
+        Graph1.addJavascriptInterface(this,"android");
+        //Graph1.requestFocusFromTouch();
+        Graph1.setWebViewClient(new WebViewClient());
+        Graph1.setWebChromeClient(new WebChromeClient());
+        json_data = new Json_Data(mt2Mem_values, baseCMD, viewtype,getActivity());
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Graph1.loadUrl("file:///android_asset/highcharts.html");
+            }
+        }, 0);
+
+
+    }
+
+
+    /** This passes our data out to the JS */
+    @JavascriptInterface
+    public String getData() {
+        String jobj = json_data.CreateObject();
+        Log.i("GRAPH", jobj);
+        return jobj;
+        // return json_data.CreateObject();
+    }
+
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void SetUI(){
@@ -733,8 +757,12 @@ public class BLEReadFragment extends Fragment {
 
         Lstate.setText( QS.GetState(Integer.parseInt(Q_data.get(5))));
         battery.setText(  R_data.get(17)+"%");
-        currentTemp.setText(R_data.get(9) + " °C");
-        currenthumidity.setText(R_data.get(11) + " %");
+        if (storeKeyService.getDefaults("UNITS", getActivity().getApplication()) != null && storeKeyService.getDefaults("UNITS", getActivity().getApplication()).equals("1")) {
+            currentTemp.setText(R_data.get(9) + " °C");
+        }else {
+            currentTemp.setText(QS.returnF(R_data.get(9)) + " °F");
+        }
+        currenthumidity.setText(R_data.get(13) + " %");
 
         memory.setText(F_data.get(1));
         if(baseCMD.numberofsamples != 0) {
@@ -751,14 +779,25 @@ public class BLEReadFragment extends Fragment {
 
         if(baseCMD.ch1Enable && baseCMD.numberofsamples != 0) {
             channel1.setText("Temperature");
-            upperLimit1.setText(baseCMD.ch1Hi / 10.0 + " °C");
-            lowerLimit1.setText(baseCMD.ch1Lo / 10.0 + " °C");
-            mkt.setText(String.format("%.1f", mt2Mem_values.ch0Stats.MKTValue) + " °C");
-            mean1.setText(String.format("%.1f", mt2Mem_values.ch0Stats.Mean) + " °C");
-            String max1time = sdf.format(mt2Mem_values.Data.get(mt2Mem_values.ch0Stats.Max.Number).valTime);
-            max1.setText(mt2Mem_values.ch0Stats.Max.Value / 10.0 + " °C\n" + max1time);
-            String min1time = sdf.format(mt2Mem_values.Data.get(mt2Mem_values.ch0Stats.Min.Number).valTime);
-            min1.setText(mt2Mem_values.ch0Stats.Min.Value / 10.0 + " °C\n" + min1time);
+            if (storeKeyService.getDefaults("UNITS", getActivity().getApplication()) != null && storeKeyService.getDefaults("UNITS", getActivity().getApplication()).equals("1")) {
+                upperLimit1.setText(baseCMD.ch1Hi / 10.0 + " °C");
+                lowerLimit1.setText(baseCMD.ch1Lo / 10.0 + " °C");
+                mkt.setText(String.format("%.1f", mt2Mem_values.ch0Stats.MKTValue) + " °C");
+                mean1.setText(String.format("%.1f", mt2Mem_values.ch0Stats.Mean) + " °C");
+                String max1time = sdf.format(mt2Mem_values.Data.get(mt2Mem_values.ch0Stats.Max.Number).valTime);
+                max1.setText(mt2Mem_values.ch0Stats.Max.Value / 10.0 + " °C\n" + max1time);
+                String min1time = sdf.format(mt2Mem_values.Data.get(mt2Mem_values.ch0Stats.Min.Number).valTime);
+                min1.setText(mt2Mem_values.ch0Stats.Min.Value / 10.0 + " °C\n" + min1time);
+            }else{
+                upperLimit1.setText(QS.returnFD(baseCMD.ch1Hi / 10.0) + " °F");
+                lowerLimit1.setText(QS.returnFD(baseCMD.ch1Lo / 10.0) + " °F");
+                mkt.setText(QS.returnF(String.format("%.1f", mt2Mem_values.ch0Stats.MKTValue)) + " °F");
+                mean1.setText(QS.returnF(String.format("%.1f", mt2Mem_values.ch0Stats.Mean)) + " °F");
+                String max1time = sdf.format(mt2Mem_values.Data.get(mt2Mem_values.ch0Stats.Max.Number).valTime);
+                max1.setText(QS.returnFD(mt2Mem_values.ch0Stats.Max.Value / 10.0) + " °F\n" + max1time);
+                String min1time = sdf.format(mt2Mem_values.Data.get(mt2Mem_values.ch0Stats.Min.Number).valTime);
+                min1.setText(QS.returnFD(mt2Mem_values.ch0Stats.Min.Value / 10.0) + " °F\n" + min1time);
+            }
 
             totalSampleswithinLimits1.setText(mt2Mem_values.ch0Stats.TotalLimitWithin + "");
             totalTimewithinLimits1.setText(mt2Mem_values.ch0Stats.TotalTimeWithin + "");
@@ -812,35 +851,14 @@ public class BLEReadFragment extends Fragment {
 
 
         if(!baseCMD.ch2Enable){
-            Humidity.setVisibility(LinearLayout.GONE);
             Humidity2.setVisibility(LinearLayout.GONE);
         }
 
         if(!baseCMD.ch2Enable){
             currenthumidity.setText("--");
         }
-
-
     }
 
-    public void plotGraph1(){
-        Graph1.getSettings().setJavaScriptEnabled(true);
-        Graph1.addJavascriptInterface(this,"android");
-        Graph1.requestFocusFromTouch();
-        Graph1.setWebViewClient(new WebViewClient());
-        Graph1.setWebChromeClient(new WebChromeClient());
-        Graph1.loadUrl("file:///android_asset/canvasJS.html");
-    }
-
-    public void plotGraph2(){
-        Graph2.getSettings().setJavaScriptEnabled(true);
-        Graph2.addJavascriptInterface(this,"android");
-        Graph2.requestFocusFromTouch();
-        Graph2.setWebViewClient(new WebViewClient());
-        Graph2.setWebChromeClient(new WebChromeClient());
-        Graph2.loadUrl("file:///android_asset/canvasJS.html");
-
-    }
 
 
 
@@ -848,10 +866,12 @@ public class BLEReadFragment extends Fragment {
         ArrayList<Byte> data = new ArrayList<Byte>();
         for(int  i = 0; i < value.length; i++) data.add(value[i]);
         //calculating first loged sample
-        Calendar calendar = baseCMD.startDateTime;
+        Date date = baseCMD.startDateTime;
+        Calendar calendar = QS.toCalendar(date);
         calendar.add(Calendar.SECOND, baseCMD.startDelay);
+        date = calendar.getTime();
         try {
-            mt2Mem_values = new MT2Values.MT2Mem_values(data, calendar, baseCMD.ch1Hi/10, baseCMD.ch1Lo/10, baseCMD.ch2Hi/10, baseCMD.ch2Lo/10, baseCMD.samplePeriod, baseCMD.ch1Enable, baseCMD.ch2Enable );
+            mt2Mem_values = new MT2Values.MT2Mem_values(data, date, baseCMD.ch1Hi/10, baseCMD.ch1Lo/10, baseCMD.ch2Hi/10, baseCMD.ch2Lo/10, baseCMD.samplePeriod, baseCMD.ch1Enable, baseCMD.ch2Enable );
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -868,7 +888,7 @@ public class BLEReadFragment extends Fragment {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                Log.d("TAG", "15 sec time out");
+
                 if(getFragmentManager() == null){
                     bleFragmentI.BLEDisconnect();
 //                    unbindService(mServiceConnection);
@@ -911,15 +931,15 @@ public class BLEReadFragment extends Fragment {
     public void progressDialoge(){
 
         progress=new ProgressDialog(getActivity());
-        progress.setMessage("Reading Logger");
+        progress.setMessage(getString(R.string.ReadLogger));
         progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progress.setIndeterminate(false);
         progress.setProgress(0);
         progress.setCancelable(false);
-        progress.setButton(DialogInterface.BUTTON_NEGATIVE, "Abort", new DialogInterface.OnClickListener() {
+        progress.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.Abort), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                bleFragmentI.onBLEWrite(hexData.BLE_ACK);
+                bleFragmentI.onBLEWrite(HexData.BLE_ACK);
                 bleFragmentI.onBLERead();
                 state =29;
                 BuildDialogue("Read Aborted", "Entries might be empty!\nGo back to menu and reconnect",1);
