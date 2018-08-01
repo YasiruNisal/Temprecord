@@ -1,6 +1,7 @@
 package com.example.yasiruw.temprecord.comms;
 
 import android.content.Context;
+import android.text.format.Time;
 import android.util.Log;
 
 
@@ -9,6 +10,8 @@ import com.example.yasiruw.temprecord.activities.MainActivity;
 import com.example.yasiruw.temprecord.utils.CHUserData;
 import com.example.yasiruw.temprecord.utils.CommsChar;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -17,6 +20,7 @@ import java.util.TimeZone;
 import java.util.zip.DataFormatException;
 
 import static android.content.ContentValues.TAG;
+import static android.provider.Settings.System.DATE_FORMAT;
 
 /**
  * Created by Yasiru on 13-Dec-17.
@@ -68,6 +72,10 @@ public class BaseCMD {
     public String usercomment;
     public String serialno;
     public String firmware;
+    public String model;
+    public String battery;
+    public String State;
+    public String memory;
     private Context context;
 
     public Date dstart;
@@ -138,10 +146,13 @@ public class BaseCMD {
                 firmware = msg.firmware.ToString();
                 returndata.add(msg.type.getGenString());
                 returndata.add(msg.type.getTyString());
+                model = msg.type.getTyString();
                 returndata.add(msg.type.getVarientString());
                 returndata.add(msg.state.ToString());
                 returndata.add(msg.battery.ToString());
+                battery = msg.battery.ToString();
                 state = msg.state.value;
+                State = msg.state.ToString();
             }
         }
         return returndata;
@@ -163,6 +174,7 @@ public class BaseCMD {
             dmanu = msg.dateRtc.getValue();
             returndata.add("");
             returndata.add(""+msg.uval16.getValue()+"");
+            memory = String.valueOf(msg.uval16.getValue());
             MemorySizeMax = msg.MemorySizeMax.getValue();
             //Log.d("******0", " " + msg.uval16.getValue());
 
@@ -555,9 +567,6 @@ public class BaseCMD {
             rd[i] = current;
             i++;
         }
-
-
-
         return rd;
     }
 
@@ -568,11 +577,10 @@ public class BaseCMD {
         date.add(commsChar.CMD_RTC);
         date.add(commsChar.RTC_SET);
 
-//        Date d = Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime();
-        //Log.i(TAG,"DateRTC+ " + d);
-        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));//queryStrings.toCalendar(d);
-        //cal.setTimeZone(TimeZone.getTimeZone("UTC"));
-        //Log.d("======================", " "+ cal.get(Calendar.YEAR) + " " + cal.get(Calendar.DAY_OF_MONTH) + " " + cal.get(Calendar.HOUR) + " " + cal.get(Calendar.HOUR_OF_DAY));
+        TimeZone utcZone = TimeZone.getTimeZone("UTC");
+        TimeZone.setDefault(utcZone);
+        Calendar cal = Calendar.getInstance();
+
         new dataType.dateRtc(cal).ToByte(date);
 
         int i = 0;
@@ -581,10 +589,6 @@ public class BaseCMD {
             rd[i] = current;
             i++;
         }
-
-
-
-
         return rd;
     }
 

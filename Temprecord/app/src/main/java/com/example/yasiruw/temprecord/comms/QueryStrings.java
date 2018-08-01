@@ -53,7 +53,7 @@ public class QueryStrings {
     public String GetType(int str){
         String Type = "";
         if(str == 1){
-            Type = "MonT-2 BLE";
+            Type = "MonT-2";
         }
 
         return Type;
@@ -192,6 +192,8 @@ public class QueryStrings {
     }
 
     public static Calendar toCalendar(Date date){
+        TimeZone utcZone = TimeZone.getTimeZone("UTC");
+        TimeZone.setDefault(utcZone);
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         return cal;
@@ -209,11 +211,12 @@ public class QueryStrings {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
-
-
         return d;
     }
+//
+//    public Calendar getCalenderfromString(String date, S){
+//
+//    }
 
     public String calendertoString(Calendar cal){
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");

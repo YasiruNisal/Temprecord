@@ -22,7 +22,7 @@ public class dataType {
 
     public static class dateRtc extends baseType {
 
-        public Calendar value = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        public Calendar value = Calendar.getInstance();
 
         /// <summary>
         /// The RTC DateTime fits within 6 bytes on the device
@@ -44,6 +44,23 @@ public class dataType {
             value = val;
         }
 
+        public void BytetoHex(byte[] b){
+            StringBuilder sb = new StringBuilder();
+            for (byte b1 : b){
+                sb.append(String.format("%02X ", b1));
+
+            }
+            Log.d("HEX", sb.toString());
+        }
+
+        public void BytetoHex2(ArrayList<Byte> b){
+            StringBuilder sb = new StringBuilder();
+            for (byte b1 : b){
+                sb.append(String.format("%02X ", b1));
+            }
+            Log.d("HEX11", sb.toString());
+        }
+
         public dateRtc(ArrayList<Byte> data){
             super(ByteSize);
 
@@ -62,18 +79,13 @@ public class dataType {
                     int year = (data.get(0) >> 1 ) + YEAREPOCH;
                     int weekday = (data.get(1) & 0x0F); //Not really used but good for debug
                     int month = (data.get(1) >> 4)-1;
-                   // value = Calendar.getInstance().set(year, month, data.get(2), data.get(3), data.get(4), data.get(5));
-//                    Log.d("******6", " " + value.getTimeZone());
-//                    Log.d("******6", " " + year);
-//                    Log.d("******6", " " + month);
-//                    Log.d("******6", " " + data.get(2));
-//                    Log.d("******6", " " + data.get(3));
-//                    Log.d("******6", " " + data.get(4));
 
+//                    TimeZone utcZone = TimeZone.getTimeZone("GMT");
+//                    value.setTimeZone(utcZone);
                     value.set(year, month, data.get(2), data.get(3), data.get(4), data.get(5));
-                    value.setTimeZone(TimeZone.getTimeZone("UTC"));
-
-                    Log.d("******3", " " + value.getTime().getTime());
+                    //BytetoHex2(data);
+                    //value.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    //Log.d("Entry and Reading", " " + value.getTime().getTime());
 //                }
 //                else
 //                {
@@ -92,7 +104,8 @@ public class dataType {
         @Override
         public void ToByte(ArrayList<Byte> data) {
             byte dataByte;
-            Log.i(TAG,"Date value " + value);
+
+            Log.i(TAG,"Date value " + value.toString());
 
             if(value.get(Calendar.YEAR) > YEAREPOCH){
                 dataByte = (byte) (value.get(Calendar.YEAR) - YEAREPOCH);
@@ -106,13 +119,14 @@ public class dataType {
             dataByte = (byte)((value.get(Calendar.MONTH)+1 )<< 4 );
             dataByte += (byte)(value.get(Calendar.DAY_OF_WEEK));
             data.add(dataByte);
+
 //            data.add((byte)(value.get(Calendar.DAY_OF_WEEK)));
 //            data.add((byte)(value.get((Calendar.MONTH))+1));
             data.add((byte)(value.get(Calendar.DATE)));
             data.add((byte)(value.get(Calendar.HOUR)));
             data.add((byte)(value.get(Calendar.MINUTE)));
             data.add((byte)(value.get(Calendar.SECOND)));
-
+            BytetoHex2(data);
 //            Log.d("******3", " " + (data.get(2)));
 //                    Log.d("******3", " " + data.get(3));
 //                    Log.d("******3", " " + data.get(4));

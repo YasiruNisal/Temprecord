@@ -111,6 +111,8 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
     private EditText ch2lowerlimitnb;
     private EditText ch2alarmdelaynb;
 
+    private TextView BLE_heading;
+
     private CheckBox BLEenergysave;
     private CheckBox loopovewritecb;
     private CheckBox startwithbuttoncb;
@@ -291,9 +293,9 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
         ch2lowerlimitnb = (EditText) view.findViewById(R.id.ch2lowerlimit);
         ch2alarmdelaynb = (EditText) view.findViewById(R.id.ch2alarmdelay);
         BLE_Name = (EditText) view.findViewById(R.id.editbluetoothname);
+        BLE_heading = (TextView) view.findViewById(R.id.heading50);
 
         BLEenergysave = (CheckBox) view.findViewById(R.id.bleenergysave);
-        BLEenergysave.setVisibility(View.INVISIBLE);
         loopovewritecb = (CheckBox) view.findViewById(R.id.loopoverwrite);
         startwithbuttoncb = (CheckBox) view.findViewById(R.id.startwithbutton);
         stopwithbuttoncb = (CheckBox) view.findViewById(R.id.stopwithbutton);
@@ -314,6 +316,9 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
         ch2lowerlimitnb.setEnabled(false);
         ch2alarmdelaynb.setEnabled(false);
         tempheading = view.findViewById(R.id.heading39);
+        BLE_heading.setVisibility(View.GONE);
+        BLE_Name.setVisibility(View.GONE);
+        BLEenergysave.setVisibility(View.GONE);
 
         Programparam = (Button) view.findViewById(R.id.done);
         mConnectionState.setText(getString(R.string.USB_Connected));
@@ -1280,6 +1285,9 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
         CHUserData chUserData = new CHUserData(ch1enabledcb.isChecked(), ch1limitenabledcb.isChecked(), ch1upper, ch1lower,Integer.parseInt(ch1alarmdelaynb.getText().toString()),
                 ch2enabledcb.isChecked(), ch2limitenabledcb.isChecked(), Double.parseDouble(ch2upperlimitnb.getText().toString())*10, Double.parseDouble(ch2lowerlimitnb.getText().toString())*10,Integer.parseInt(ch2alarmdelaynb.getText().toString()));
 
+        if(ch1upper <= ch1lower)Complete = false;else Complete = true;
+        if(Double.parseDouble(ch2upperlimitnb.getText().toString())*10 <= Double.parseDouble(ch2lowerlimitnb.getText().toString())*10)Complete = false;else Complete = true;
+
         data = baseCMD.Write_USERCH1(chUserData);
         UserReadtemp[8] = data[0]; UserReadtemp[9] = data[1]; UserReadtemp[10] = data[2]; UserReadtemp[11] = data[3];//channel 1 info
         UserReadtemp[12] = data[4]; UserReadtemp[13] = data[5]; UserReadtemp[14] = data[6]; UserReadtemp[15] = data[7];
@@ -1304,7 +1312,7 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
         }
         if(stoponsample.isChecked()) {
             int val = 0;
-            if(Integer.parseInt(stoponsamplebutton.getText().toString()) > 65536)val = 65536;else val = Integer.parseInt(stoponsamplebutton.getText().toString());
+            if(Integer.parseInt(stoponsamplebutton.getText().toString()) > 65536)val = 65536;else if(Integer.parseInt(stoponsamplebutton.getText().toString())<10)val = 10; else val = Integer.parseInt(stoponsamplebutton.getText().toString());
             data = baseCMD.Write_USERStoponsample(val);
             UserReadtemp[32] = data[0];
             UserReadtemp[33] = data[1];

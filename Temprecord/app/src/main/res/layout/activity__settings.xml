@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="3dp"
             android:paddingTop="10dp"
-            android:text="Sound"
+            android:text="@string/Sound"
             android:textColorHighlight="@color/ublox_blue_color"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -47,7 +47,7 @@
             android:paddingBottom="5dp"
             android:paddingLeft="5dp"
             android:paddingTop="5dp"
-            android:text="Sound Enabled"
+            android:text="@string/Sound_Enabled"
             android:thumbTint="@color/ublox_blue_color" />
 
 
@@ -74,7 +74,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="3dp"
             android:paddingTop="10dp"
-            android:text="App Units"
+            android:text="@string/App_Units"
             android:textColorHighlight="@color/ublox_blue_color"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -93,7 +93,7 @@
             android:paddingBottom="5dp"
             android:paddingLeft="5dp"
             android:paddingTop="5dp"
-            android:text="Metric Units"
+            android:text="@string/Metric_Units"
             android:thumbTint="@color/ublox_blue_color" />
 
 
@@ -101,7 +101,95 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="0dp"
+        android:background="@drawable/layout_txtbg"
+        android:orientation="vertical">
 
+
+
+
+        <TextView
+            android:id="@+id/info22"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="3dp"
+            android:paddingTop="10dp"
+            android:text="@string/Time_Zone"
+            android:textColorHighlight="@color/ublox_blue_color"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:paddingTop="3dp"
+            android:background="@android:color/darker_gray"/>
+
+
+        <Switch
+            android:id="@+id/time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:paddingLeft="5dp"
+            android:paddingTop="5dp"
+            android:text="@string/UTC_Time"
+            android:thumbTint="@color/ublox_blue_color" />
+
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="0dp"
+        android:background="@drawable/layout_txtbg"
+        android:orientation="vertical">
+
+
+
+
+        <TextView
+            android:id="@+id/info32"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="3dp"
+            android:paddingTop="10dp"
+            android:text="@string/PDF_values"
+            android:textColorHighlight="@color/ublox_blue_color"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:paddingTop="3dp"
+            android:background="@android:color/darker_gray"/>
+
+
+        <Switch
+            android:id="@+id/pdf_values"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:paddingLeft="5dp"
+            android:paddingTop="5dp"
+            android:text="@string/value_column"
+            android:thumbTint="@color/ublox_blue_color" />
+
+
+
+
+    </LinearLayout>
 
 
     <LinearLayout
@@ -120,7 +208,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="3dp"
             android:paddingTop="10dp"
-            android:text="E-mail Information"
+            android:text="@string/Email_Information"
             android:textColorHighlight="@color/ublox_blue_color"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -137,7 +225,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="5dp"
             android:paddingTop="5dp"
-            android:text="Name"
+            android:text="@string/Name"
             android:textSize="15sp"
             />
 
@@ -155,7 +243,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="5dp"
             android:paddingTop="5dp"
-            android:text="TO"
+            android:text="@string/TO"
             android:textSize="15sp"
              />
 
@@ -173,7 +261,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="5dp"
             android:paddingTop="5dp"
-            android:text="CC"
+            android:text="@string/CC"
             android:textSize="15sp"
              />
 

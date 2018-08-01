@@ -417,9 +417,9 @@
                     android:background="@drawable/my_button_bg"
                     android:paddingLeft="16dp"
                     android:gravity="left|center_vertical"
-                    android:maxLength="300"
+                    android:maxLength="150"
                     android:text="" />
-
+.
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

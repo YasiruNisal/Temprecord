@@ -134,6 +134,7 @@ public class Temprecord_BLE {
             mBluetoothAdapter.startLeScan(mLeScanCallback);
         } else {
             ((MainActivity)activity).mScanning = false;
+            if(mLeScanCallback != null)
             mBluetoothAdapter.stopLeScan(mLeScanCallback);
         }
         activity.invalidateOptionsMenu();

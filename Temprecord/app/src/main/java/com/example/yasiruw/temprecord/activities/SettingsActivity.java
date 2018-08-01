@@ -30,6 +30,8 @@ public class SettingsActivity extends Activity {
     Button name;
     Switch sound;
     Switch units;
+    Switch time;
+    Switch values;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -48,7 +50,10 @@ public class SettingsActivity extends Activity {
         name =  findViewById(R.id.name);
         sound =  findViewById(R.id.sound);
         units = findViewById(R.id.imperial);
+        time = findViewById(R.id.time);
+        values = findViewById(R.id.pdf_values);
         sound.setChecked(true);
+
 
         //Log.d("WHAT", "********************************" + StoreKeyService.getDefaults("NAME", getApplication())+"88");
         if(storeKeyService != null) {
@@ -85,6 +90,15 @@ public class SettingsActivity extends Activity {
         else
             units.setChecked(false);
 
+        if(StoreKeyService.getDefaults("TIME", getApplicationContext()) != null && StoreKeyService.getDefaults("TIME", getApplicationContext()).equals("1"))
+            time.setChecked(true);
+        else
+            time.setChecked(false);
+
+        if(StoreKeyService.getDefaults("VALUE", getApplicationContext()) != null && StoreKeyService.getDefaults("VALUE", getApplicationContext()).equals("1"))
+            values.setChecked(true);
+        else
+            values.setChecked(false);
         buttonClick();
 
     }
@@ -121,6 +135,8 @@ public class SettingsActivity extends Activity {
             case R.id.apply:
                 String sond;
                 String unit;
+                String t;
+                String value;
                 if(sound.isChecked())
                     sond = "1";
                 else
@@ -131,12 +147,24 @@ public class SettingsActivity extends Activity {
                 else
                     unit = "0";
 
+                if(time.isChecked())
+                    t = "1";
+                else
+                    t = "0";
+
+
+                if(values.isChecked())
+                    value = "1";
+                else
+                    value = "0";
 
                 StoreKeyService.setDefaults("EMAIL_TO", emailto.getText().toString(), getApplication());
                 StoreKeyService.setDefaults("EMAIL_CC", emailcc.getText().toString(), getApplication());
                 StoreKeyService.setDefaults("NAME", name.getText().toString(), getApplication());
                 StoreKeyService.setDefaults("SOUND", sond, getApplicationContext());
                 StoreKeyService.setDefaults("UNITS", unit, getApplicationContext());
+                StoreKeyService.setDefaults("TIME", t, getApplicationContext());
+                StoreKeyService.setDefaults("VALUE", value, getApplicationContext());
                 //emailcc.setText(storeKeyService.getDefaults("EMAIL_TO", getApplication()));
                 //apply settings
 

@@ -34,6 +34,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.example.yasiruw.temprecord.App;
 import com.example.yasiruw.temprecord.R;
 import com.example.yasiruw.temprecord.activities.GraphAcivity;
 import com.example.yasiruw.temprecord.activities.MainActivity;
@@ -45,6 +46,7 @@ import com.example.yasiruw.temprecord.comms.MT2Values;
 import com.example.yasiruw.temprecord.comms.QueryStrings;
 import com.example.yasiruw.temprecord.services.BluetoothLeService;
 import com.example.yasiruw.temprecord.services.Json_Data;
+import com.example.yasiruw.temprecord.services.PDF;
 import com.example.yasiruw.temprecord.services.StoreKeyService;
 import com.example.yasiruw.temprecord.utils.CommsChar;
 import com.example.yasiruw.temprecord.utils.HexData;
@@ -400,6 +402,18 @@ public class BLEReadFragment extends Fragment {
             case R.id.menu_about:
                 //sendEmail();
                 new Screenshot(scrollView,baseCMD,getActivity()).print();
+                return true;
+            case R.id.simplePDF:
+                PDF pdf = new PDF();
+                pdf.getData(mt2Mem_values, baseCMD, true, Q_data, U_data, F_data, R_data);
+                pdf.Create_Report(App.getContext());
+                pdf.Open_PDF_in_Chrome(App.getContext());
+                return true;
+            case R.id.fullPDF:
+                PDF pdf1 = new PDF();
+                pdf1.getData(mt2Mem_values, baseCMD, false, Q_data, U_data, F_data, R_data);
+                pdf1.Create_Report(App.getContext());
+                pdf1.Open_PDF_in_Chrome(App.getContext());
                 return true;
                 default:
                     return false;
@@ -801,19 +815,19 @@ public class BLEReadFragment extends Fragment {
 
             totalSampleswithinLimits1.setText(mt2Mem_values.ch0Stats.TotalLimitWithin + "");
             totalTimewithinLimits1.setText(mt2Mem_values.ch0Stats.TotalTimeWithin + "");
-            totalPercentagewitinLimits1.setText(mt2Mem_values.ch0Stats.TotalPercentWithin + "");
+            totalPercentagewitinLimits1.setText(String.format("%.2f",mt2Mem_values.ch0Stats.TotalPercentWithin) + " %");
 
             totalSaamplesoutofLimits1.setText(mt2Mem_values.ch0Stats.TotalLimit + "");
             totalTimeoutofLImits1.setText(mt2Mem_values.ch0Stats.TotalTime);
-            totalPercentageoutofLimits1.setText(mt2Mem_values.ch0Stats.TotalPercent + "");
+            totalPercentageoutofLimits1.setText(String.format("%.2f",mt2Mem_values.ch0Stats.TotalPercent) + " %");
 
             samplesaboveUpperLimit1.setText(mt2Mem_values.ch0Stats.AboveLimit + "");
             timeaboveUpperLimit1.setText(mt2Mem_values.ch0Stats.AboveTime + "");
-            percentageaboveUpperLimit1.setText(mt2Mem_values.ch0Stats.AbovePercent + "");
+            percentageaboveUpperLimit1.setText(String.format("%.2f",mt2Mem_values.ch0Stats.AbovePercent) + " %");
 
             samplesbelowLowerLimit1.setText(mt2Mem_values.ch0Stats.BelowLimit + "");
             timebelowLowerSamples1.setText(mt2Mem_values.ch0Stats.BelowTime);
-            percentagebelowLowerSample1.setText(mt2Mem_values.ch0Stats.BelowPercent + "");
+            percentagebelowLowerSample1.setText(String.format("%.2f",mt2Mem_values.ch0Stats.BelowPercent) + " %");
         }
 
         if(baseCMD.ch2Enable && baseCMD.numberofsamples != 0) {
@@ -829,19 +843,19 @@ public class BLEReadFragment extends Fragment {
 
             totalSampleswithinLimits2.setText(mt2Mem_values.ch1Stats.TotalLimitWithin + "");
             totalTimewithinLimits2.setText(mt2Mem_values.ch1Stats.TotalTimeWithin + "");
-            totalPercentagewitinLimits2.setText(mt2Mem_values.ch1Stats.TotalPercentWithin + "");
+            totalPercentagewitinLimits2.setText(String.format("%.2f",mt2Mem_values.ch1Stats.TotalPercentWithin) + " %");
 
             totalSaamplesoutofLimits2.setText(mt2Mem_values.ch1Stats.TotalLimit + "");
             totalTimeoutofLImits2.setText(mt2Mem_values.ch1Stats.TotalTime);
-            totalPercentageoutofLimits2.setText(mt2Mem_values.ch1Stats.TotalPercent + "");
+            totalPercentageoutofLimits2.setText(String.format("%.2f",mt2Mem_values.ch1Stats.TotalPercent) + " %");
 
             samplesaboveUpperLimit2.setText(mt2Mem_values.ch1Stats.AboveLimit + "");
             timeaboveUpperLimit2.setText(mt2Mem_values.ch1Stats.AboveTime + "");
-            percentageaboveUpperLimit2.setText(mt2Mem_values.ch1Stats.AbovePercent + "");
+            percentageaboveUpperLimit2.setText(String.format("%.2f",mt2Mem_values.ch1Stats.AbovePercent) + " %");
 
             samplesbelowLowerLimit2.setText(mt2Mem_values.ch1Stats.BelowLimit + "");
             timebelowLowerSamples2.setText(mt2Mem_values.ch1Stats.BelowTime);
-            percentagebelowLowerSample2.setText(mt2Mem_values.ch1Stats.BelowPercent + "");
+            percentagebelowLowerSample2.setText(String.format("%.2f",mt2Mem_values.ch1Stats.BelowPercent) + " %");
         }
 
         if((R_data.get(0)).equals("Yes")){

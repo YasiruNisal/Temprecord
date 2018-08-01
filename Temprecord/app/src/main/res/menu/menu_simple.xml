@@ -3,10 +3,32 @@
 
     <item android:id="@+id/menu_about"
         android:orderInCategory="100"
-        android:title="@string/About"
+        android:title="@string/Screenshot"
         android:icon="@drawable/ic_screenshotb"
         android:showAsAction="always"/>
 
+    <item android:id="@+id/menu_pdf"
+        android:orderInCategory="100"
+        android:title="@string/PDF"
+        android:icon="@drawable/ic_pdfb"
+        android:showAsAction="always">
 
+        <menu>
+
+
+            <item android:id="@+id/simplePDF"
+                android:icon="@drawable/ic_oneb_24dp"
+                android:showAsAction="ifRoom"
+                android:title="@string/simple_PDF" />
+
+            <item android:id="@+id/fullPDF"
+                android:icon="@drawable/ic_twob_24dp"
+                android:showAsAction="ifRoom"
+                android:title="@string/full_PDF" />
+
+
+        </menu>
+
+    </item>
 
 </menu>

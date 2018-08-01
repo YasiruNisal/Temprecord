@@ -1,4 +1,6 @@
 <resources>
+    <string name="App_version">"Android 1.0"</string>
+
     <string name="app_name">Temprecord</string>
     <string name="ble_not_supported">BLE is not supported</string>
     <string name="label_data">Data:</string>
@@ -50,8 +52,8 @@
     <string name="Settings_S">Settings Selected</string>
 
     <string name="soon">This functionality is coming soon</string>
-    <string name="nextversion">Will be available in version 2 of the app.
-    See the gallery for screenshots</string>
+    <string name="nextversion">Will be available in version 2 of the application.
+    See the gallery for saved screenshots</string>
     <string name="files">Saved Files</string>
 
     <string name="Not_available_with_USB">Unavailable while USB is connected</string>
@@ -74,7 +76,9 @@
     <string name="LoggerDetails">Logger Details</string>
     <string name="LoggerFamily">Logger Family :</string>
     <string name="LoggerModel">Logger Model :</string>
+    <string name="LoggerState">Logger State :</string>
     <string name="LoggerFirmware">Logger Firmware : </string>
+    <string name="Estimated_Battery">Battery : </string>
     <string name="LoggerSerialNo">Logger Serial No. : </string>
     <string name="LoggerMemory">Logger Memory :</string>
     <string name="LoggerManDate">Manufacture Data : </string>
@@ -89,7 +93,7 @@
     <string name="StartDelay">Start Delay : </string>
     <string name="SamplePeriod">Sample Period : </string>
     <string name="TripSample">Trip Samples : </string>
-    <string name="LoggedSample">Logged Samples : </string>
+    <string name="LoggedSample">Recorded Samples : </string>
     <string name="StartedAt">Started at : </string>
     <string name="StartedBy">Started by : </string>
     <string name="StoppedAt">Stopped at : </string>
@@ -117,16 +121,18 @@
     <string name="Enabled">Enabled : </string>
     <string name="EnableLimits">Enable Limits : </string>
     <string name="AlarmDelay">Alarm Delay : </string>
-    <string name="UpperLimit">Upper Limit : </string>
-    <string name="LowerLimit">Lower Limit : </string>
+    <string name="UpperLimit">Preset upper Limit : </string>
+    <string name="LowerLimit">Preset lower Limit : </string>
     <string name="Channel2">Channel 2 :</string>
 
     <string name="UserComments">User Comments</string>
+    <string name="UserComments_">User Comments :</string>
 
     <string name="QueryLogger">Query Logger</string>
     <string name="QueryingLogger">Querying Logger</string>
     <string name="Abort">Abort</string>
-
+    <string name="Screenshot">Screenshot</string>
+    <string name="PDF">P</string>
     <string name="QueryAborted">Query Aborted</string>
     <string name="StartLogger">Start Logger</string>
     <string name="StopLogger">Stop Logger</string>
@@ -192,10 +198,10 @@ Go back to menu and reconnect</string>
     <string name="Channel1Stats">Channel 1 Stats</string>
     <string name="Channel2Stats">Channel 2 Stats</string>
 
-    <string name="Mean">Mean : </string>
-    <string name="MKT">MKT : </string>
-    <string name="MAX">Max : </string>
-    <string name="Min">Min : </string>
+    <string name="Mean">Mean Value : </string>
+    <string name="MKT">MKT Value : </string>
+    <string name="MAX">Max Recorded : </string>
+    <string name="Min">Min Recorded : </string>
 
 
     <string name="TotalSamplewithinLimits">Total Samples within Limits : </string>
@@ -242,6 +248,7 @@ Go back to menu and reconnect</string>
     <string name="StartwithDelay">Start with Delay</string>
     <string name="Starton_DateTime">Start on date time</string>
     <string name="Sample_Period">Sample Period</string>
+    <string name="Sample_Period_">Sample Period :</string>
     <string name="StopOptions">Stop Options</string>
     <string name="RequiresstopbyUser">Requires stop by User</string>
     <string name="StopwhenFull">Stop when Full</string>
@@ -308,6 +315,7 @@ HH:MM:SS</string>
     <string name="Stopped">Stopped</string>
     <string name="Running">Running</string>
     <string name="Start_Delay">Start Delay</string>
+    <string name="Start_Delay_">Start Delay :</string>
     <string name="Ready">Ready</string>
     <string name="NoConfig">No Config</string>
     <string name="Sleeping">Sleeping</string>
@@ -317,6 +325,44 @@ HH:MM:SS</string>
     <string name="AboutHelp">About &amp; Help</string>
 
     <string name="settings">Settings</string>
+    <string name="Sound">Sound</string>
+    <string name="Sound_Enabled">Sound Enabled</string>
+    <string name="App_Units">App Units</string>
+    <string name="Metric_Units">Metric Units</string>
+    <string name="Time_Zone">Time Zone</string>
+    <string name="PDF_values">PDF Values</string>
+    <string name="UTC_Time">UTC Time</string>
+    <string name="value_column">One Value Across Page</string>
+    <string name="Email_Information">E-mail Information</string>
+    <string name="Name">Name</string>
+    <string name="TO">TO</string>
+    <string name="CC">CC</string>
 
+
+    <string name="RH">  %RH</string>
+    <string name="C"> °C</string>
+    <string name="Values_Report">"Values Report"</string>
+    <string name="Logger_Report">"Logger Report"</string>
+    <string name="Stats_Report">"Stats Report"</string>
+    <string name="Temprecord">"Temprecord"</string>
+    <string name="Page">"Page"</string>
+
+    <string name="Comment">"Comment "</string>
+    <string name="Signature">"Signature "</string>
+
+    <string name="simple_PDF">"Simple PDF"</string>
+    <string name="full_PDF">"Full PDF"</string>
+
+    <string name="within_limits">"Within Limits"</string>
+    <string name="outof_limits">"Limits Exceeded"</string>
+
+    <string name="Temp_channel_1">"#1 - Temperature"</string>
+    <string name="RH_channel_1">"#2 - Humidity"</string>
+
+    <string name="breached">" (Breached) "</string>
+
+
+    <string name="G_Upper_LImit">" Upper Limit"</string>
+    <string name="G_Lower_LImit">" Lower Limit"</string>
 
 </resources>

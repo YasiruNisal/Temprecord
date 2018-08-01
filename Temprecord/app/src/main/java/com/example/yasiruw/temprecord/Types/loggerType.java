@@ -1076,7 +1076,7 @@ public  class loggerType {
         @Override
         public void ToByte(ArrayList<Byte> data)
         {
-            byte[] b = _value.getBytes(Charset.forName("UTF-8"));
+            byte[] b = _value.getBytes(Charset.forName("UTF-16LE"));
             for(int j = 0; j < b.length; j++){
                 data.add(b[j]);
             }

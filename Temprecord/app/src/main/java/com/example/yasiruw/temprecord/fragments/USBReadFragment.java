@@ -3,6 +3,7 @@ package com.example.yasiruw.temprecord.fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothDevice;
@@ -39,9 +40,11 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.yasiruw.temprecord.App;
 import com.example.yasiruw.temprecord.R;
 import com.example.yasiruw.temprecord.activities.GraphAcivity;
 import com.example.yasiruw.temprecord.activities.MainActivity;
+import com.example.yasiruw.temprecord.activities.SavedFileActivity;
 import com.example.yasiruw.temprecord.comms.BLEFragmentI;
 import com.example.yasiruw.temprecord.comms.BaseCMD;
 import com.example.yasiruw.temprecord.comms.CommsSerial;
@@ -50,6 +53,7 @@ import com.example.yasiruw.temprecord.comms.MT2Values;
 import com.example.yasiruw.temprecord.comms.QueryStrings;
 import com.example.yasiruw.temprecord.comms.USBFragmentI;
 import com.example.yasiruw.temprecord.services.Json_Data;
+import com.example.yasiruw.temprecord.services.PDF;
 import com.example.yasiruw.temprecord.services.StoreKeyService;
 import com.example.yasiruw.temprecord.services.TXT_FILE;
 import com.example.yasiruw.temprecord.services.USB;
@@ -407,6 +411,18 @@ public class USBReadFragment extends Fragment {
             case R.id.menu_about:
                 //sendEmail();
                 new Screenshot(scrollView,baseCMD,getActivity()).print();
+                return true;
+            case R.id.simplePDF:
+                PDF pdf = new PDF();
+                pdf.getData(mt2Mem_values, baseCMD, true, Q_data, U_data, F_data, R_data);
+                pdf.Create_Report(App.getContext());
+                pdf.Open_PDF_in_Chrome(App.getContext());
+                return true;
+            case R.id.fullPDF:
+                PDF pdf1 = new PDF();
+                pdf1.getData(mt2Mem_values, baseCMD, false, Q_data, U_data, F_data, R_data);
+                pdf1.Create_Report(App.getContext());
+                pdf1.Open_PDF_in_Chrome(App.getContext());
                 return true;
             default:
                 return false;
@@ -766,36 +782,36 @@ public class USBReadFragment extends Fragment {
                 lowerLimit1.setText(baseCMD.ch1Lo / 10.0 + " °C");
                 mkt.setText(String.format("%.1f", mt2Mem_values.ch0Stats.MKTValue) + " °C");
                 mean1.setText(String.format("%.1f", mt2Mem_values.ch0Stats.Mean) + " °C");
-                String max1time = sdf.format(mt2Mem_values.Data.get(mt2Mem_values.ch0Stats.Max.Number).valTime);
+                String max1time = sdf.format(mt2Mem_values.Data.get(mt2Mem_values.ch0Stats.Max.Number - 1).valTime);
                 max1.setText(mt2Mem_values.ch0Stats.Max.Value / 10.0 + " °C\n" + max1time);
-                String min1time = sdf.format(mt2Mem_values.Data.get(mt2Mem_values.ch0Stats.Min.Number).valTime);
+                String min1time = sdf.format(mt2Mem_values.Data.get(mt2Mem_values.ch0Stats.Min.Number - 1).valTime);
                 min1.setText(mt2Mem_values.ch0Stats.Min.Value / 10.0 + " °C\n" + min1time);
             }else{
                 upperLimit1.setText(QS.returnFD(baseCMD.ch1Hi / 10.0) + " °F");
                 lowerLimit1.setText(QS.returnFD(baseCMD.ch1Lo / 10.0) + " °F");
                 mkt.setText(QS.returnF(String.format("%.1f", mt2Mem_values.ch0Stats.MKTValue)) + " °F");
                 mean1.setText(QS.returnF(String.format("%.1f", mt2Mem_values.ch0Stats.Mean)) + " °F");
-                String max1time = sdf.format(mt2Mem_values.Data.get(mt2Mem_values.ch0Stats.Max.Number).valTime);
+                String max1time = sdf.format(mt2Mem_values.Data.get(mt2Mem_values.ch0Stats.Max.Number - 1).valTime);
                 max1.setText(QS.returnFD(mt2Mem_values.ch0Stats.Max.Value / 10.0) + " °F\n" + max1time);
-                String min1time = sdf.format(mt2Mem_values.Data.get(mt2Mem_values.ch0Stats.Min.Number).valTime);
+                String min1time = sdf.format(mt2Mem_values.Data.get(mt2Mem_values.ch0Stats.Min.Number - 1).valTime);
                 min1.setText(QS.returnFD(mt2Mem_values.ch0Stats.Min.Value / 10.0) + " °F\n" + min1time);
             }
 
             totalSampleswithinLimits1.setText(mt2Mem_values.ch0Stats.TotalLimitWithin + "");
             totalTimewithinLimits1.setText(mt2Mem_values.ch0Stats.TotalTimeWithin + "");
-            totalPercentagewitinLimits1.setText(mt2Mem_values.ch0Stats.TotalPercentWithin + "");
+            totalPercentagewitinLimits1.setText(String.format("%.2f",mt2Mem_values.ch0Stats.TotalPercentWithin) + " %");
 
             totalSaamplesoutofLimits1.setText(mt2Mem_values.ch0Stats.TotalLimit + "");
             totalTimeoutofLImits1.setText(mt2Mem_values.ch0Stats.TotalTime);
-            totalPercentageoutofLimits1.setText(mt2Mem_values.ch0Stats.TotalPercent + "");
+            totalPercentageoutofLimits1.setText(String.format("%.2f",mt2Mem_values.ch0Stats.TotalPercent) + " %");
 
             samplesaboveUpperLimit1.setText(mt2Mem_values.ch0Stats.AboveLimit + "");
             timeaboveUpperLimit1.setText(mt2Mem_values.ch0Stats.AboveTime + "");
-            percentageaboveUpperLimit1.setText(mt2Mem_values.ch0Stats.AbovePercent + "");
+            percentageaboveUpperLimit1.setText(String.format("%.2f",mt2Mem_values.ch0Stats.AbovePercent) + " %");
 
             samplesbelowLowerLimit1.setText(mt2Mem_values.ch0Stats.BelowLimit + "");
             timebelowLowerSamples1.setText(mt2Mem_values.ch0Stats.BelowTime);
-            percentagebelowLowerSample1.setText(mt2Mem_values.ch0Stats.BelowPercent + "");
+            percentagebelowLowerSample1.setText(String.format("%.2f",mt2Mem_values.ch0Stats.BelowPercent) + " %");
         }
 
         if(baseCMD.ch2Enable && baseCMD.numberofsamples != 0) {
@@ -811,19 +827,19 @@ public class USBReadFragment extends Fragment {
 
             totalSampleswithinLimits2.setText(mt2Mem_values.ch1Stats.TotalLimitWithin + "");
             totalTimewithinLimits2.setText(mt2Mem_values.ch1Stats.TotalTimeWithin + "");
-            totalPercentagewitinLimits2.setText(mt2Mem_values.ch1Stats.TotalPercentWithin + "");
+            totalPercentagewitinLimits2.setText(String.format("%.2f",mt2Mem_values.ch1Stats.TotalPercentWithin) + " %");
 
             totalSaamplesoutofLimits2.setText(mt2Mem_values.ch1Stats.TotalLimit + "");
             totalTimeoutofLImits2.setText(mt2Mem_values.ch1Stats.TotalTime);
-            totalPercentageoutofLimits2.setText(mt2Mem_values.ch1Stats.TotalPercent + "");
+            totalPercentageoutofLimits2.setText(String.format("%.2f",mt2Mem_values.ch1Stats.TotalPercent) +" %");
 
             samplesaboveUpperLimit2.setText(mt2Mem_values.ch1Stats.AboveLimit + "");
             timeaboveUpperLimit2.setText(mt2Mem_values.ch1Stats.AboveTime + "");
-            percentageaboveUpperLimit2.setText(mt2Mem_values.ch1Stats.AbovePercent + "");
+            percentageaboveUpperLimit2.setText(String.format("%.2f",mt2Mem_values.ch1Stats.AbovePercent) + " %");
 
             samplesbelowLowerLimit2.setText(mt2Mem_values.ch1Stats.BelowLimit + "");
             timebelowLowerSamples2.setText(mt2Mem_values.ch1Stats.BelowTime);
-            percentagebelowLowerSample2.setText(mt2Mem_values.ch1Stats.BelowPercent + "");
+            percentagebelowLowerSample2.setText(String.format("%.2f",mt2Mem_values.ch1Stats.BelowPercent) + " %");
         }
 
         if((R_data.get(0)).equals("Yes")){

@@ -384,7 +384,7 @@ public class MainActivity extends Activity implements
                     pdfbutton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Toast.makeText(MainActivity.this, getString(R.string.soon), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, getString(R.string.nextversion), Toast.LENGTH_SHORT).show();
                             dialog.dismiss();
                         }
                     });

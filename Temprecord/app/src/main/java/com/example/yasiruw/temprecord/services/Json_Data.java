@@ -1,19 +1,15 @@
 package com.example.yasiruw.temprecord.services;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.example.yasiruw.temprecord.comms.BaseCMD;
 import com.example.yasiruw.temprecord.comms.MT2Values;
 import com.example.yasiruw.temprecord.comms.QueryStrings;
-import com.example.yasiruw.temprecord.utils.Graph_Info;
-import com.google.gson.JsonSerializer;
+import com.example.yasiruw.temprecord.utils.App_Info;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import static android.content.ContentValues.TAG;
 
 public class Json_Data {
 
@@ -28,7 +24,7 @@ public class Json_Data {
     private MT2Values.MT2Mem_values mt2Mem_values;
     private BaseCMD baseCMD;
     private QueryStrings QS = new QueryStrings();
-    private Graph_Info graph_info = new Graph_Info();
+    private App_Info app_info = new App_Info();
     private int viewtype;
     private int numchannel = 0;
     StoreKeyService storeKeyService;
@@ -148,7 +144,11 @@ public class Json_Data {
 
                 luppert.put("high", uhight);
 
-                umidt.put(0, String.valueOf(baseCMD.ch1Hi / 10.0));
+                if (storeKeyService.getDefaults("UNITS", context) != null && storeKeyService.getDefaults("UNITS", context).equals("1")) {
+                    umidt.put(0, String.valueOf(baseCMD.ch1Hi / 10.0));
+                }else{
+                    umidt.put(0, QS.returnF(String.valueOf(baseCMD.ch1Hi / 10.0)));
+                }
                 umidt.put(1, "#FF0000");
                 umidt.put(2, "dash");
 
@@ -192,18 +192,18 @@ public class Json_Data {
                 //================================================================================//
 
 
-                tempg.put("linecolor", graph_info.TEMP_LINECOLOR);
-                tempg.put("linethickness", graph_info.TEMP_LINETHICKNESS);
-                tempg.put("linetype", graph_info.TEMP_LINETYPE);
-                tempg.put("upperlimitlinecolor", graph_info.TEMP_LIMITLINECOLOR);
-                tempg.put("upperlimitlinethickness", graph_info.TEMP_LIMITLINETHICKNESS);
-                tempg.put("upperlimitlinetype", graph_info.TEMP_LIMITLINETYPE);
-                tempg.put("lowerlimitlinecolor", graph_info.TEMP_LIMITLINECOLOR);
-                tempg.put("lowerlimitlinethickness", graph_info.TEMP_LIMITLINETHICKNESS);
-                tempg.put("lowerlimitlinetype", graph_info.TEMP_LIMITLINETYPE);
-                tempg.put("markercolor", graph_info.TEMP_MARKERCOLOR);
-                tempg.put("markersize", graph_info.TEMP_MARKERSIZE);
-                tempg.put("markertype", graph_info.TEMP_MARKERTYPE);
+                tempg.put("linecolor", app_info.TEMP_LINECOLOR);
+                tempg.put("linethickness", app_info.TEMP_LINETHICKNESS);
+                tempg.put("linetype", app_info.TEMP_LINETYPE);
+                tempg.put("upperlimitlinecolor", app_info.TEMP_LIMITLINECOLOR);
+                tempg.put("upperlimitlinethickness", app_info.TEMP_LIMITLINETHICKNESS);
+                tempg.put("upperlimitlinetype", app_info.TEMP_LIMITLINETYPE);
+                tempg.put("lowerlimitlinecolor", app_info.TEMP_LIMITLINECOLOR);
+                tempg.put("lowerlimitlinethickness", app_info.TEMP_LIMITLINETHICKNESS);
+                tempg.put("lowerlimitlinetype", app_info.TEMP_LIMITLINETYPE);
+                tempg.put("markercolor", app_info.TEMP_MARKERCOLOR);
+                tempg.put("markersize", app_info.TEMP_MARKERSIZE);
+                tempg.put("markertype", app_info.TEMP_MARKERTYPE);
 
                 data.accumulate("graph", tempg);
                 channel.put(numchannel,data);
@@ -278,18 +278,18 @@ public class Json_Data {
                 //================================================================================//
                                 //Graph
                 //================================================================================//
-                humg.put("linecolor", graph_info.HUM_LINECOLOR);
-                humg.put("linethickness", graph_info.HUM_LINETHICKNESS);
-                humg.put("linetype", graph_info.HUM_LINETYPE);
-                humg.put("upperlimitlinecolor", graph_info.HUM_LIMITLINECOLOR);
-                humg.put("upperlimitlinethickness", graph_info.HUM_LIMITLINETHICKNESS);
-                humg.put("upperlimitlinetype", graph_info.HUM_LIMITLINETYPE);
-                humg.put("lowerlimitlinecolor", graph_info.HUM_LIMITLINECOLOR);
-                humg.put("lowerlimitlinethickness", graph_info.HUM_LIMITLINETHICKNESS);
-                humg.put("lowerlimitlinetype", graph_info.HUM_LIMITLINETYPE);
-                humg.put("markercolor", graph_info.HUM_MARKERCOLOR);
-                humg.put("markersize", graph_info.HUM_MARKERSIZE);
-                humg.put("markertype", graph_info.HUM_MARKERTYPE);
+                humg.put("linecolor", app_info.HUM_LINECOLOR);
+                humg.put("linethickness", app_info.HUM_LINETHICKNESS);
+                humg.put("linetype", app_info.HUM_LINETYPE);
+                humg.put("upperlimitlinecolor", app_info.HUM_LIMITLINECOLOR);
+                humg.put("upperlimitlinethickness", app_info.HUM_LIMITLINETHICKNESS);
+                humg.put("upperlimitlinetype", app_info.HUM_LIMITLINETYPE);
+                humg.put("lowerlimitlinecolor", app_info.HUM_LIMITLINECOLOR);
+                humg.put("lowerlimitlinethickness", app_info.HUM_LIMITLINETHICKNESS);
+                humg.put("lowerlimitlinetype", app_info.HUM_LIMITLINETYPE);
+                humg.put("markercolor", app_info.HUM_MARKERCOLOR);
+                humg.put("markersize", app_info.HUM_MARKERSIZE);
+                humg.put("markertype", app_info.HUM_MARKERTYPE);
 
                 data1.accumulate("graph", humg);
                 channel.put(numchannel,data1);
@@ -315,9 +315,9 @@ public class Json_Data {
                 //Graph
                 //================================================================================//
 
-                tagg.put("tagcolor", graph_info.TAG_COLOR);
-                tagg.put("tagsize", graph_info.TAG_SIZE);
-                tagg.put("tagtype", graph_info.TAG_TYPE);
+                tagg.put("tagcolor", app_info.TAG_COLOR);
+                tagg.put("tagsize", app_info.TAG_SIZE);
+                tagg.put("tagtype", app_info.TAG_TYPE);
 
                 data2.accumulate("graph", tagg);
                 channel.put(numchannel,data2);

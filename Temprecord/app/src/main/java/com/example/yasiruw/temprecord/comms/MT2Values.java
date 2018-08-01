@@ -275,7 +275,6 @@ public class MT2Values  {
         {
             ValSample = number;
             valTime = time;
-            Log.i(TAG, "date " + time.getTime()/1000 + " +++++++++++++++++++");
             ValTag = tag;
             valCh0 = ch0;
             //valueCh0F = AppConstants.UnitConv(valueCh0);
