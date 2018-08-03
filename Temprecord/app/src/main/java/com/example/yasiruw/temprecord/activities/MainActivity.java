@@ -13,11 +13,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -54,6 +57,7 @@ import com.example.yasiruw.temprecord.CustomLibraries.LeDeviceListAdapter;
 
 
 import java.util.ArrayList;
+import java.util.TimeZone;
 import java.util.UUID;
 
 import static com.example.yasiruw.temprecord.fragments.BLEQueryFragment.EXTRAS_MESSAGE;
@@ -88,6 +92,7 @@ public class MainActivity extends Activity implements
     ProgressDialog progressDialog;
     private static final Handler mainThreadHandler = new Handler();
     Runnable delayedTask;
+    public TimeZone default_timeZone;
 
 
     //====================layout variables==============================================================
@@ -198,8 +203,21 @@ public class MainActivity extends Activity implements
         }
 
         temprecord_ble = new Temprecord_BLE(mBluetoothAdapter, MainActivity.this, lvDevices);
-        temprecord_ble.isBluetoothSupported();// checks if Bluetooth is supported
-        temprecord_ble.isBLESupported();// checks if BLE is supported
+        //temprecord_ble.isBluetoothSupported();// checks if Bluetooth is supported
+        //temprecord_ble.isBLESupported();// checks if BLE is supported
+        // Use this check to determine whether BLE is supported on the device.  Then you can
+        // selectively disable BLE-related features.
+        if(!mUSBConnected) {
+            if (mBluetoothAdapter == null) {
+                Toast.makeText(this, R.string.error_bluetooth_not_supported, Toast.LENGTH_SHORT).show();
+                finish();
+                return;
+            }
+            if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
+                Toast.makeText(this, R.string.ble_not_supported, Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        }
 
 
         //Register Receiver to be notified for All internal intent USB and BLE
@@ -227,6 +245,9 @@ public class MainActivity extends Activity implements
         help.setOnClickListener(OnMenuButtonClick);
         findlogger.setOnClickListener(OnMenuButtonClick);
         settings.setOnClickListener(OnMenuButtonClick);
+        //QS.LocaltoUTC();
+
+
     }
 
     //==================================================================================================================================================================================//
@@ -242,6 +263,7 @@ public class MainActivity extends Activity implements
         public void onClick(View v) {
             switch (v.getId()){
                 case R.id.read:
+                    //Log.i("SPEED", "start stufff++++++++++++++++");
                     if (mUSBConnected) {
                         Update_UI_state(3);
                         m_bundle_data.putString(EXTRAS_MESSAGE, "6"); //put string, int, etc in bundle with a key value
@@ -366,30 +388,30 @@ public class MainActivity extends Activity implements
                     Toast.makeText(MainActivity.this, getString(R.string.Reuse_S), Toast.LENGTH_SHORT).show();
                     break;
                 case R.id.files:
-
+                    Toast.makeText(MainActivity.this, getString(R.string.nextversion), Toast.LENGTH_LONG).show();
                     // custom dialog
-                    final Dialog dialog = new Dialog(MainActivity.this);
-                    dialog.setContentView(R.layout.filesbutton_dialog);
-                    dialog.setTitle(getString(R.string.files));
-                    ImageButton ssbutton = (ImageButton) dialog.findViewById(R.id.screenshot);
-                    ImageButton pdfbutton = (ImageButton) dialog.findViewById(R.id.pdf);
-                    // if button is clicked, close the custom dialog
-                    ssbutton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Toast.makeText(MainActivity.this, getString(R.string.nextversion), Toast.LENGTH_SHORT).show();
-                            dialog.dismiss();
-                        }
-                    });
-                    pdfbutton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Toast.makeText(MainActivity.this, getString(R.string.nextversion), Toast.LENGTH_SHORT).show();
-                            dialog.dismiss();
-                        }
-                    });
-
-                    dialog.show();
+//                    final Dialog dialog = new Dialog(MainActivity.this);
+//                    dialog.setContentView(R.layout.filesbutton_dialog);
+//                    dialog.setTitle(getString(R.string.files));
+//                    ImageButton ssbutton = (ImageButton) dialog.findViewById(R.id.screenshot);
+//                    ImageButton pdfbutton = (ImageButton) dialog.findViewById(R.id.pdf);
+//                    // if button is clicked, close the custom dialog
+//                    ssbutton.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//
+//                            dialog.dismiss();
+//                        }
+//                    });
+//                    pdfbutton.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            Toast.makeText(MainActivity.this, getString(R.string.nextversion), Toast.LENGTH_SHORT).show();
+//                            dialog.dismiss();
+//                        }
+//                    });
+//
+//                    dialog.show();
                     break;
                 case R.id.help:
                     Intent myIntent = new Intent(MainActivity.this, AboutActivity.class);
@@ -680,6 +702,7 @@ public class MainActivity extends Activity implements
     //fragment
     //=============================================================================================//
 
+
     public void send_to_active_Fragment(byte[] data) {
 
         switch (FragmentNumber) {
@@ -691,7 +714,7 @@ public class MainActivity extends Activity implements
                 Update_UI_state(2);// updates the buttons concidering what state the logger is in
                 if(mConnected) {
                     BLEmainTimeout();
-                    Log.i("TEST", "IN connected intent action ----------------------------------");
+
                     temprecord_ble.stopRunable();
                 }
                 if(progressDialog!=null)
@@ -767,7 +790,7 @@ public class MainActivity extends Activity implements
         if ( FragmentNumber > 0     )                {//Fix fot the weired menu behaviour
             menu.findItem(R.id.menu_scan).setVisible(false);
             menu.findItem(R.id.menu_stop).setVisible(false);
-            temprecord_ble.scanLeDevice(false);
+           if(!mUSBConnected) temprecord_ble.scanLeDevice(false);
         } else {
 
             if (!mScanning) {
@@ -791,10 +814,10 @@ public class MainActivity extends Activity implements
         switch (item.getItemId()) {
             case R.id.menu_scan:
                 mLeDeviceListAdapter.clear();
-                temprecord_ble.scanLeDevice(true);
+                if(!mUSBConnected)temprecord_ble.scanLeDevice(true);
                 break;
             case R.id.menu_stop:
-                temprecord_ble.scanLeDevice(false);
+                if(!mUSBConnected)temprecord_ble.scanLeDevice(false);
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -807,12 +830,12 @@ public class MainActivity extends Activity implements
 
         // Ensures Bluetooth is enabled on the device.  If Bluetooth is not currently enabled,
         // fire an intent to display a dialog asking the user to grant permission to enable it.
-        temprecord_ble.BLE_turnon_dialog();
+       if(!mUSBConnected) temprecord_ble.BLE_turnon_dialog();
 
         // Initializes list view adapter.
         mLeDeviceListAdapter = new LeDeviceListAdapter(getApplicationContext(), MainActivity.this);
         temprecord_ble.setListAdapter(mLeDeviceListAdapter, mScanning);
-        temprecord_ble.scanLeDevice(true);
+        if(!mUSBConnected)temprecord_ble.scanLeDevice(true);
 
         if (m_usb == null)
         {
@@ -838,7 +861,7 @@ public class MainActivity extends Activity implements
     @Override
     protected void onPause() {
         super.onPause();
-        temprecord_ble.scanLeDevice(false);
+        if(!mUSBConnected)temprecord_ble.scanLeDevice(false);
         mLeDeviceListAdapter.clear();
     }
 
@@ -879,7 +902,9 @@ public class MainActivity extends Activity implements
     //function of the USBFragmentI interface
     //=============================================================================================//
     @Override
-    public void onUSBWrite(byte[] value) {
+    public void onUSBWrite(byte[] value)
+    {
+
         m_usb.Send_Command(value);
     }
 
@@ -891,6 +916,7 @@ public class MainActivity extends Activity implements
     //=============================================================================================//
     public BroadcastReceiver INTERNAL_BROADCAST_RECEIVER = new BroadcastReceiver()
     {
+
         @Override
         public void onReceive(Context context, Intent intent) {
             Bundle extras = intent.getExtras();
@@ -924,7 +950,7 @@ public class MainActivity extends Activity implements
                                     }
                                     //Log.i("Device", "coming in to USB connected part===========================");
                                     spinnerProgressDialog();
-                                    temprecord_ble.scanLeDevice(false);
+                                    if(!mUSBConnected)temprecord_ble.scanLeDevice(false);
                                     mScanning = false;
                                     mUSBConnected = true;
                                     //Update_UI_state(2);
@@ -937,12 +963,16 @@ public class MainActivity extends Activity implements
                         break;
 
                     case "HID_USB_Message_Received":
+                        //Log.i("SPEED", "receive stufff=============");
                         //-------------------//
                         if (extras != null) {
                             byte[] i_message = extras.getByteArray("b_data");
                             //commsSerial.BytetoHex(i_message);
                             if (i_message != null) {
+
                                 send_to_active_Fragment(i_message);
+                               // usbReadFragment.CommsI(i_message);
+
                                 //DO SOMETHING WITH DATA RECEIVED FROM USB
                             }
                         }
@@ -1062,4 +1092,5 @@ public class MainActivity extends Activity implements
         };
         mainThreadHandler.postDelayed(delayedTask, 20000);
     }
+
 }

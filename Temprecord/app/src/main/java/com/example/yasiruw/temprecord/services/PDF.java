@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.Environment;
@@ -71,7 +72,13 @@ public class PDF
 
     private static  final   int                     K_column_date           =  10;
     private static  final   int                     K_column_time           =  20; //space from the left of time column
-    private static  final   int                     K_column_temp           =  80;
+    private static  final   int                     K_column_temp           =  100;
+    private static  final   int                     K_v2_column_index       =  45;
+    private static  final   int                     K_v2_column_date        =  70;
+    private static  final   int                     K_v2_column_time        =  90;
+    private static  final   int                     K_v2_column             =  60;
+    private static  final   int                     K_v2_column_middle      =  340;
+    private static  final   int                     K_v2_column_two         =  350;
     private static          int                     K_column_space          =  55;
     private static  final   int                     K_column_max            = 660;
     private static  final   int                     K_line_start            =  100;
@@ -92,6 +99,7 @@ public class PDF
     //==========================================================//
     private                 boolean                 m_page_open             = false;
     private                 int                     m_current_column        = K_column_temp;
+    private                 int                     m_current_column_v2     = K_column_date+20;
     private                 int                     m_current_line          = K_line_start + K_line_max + K_cr_line;
     private                 int                     m_page_number           = 1;
 
@@ -113,7 +121,7 @@ public class PDF
     private                 ArrayList<Long>         time = new ArrayList<Long>();
 
                             StoreKeyService         storeKeyService;
-    private                 boolean                 simplePDF = true;
+    private                 int                 simplePDF = 0;
 
     private                 Paint                   line_paint = new Paint();
     private                 Paint                   RH_paint = new Paint();
@@ -185,7 +193,7 @@ public class PDF
             //  Prepare File Handler for PDF File
             //==========================================================//
             Date c = Calendar.getInstance().getTime();
-            String formattedDate = sdf.format(c);
+            String formattedDate = QS.UTCtoLocal(c.getTime());
             //K_PDF_FILENAME = "("+baseCMD.serialno+")" + formattedDate+".pdf";
             final File file = new File(m_pdf_folder, K_PDF_FILENAME);
             m_file_output_stream = new FileOutputStream(file);
@@ -239,16 +247,15 @@ public class PDF
             Inc_Line_and_Check_if_need_new_page();
             //=============================Logger Report=========================================
             if(mt2Mem_values.ch0Stats.TotalLimit == 0 && mt2Mem_values.ch1Stats.TotalLimit == 0){//drawing the tick if within limits
-                m_canvas.drawLine(app_info.tick_startX, app_info.tick_startY, app_info.tick_meetX, app_info.tick_meetY, green_tick);
-                m_canvas.drawLine(app_info.tick_meetX-3, app_info.tick_meetY+5, app_info.tick_endX, app_info.tick_endY, green_tick);
+                Drawable d = App.getContext().getResources().getDrawable(R.drawable.greentick);
+                d.setBounds(app_info.sign_left, app_info.sign_top, app_info.sign_right, app_info.sign_bottom);
+                d.draw(m_canvas);
                 m_canvas.drawText(App.getContext().getString(R.string.within_limits), app_info.limitinfo_startX, app_info.limitinfo_startY, m_paint_dark);
-
             }else{//drawing the warning sign if out of limits
                 m_canvas.drawText(App.getContext().getString(R.string.outof_limits), app_info.limitinfo_startX, app_info.limitinfo_startY, m_paint_dark);
-                m_canvas.drawLine(app_info.tri_startX+3,app_info.tri_startY-3,app_info.tri_meetX,app_info.tri_meetY,triangle_paint);
-                m_canvas.drawLine(app_info.tri_meetX-4, app_info.tri_meetY, app_info.tri_endX+4,app_info.tri_endY,triangle_paint);
-                m_canvas.drawLine(app_info.tri_endX,app_info.tri_endY, app_info.tri_startX,app_info.tri_startY+1,triangle_paint);
-                m_canvas.drawText("!", app_info.exclmation_startX,app_info.exclemation_startY,mark);
+                Drawable d = App.getContext().getResources().getDrawable(R.drawable.redwarning);
+                d.setBounds(app_info.sign_left, app_info.sign_top, app_info.sign_right, app_info.sign_bottom);
+                d.draw(m_canvas);
             }
 
 
@@ -286,10 +293,10 @@ public class PDF
             m_canvas.drawText(U_data.get(24)+" (hh:mm:ss)", app_info.second_column, app_info.line_counter, m_paint);
             app_info.line_counter += app_info.line_inc;
             m_canvas.drawText(App.getContext().getString(R.string.FirstSample), app_info.first_column, app_info.line_counter, m_paint_dark);
-            m_canvas.drawText(sdf.format(mt2Mem_values.Data.get(0).valTime), app_info.second_column, app_info.line_counter, m_paint);
+            m_canvas.drawText(QS.UTCtoLocal(mt2Mem_values.Data.get(0).valTime.getTime()), app_info.second_column, app_info.line_counter, m_paint);
             app_info.line_counter += app_info.line_inc;
             m_canvas.drawText(App.getContext().getString(R.string.LastSample), app_info.first_column, app_info.line_counter, m_paint_dark);
-            m_canvas.drawText(sdf.format(mt2Mem_values.Data.get(mt2Mem_values.Data.size() - 1).valTime), app_info.second_column, app_info.line_counter, m_paint);
+            m_canvas.drawText(QS.UTCtoLocal(mt2Mem_values.Data.get(mt2Mem_values.Data.size() - 1).valTime.getTime()), app_info.second_column, app_info.line_counter, m_paint);
             app_info.line_counter += app_info.line_inc;
             m_canvas.drawText(App.getContext().getString(R.string.LoggedSample), app_info.first_column, app_info.line_counter, m_paint_dark);
             m_canvas.drawText(R_data.get(7), app_info.second_column, app_info.line_counter, m_paint);
@@ -492,7 +499,7 @@ public class PDF
                 float ch2_min = (float)(app_info.graph_H-(((mt2Mem_values.ch1Stats.Min.Value / 10.0)-app_info.ch_lowest)*app_info.graph_y_scale))+app_info.graph_topY;
                 m_canvas.drawLine(app_info.graph_l_lineX_start,ch2_min,app_info.graph_l_lineX_end,ch2_min,app_info.ch2_max_min);
                 //m_canvas.drawText(String.valueOf(mt2Mem_values.ch1Stats.Min.Value / 10.0),app_info.graph_l_lineX_end,ch2_min,app_info.max_min);
-                m_canvas.drawText("__ "+App.getContext().getString(R.string.Hum),app_info.second_column+100,app_info.graph_topY-5,app_info.rh_line);
+                m_canvas.drawText("__ "+App.getContext().getString(R.string.Hum) + " " +App.getContext().getString(R.string.RH),app_info.second_column+120,app_info.graph_topY-5,app_info.rh_line);
             }
 
             //plotting temperature channel 1 limit line and labeling them and labeling the axis
@@ -513,7 +520,7 @@ public class PDF
             float ch1_min = (float)(app_info.graph_H-((((my_unit) ? mt2Mem_values.ch0Stats.Min.Value / 10.0 : QS.returnFD(mt2Mem_values.ch0Stats.Min.Value / 10.0))-app_info.ch_lowest)*app_info.graph_y_scale))+app_info.graph_topY;
             m_canvas.drawLine(app_info.graph_l_lineX_start,ch1_min,app_info.graph_l_lineX_end,ch1_min,app_info.ch1_max_min);
            // m_canvas.drawText(String.format("%.1f",((my_unit) ? mt2Mem_values.ch0Stats.Min.Value / 10.0 : QS.returnFD(mt2Mem_values.ch0Stats.Min.Value / 10.0))),app_info.graph_l_lineX_end,ch1_min,app_info.max_min);
-            m_canvas.drawText("__ "+App.getContext().getString(R.string.Temp),app_info.second_column,app_info.graph_topY-5,app_info.temp_line);
+            m_canvas.drawText("__ "+App.getContext().getString(R.string.Temp)+ Temp_unit,app_info.second_column,app_info.graph_topY-5,app_info.temp_line);
             //labeling the mean value of the graph lines
             m_canvas.drawText(String.valueOf(baseCMD.ch2Lo / 10.0),app_info.first_column,(float)app_info.ch2_lower_Y,m_paint);
             int k = 0;
@@ -555,7 +562,7 @@ public class PDF
 //            Log.i("TAG", "))))))))))))))))))))))))" +(app_info.graph_H-((app_info.ch1_upper_L+(Math.abs(app_info.ch1_lowest)))*app_info.graph_y_scale))+ " " + app_info.ch1_upper_Y + " " + app_info.ch1_lower_Y+ " " + app_info.graph_x_scale + " " + mt2Mem_values.Data.size());
             //========================================================================================
             //============================================//
-            if(!simplePDF) {//printing the values if user selects full report -- starts from the second psge
+            if(simplePDF == 1) {//printing the values if user selects full report -- starts from the second psge
                 m_current_line = 1000;
                 Inc_Line_and_Check_if_need_new_page();
                 while (inc_val < mt2Mem_values.Data.size()) {
@@ -571,31 +578,33 @@ public class PDF
                             if(((my_unit) ? ch1.get(inc_val) : QS.returnFD(ch1.get(inc_val))) > ((my_unit) ? baseCMD.ch1Hi / 10.0 : QS.returnFD(baseCMD.ch1Hi / 10.0))){
                                 limit_temp.setColor(Color.rgb(255,92,51));
                                 limit_temp.setFakeBoldText(true);
+                                m_canvas.drawText(String.format("%.1f",(my_unit) ? ch1.get(inc_val) : QS.returnFD(ch1.get(inc_val)))+Temp_unit, m_current_column, m_current_line, limit_temp);
+
                             }else if(((my_unit) ? ch1.get(inc_val) : QS.returnFD(ch1.get(inc_val))) < ((my_unit) ? baseCMD.ch1Lo / 10.0 : QS.returnFD(baseCMD.ch1Lo / 10.0))){
                                 limit_temp.setColor(Color.rgb(0,82,204));
                                 limit_temp.setFakeBoldText(true);
+                                m_canvas.drawText(String.format("%.1f",(my_unit) ? ch1.get(inc_val) : QS.returnFD(ch1.get(inc_val)))+Temp_unit, m_current_column, m_current_line, limit_temp);
+
                             }else{
-                                limit_temp = m_paint;
+                                m_canvas.drawText(String.format("%.1f",(my_unit) ? ch1.get(inc_val) : QS.returnFD(ch1.get(inc_val)))+Temp_unit, m_current_column, m_current_line, m_paint);
+
                             }
 
 
-                            if (storeKeyService.getDefaults("UNITS", App.getContext()) != null && storeKeyService.getDefaults("UNITS", App.getContext()).equals("1")) {
-                                m_canvas.drawText(String.valueOf(ch1.get(inc_val))+Temp_unit, m_current_column, m_current_line, limit_temp);
-                            } else {
-                                m_canvas.drawText(String.format("%.1f", QS.returnFD(ch1.get(inc_val)))+Temp_unit, m_current_column, m_current_line, limit_temp);
-                            }
                             if (baseCMD.ch2Enable) {
                                 if(ch2.get(inc_val) > baseCMD.ch2Hi / 10.0){
                                     limit_RH.setColor(Color.rgb(255,92,51));
                                     limit_RH.setFakeBoldText(true);
+                                    m_canvas.drawText(String.valueOf(ch2.get(inc_val))+" %", m_current_column, m_current_line + K_cr_line, limit_RH);
                                 }else  if(ch2.get(inc_val) < baseCMD.ch2Lo / 10.0){
                                     limit_RH.setColor(Color.rgb(0,102,255));
                                     limit_RH.setFakeBoldText(true);
+                                    m_canvas.drawText(String.valueOf(ch2.get(inc_val))+" %", m_current_column, m_current_line + K_cr_line, limit_RH);
                                 }else{
-                                    limit_RH = RH_paint;
+                                    m_canvas.drawText(String.valueOf(ch2.get(inc_val))+" %", m_current_column, m_current_line + K_cr_line, RH_paint);
                                 }
 
-                                m_canvas.drawText(String.valueOf(ch2.get(inc_val))+" %", m_current_column, m_current_line + K_cr_line, limit_RH);
+
                             }
                             current_col++;
                             m_current_column += K_column_space;
@@ -616,10 +625,102 @@ public class PDF
                     }
 
                     //============================================//
-                    ;
+
 
                     //============================================//
                 }
+            }else if(simplePDF == 2){
+//                private static  final   int                     K_v2_column_index       =  40;
+//                private static  final   int                     K_v2_column_date        =  70;
+//                private static  final   int                     K_v2_column_time        =  80;
+//                private static  final   int                     K_v2_column             =  60;
+
+                m_current_line = 1000;
+                Inc_Line_and_Check_if_need_new_page();
+                int index = 0;
+                inc_val = 0;
+                String m_date = Convert_UNIX_To_Date(time.get(inc_val));
+                String m_time = Convert_UNIX_To_Time(time.get(inc_val));
+                while (inc_val < mt2Mem_values.Data.size()) {
+                    m_date = Convert_UNIX_To_Date(time.get(inc_val));
+                    m_time = Convert_UNIX_To_Time(time.get(inc_val));
+                    m_paint.setColor(Color.BLACK);
+
+                    m_canvas.drawText(String.valueOf(inc_val+1),m_current_column_v2,m_current_line,m_paint);
+                    m_canvas.drawText(m_date,m_current_column_v2+=K_v2_column_index,m_current_line,m_paint);
+                    m_canvas.drawText(m_time,m_current_column_v2+=K_v2_column_date,m_current_line,m_paint);
+
+                    if(((my_unit) ? ch1.get(inc_val) : QS.returnFD(ch1.get(inc_val))) > ((my_unit) ? baseCMD.ch1Hi / 10.0 : QS.returnFD(baseCMD.ch1Hi / 10.0))){
+                        limit_temp.setColor(Color.rgb(255,92,51));
+                        limit_temp.setFakeBoldText(true);
+                        m_canvas.drawText(String.format("%.1f",(my_unit) ? ch1.get(inc_val) : QS.returnFD(ch1.get(inc_val)))+Temp_unit,m_current_column_v2+=K_v2_column_time,m_current_line,limit_temp);
+                    }else if(((my_unit) ? ch1.get(inc_val) : QS.returnFD(ch1.get(inc_val))) < ((my_unit) ? baseCMD.ch1Lo / 10.0 : QS.returnFD(baseCMD.ch1Lo / 10.0))){
+                        limit_temp.setColor(Color.rgb(0,82,204));
+                        limit_temp.setFakeBoldText(true);
+                        m_canvas.drawText(String.format("%.1f",(my_unit) ? ch1.get(inc_val) : QS.returnFD(ch1.get(inc_val)))+Temp_unit,m_current_column_v2+=K_v2_column_time,m_current_line,limit_temp);
+                    }else{
+                        m_canvas.drawText(String.format("%.1f",(my_unit) ? ch1.get(inc_val) : QS.returnFD(ch1.get(inc_val)))+Temp_unit,m_current_column_v2+=K_v2_column_time,m_current_line,m_paint);
+
+                    }
+
+
+                    if (baseCMD.ch2Enable) {
+                        if(ch2.get(inc_val) > baseCMD.ch2Hi / 10.0){
+                            limit_RH.setColor(Color.rgb(255,92,51));
+                            limit_RH.setFakeBoldText(true);
+                            m_canvas.drawText(String.valueOf(ch2.get(inc_val))+" %",m_current_column_v2+=K_v2_column, m_current_line, limit_RH);
+                        }else  if(ch2.get(inc_val) < baseCMD.ch2Lo / 10.0){
+                            limit_RH.setColor(Color.rgb(0,102,255));
+                            limit_RH.setFakeBoldText(true);
+                            m_canvas.drawText(String.valueOf(ch2.get(inc_val))+" %",m_current_column_v2+=K_v2_column, m_current_line, limit_RH);
+                        }else{
+                            m_canvas.drawText(String.valueOf(ch2.get(inc_val))+" %",m_current_column_v2+=K_v2_column, m_current_line, RH_paint);
+                        }
+                    }
+
+                    m_canvas.drawText("|",K_v2_column_middle,m_current_line,m_paint);
+                    inc_val++;
+
+                    m_date = Convert_UNIX_To_Date(time.get(inc_val));
+                    m_time = Convert_UNIX_To_Time(time.get(inc_val));
+                    m_current_column_v2 = K_v2_column_two;
+                    m_canvas.drawText(String.valueOf(inc_val+1),m_current_column_v2,m_current_line,m_paint);
+                    m_canvas.drawText(m_date,m_current_column_v2+=K_v2_column_index,m_current_line,m_paint);
+                    m_canvas.drawText(m_time,m_current_column_v2+=K_v2_column_date,m_current_line,m_paint);
+
+                    if(((my_unit) ? ch1.get(inc_val) : QS.returnFD(ch1.get(inc_val))) > ((my_unit) ? baseCMD.ch1Hi / 10.0 : QS.returnFD(baseCMD.ch1Hi / 10.0))){
+                        limit_temp.setColor(Color.rgb(255,92,51));
+                        limit_temp.setFakeBoldText(true);
+                        m_canvas.drawText(String.format("%.1f",(my_unit) ? ch1.get(inc_val) : QS.returnFD(ch1.get(inc_val)))+Temp_unit,m_current_column_v2+=K_v2_column_time,m_current_line,limit_temp);
+                    }else if(((my_unit) ? ch1.get(inc_val) : QS.returnFD(ch1.get(inc_val))) < ((my_unit) ? baseCMD.ch1Lo / 10.0 : QS.returnFD(baseCMD.ch1Lo / 10.0))){
+                        limit_temp.setColor(Color.rgb(0,82,204));
+                        limit_temp.setFakeBoldText(true);
+                        m_canvas.drawText(String.format("%.1f",(my_unit) ? ch1.get(inc_val) : QS.returnFD(ch1.get(inc_val)))+Temp_unit,m_current_column_v2+=K_v2_column_time,m_current_line,limit_temp);
+                    }else{
+                        m_canvas.drawText(String.format("%.1f",(my_unit) ? ch1.get(inc_val) : QS.returnFD(ch1.get(inc_val)))+Temp_unit,m_current_column_v2+=K_v2_column_time,m_current_line,m_paint);
+
+                    }
+
+
+                    if (baseCMD.ch2Enable) {
+                        if(ch2.get(inc_val) > baseCMD.ch2Hi / 10.0){
+                            limit_RH.setColor(Color.rgb(255,92,51));
+                            limit_RH.setFakeBoldText(true);
+                            m_canvas.drawText(String.valueOf(ch2.get(inc_val))+" %",m_current_column_v2+=K_v2_column, m_current_line, limit_RH);
+                        }else  if(ch2.get(inc_val) < baseCMD.ch2Lo / 10.0){
+                            limit_RH.setColor(Color.rgb(0,102,255));
+                            limit_RH.setFakeBoldText(true);
+                            m_canvas.drawText(String.valueOf(ch2.get(inc_val))+" %",m_current_column_v2+=K_v2_column, m_current_line, limit_RH);
+                        }else{
+                            m_canvas.drawText(String.valueOf(ch2.get(inc_val))+" %",m_current_column_v2+=K_v2_column, m_current_line, RH_paint);
+                        }
+                    }
+
+                    inc_val++;
+                    Inc_Line_and_Check_if_need_new_page();
+
+                }
+
             }
             //==============//
             Finish_a_Page();
@@ -655,6 +756,7 @@ public class PDF
 
         m_current_line += K_cr_line;
         m_current_column = K_column_temp;
+        m_current_column_v2 = K_column_date+20;
 
 
         if (m_current_line > K_line_max) {
@@ -714,23 +816,28 @@ public class PDF
 
             //printing the header and footer on each page. -- some of them are different for the first page
             m_canvas.drawLine(line_startX, line_startY, line_endX, line_endY, line_paint);
-            m_canvas.drawText(App.getContext().getString(R.string.Temprecord), temprecord_startX, temprecord_startY, line_paint);
+            //m_canvas.drawText(App.getContext().getString(R.string.Temprecord), temprecord_startX, temprecord_startY, line_paint);
             m_canvas.drawText(App.getContext().getString(R.string.Page) + " " + page_num, page_startX, page_startY, m_paint);
             m_canvas.drawText("www.temprecord.com", app_info.siteX, app_info.siteY, m_paint);
-            m_canvas.drawText(sdf.format(new Date()), app_info.dateX, app_info.dateY, m_paint);
+            m_canvas.drawText(QS.UTCtoLocal(new Date().getTime()), app_info.dateX, app_info.dateY, m_paint);
             m_canvas.drawText(App.getContext().getString(R.string.App_version), app_info.versionX, app_info.versionY, m_paint);
+            Drawable d = App.getContext().getResources().getDrawable(R.drawable.temprecord_logo);
+            d.setBounds(250, 15, 450, 50);
+            d.draw(m_canvas);
             if (page_num == 1) {
                 m_canvas.drawText(App.getContext().getString(R.string.Logger_Report), report_startX, report_startY, line_paint);
                 m_canvas.drawText("S/N: "+baseCMD.serialno, 550, serial_startY, line_paint);
             }else{
                 m_canvas.drawText("S/N: "+baseCMD.serialno, serial_startX, serial_startY, line_paint);
                 m_canvas.drawText(App.getContext().getString(R.string.Values_Report), report_startX, report_startY, line_paint);
-                if(baseCMD.ch2Enable)
-                    m_canvas.drawText(App.getContext().getString(R.string.RH), RH_startX, RH_startY, line_paint);
-                if (storeKeyService.getDefaults("UNITS", App.getContext()) != null && storeKeyService.getDefaults("UNITS", App.getContext()).equals("1")) {
-                    m_canvas.drawText(QS.imperial(false), temp_startX, temp_startY, line_paint);
-                }else{
-                    m_canvas.drawText(QS.imperial(true), temp_startX, temp_startY, line_paint);
+                if(simplePDF != 2) {
+                    if (baseCMD.ch2Enable)
+                        m_canvas.drawText(App.getContext().getString(R.string.RH), RH_startX, RH_startY, line_paint);
+                    if (storeKeyService.getDefaults("UNITS", App.getContext()) != null && storeKeyService.getDefaults("UNITS", App.getContext()).equals("1")) {
+                        m_canvas.drawText(QS.imperial(false), temp_startX, temp_startY, line_paint);
+                    } else {
+                        m_canvas.drawText(QS.imperial(true), temp_startX, temp_startY, line_paint);
+                    }
                 }
             }
 
@@ -743,7 +850,7 @@ public class PDF
     //==========================================================//
     //</editor-fold>
     //getting data in to the class before creating the PDF
-    public void getData(MT2Values.MT2Mem_values mt2Mem_values, BaseCMD baseCMD, boolean simplePDF, ArrayList<String> Q_data, ArrayList<String> U_data, ArrayList<String> F_data, ArrayList<String> R_data){
+    public void getData(MT2Values.MT2Mem_values mt2Mem_values, BaseCMD baseCMD, int simplePDF, ArrayList<String> Q_data, ArrayList<String> U_data, ArrayList<String> F_data, ArrayList<String> R_data){
         this.mt2Mem_values = mt2Mem_values;
         this.baseCMD = baseCMD;
         this.simplePDF = simplePDF;

@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -47,6 +48,7 @@ import com.example.yasiruw.temprecord.utils.Screenshot;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 public class USBQueryFragment extends Fragment {
@@ -142,6 +144,8 @@ public class USBQueryFragment extends Fragment {
     private int firsttime = 0;
     private boolean soundon = true;
     StoreKeyService storeKeyService;
+
+    ProgressTask task = new ProgressTask();
 
     private Handler handler1 =new Handler();
     Thread t = new Thread();
@@ -327,7 +331,7 @@ public class USBQueryFragment extends Fragment {
 
         mConnectionState.setText(getString(R.string.USB_Connected));
 
-        progressDialoge();
+        showProgress();
         //ScrollListener();
         //queryScroll.getViewTreeObserver().addOnScrollChangedListener(new BLEQueryFragment.ScrollPositionObserver());
 
@@ -356,7 +360,8 @@ public class USBQueryFragment extends Fragment {
                 usbFragmentI.onUSBWrite(HexData.BLE_ACK);
                 message = "1";
                 state = 1;
-                progressDialoge();
+                task = new ProgressTask();
+                showProgress();
                 return true;
             case R.id.action_start:
                 if(baseCMD.state == 2) {
@@ -364,7 +369,8 @@ public class USBQueryFragment extends Fragment {
                     usbFragmentI.onUSBWrite(HexData.BLE_ACK);
                     message = "2";
                     state = 1;
-                    progressDialoge();
+                    task = new ProgressTask();
+                    showProgress();
                 }else{
                     Toast.makeText(getActivity(), getString(R.string.Not_Available_in_Current_State), Toast.LENGTH_SHORT).show();
                 }
@@ -375,7 +381,8 @@ public class USBQueryFragment extends Fragment {
                     usbFragmentI.onUSBWrite(HexData.BLE_ACK);
                     message = "3";
                     state = 1;
-                    progressDialoge();
+                    task = new ProgressTask();
+                    showProgress();
                 }else{
                     Toast.makeText(getActivity(), getString(R.string.Not_Available_in_Current_State), Toast.LENGTH_SHORT).show();
                 }
@@ -386,7 +393,8 @@ public class USBQueryFragment extends Fragment {
                     usbFragmentI.onUSBWrite(HexData.BLE_ACK);
                     message = "4";
                     state = 1;
-                    progressDialoge();
+                    task = new ProgressTask();
+                    showProgress();
                 }else{
                     Toast.makeText(getActivity(), getString(R.string.Not_Available_in_Current_State), Toast.LENGTH_SHORT).show();
                 }
@@ -397,7 +405,8 @@ public class USBQueryFragment extends Fragment {
                     usbFragmentI.onUSBWrite(HexData.BLE_ACK);
                     message = "5";
                     state = 1;
-                    progressDialoge();
+                    task = new ProgressTask();
+                    showProgress();
                 }else{
                     Toast.makeText(getActivity(), getString(R.string.Not_Available_in_Current_State), Toast.LENGTH_SHORT).show();
                 }
@@ -446,16 +455,10 @@ public class USBQueryFragment extends Fragment {
                             usbFragmentI.onUSBWrite(HexData.START_USB);
                             state = 2;
                         } else if (message.equals("3")) {
-                            if(baseCMD.passwordEnabled)
-                                promtPassword(3);
-                            else
-                                usbFragmentI.onUSBWrite(HexData.STOP_USB);
+                            usbFragmentI.onUSBWrite(HexData.STOP_USB);
                             state = 3;
                         } else if (message.equals("4")) {
-                            if(baseCMD.passwordEnabled)
-                                promtPassword(4);
-                            else
-                                usbFragmentI.onUSBWrite(HexData.REUSE_USB);
+                            usbFragmentI.onUSBWrite(HexData.REUSE_USB);
                             state = 4;
                         } else if (message.equals("5")) {
                             usbFragmentI.onUSBWrite(HexData.TAG_USB);
@@ -470,9 +473,16 @@ public class USBQueryFragment extends Fragment {
                         }
                         break;
                     case 1:
-
+                        if(baseCMD.passwordEnabled) {
+                            if (message.equals("3")) {
+                                promtPassword(3);
+                            } else if (message.equals("4")) {
+                                promtPassword(4);
+                            }
+                        }else
+                            usbFragmentI.onUSBWrite(HexData.QUARY_USB);
                         state = 0;
-                        usbFragmentI.onUSBWrite(HexData.QUARY_USB);
+
                         //firsttime = 0;
                         break;
                     case 2:
@@ -679,7 +689,7 @@ public class USBQueryFragment extends Fragment {
                             SetUI();
                          //   hexData.BytetoHex(ExtraRead);
                             progresspercentage = 100;
-                            progress.cancel();
+                            stopProgress();
                         }
                         usbFragmentI.onUSBWrite(commsSerial.WriteUSBByte(mt2Msg_read.Read_into_writeByte(false)));
                         break;
@@ -700,6 +710,7 @@ public class USBQueryFragment extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void SetUI(){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd  hh:mm:ss aa");
+        //Log.i("TIME", " " + TimeZone.getDefault().getDisplayName() + "____" + sdf.getTimeZone().getDisplayName());
         serialno.setText(Q_data.get(0));
         firmware.setText(Q_data.get(1));
         model.setText(QS.GetGeneration(Integer.parseInt(Q_data.get(2))));
@@ -718,7 +729,7 @@ public class USBQueryFragment extends Fragment {
         }
         currenthumidity.setText(R_data.get(13) + " %");
 
-        manudate.setText(sdf.format(baseCMD.dmanu));
+        manudate.setText(QS.UTCtoLocal(baseCMD.dmanu.getTime()));
         memory.setText(F_data.get(1));
         startondatetime.setText(R_data.get(0));
         startwithbutton.setText(R_data.get(1));
@@ -743,16 +754,16 @@ public class USBQueryFragment extends Fragment {
             st_by.setVisibility(View.VISIBLE);
             sp_at.setVisibility(View.GONE);
             sp_by.setVisibility(View.GONE);
-            startedat.setText(sdf.format(baseCMD.dstart));
+            startedat.setText(QS.UTCtoLocal(baseCMD.dstart.getTime()));
             startedby.setText(R_data.get(2));
         }else if(baseCMD.state == 5){
             st_at.setVisibility(View.VISIBLE);
             st_by.setVisibility(View.VISIBLE);
             sp_at.setVisibility(View.VISIBLE);
             sp_by.setVisibility(View.VISIBLE);
-            startedat.setText(sdf.format(baseCMD.dstart));
+            startedat.setText(QS.UTCtoLocal(baseCMD.dstart.getTime()));
             startedby.setText(R_data.get(2));
-            stoppedat.setText(sdf.format(baseCMD.dstop));
+            stoppedat.setText(QS.UTCtoLocal(baseCMD.dstop.getTime()));
             stoppedby.setText(R_data.get(4));
         }else{
             st_at.setVisibility(View.GONE);
@@ -795,8 +806,8 @@ public class USBQueryFragment extends Fragment {
         units.setText(QS.imperial(baseCMD.ImperialUnit));
 
 
-        String currentDateandTime = sdf.format(new Date());
-        time.setText(currentDateandTime);
+
+        time.setText(QS.UTCtoLocal(new Date().getTime()));
 
         ch1alarmdelay.setText( R_data.get(12)+getString(R.string.Samples));
         ch2alarmdelay.setText( R_data.get(16)+getString(R.string.Samples));
@@ -819,42 +830,6 @@ public class USBQueryFragment extends Fragment {
 
     }
 
-    public void progressDialoge(){
-
-        progress=new ProgressDialog(getActivity());
-        progress.setMessage(getString(R.string.QueryingLogger));
-        progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progress.setIndeterminate(false);
-        progress.setProgress(0);
-        progress.setCancelable(false);
-        progress.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.Abort), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-//                sendData(hexData.BLE_ACK);
-//                state = 7;
-
-                if(family.getText().toString() == "")
-                    BuildDialogue(getString(R.string.QueryAborted), getString(R.string.Go_back_and_reconnect), 1);
-                dialog.dismiss();
-            }
-        });
-        progress.setProgressNumberFormat("");
-        progress.setMax(PROGRESSBAR_MAX);
-        progress.show();
-
-
-        final Thread t = new Thread() {
-            @Override
-            public void run() {
-                int jumpTime = 0;
-
-                while(progresspercentage < PROGRESSBAR_MAX) {
-                    progress.setProgress(progresspercentage);
-                }
-            }
-        };
-        t.start();
-    }
 
     private void BuildDialogue(String str1, String str2, final int press){
         AlertDialog.Builder builder;
@@ -930,12 +905,19 @@ public class USBQueryFragment extends Fragment {
                                 // get user input and set it to result
                                 // edit text
                                 //this is where the command is sent
-                                usbFragmentI.onUSBWrite(commsSerial.WriteUSBByte(baseCMD.WritePassword()));
-                                if(command == 3){
-                                    usbFragmentI.onUSBWrite(HexData.STOP_USB);
-                                }else if(command == 4){
-                                    usbFragmentI.onUSBWrite(HexData.REUSE_USB);
-                                }
+                                //
+                                BytetoHex(baseCMD.password);
+                                BytetoHex(QS.md5(userInput.getText().toString()));
+                                //Log.i("PASS", QS.compareByte(baseCMD.password,QS.md5(userInput.getText().toString())) + "============================================== " + userInput.getText().toString()+ " " + state + " " + command);
+                                //if(QS.compareByte(baseCMD.password,QS.md5(userInput.getText().toString()))) {
+                                    usbFragmentI.onUSBWrite(commsSerial.WriteUSBByte(baseCMD.WritePassword(userInput.getText().toString())));
+//                                    if (command == 3) {
+//                                        usbFragmentI.onUSBWrite(HexData.STOP_USB);
+//                                    } else if (command == 4) {
+//                                        usbFragmentI.onUSBWrite(HexData.REUSE_USB);
+//                                    }
+                                //}
+
                                 //bleFragmentI.onBLERead();
                                 dialog.cancel();
                             }
@@ -953,6 +935,85 @@ public class USBQueryFragment extends Fragment {
         // show it
         alertDialog.show();
     }
+
+    public void BytetoHex(byte[] b){
+        StringBuilder sb = new StringBuilder();
+        for (byte b1 : b){
+            sb.append(String.format("%02X ", b1));
+
+        }
+        //Log.d("PASS", sb.toString());
+    }
+
+    private class ProgressTask extends AsyncTask<Integer,Integer,Void> {
+
+        protected void onPreExecute() {
+            super.onPreExecute(); ///////???????
+
+            progress=new ProgressDialog(getActivity());
+            progress.setMessage(getString(R.string.ReadLogger));
+            progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            progress.setIndeterminate(false);
+            progress.setProgress(0);
+            progress.setCancelable(false);
+            progress.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.Abort), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    usbFragmentI.onUSBWrite(HexData.BLE_ACK);
+                    state =29;
+                    BuildDialogue(getString(R.string.ReadAbort), getString(R.string.Go_back_and_reconnect),1);
+                    stopProgress();
+                    //dialog.dismiss();
+                }
+            });
+            progress.setProgressNumberFormat("");
+            progress.setMax(PROGRESSBAR_MAX);
+            progress.show();
+        }
+        protected void onCancelled() {
+            stopProgress();
+            progress.dismiss();
+
+        }
+        protected Void doInBackground(Integer... params) {
+
+            while(progresspercentage < PROGRESSBAR_MAX) {
+                try {
+                    Thread.sleep(90);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                progress.setProgress(progresspercentage);
+            }
+            return null;
+        }
+        protected void onProgressUpdate(Integer... values) {
+
+
+        }
+        protected void onPostExecute(Void result) {
+            progresspercentage = 0;
+            progress.dismiss();
+            // async task finished
+
+        }
+
+    }
+
+    public void showProgress() {
+        ////////////////////task = new ProgressTask();
+        // start progress bar with initial progress 10
+        ///////////////////task.execute(10,5,null);
+        progresspercentage = 0;
+        task.execute(0);
+
+    }
+
+    public void stopProgress() {
+        progress.dismiss();
+        task.cancel(true);
+    }
+
 
 
 

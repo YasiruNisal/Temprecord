@@ -2,15 +2,21 @@ package com.example.yasiruw.temprecord.comms;
 
 
 import android.content.res.Resources;
+import android.text.format.Time;
 import android.util.Log;
 
 import com.example.yasiruw.temprecord.App;
 import com.example.yasiruw.temprecord.R;
+import com.example.yasiruw.temprecord.activities.MainActivity;
 import com.example.yasiruw.temprecord.utils.CommsChar;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
@@ -36,27 +42,74 @@ public class QueryStrings {
     /// <summary>The degrees C to Kelvin constant</summary>
     public static final double KELVIN = 273.15;
     /// <summary>Mon-T2 product string to add in front of model string</summary>
-    public static final String MT2STRING = "MonT2 ";
+    public static final String MT2STRING = "MonT-2";
     /// <summary>Factory/Unallocated serial number prefix for Mon-T2</summary>
     public static final String LABPrefix = "XX";
     /// <summary>Factory/Unallocated/Unconfigured variant of the Mon-T2</summary>
     public static final byte LABVariant = 0;
 
+    /// <summary> Mon-T2 Unknown/Unprogrammed device</summary>
+    static final int  MT2_UNKNOWN = 0,
+    /// <summary> Mon-T2 Plain</summary>
+    MT2_95MPSYK = 1,
+    /// <summary> Mon-T2 USB</summary>
+    MT2_95MUSYK = 2,
+    /// <summary> Mon-T2 USB RH</summary>
+    MT2_95MRSYK = 3,
+    /// <summary> Mon-T2 LCD</summary>
+    MT2_95MPDYK = 4,
+    /// <summary> Mon-T2 LCD USB</summary>
+    MT2_95MUDYK = 5,
+    /// <summary> Mon-T2 LCD USB RH</summary>
+    MT2_95MRDYK = 6,
+    /// <summary> Mon-T2 PDF</summary>
+    MT2_95MUPYK = 7,
+    /// <summary> Mon-T2 PDF RH</summary>
+    MT2_95MRPYK = 8,
+    /// <summary> Mon-T2 LCD PDF</summary>
+    MT2_95MUUYK = 9,
+    /// <summary> Mon-T2 LCD PDF RH</summary>
+    MT2_95MRUYK = 10;
+
+    TimeZone timeZone;
+    static TimeZone entrytimeZone;
+
     public String GetGeneration(int str){
         String Generation = "";
         if(str == 5){
-            Generation =  "G5";
+            Generation =  "MonT-2";
         }
         return Generation;
     }
 
-    public String GetType(int str){
+    public String GetType(int model){
         String Type = "";
-        if(str == 1){
-            Type = "MonT-2";
+        switch (model)
+        {
+            case MT2_95MPSYK:
+                return MT2STRING + " Plain";
+            case MT2_95MUSYK:
+                return MT2STRING + " Plain USB";
+            case MT2_95MRSYK:
+                return MT2STRING + " Plain RH USB";
+            case MT2_95MPDYK:
+                return MT2STRING + " LCD";
+            case MT2_95MUDYK:
+                return MT2STRING + " LCD USB";
+            case MT2_95MRDYK:
+                return MT2STRING + " LCD RH USB";
+            case MT2_95MUPYK:
+                return MT2STRING + " PDF";
+            case MT2_95MRPYK:
+                return MT2STRING + " RH PDF";
+            case MT2_95MUUYK:
+                return MT2STRING + " LCD PDF";
+            case MT2_95MRUYK:
+                return MT2STRING + " LCD RH PDF";
+            case MT2_UNKNOWN:
+            default:
+                return "Unknown";
         }
-
-        return Type;
     }
 
     public String GetState(int str){
@@ -183,26 +236,84 @@ public class QueryStrings {
         return fahrenheit;
     }
 
+    public void set_default_timeZone(TimeZone timeZone){
+        this.timeZone = timeZone;
+    }
+
+    public String UTCtoLocal(long now){
+//        long now = 1486624863;
+        //UTCtoLocalConvert();
+        Date date = new java.util.Date(now);
+        SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd hh:mm:ss aa");
+        sdf.setTimeZone(App.getInit_TimeZone());
+        String formattedDate = sdf.format(date);
+
+
+        return formattedDate;
+    }
+
+    public String UTCtoLocalParameters(long now){
+//        long now = 1486624863;
+        //UTCtoLocalConvert();
+        Date date = new java.util.Date(now);
+        SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm");
+        sdf.setTimeZone(App.getInit_TimeZone());
+        String formattedDate = sdf.format(date);
+
+
+        return formattedDate;
+    }
+
+    public void UTCtoLocalConvert(){
+        TimeZone.setDefault(App.getInit_TimeZone());
+    }
+
+    public void LocaltoUTC(){
+        TimeZone entrytimeZone = TimeZone.getDefault();
+
+        Calendar cal = Calendar.getInstance();
+        TimeZone utcZone = TimeZone.getTimeZone("UTC");
+        TimeZone.setDefault(utcZone);
+
+
+       // Log.i("TIME", cal.getTime()+"");
+
+
+//        utcZone = entrytimeZone;
+//        TimeZone.setDefault(utcZone);
+//
+//        cal = Calendar.getInstance();
+//
+//        Log.i("TIME", cal.getTime()+"");
+    }
+
 
 
     public String[] StringDatetoInt(String string){
         String[] parts = string.split(":|\\/|\\ ");
-        Log.i(TAG, parts.length + " " + parts[0] + "=============================");
+        //Log.i(TAG, parts.length + " " + parts[0] + "=============================");
         return parts;
     }
 
     public static Calendar toCalendar(Date date){
+//        TimeZone utcZone = TimeZone.getTimeZone("UTC");
+////        TimeZone.setDefault(utcZone);
+        Calendar cal = Calendar.getInstance();
         TimeZone utcZone = TimeZone.getTimeZone("UTC");
         TimeZone.setDefault(utcZone);
-        Calendar cal = Calendar.getInstance();
+
         cal.setTime(date);
+
+        //
+
         return cal;
     }
 
-    public Date getDatefromString(String date){
+    public Date getDatefromString(String date){//used for start and stop in date time button in parameters
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        sdf.setTimeZone(App.getInit_TimeZone());
+
 
 
         Date d = null;
@@ -240,6 +351,40 @@ public class QueryStrings {
         return df.format(today);
     }
 
+    public boolean compareByte(byte[] one, byte[] two){
+        if (Arrays.equals(one, two))
+        {
+            return true;
+        }else{
+            return false;
+        }
+
+    }
+
+    public byte[] md5(String s) {
+        byte[] reply = {0X00, 0X00,0X00,0X00,0X00,0X00,0X00,0X00};
+        if(s != null) {
+            try {
+                // Create MD5 Hash
+                MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
+                byte[] byteOfTextToHash = s.getBytes(StandardCharsets.UTF_16LE);
+                byte messageDigest[] = digest.digest(byteOfTextToHash);
+                // Create Hex String
+                for(int i = 0 ; i < 8; i++){
+                    reply[i] = messageDigest[i+4];
+                }
+                return reply;
+                //BytetoHex(messageDigest);
+                //System.out.print(hexString.toString());
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            }
+        }else{
+
+            return reply;
+        }
+        return reply;
+    }
 
 
 

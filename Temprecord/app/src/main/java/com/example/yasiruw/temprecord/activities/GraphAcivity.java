@@ -29,7 +29,7 @@ public class GraphAcivity extends Activity {
 
         intent = getIntent();
         json_structure = intent.getStringExtra("VALUE");
-        Log.i("GRAPHACTIVITY", json_structure);
+        //Log.i("GRAPHACTIVITY", json_structure);
         Graphbig = findViewById(R.id.biggraph);
         plotGraphbig(2);
 

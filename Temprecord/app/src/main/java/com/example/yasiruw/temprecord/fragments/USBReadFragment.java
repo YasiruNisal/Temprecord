@@ -16,11 +16,13 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.os.SystemClock;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -62,6 +64,8 @@ import com.example.yasiruw.temprecord.utils.HexData;
 import com.example.yasiruw.temprecord.utils.Screenshot;
 import com.github.mikephil.charting.charts.LineChart;
 
+import org.w3c.dom.Text;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.text.ParseException;
@@ -70,8 +74,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import static android.content.ContentValues.TAG;
+import static com.example.yasiruw.temprecord.CustomLibraries.Yo_Library.Update_UI;
 
 public class USBReadFragment extends Fragment {
 
@@ -188,7 +194,7 @@ public class USBReadFragment extends Fragment {
 
     private String BLE_Address = "";
 
-
+    ProgressTask task;
 
     HexData hexData = new HexData();
     BaseCMD baseCMD =  new BaseCMD();
@@ -389,9 +395,10 @@ public class USBReadFragment extends Fragment {
 
 
         mConnectionState.setText(getString(R.string.USB_Connected));
-        progressDialoge();
-
+        task = new ProgressTask();
+        showProgress();
         usbFragmentI.onUSBWrite(HexData.QUARY_USB);
+
 
         Graph1 = (WebView) view.findViewById(R.id.graphone);
 
@@ -405,6 +412,7 @@ public class USBReadFragment extends Fragment {
         super.onCreateOptionsMenu(menu,inflater);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
@@ -412,38 +420,78 @@ public class USBReadFragment extends Fragment {
                 //sendEmail();
                 new Screenshot(scrollView,baseCMD,getActivity()).print();
                 return true;
-            case R.id.simplePDF:
-                PDF pdf = new PDF();
-                pdf.getData(mt2Mem_values, baseCMD, true, Q_data, U_data, F_data, R_data);
-                pdf.Create_Report(App.getContext());
-                pdf.Open_PDF_in_Chrome(App.getContext());
-                return true;
-            case R.id.fullPDF:
-                PDF pdf1 = new PDF();
-                pdf1.getData(mt2Mem_values, baseCMD, false, Q_data, U_data, F_data, R_data);
-                pdf1.Create_Report(App.getContext());
-                pdf1.Open_PDF_in_Chrome(App.getContext());
+            case R.id.menu_pdf:
+                final Dialog dialog = new Dialog(getContext());
+                dialog.setContentView(R.layout.pdf_dialog);
+                dialog.setTitle(getString(R.string.pdf_options));
+                ImageButton simplepdf = (ImageButton) dialog.findViewById(R.id.simplepdf);
+                ImageButton pdfv1button = (ImageButton) dialog.findViewById(R.id.pdfv1);
+                ImageButton pdfv2button = (ImageButton) dialog.findViewById(R.id.pdfv2);
+                TextView simplepdf_text = dialog.findViewById(R.id.simplepdf_text);
+                TextView fullpdf_v1_text = dialog.findViewById(R.id.fullpdf_v1_text);
+                TextView fullpdf_v2_text = dialog.findViewById(R.id.fullpdf_v2_text);
+                simplepdf_text.setText(getString(R.string.simplePDF) + PDF_pages(0));
+                fullpdf_v1_text.setText(getString(R.string.fullPDFV1) + PDF_pages(1));
+                fullpdf_v2_text.setText(getString(R.string.fullPDFV2) + PDF_pages(2));
+                // if button is clicked, close the custom dialog
+                simplepdf.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getActivity(),getString(R.string.PDF_gen), Toast.LENGTH_SHORT).show();
+                        PDF pdf = new PDF();
+                        pdf.getData(mt2Mem_values, baseCMD, 0, Q_data, U_data, F_data, R_data);
+                        pdf.Create_Report(App.getContext());
+                        pdf.Open_PDF_in_Chrome(App.getContext());
+                        dialog.dismiss();
+                    }
+                });
+                pdfv1button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getActivity(),getString(R.string.PDF_gen), Toast.LENGTH_SHORT).show();
+                        PDF pdf1 = new PDF();
+                        pdf1.getData(mt2Mem_values, baseCMD, 1, Q_data, U_data, F_data, R_data);
+                        pdf1.Create_Report(App.getContext());
+                        pdf1.Open_PDF_in_Chrome(App.getContext());
+                        dialog.dismiss();
+                    }
+                });
+                pdfv2button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getActivity(),getString(R.string.PDF_gen), Toast.LENGTH_SHORT).show();
+                        PDF pdf3 = new PDF();
+                        pdf3.getData(mt2Mem_values, baseCMD, 2, Q_data, U_data, F_data, R_data);
+                        pdf3.Create_Report(App.getContext());
+                        pdf3.Open_PDF_in_Chrome(App.getContext());
+                        dialog.dismiss();
+                    }
+                });
+
+                dialog.show();
                 return true;
             default:
                 return false;
         }
     }
 
+
     public void CommsI(final byte[] in){
 
-
-        Runnable runnableCode = new Runnable() {
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-            @Override
-            public void run() {
+//        if (storeKeyService.getDefaults("SOUND", getActivity().getApplication()) != null && storeKeyService.getDefaults("SOUND", getActivity().getApplication()).equals("1"))
+//            soundon = true;
+//        else
+//            soundon = false;
+//        Runnable runnableCode = new Runnable() {
+//            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+//            @Override
+//            public void run() {
                 byte[] query;
 
-                if (storeKeyService.getDefaults("SOUND", getActivity().getApplication()) != null && storeKeyService.getDefaults("SOUND", getActivity().getApplication()).equals("1"))
-                    soundon = true;
-                else
-                    soundon = false;
+
 
                 progresspercentage++;
+
                 switch (state) {
                     case 0:
 
@@ -459,7 +507,7 @@ public class USBReadFragment extends Fragment {
                         break;
                     case 1:
                         if(frommenu){
-                            progressDialoge();
+
                             progresspercentage = 0;
                         }
                         //enters here first
@@ -507,6 +555,7 @@ public class USBReadFragment extends Fragment {
                     case 11://next 24 bytes are read and appened to the TWFlassh byte array. Then moving on to reading user flash
                         if(mt2Msg_read.write_into_readByte(commsSerial.ReadUSBByte(in))){
                             state = 12;
+
                             System.arraycopy(mt2Msg_read.memoryData, 0, TWFlash, 120, 24);
                             hexData.BytetoHex(TWFlash);
                             F_data = baseCMD.CMDFlash(TWFlash);
@@ -524,6 +573,7 @@ public class USBReadFragment extends Fragment {
                         if(mt2Msg_read.write_into_readByte(commsSerial.ReadUSBByte(in))) {
                             state = 14;
                             System.arraycopy(mt2Msg_read.memoryData, 0, UserRead, 0, 250);
+
                             //hexData.BytetoHex(TWFlash);
                         }
                         usbFragmentI.onUSBWrite(commsSerial.WriteUSBByte(mt2Msg_read.Read_into_writeByte(false)));
@@ -540,6 +590,8 @@ public class USBReadFragment extends Fragment {
                             hexData.BytetoHex(RamRead);
                             R_data = baseCMD.CMDRamRead(RamRead);
                             state = 16;
+
+
                         }
                         usbFragmentI.onUSBWrite(commsSerial.WriteUSBByte(mt2Msg_read.Read_into_writeByte(false)));
                         break;
@@ -551,7 +603,9 @@ public class USBReadFragment extends Fragment {
                     case 17:
                         if(mt2Msg_read.write_into_readByte(commsSerial.ReadUSBByte(in))) {
                             state = 18;
+
                             System.arraycopy(mt2Msg_read.memoryData, 0, UserRead, 250, 250);
+
                             //hexData.BytetoHex(TWFlash);
                         }
                         usbFragmentI.onUSBWrite(commsSerial.WriteUSBByte(mt2Msg_read.Read_into_writeByte(false)));
@@ -568,6 +622,7 @@ public class USBReadFragment extends Fragment {
                             System.arraycopy(mt2Msg_read.memoryData, 0, UserRead, 500, 12);
                             hexData.BytetoHex(UserRead);
                             U_data = baseCMD.CMDUserRead(UserRead);
+
                             /// SetUI();
                         }
                         usbFragmentI.onUSBWrite(commsSerial.WriteUSBByte(mt2Msg_read.Read_into_writeByte(false)));
@@ -608,12 +663,12 @@ public class USBReadFragment extends Fragment {
                             }else
                                 SetUI();
                             progresspercentage = 100;
-                            progress.cancel();
+
                             usbFragmentI.onUSBWrite(HexData.BLE_ACK);
                             state = 29;
                         }else {
 
-                            if(baseCMD.LoopOverwrite && !baseCMD.isLoopOverwriteOverFlow){
+                            if(baseCMD.LoopOverwrite && !baseCMD.isLoopOverwriteOverFlow){//if loop overwrite is enabled
                                 state = 26;
                                 totalToRead = baseCMD.MemorySizeMax*2;
                                 bytePointer = baseCMD.SamplePointer *2;
@@ -629,21 +684,31 @@ public class USBReadFragment extends Fragment {
                             usbFragmentI.onUSBWrite(commsSerial.WriteUSBByte(mt2Msg_read.Read_into_writeByte(true)));
                         }
                         break;
-                    case 25://
-                        if (mt2Msg_read.write_into_readByte(commsSerial.ReadUSBByte(in))) {
+                    case 25://normal read
+                        if (mt2Msg_read.write_into_readByte(commsSerial.ReadUSBByte(in)))
+                        {
                             state = 29;
                             byte[] ValueRead = new byte[mt2Msg_read.memoryData.length];
                             System.arraycopy(mt2Msg_read.memoryData, 0, ValueRead, 0, mt2Msg_read.memoryData.length);
                             MT2ValueIn(ValueRead);
-                            plotGraph1(1);
-                            if(!(baseCMD.state == 4 || baseCMD.state == 5)){
+                            plotGraph1(1);//plots the graph
+                            if(!(baseCMD.state == 4 || baseCMD.state == 5))
+                            {
                                 //BuildDialogue("No Data","Logger is not in running or stop state to display data", 1);
-                            }else
-                                SetUI();
-                            progresspercentage = 100;
-                            progress.cancel();
+                            }
+                            else
+                            {
+                                SetUI();//fill ui elements
+                                progresspercentage = 100;
+                                stopProgress();
+                            }
+                            state = 29;
+                            //Log.i("SPEED", "Stop READ");
+
                         }
+                       // Log.i("SPEED", "in state 25");
                         usbFragmentI.onUSBWrite(commsSerial.WriteUSBByte(mt2Msg_read.Read_into_writeByte(false)));
+                        //Update_UI(App.getContext(), null, "HID_USB_Message_Received", ValueRead, null);
                         break;
                     case 26:
                         if (mt2Msg_read.write_into_readByte(commsSerial.ReadUSBByte(in))) {
@@ -677,7 +742,7 @@ public class USBReadFragment extends Fragment {
                             }else
                                 SetUI();
                             progresspercentage = 100;
-                            progress.cancel();
+                            stopProgress();
                         }
 
                         usbFragmentI.onUSBWrite(commsSerial.WriteUSBByte(mt2Msg_read.Read_into_writeByte(false)));
@@ -689,8 +754,8 @@ public class USBReadFragment extends Fragment {
 
                 }
             }
-        };handler1.postDelayed(runnableCode,1);
-    }
+        //};handler1.postDelayed(runnableCode,1);
+    //}
 
 
     public void plotGraph1(int viewtype){
@@ -713,10 +778,10 @@ public class USBReadFragment extends Fragment {
 
     public void logLargeString(String str) {
         if(str.length() > 3000) {
-            Log.i(TAG, str.substring(0, 3000));
+            //Log.i(TAG, str.substring(0, 3000));
             logLargeString(str.substring(3000));
         } else {
-            Log.i(TAG, str); // continuation
+            //Log.i(TAG, str); // continuation
         }
     }
 
@@ -725,7 +790,7 @@ public class USBReadFragment extends Fragment {
     @JavascriptInterface
     public String getData() {
         String jobj = json_data.CreateObject();
-        Log.i("GRAPH", jobj);
+        //Log.i("GRAPH", jobj);
         return jobj;
        // return json_data.CreateObject();
     }
@@ -733,13 +798,12 @@ public class USBReadFragment extends Fragment {
 
 
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+
     public void SetUI(){
         serialno.setText(Q_data.get(0));
         //firmware.setText(Q_data.get(1));
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd  hh:mm:ss aa");
-        String currentDateandTime = sdf.format(new Date());
-        time.setText(currentDateandTime);
+        time.setText(QS.UTCtoLocal(new Date().getTime()));
 
         if(Double.parseDouble(Q_data.get(6)) > 66){
             bat.setBackgroundResource(R.drawable.bfull);
@@ -768,10 +832,10 @@ public class USBReadFragment extends Fragment {
             TotalLoggedTime.setText(QS.Period((int) mt2Mem_values.LoggedTripDuration * 1000));
             LoggedSamples.setText(mt2Mem_values.Data.size() + "");
             LoggedTags.setText(mt2Mem_values.TagCount() + "");
-            FirstSample.setText(sdf.format(mt2Mem_values.Data.get(0).valTime));
-            FirstLoggedSample.setText(sdf.format(mt2Mem_values.Data.get(0).valTime));
-            LastSample.setText(sdf.format(mt2Mem_values.Data.get(mt2Mem_values.Data.size() - 1).valTime));
-            LastLoggedSample.setText(sdf.format(mt2Mem_values.Data.get(mt2Mem_values.Data.size() - 1).valTime));
+            FirstSample.setText(QS.UTCtoLocal(mt2Mem_values.Data.get(0).valTime.getTime()));
+            FirstLoggedSample.setText(QS.UTCtoLocal(mt2Mem_values.Data.get(0).valTime.getTime()));
+            LastSample.setText(QS.UTCtoLocal(mt2Mem_values.Data.get(mt2Mem_values.Data.size() - 1).valTime.getTime()));
+            LastLoggedSample.setText(QS.UTCtoLocal(mt2Mem_values.Data.get(mt2Mem_values.Data.size() - 1).valTime.getTime()));
         }
 
 
@@ -782,18 +846,18 @@ public class USBReadFragment extends Fragment {
                 lowerLimit1.setText(baseCMD.ch1Lo / 10.0 + " °C");
                 mkt.setText(String.format("%.1f", mt2Mem_values.ch0Stats.MKTValue) + " °C");
                 mean1.setText(String.format("%.1f", mt2Mem_values.ch0Stats.Mean) + " °C");
-                String max1time = sdf.format(mt2Mem_values.Data.get(mt2Mem_values.ch0Stats.Max.Number - 1).valTime);
+                String max1time = QS.UTCtoLocal(mt2Mem_values.Data.get(mt2Mem_values.ch0Stats.Max.Number - 1).valTime.getTime());
                 max1.setText(mt2Mem_values.ch0Stats.Max.Value / 10.0 + " °C\n" + max1time);
-                String min1time = sdf.format(mt2Mem_values.Data.get(mt2Mem_values.ch0Stats.Min.Number - 1).valTime);
+                String min1time = QS.UTCtoLocal(mt2Mem_values.Data.get(mt2Mem_values.ch0Stats.Min.Number - 1).valTime.getTime());
                 min1.setText(mt2Mem_values.ch0Stats.Min.Value / 10.0 + " °C\n" + min1time);
             }else{
                 upperLimit1.setText(QS.returnFD(baseCMD.ch1Hi / 10.0) + " °F");
                 lowerLimit1.setText(QS.returnFD(baseCMD.ch1Lo / 10.0) + " °F");
                 mkt.setText(QS.returnF(String.format("%.1f", mt2Mem_values.ch0Stats.MKTValue)) + " °F");
                 mean1.setText(QS.returnF(String.format("%.1f", mt2Mem_values.ch0Stats.Mean)) + " °F");
-                String max1time = sdf.format(mt2Mem_values.Data.get(mt2Mem_values.ch0Stats.Max.Number - 1).valTime);
+                String max1time = QS.UTCtoLocal(mt2Mem_values.Data.get(mt2Mem_values.ch0Stats.Max.Number - 1).valTime.getTime());
                 max1.setText(QS.returnFD(mt2Mem_values.ch0Stats.Max.Value / 10.0) + " °F\n" + max1time);
-                String min1time = sdf.format(mt2Mem_values.Data.get(mt2Mem_values.ch0Stats.Min.Number - 1).valTime);
+                String min1time = QS.UTCtoLocal(mt2Mem_values.Data.get(mt2Mem_values.ch0Stats.Min.Number - 1).valTime.getTime());
                 min1.setText(QS.returnFD(mt2Mem_values.ch0Stats.Min.Value / 10.0) + " °F\n" + min1time);
             }
 
@@ -820,9 +884,9 @@ public class USBReadFragment extends Fragment {
             lowerLimit2.setText(baseCMD.ch2Lo / 10.0 + "");
 
             mean2.setText(String.format("%.1f", mt2Mem_values.ch1Stats.Mean) + "");
-            String max2time = sdf.format(mt2Mem_values.Data.get(mt2Mem_values.ch1Stats.Max.Number-1).valTime);
+            String max2time = QS.UTCtoLocal(mt2Mem_values.Data.get(mt2Mem_values.ch1Stats.Max.Number-1).valTime.getTime());
             max2.setText(mt2Mem_values.ch1Stats.Max.Value / 10.0 + "\n" + max2time);
-            String min2time = sdf.format(mt2Mem_values.Data.get(mt2Mem_values.ch1Stats.Min.Number-1).valTime);
+            String min2time = QS.UTCtoLocal(mt2Mem_values.Data.get(mt2Mem_values.ch1Stats.Min.Number-1).valTime.getTime());
             min2.setText(mt2Mem_values.ch1Stats.Min.Value / 10.0 + "\n" + min2time);
 
             totalSampleswithinLimits2.setText(mt2Mem_values.ch1Stats.TotalLimitWithin + "");
@@ -897,42 +961,89 @@ public class USBReadFragment extends Fragment {
     }
 
 
-    public void progressDialoge(){
-
-        progress=new ProgressDialog(getActivity());
-        progress.setMessage(getString(R.string.ReadLogger));
-        progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progress.setIndeterminate(false);
-        progress.setProgress(0);
-        progress.setCancelable(false);
-        progress.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.Abort), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                usbFragmentI.onUSBWrite(HexData.BLE_ACK);
-                state =29;
-                BuildDialogue(getString(R.string.ReadAbort), getString(R.string.Go_back_and_reconnect),1);
-
-                dialog.dismiss();
-            }
-        });
-        progress.setProgressNumberFormat("");
-        progress.setMax(PROGRESSBAR_MAX);
-        progress.show();
 
 
-        final Thread t = new Thread() {
-            @Override
-            public void run() {
-                int jumpTime = 0;
+    private class ProgressTask extends AsyncTask<Integer,Integer,Void> {
 
-                while(progresspercentage < PROGRESSBAR_MAX) {
-                    progress.setProgress(progresspercentage);
+        protected void onPreExecute() {
+            super.onPreExecute(); ///////???????
+
+            progress=new ProgressDialog(getActivity());
+            progress.setMessage(getString(R.string.ReadLogger));
+            progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            progress.setIndeterminate(false);
+            progress.setProgress(0);
+            progress.setCancelable(false);
+            progress.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.Abort), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    usbFragmentI.onUSBWrite(HexData.BLE_ACK);
+                    state =29;
+                    BuildDialogue(getString(R.string.ReadAbort), getString(R.string.Go_back_and_reconnect),1);
+                    //dialog.dismiss();
+                    stopProgress();
                 }
+            });
+            progress.setProgressNumberFormat("");
+            progress.setMax(PROGRESSBAR_MAX);
+            progress.show();
+        }
+        protected void onCancelled() {
+
+            progress.dismiss();
+            //stopProgress();
+
+        }
+        protected Void doInBackground(Integer... params) {
+
+            while(progresspercentage < PROGRESSBAR_MAX) {
+                try {
+                    Thread.sleep(90);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                progress.setProgress(progresspercentage);
             }
-        };
-        t.start();
+            return null;
+        }
+        protected void onProgressUpdate(Integer... values) {
+
+
+        }
+        protected void onPostExecute(Void result) {
+            progresspercentage = 0;
+            progress.dismiss();
+            // async task finished
+
+        }
+
     }
 
+    public void showProgress() {
+        ////////////////////task = new ProgressTask();
+        // start progress bar with initial progress 10
+        ///////////////////task.execute(10,5,null);
+        progresspercentage = 0;
+        task.execute(5);
+
+    }
+
+    public void stopProgress() {
+        progress.dismiss();
+        task.cancel(true);
+    }
+
+    private int PDF_pages(int option){
+        if(option == 0){
+            return 1;
+        }else if(option == 1){
+            return (int)((baseCMD.ch2Enable)? Math.ceil((mt2Mem_values.Data.size()*2/57)/11)+2 : Math.ceil((mt2Mem_values.Data.size()/57)/11)+2);
+        }else if (option == 2){
+            return (int)Math.ceil((mt2Mem_values.Data.size()/57)/2)+2;
+        }
+        return  0;
+
+    }
 
 
 

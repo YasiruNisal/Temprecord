@@ -64,6 +64,11 @@ public class App_Info {
     public int tri_endX = 640;
     public int tri_endY = 180;
 
+    public int sign_left = 550;
+    public int sign_top = 110;
+    public int sign_right = 640;
+    public int sign_bottom = 190;
+
     public int exclmation_startX = 588;
     public int exclemation_startY = 172;
 

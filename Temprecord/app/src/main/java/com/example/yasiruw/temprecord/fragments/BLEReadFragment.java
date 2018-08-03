@@ -403,18 +403,18 @@ public class BLEReadFragment extends Fragment {
                 //sendEmail();
                 new Screenshot(scrollView,baseCMD,getActivity()).print();
                 return true;
-            case R.id.simplePDF:
-                PDF pdf = new PDF();
-                pdf.getData(mt2Mem_values, baseCMD, true, Q_data, U_data, F_data, R_data);
-                pdf.Create_Report(App.getContext());
-                pdf.Open_PDF_in_Chrome(App.getContext());
-                return true;
-            case R.id.fullPDF:
-                PDF pdf1 = new PDF();
-                pdf1.getData(mt2Mem_values, baseCMD, false, Q_data, U_data, F_data, R_data);
-                pdf1.Create_Report(App.getContext());
-                pdf1.Open_PDF_in_Chrome(App.getContext());
-                return true;
+//            case R.id.simplePDF:
+//                PDF pdf = new PDF();
+//                pdf.getData(mt2Mem_values, baseCMD, 0, Q_data, U_data, F_data, R_data);
+//                pdf.Create_Report(App.getContext());
+//                pdf.Open_PDF_in_Chrome(App.getContext());
+//                return true;
+//            case R.id.fullPDFV1:
+//                PDF pdf1 = new PDF();
+//                pdf1.getData(mt2Mem_values, baseCMD, 1, Q_data, U_data, F_data, R_data);
+//                pdf1.Create_Report(App.getContext());
+//                pdf1.Open_PDF_in_Chrome(App.getContext());
+//                return true;
                 default:
                     return false;
         }
@@ -743,7 +743,7 @@ public class BLEReadFragment extends Fragment {
     @JavascriptInterface
     public String getData() {
         String jobj = json_data.CreateObject();
-        Log.i("GRAPH", jobj);
+        //Log.i("GRAPH", jobj);
         return jobj;
         // return json_data.CreateObject();
     }
@@ -754,8 +754,7 @@ public class BLEReadFragment extends Fragment {
         serialno.setText(Q_data.get(0));
         //firmware.setText(Q_data.get(1));
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd  HH:mm:ss");
-        String currentDateandTime = sdf.format(new Date());
-        time.setText(currentDateandTime);
+        time.setText(QS.UTCtoLocal(new Date().getTime()));
 
         if(Double.parseDouble(Q_data.get(6)) > 66){
             bat.setBackgroundResource(R.drawable.bfull);
@@ -784,10 +783,10 @@ public class BLEReadFragment extends Fragment {
             TotalLoggedTime.setText(QS.Period((int) mt2Mem_values.LoggedTripDuration * 1000));
             LoggedSamples.setText(mt2Mem_values.Data.size() + "");
             LoggedTags.setText(mt2Mem_values.TagCount() + "");
-            FirstSample.setText(sdf.format(mt2Mem_values.Data.get(0).valTime));
-            FirstLoggedSample.setText(sdf.format(mt2Mem_values.Data.get(0).valTime));
-            LastSample.setText(sdf.format(mt2Mem_values.Data.get(mt2Mem_values.Data.size() - 1).valTime));
-            LastLoggedSample.setText(sdf.format(mt2Mem_values.Data.get(mt2Mem_values.Data.size() - 1).valTime));
+            FirstSample.setText(QS.UTCtoLocal(mt2Mem_values.Data.get(0).valTime.getTime()));
+            FirstLoggedSample.setText(QS.UTCtoLocal(mt2Mem_values.Data.get(0).valTime.getTime()));
+            LastSample.setText(QS.UTCtoLocal(mt2Mem_values.Data.get(mt2Mem_values.Data.size() - 1).valTime.getTime()));
+            LastLoggedSample.setText(QS.UTCtoLocal(mt2Mem_values.Data.get(mt2Mem_values.Data.size() - 1).valTime.getTime()));
         }
 
 
@@ -798,18 +797,18 @@ public class BLEReadFragment extends Fragment {
                 lowerLimit1.setText(baseCMD.ch1Lo / 10.0 + " °C");
                 mkt.setText(String.format("%.1f", mt2Mem_values.ch0Stats.MKTValue) + " °C");
                 mean1.setText(String.format("%.1f", mt2Mem_values.ch0Stats.Mean) + " °C");
-                String max1time = sdf.format(mt2Mem_values.Data.get(mt2Mem_values.ch0Stats.Max.Number).valTime);
+                String max1time = QS.UTCtoLocal(mt2Mem_values.Data.get(mt2Mem_values.ch0Stats.Max.Number - 1).valTime.getTime());
                 max1.setText(mt2Mem_values.ch0Stats.Max.Value / 10.0 + " °C\n" + max1time);
-                String min1time = sdf.format(mt2Mem_values.Data.get(mt2Mem_values.ch0Stats.Min.Number).valTime);
+                String min1time = QS.UTCtoLocal(mt2Mem_values.Data.get(mt2Mem_values.ch0Stats.Min.Number - 1).valTime.getTime());
                 min1.setText(mt2Mem_values.ch0Stats.Min.Value / 10.0 + " °C\n" + min1time);
             }else{
                 upperLimit1.setText(QS.returnFD(baseCMD.ch1Hi / 10.0) + " °F");
                 lowerLimit1.setText(QS.returnFD(baseCMD.ch1Lo / 10.0) + " °F");
                 mkt.setText(QS.returnF(String.format("%.1f", mt2Mem_values.ch0Stats.MKTValue)) + " °F");
                 mean1.setText(QS.returnF(String.format("%.1f", mt2Mem_values.ch0Stats.Mean)) + " °F");
-                String max1time = sdf.format(mt2Mem_values.Data.get(mt2Mem_values.ch0Stats.Max.Number).valTime);
+                String max1time = QS.UTCtoLocal(mt2Mem_values.Data.get(mt2Mem_values.ch0Stats.Max.Number - 1).valTime.getTime());
                 max1.setText(QS.returnFD(mt2Mem_values.ch0Stats.Max.Value / 10.0) + " °F\n" + max1time);
-                String min1time = sdf.format(mt2Mem_values.Data.get(mt2Mem_values.ch0Stats.Min.Number).valTime);
+                String min1time = QS.UTCtoLocal(mt2Mem_values.Data.get(mt2Mem_values.ch0Stats.Min.Number - 1).valTime.getTime());
                 min1.setText(QS.returnFD(mt2Mem_values.ch0Stats.Min.Value / 10.0) + " °F\n" + min1time);
             }
 
@@ -836,9 +835,9 @@ public class BLEReadFragment extends Fragment {
             lowerLimit2.setText(baseCMD.ch2Lo / 10.0 + "");
 
             mean2.setText(String.format("%.1f", mt2Mem_values.ch1Stats.Mean) + "");
-            String max2time = sdf.format(mt2Mem_values.Data.get(mt2Mem_values.ch1Stats.Max.Number).valTime);
+            String max2time = QS.UTCtoLocal(mt2Mem_values.Data.get(mt2Mem_values.ch1Stats.Max.Number-1).valTime.getTime());
             max2.setText(mt2Mem_values.ch1Stats.Max.Value / 10.0 + "\n" + max2time);
-            String min2time = sdf.format(mt2Mem_values.Data.get(mt2Mem_values.ch1Stats.Min.Number).valTime);
+            String min2time = QS.UTCtoLocal(mt2Mem_values.Data.get(mt2Mem_values.ch1Stats.Min.Number-1).valTime.getTime());
             min2.setText(mt2Mem_values.ch1Stats.Min.Value / 10.0 + "\n" + min2time);
 
             totalSampleswithinLimits2.setText(mt2Mem_values.ch1Stats.TotalLimitWithin + "");

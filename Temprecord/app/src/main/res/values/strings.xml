@@ -55,7 +55,7 @@
     <string name="nextversion">Will be available in version 2 of the application.
     See the gallery for saved screenshots</string>
     <string name="files">Saved Files</string>
-
+    <string name="pdf_options">PDF Options</string>
     <string name="Not_available_with_USB">Unavailable while USB is connected</string>
     <string name="Invalid_for_device">Invalid for this Device</string>
 
@@ -351,7 +351,8 @@ HH:MM:SS</string>
     <string name="Signature">"Signature "</string>
 
     <string name="simple_PDF">"Simple PDF"</string>
-    <string name="full_PDF">"Full PDF"</string>
+    <string name="full_PDF_V1">"Full PDF V1"</string>
+    <string name="full_PDF_V2">"Full PDF V2"</string>
 
     <string name="within_limits">"Within Limits"</string>
     <string name="outof_limits">"Limits Exceeded"</string>
@@ -365,4 +366,12 @@ HH:MM:SS</string>
     <string name="G_Upper_LImit">" Upper Limit"</string>
     <string name="G_Lower_LImit">" Lower Limit"</string>
 
+
+    <string name="PDF_gen">"Generating PDF..."</string>
+    <string name="simplePDF">"Simple PDF
+# pages "</string>
+    <string name="fullPDFV1">"Full PDF V1
+# pages "</string>
+    <string name="fullPDFV2">"Full PDF V2
+# pages "</string>
 </resources>

@@ -141,6 +141,16 @@ public class MT2Msg_Read {
 
     }
 
+    public void BytetoHex(byte[] b){
+        StringBuilder sb = new StringBuilder();
+        for (byte b1 : b){
+            sb.append(String.format("%02X ", b1));
+
+        }
+        //Log.i("SPEED", sb.toString());
+    }
+
+
     public boolean write_into_readByte(byte[] msgIn){
         if(msgIn[0] == commsChar.CMD_ACK){
             boolean updateStatus = UpdateMessage(msgIn);

@@ -767,7 +767,7 @@ public class BLEParameterFragment extends Fragment implements com.wdullaer.mater
     //always start on state one
     public void CommsI(final byte[] in){
 
-        Log.i("STATE" , "state "  + state);
+        //Log.i("STATE" , "state "  + state);
         Runnable runnableCode = new Runnable() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
@@ -1202,16 +1202,16 @@ public class BLEParameterFragment extends Fragment implements com.wdullaer.mater
             ch2upperlimitnb.setText(baseCMD.ch2Hi / 10.0 + "");
             ch2lowerlimitnb.setText(baseCMD.ch2Lo / 10.0 + "");
 
-            startondatetimebutton.setText(sdf.format(baseCMD.timestartstopdatetime));
+            startondatetimebutton.setText(QS.UTCtoLocalParameters(baseCMD.startDateTime.getTime()));
             if (stopondatetime.isChecked()) {
 
-                Date date = baseCMD.timestartstopdatetime;
+                Date date = baseCMD.startDateTime;
                 Calendar calendar = QS.toCalendar(date);
                 calendar.add(Calendar.SECOND, baseCMD.samplePeriod * baseCMD.numberstopon);
                 date = calendar.getTime();
-                stopondatebutton.setText(sdf.format(date));
+                stopondatebutton.setText(QS.UTCtoLocalParameters(date.getTime()));
             } else {
-                stopondatebutton.setText(sdf.format(baseCMD.timestartstopdatetime));
+                stopondatebutton.setText(QS.UTCtoLocalParameters(baseCMD.startDateTime.getTime()));
             }
 
             usercommenttxt.setText(U_data.get(27));
@@ -1495,7 +1495,7 @@ public class BLEParameterFragment extends Fragment implements com.wdullaer.mater
                                 // get user input and set it to result
                                 // edit text
                                 //this is where the command is sent
-                                bleFragmentI.onBLEWrite(commsSerial.WriteByte(baseCMD.WritePassword()));
+                                bleFragmentI.onBLEWrite(commsSerial.WriteByte(baseCMD.WritePassword(passwordtxt.getText().toString())));
                                 if(command == 1){
                                     bleFragmentI.onBLEWrite(commsSerial.WriteByte(mt2Msg_write.writeSetup()));
                                     bleFragmentI.onBLERead();

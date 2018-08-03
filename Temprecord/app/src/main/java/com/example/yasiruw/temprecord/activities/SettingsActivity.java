@@ -45,39 +45,14 @@ public class SettingsActivity extends Activity {
         bar.setElevation(15);
 
 
-        emailto =  findViewById(R.id.emailto);
-        emailcc =  findViewById(R.id.emailcc);
-        name =  findViewById(R.id.name);
+
         sound =  findViewById(R.id.sound);
         units = findViewById(R.id.imperial);
-        time = findViewById(R.id.time);
         values = findViewById(R.id.pdf_values);
         sound.setChecked(true);
 
 
-        //Log.d("WHAT", "********************************" + StoreKeyService.getDefaults("NAME", getApplication())+"88");
-        if(storeKeyService != null) {
-            if (StoreKeyService.getDefaults("EMAIL_TO", getApplication()).equals("")) {
-                emailto.setText("Enter e-mail to send logger data");
-                emailto.setTextColor(getResources().getColor(R.color.list_title_color));
-            } else {
-                emailto.setText(StoreKeyService.getDefaults("EMAIL_TO", getApplicationContext()));
-            }
 
-            if (StoreKeyService.getDefaults("EMAIL_CC", getApplicationContext()).equals("")) {
-                emailcc.setText("Enter CC e-mail to send logger data");
-                emailcc.setTextColor(getResources().getColor(R.color.list_title_color));
-            } else {
-                emailcc.setText(StoreKeyService.getDefaults("EMAIL_CC", getApplicationContext()));
-            }
-
-            if (StoreKeyService.getDefaults("NAME", getApplicationContext()).equals("")) {
-                name.setText("Enter your name");
-                name.setTextColor(getResources().getColor(R.color.list_title_color));
-            } else {
-                name.setText(StoreKeyService.getDefaults("NAME", getApplicationContext()));
-            }
-        }
 //        emailcc.setText(storeKeyService.getDefaults("EMAIL_CC", getApplication()));
 //        name.setText(storeKeyService.getDefaults("NAME", getApplication()));
         if(StoreKeyService.getDefaults("SOUND", getApplicationContext()) != null && StoreKeyService.getDefaults("SOUND", getApplicationContext()).equals("1"))
@@ -90,39 +65,16 @@ public class SettingsActivity extends Activity {
         else
             units.setChecked(false);
 
-        if(StoreKeyService.getDefaults("TIME", getApplicationContext()) != null && StoreKeyService.getDefaults("TIME", getApplicationContext()).equals("1"))
-            time.setChecked(true);
-        else
-            time.setChecked(false);
 
         if(StoreKeyService.getDefaults("VALUE", getApplicationContext()) != null && StoreKeyService.getDefaults("VALUE", getApplicationContext()).equals("1"))
             values.setChecked(true);
         else
             values.setChecked(false);
-        buttonClick();
+
 
     }
 
-    private void buttonClick(){
-        emailto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogBulider(1, "E-mail TO", emailto.getText().toString());
-            }
-        });
-        emailcc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogBulider(2, "E-mail CC", emailcc.getText().toString());
-            }
-        });
-        name.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogBulider(3, "Name", name.getText().toString());
-            }
-        });
-    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.settings_menu, menu);
@@ -147,10 +99,7 @@ public class SettingsActivity extends Activity {
                 else
                     unit = "0";
 
-                if(time.isChecked())
-                    t = "1";
-                else
-                    t = "0";
+
 
 
                 if(values.isChecked())
@@ -158,12 +107,10 @@ public class SettingsActivity extends Activity {
                 else
                     value = "0";
 
-                StoreKeyService.setDefaults("EMAIL_TO", emailto.getText().toString(), getApplication());
-                StoreKeyService.setDefaults("EMAIL_CC", emailcc.getText().toString(), getApplication());
-                StoreKeyService.setDefaults("NAME", name.getText().toString(), getApplication());
+
                 StoreKeyService.setDefaults("SOUND", sond, getApplicationContext());
                 StoreKeyService.setDefaults("UNITS", unit, getApplicationContext());
-                StoreKeyService.setDefaults("TIME", t, getApplicationContext());
+
                 StoreKeyService.setDefaults("VALUE", value, getApplicationContext());
                 //emailcc.setText(storeKeyService.getDefaults("EMAIL_TO", getApplication()));
                 //apply settings

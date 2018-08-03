@@ -290,9 +290,7 @@ public class USB
         //commsSerial.BytetoHex((write));
         if (m_usb_connection!= null)
         {
-
-
-            m_usb_connection.bulkTransfer(m_usb_endpoint[0][1], write, write.length, mTimeout);
+            m_usb_connection.bulkTransfer(m_usb_endpoint[0][1], write, write.length, 100);
         }
         else
         {

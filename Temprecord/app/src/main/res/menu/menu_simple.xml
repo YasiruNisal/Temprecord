@@ -13,21 +13,26 @@
         android:icon="@drawable/ic_pdfb"
         android:showAsAction="always">
 
-        <menu>
+        <!--<menu>-->
 
 
-            <item android:id="@+id/simplePDF"
-                android:icon="@drawable/ic_oneb_24dp"
-                android:showAsAction="ifRoom"
-                android:title="@string/simple_PDF" />
+            <!--<item android:id="@+id/simplePDF"-->
+                <!--android:icon="@drawable/ic_oneb_24dp"-->
+                <!--android:showAsAction="ifRoom"-->
+                <!--android:title="@string/simple_PDF" />-->
 
-            <item android:id="@+id/fullPDF"
-                android:icon="@drawable/ic_twob_24dp"
-                android:showAsAction="ifRoom"
-                android:title="@string/full_PDF" />
+            <!--<item android:id="@+id/fullPDFV1"-->
+                <!--android:icon="@drawable/ic_twob_24dp"-->
+                <!--android:showAsAction="ifRoom"-->
+                <!--android:title="@string/full_PDF_V1" />-->
+
+            <!--<item android:id="@+id/fullPDFV2"-->
+                <!--android:icon="@drawable/ic_threeb_24dp"-->
+                <!--android:showAsAction="ifRoom"-->
+                <!--android:title="@string/full_PDF_V2" />-->
 
 
-        </menu>
+        <!--</menu>-->
 
     </item>
 

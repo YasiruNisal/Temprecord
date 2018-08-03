@@ -10,6 +10,9 @@ import com.example.yasiruw.temprecord.activities.MainActivity;
 import com.example.yasiruw.temprecord.utils.CHUserData;
 import com.example.yasiruw.temprecord.utils.CommsChar;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -55,7 +58,7 @@ public class BaseCMD {
     public int startDelay;
     public int samplePeriod;
     private int startdatetime;
-    public String password;
+    public byte[] password;
     public int ch1Hi;
     public int numberstopon;
     public int ch1Lo;
@@ -319,6 +322,7 @@ public class BaseCMD {
             usercomment = msg.mt2_userData.userString._value;
             returndata.add(msg.mt2_userData.blenameString._value);
             timestartstopdatetime = msg.mt2_userData.timestartdadtetime.getValue();
+            password = msg.mt2_userData.password.hash;
 
         }
 
@@ -554,9 +558,10 @@ public class BaseCMD {
 
     public byte[] WriteRTCStartDateTime(Date date){
 
-        Log.i(TAG,"DateRTC+++++++ " + date);
+        //Log.i(TAG,"DateRTC+++++++ " + date);
         ArrayList<Byte> data = new ArrayList<>();
         classMessages.MT2_USERFlash msg = new classMessages.MT2_USERFlash();
+
 
         msg.mt2_userData.timestartdadtetime.value = queryStrings.toCalendar(date);
         msg.mt2_userData.timestartdadtetime.ToByte(data);
@@ -577,9 +582,7 @@ public class BaseCMD {
         date.add(commsChar.CMD_RTC);
         date.add(commsChar.RTC_SET);
 
-        TimeZone utcZone = TimeZone.getTimeZone("UTC");
-        TimeZone.setDefault(utcZone);
-        Calendar cal = Calendar.getInstance();
+        Calendar cal = queryStrings.toCalendar(new Date());
 
         new dataType.dateRtc(cal).ToByte(date);
 
@@ -613,20 +616,32 @@ public class BaseCMD {
 
 
 
-    public byte[] WritePassword(){
-        ArrayList<Byte> date = new ArrayList<>();
 
+    public byte[] WritePassword(String password){
+        ArrayList<Byte> date = new ArrayList<>();
+        byte pass[] =  queryStrings.md5(password);
+        //pass = new byte[]{(byte)0xEE, (byte)0xDC,(byte) 0xFB, 0x31, (byte)0xC4, (byte)0x9B, 0x19, (byte)0xF9};
 
         date.add((byte)0x08);
         date.add((byte)0x01);
-        date.add((byte)0xEE);
-        date.add((byte)0xDC);
-        date.add((byte)0xFB);
-        date.add((byte)0x31);
-        date.add((byte)0xC4);
-        date.add((byte)0x9B);
-        date.add((byte)0x19);
-        date.add((byte)0xF9);//10
+//        date.add((byte)0xEE);
+//        date.add((byte)0xDC);
+//        date.add((byte)0xFB);
+//        date.add((byte)0x31);
+//        date.add((byte)0xC4);
+//        date.add((byte)0x9B);
+//        date.add((byte)0x19);
+//        date.add((byte)0xF9);//10
+
+        date.add(pass[0]);
+        date.add(pass[1]);
+        date.add(pass[2]);
+        date.add(pass[3]);
+        date.add(pass[4]);
+        date.add(pass[5]);
+        date.add(pass[6]);
+        date.add(pass[7]);
+
 
 
         int i = 0;

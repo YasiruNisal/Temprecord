@@ -112,6 +112,7 @@ public class USB_HID_RECEIVE_Thread extends Thread
 
 
                             Update_UI(m_context, null, "HID_USB_Message_Received", m_message, null);
+                            //Log.i("SPEED", "start intent++++++++");
                         }
                         else
                         {   //ERROR Message!

@@ -777,7 +777,7 @@ public class BLEQueryFragment extends Fragment {
 
         currenthumidity.setText(R_data.get(13) + " %");
 
-        manudate.setText(sdf.format(baseCMD.dmanu));
+        manudate.setText(QS.UTCtoLocal(baseCMD.dmanu.getTime()));
         memory.setText(F_data.get(1));
         startondatetime.setText(R_data.get(0));
         startwithbutton.setText(R_data.get(1));
@@ -797,16 +797,16 @@ public class BLEQueryFragment extends Fragment {
             st_by.setVisibility(View.VISIBLE);
             sp_at.setVisibility(View.GONE);
             sp_by.setVisibility(View.GONE);
-            startedat.setText(sdf.format(baseCMD.dstart));
+            startedat.setText(QS.UTCtoLocal(baseCMD.dstart.getTime()));
             startedby.setText(R_data.get(2));
         }else if(baseCMD.state == 5){
             st_at.setVisibility(View.VISIBLE);
             st_by.setVisibility(View.VISIBLE);
             sp_at.setVisibility(View.VISIBLE);
             sp_by.setVisibility(View.VISIBLE);
-            startedat.setText(sdf.format(baseCMD.dstart));
+            startedat.setText(QS.UTCtoLocal(baseCMD.dstart.getTime()));
             startedby.setText(R_data.get(2));
-            stoppedat.setText(sdf.format(baseCMD.dstop));
+            stoppedat.setText(QS.UTCtoLocal(baseCMD.dstop.getTime()));
             stoppedby.setText(R_data.get(4));
         }else{
             st_at.setVisibility(View.GONE);
@@ -851,8 +851,7 @@ public class BLEQueryFragment extends Fragment {
         units.setText(QS.imperial(baseCMD.ImperialUnit));
 
 
-        String currentDateandTime = sdf.format(new Date());
-        time.setText(currentDateandTime);
+        time.setText(QS.UTCtoLocal(new Date().getTime()));
 
         ch1alarmdelay.setText( R_data.get(12)+ getString(R.string.Samples));
         ch2alarmdelay.setText( R_data.get(16)+ getString(R.string.Samples));
@@ -1032,13 +1031,14 @@ public class BLEQueryFragment extends Fragment {
                                 // get user input and set it to result
                                 // edit text
                                 //this is where the command is sent
-                                bleFragmentI.onBLEWrite(commsSerial.WriteByte(baseCMD.WritePassword()));
-                                if(command == 3){
-                                    bleFragmentI.onBLEWrite(HexData.STOP_L);
-                                    bleFragmentI.onBLERead();
-                                }else if(command == 4){
-                                    bleFragmentI.onBLEWrite(HexData.REUSE_L);
-                                    bleFragmentI.onBLERead();
+                                if(QS.compareByte(baseCMD.password,QS.md5(userInput.getText().toString()))) {
+                                    if (command == 3) {
+                                        bleFragmentI.onBLEWrite(HexData.STOP_L);
+                                        bleFragmentI.onBLERead();
+                                    } else if (command == 4) {
+                                        bleFragmentI.onBLEWrite(HexData.REUSE_L);
+                                        bleFragmentI.onBLERead();
+                                    }
                                 }
                                 //bleFragmentI.onBLERead();
                                 dialog.cancel();

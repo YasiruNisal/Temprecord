@@ -14,12 +14,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginBottom="25dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="0dp"
         android:background="@drawable/layout_txtbg"
         android:orientation="vertical">
-
-
 
 
         <TextView
@@ -101,50 +99,6 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="0dp"
-        android:background="@drawable/layout_txtbg"
-        android:orientation="vertical">
-
-
-
-
-        <TextView
-            android:id="@+id/info22"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="3dp"
-            android:paddingTop="10dp"
-            android:text="@string/Time_Zone"
-            android:textColorHighlight="@color/ublox_blue_color"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:paddingTop="3dp"
-            android:background="@android:color/darker_gray"/>
-
-
-        <Switch
-            android:id="@+id/time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="5dp"
-            android:paddingLeft="5dp"
-            android:paddingTop="5dp"
-            android:text="@string/UTC_Time"
-            android:thumbTint="@color/ublox_blue_color" />
-
-
-
-
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -192,88 +146,5 @@
     </LinearLayout>
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="25dp"
-        android:layout_marginTop="0dp"
-        android:background="@drawable/layout_txtbg"
-        android:orientation="vertical">
-
-
-        <TextView
-            android:id="@+id/info4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="3dp"
-            android:paddingTop="10dp"
-            android:text="@string/Email_Information"
-            android:textColorHighlight="@color/ublox_blue_color"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:paddingTop="3dp"
-            android:background="@android:color/darker_gray"/>
-
-        <TextView
-            android:id="@+id/info3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:paddingTop="5dp"
-            android:text="@string/Name"
-            android:textSize="15sp"
-            />
-
-        <Button
-            android:id="@+id/name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/layout_txtbg"
-            android:ems="10"
-            />
-
-        <TextView
-            android:id="@+id/info5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:paddingTop="5dp"
-            android:text="@string/TO"
-            android:textSize="15sp"
-             />
-
-        <Button
-            android:id="@+id/emailto"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/layout_txtbg"
-            android:ems="10"
-           />
-
-        <TextView
-            android:id="@+id/info6"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:paddingTop="5dp"
-            android:text="@string/CC"
-            android:textSize="15sp"
-             />
-
-        <Button
-            android:id="@+id/emailcc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/layout_txtbg"
-            android:ems="10"
-            />
-
-
-    </LinearLayout>
 
 </LinearLayout>

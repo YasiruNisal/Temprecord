@@ -12,6 +12,7 @@ import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,6 +20,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -152,6 +154,7 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
 
     private boolean soundon = true;
     private boolean pands = false;
+    private boolean prgrammingback = false;
     private boolean celsiusfahrenheit = false;
     private int state = 1;
     private ArrayList<String> Q_data = new ArrayList<String>();
@@ -167,7 +170,7 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
     MT2Msg_Write mt2Msg_write;
     QueryStrings QS = new QueryStrings();
     CommsChar commsChar = new CommsChar();
-
+    ProgressTask task = new ProgressTask();
     private Handler handler1 =new Handler();
 
 
@@ -322,7 +325,7 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
 
         Programparam = (Button) view.findViewById(R.id.done);
         mConnectionState.setText(getString(R.string.USB_Connected));
-        progressDialoge();
+        showProgress();
         uiSetupRules();
         buttonAction();
         Passwordenter();
@@ -732,10 +735,7 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
     public void CommsI(final byte[] in){
 
 
-        Runnable runnableCode = new Runnable() {
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-            @Override
-            public void run() {
+
                 byte[] query;
 
                 if (storeKeyService.getDefaults("SOUND", getActivity().getApplication()) != null && storeKeyService.getDefaults("SOUND", getActivity().getApplication()).equals("1"))
@@ -902,7 +902,7 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
                             firsttime++;
                             hexData.BytetoHex(ExtraRead);
                             progresspercentage = 100;
-                            progress.cancel();
+                            stopProgress();
                         }
                         if(state == 25)
                             usbFragmentI.onUSBWrite(commsSerial.WriteUSBByte(mt2Msg_read.Read_into_writeByte(false)));
@@ -930,7 +930,8 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
                         hexData.BytetoHex(in);
                         if(mt2Msg_write.writeDone()){
                             state = 28;
-                            progress.cancel();
+                            progresspercentage = 100;
+                            stopProgress();
                         }
                         usbFragmentI.onUSBWrite(commsSerial.WriteUSBByte(mt2Msg_write.writeFill()));
                         break;
@@ -944,11 +945,9 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
                         hexData.BytetoHex(in);
                         mt2Msg_write = new MT2Msg_Write();
                         mt2Msg_write.MT2Msg_WriteUSB(UserReadtemp);
-                        if(baseCMD.passwordEnabled){
-                            promtPassword(1);
-                        }else {
+
                             usbFragmentI.onUSBWrite(commsSerial.WriteUSBByte(mt2Msg_write.writeSetup()));
-                        }
+
                         state = 26;
                         break;
                     case 30://sync times with logger
@@ -959,16 +958,21 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
                     case 31:
                         hexData.BytetoHex(in);
                         usbFragmentI.onUSBWrite(commsSerial.WriteUSBByte(baseCMD.ReadRTC()));
+                        if(baseCMD.passwordEnabled){
+                            promtPassword(1);
+                        }
                         state  = 29;
                         break;
                 }
+
+
             }
-        };handler1.postDelayed(runnableCode,1);
-    }
+//        };handler1.postDelayed(runnableCode,1);
+//    }
 
 
     //after reading the logger the UI fields get filled with the logger information
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+
     public void SetUI(){
 
 
@@ -1112,16 +1116,16 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
             ch2upperlimitnb.setText(baseCMD.ch2Hi / 10.0 + "");
             ch2lowerlimitnb.setText(baseCMD.ch2Lo / 10.0 + "");
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-            startondatetimebutton.setText(sdf.format(baseCMD.startDateTime));
+            startondatetimebutton.setText(QS.UTCtoLocalParameters(baseCMD.startDateTime.getTime()));
             if (stopondatetime.isChecked()) {
 
                 Date date = baseCMD.startDateTime;
                 Calendar calendar = QS.toCalendar(date);
                 calendar.add(Calendar.SECOND, baseCMD.samplePeriod * baseCMD.numberstopon);
                 date = calendar.getTime();
-                stopondatebutton.setText(sdf.format(date));
+                stopondatebutton.setText(QS.UTCtoLocalParameters(date.getTime()));
             } else {
-                stopondatebutton.setText(sdf.format(baseCMD.startDateTime));
+                stopondatebutton.setText(QS.UTCtoLocalParameters(baseCMD.startDateTime.getTime()));
             }
 
             usercommenttxt.setText(U_data.get(27));
@@ -1180,74 +1184,7 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
         }
     }
 
-    //progress dialog thats used when the parameters are getting read
-    public void progressDialoge(){
 
-        progress=new ProgressDialog(getActivity());
-        progress.setMessage(getString(R.string.LoadingParameters));
-        progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progress.setIndeterminate(false);
-        progress.setProgress(0);
-        progress.setCancelable(false);
-        progress.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.Abort), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-
-                dialog.dismiss();
-                BuildDialogue(getString(R.string.ParameterReadAborted), getString(R.string.Go_back_and_reconnect), 1);
-            }
-        });
-        progress.setProgressNumberFormat("");
-        progress.setMax(PROGRESSBAR_MAX);
-        progress.show();
-
-
-        final Thread t = new Thread() {
-            @Override
-            public void run() {
-                int jumpTime = 0;
-
-                while(progresspercentage < PROGRESSBAR_MAX) {
-                    progress.setProgress(progresspercentage);
-                }
-            }
-        };
-        t.start();
-    }
-
-    //progress dialog thats used when the parameters are getting programmed
-    public void progressDialoge2(){
-
-        progress=new ProgressDialog(getActivity());
-        progress.setMessage(getString(R.string.ProgramingParameters));
-        progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progress.setIndeterminate(false);
-        progress.setProgress(0);
-        progress.setCancelable(false);
-        progress.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.Abort), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        progress.setProgressNumberFormat("");
-        progress.setMax(40);
-        progress.show();
-        progresspercentage = 0;
-
-        final Thread t = new Thread() {
-            @Override
-            public void run() {
-                int jumpTime = 0;
-
-                while(progresspercentage < 40) {
-                    progress.setProgress(progresspercentage);
-                }
-            }
-        };
-        t.start();
-    }
 
 
     //fills the program parameter array with the data we want to program
@@ -1340,14 +1277,15 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
         }
 
         if(passwordenabledcb.isChecked()) {
-            UserReadtemp[36] = (byte) 0xEE;
-            UserReadtemp[37] = (byte) 0xDC;
-            UserReadtemp[38] = (byte) 0xFB;
-            UserReadtemp[39] = (byte) 0x31;
-            UserReadtemp[40] = (byte) 0xC4;
-            UserReadtemp[41] = (byte) 0x9B;
-            UserReadtemp[42] = (byte) 0x19;
-            UserReadtemp[43] = (byte) 0xF9;
+            byte[] reply = QS.md5(passwordtxt.getText().toString());
+            UserReadtemp[36] = reply[0];
+            UserReadtemp[37] = reply[1];
+            UserReadtemp[38] = reply[2];
+            UserReadtemp[39] = reply[3];
+            UserReadtemp[40] = reply[4];
+            UserReadtemp[41] = reply[5];
+            UserReadtemp[42] = reply[6];
+            UserReadtemp[43] = reply[7];
         }
 
 
@@ -1366,7 +1304,9 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
         }
         if(Complete) {
             usbFragmentI.onUSBWrite(commsSerial.WriteUSBByte(baseCMD.ReadRTC()));
-            progressDialoge2();
+            prgrammingback = true;
+            task = new ProgressTask();
+            showProgress();
         }else
                 Toast.makeText(getActivity(),getString(R.string.incomplete), Toast.LENGTH_SHORT).show();
         state = 30;
@@ -1396,9 +1336,10 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
                                 // get user input and set it to result
                                 // edit text
                                 //this is where the command is sent
-                                usbFragmentI.onUSBWrite(commsSerial.WriteUSBByte(baseCMD.WritePassword()));
-                                if(command == 1)
-                                    usbFragmentI.onUSBWrite(commsSerial.WriteUSBByte(mt2Msg_write.writeSetup()));
+
+                                usbFragmentI.onUSBWrite(commsSerial.WriteUSBByte(baseCMD.WritePassword(userInput.getText().toString())));
+//                                if(command == 1)
+//                                    usbFragmentI.onUSBWrite(commsSerial.WriteUSBByte(mt2Msg_write.writeSetup()));
                             }
                         })
                 .setNegativeButton(getString(R.string.Cancel),
@@ -1580,6 +1521,80 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
                 stopondatebutton.setText(date);
                 break;
         }
+    }
+
+
+    private class ProgressTask extends AsyncTask<Integer,Integer,Void> {
+
+        protected void onPreExecute() {
+            super.onPreExecute(); ///////???????
+
+            progress=new ProgressDialog(getActivity());
+            if(prgrammingback)
+                progress.setMessage(getString(R.string.ProgramingParameters));
+            else
+                progress.setMessage(getString(R.string.LoadingParameters));
+            progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            progress.setIndeterminate(false);
+            progress.setProgress(0);
+            progress.setCancelable(false);
+            progress.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.Abort), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    usbFragmentI.onUSBWrite(HexData.BLE_ACK);
+                    state =29;
+                    BuildDialogue(getString(R.string.ReadAbort), getString(R.string.Go_back_and_reconnect),1);
+                    stopProgress();
+
+                }
+            });
+            progress.setProgressNumberFormat("");
+            progress.setMax(PROGRESSBAR_MAX);
+            progress.show();
+        }
+        protected void onCancelled() {
+            stopProgress();
+            progress.dismiss();
+
+        }
+        protected Void doInBackground(Integer... params) {
+
+            while(progresspercentage < PROGRESSBAR_MAX) {
+                try {
+                    Thread.sleep(90);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                progress.setProgress(progresspercentage);
+            }
+            return null;
+        }
+        protected void onProgressUpdate(Integer... values) {
+
+
+        }
+        protected void onPostExecute(Void result) {
+            prgrammingback = false;
+            progresspercentage = 0;
+            progress.dismiss();
+            // async task finished
+
+        }
+
+    }
+
+    public void showProgress() {
+        ////////////////////task = new ProgressTask();
+        // start progress bar with initial progress 10
+        ///////////////////task.execute(10,5,null);
+        progresspercentage = 0;
+        task.execute(0);
+
+    }
+
+    public void stopProgress() {
+        progress.dismiss();
+        task.cancel(true);
     }
 
 }

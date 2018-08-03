@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import com.example.yasiruw.temprecord.App;
+
 import java.nio.ByteBuffer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -201,6 +203,7 @@ public class Yo_Library
 
         bundle.putString("message",mString);
         New_Send_Update_internal_intent(context,Package,bundle);
+
     }
     //====================================================================//
 
@@ -211,6 +214,7 @@ public class Yo_Library
         panel_internal_intent.setPackage(Package);
         panel_internal_intent.putExtras(parameters);
         LocalBroadcastManager.getInstance(context).sendBroadcast(panel_internal_intent);
+
     }
     //==========================================================//
 
@@ -261,7 +265,10 @@ public class Yo_Library
     public static String Convert_UNIX_To_Date(long date_time)
     {
         Date date = new Date(date_time * 1000L);
-        return new SimpleDateFormat("dd/MM/yyyy").format(date);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        //SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        sdf.setTimeZone(App.getInit_TimeZone());
+        return sdf.format(date);
     }
     //==========================================================//
 
@@ -270,8 +277,10 @@ public class Yo_Library
     {
 
 
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss",Locale.getDefault());
+//        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss",Locale.getDefault());
+        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss aa",Locale.getDefault());
         Date date = new Date(date_time * 1000L);
+        sdf.setTimeZone(App.getInit_TimeZone());
         sdf.format(date);
         return(sdf.format(date));
 

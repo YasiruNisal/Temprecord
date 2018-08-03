@@ -866,7 +866,7 @@ public  class loggerType {
         /// <summary>Temporary password value used by GUI when password is being set by user</summary>
         private String pValue;
         /// <summary>The actual password stored as a 64bit hash across 8 bytes</summary>
-        byte[] hash =  new byte[]{0, 0, 0, 0, 0, 0, 0, 0};
+        public byte[] hash =  new byte[]{0, 0, 0, 0, 0, 0, 0, 0};
 
         /// <summary> Has password when read from byte[]</summary>
         public boolean HasPassword;

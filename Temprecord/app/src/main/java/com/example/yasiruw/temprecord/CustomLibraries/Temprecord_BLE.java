@@ -55,20 +55,11 @@ public class Temprecord_BLE {
     }
 
     public void isBluetoothSupported(){
-        if (mBluetoothAdapter == null) {
-            Toast.makeText(activity, R.string.error_bluetooth_not_supported, Toast.LENGTH_SHORT).show();
-            activity.finish();
-            return;
-        }
+
     }
 
     public void isBLESupported(){
-        // Use this check to determine whether BLE is supported on the device.  Then you can
-        // selectively disable BLE-related features.
-        if (!activity.getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
-            Toast.makeText(activity, R.string.ble_not_supported, Toast.LENGTH_SHORT).show();
-            activity.finish();
-        }
+
     }
 
     public void BLE_turnon_dialog(){
@@ -121,7 +112,7 @@ public class Temprecord_BLE {
         activity.getActionBar().setTitle(mDevice.getName());
         Intent gattServiceIntent = new Intent(activity, BluetoothLeService.class);
         activity.bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
-        Log.i("TEST", "IN after binding to a service ----------------------------------");
+        //Log.i("TEST", "IN after binding to a service ----------------------------------");
 
     }
 
@@ -189,12 +180,12 @@ public class Temprecord_BLE {
                     }
                     mBluetoothLeService.connect(mDevice.getAddress());
                     mainThreadHandler.postDelayed(delayedTask, 8000);
-                    Log.i("TEST", "IN on service connected runable after 8 secs----------------------------------");
+                    //Log.i("TEST", "IN on service connected runable after 8 secs----------------------------------");
                 }
             };
 
             mainThreadHandler.postDelayed(delayedTask, 9000);
-            Log.i("TEST", "IN on service connected ----------------------------------");
+            //Log.i("TEST", "IN on service connected ----------------------------------");
         }
 
         @Override
@@ -204,7 +195,7 @@ public class Temprecord_BLE {
     };
 
     public void stopRunable(){
-        Log.i("TEST", "IN on service connected runable STOP ----------------------------------");
+        //Log.i("TEST", "IN on service connected runable STOP ----------------------------------");
         mainThreadHandler.removeCallbacksAndMessages(null);
     }
 
