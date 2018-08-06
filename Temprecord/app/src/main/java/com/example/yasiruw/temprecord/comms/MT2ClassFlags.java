@@ -107,6 +107,7 @@ public class MT2ClassFlags {
             spare.ToByte(data);
         }
 
+        public boolean SafeRange(){return safeRange.getValue();}
         public boolean StartDateTime(){return startDateTime.getValue();}
         public boolean ButtonStart(){return buttonStart.getValue();}
         public boolean SoftwareStart(){return softwareStart.getValue();}

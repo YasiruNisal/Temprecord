@@ -43,6 +43,10 @@
                 android:icon="@drawable/ic_findb"
                 android:showAsAction="ifRoom"
                 android:title="@string/FindLogger" />
+            <item android:id="@+id/action_read"
+                android:icon="@drawable/ic_readb"
+                android:showAsAction="ifRoom"
+                android:title="@string/ReadLogger" />
 
 
 

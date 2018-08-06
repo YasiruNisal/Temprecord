@@ -156,6 +156,9 @@ public class USBReadFragment extends Fragment {
     private ImageButton zoomin1;
     private ImageButton zoomout1;
 
+    private TextView limitstatus;
+    private ImageView limiticon;
+
     private LinearLayout Humidity;
     private LinearLayout Humidity2;
     private ScrollView scrollView;
@@ -299,7 +302,8 @@ public class USBReadFragment extends Fragment {
         Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "Roboto-Light.ttf");
         Typeface font1 = Typeface.createFromAsset(getActivity().getAssets(), "Roboto-Medium.ttf");
 
-
+        limitstatus = view.findViewById(R.id.limitstatus);
+        limiticon = view.findViewById(R.id.limiticon);
 //        m.setText(message);
         // Sets up UI references.
         //((TextView) findViewById(R.id.device_address)).setText(mDeviceAddress);
@@ -437,34 +441,40 @@ public class USBReadFragment extends Fragment {
                 simplepdf.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(getActivity(),getString(R.string.PDF_gen), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(),getString(R.string.PDF_gen), Toast.LENGTH_LONG).show();
+                        dialog.dismiss();
+
                         PDF pdf = new PDF();
                         pdf.getData(mt2Mem_values, baseCMD, 0, Q_data, U_data, F_data, R_data);
                         pdf.Create_Report(App.getContext());
                         pdf.Open_PDF_in_Chrome(App.getContext());
-                        dialog.dismiss();
+
                     }
                 });
                 pdfv1button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(getActivity(),getString(R.string.PDF_gen), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(),getString(R.string.PDF_gen), Toast.LENGTH_LONG).show();
+                        dialog.dismiss();
+
                         PDF pdf1 = new PDF();
                         pdf1.getData(mt2Mem_values, baseCMD, 1, Q_data, U_data, F_data, R_data);
                         pdf1.Create_Report(App.getContext());
                         pdf1.Open_PDF_in_Chrome(App.getContext());
-                        dialog.dismiss();
+
                     }
                 });
                 pdfv2button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(getActivity(),getString(R.string.PDF_gen), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(),getString(R.string.PDF_gen), Toast.LENGTH_LONG).show();
+                        dialog.dismiss();
+
                         PDF pdf3 = new PDF();
                         pdf3.getData(mt2Mem_values, baseCMD, 2, Q_data, U_data, F_data, R_data);
                         pdf3.Create_Report(App.getContext());
                         pdf3.Open_PDF_in_Chrome(App.getContext());
-                        dialog.dismiss();
+
                     }
                 });
 
@@ -812,6 +822,14 @@ public class USBReadFragment extends Fragment {
         }else if(Double.parseDouble(Q_data.get(6)) > 0){
             bat.setBackgroundResource(R.drawable.blow);
 
+        }
+
+        if(mt2Mem_values.ch0Stats.TotalLimit == 0 && mt2Mem_values.ch1Stats.TotalLimit == 0){//drawing the tick if within limits
+            limitstatus.setText(App.getContext().getString(R.string.within_limits));
+            limiticon.setBackgroundResource(R.drawable.greentick);
+        }else{//drawing the warning sign if out of limits
+            limitstatus.setText(App.getContext().getString(R.string.outof_limits));
+            limiticon.setBackgroundResource(R.drawable.redwarning);
         }
 
         //model.setText(QS.GetGeneration(Integer.parseInt(Q_data.get(2))));

@@ -27,12 +27,14 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.yasiruw.temprecord.App;
 import com.example.yasiruw.temprecord.R;
 import com.example.yasiruw.temprecord.activities.MainActivity;
 import com.example.yasiruw.temprecord.comms.BaseCMD;
@@ -124,6 +126,9 @@ public class USBQueryFragment extends Fragment {
     private TextView ch2alarmdelay;
     private TextView ch2ul;
     private TextView ch2ll;
+
+    private TextView limitstatus;
+    private ImageView limiticon;
 
     private byte[] TWFlash = new byte[144];
     private byte[] RamRead = new byte[100];
@@ -259,14 +264,18 @@ public class USBQueryFragment extends Fragment {
         sp_by = view.findViewById(R.id.sp_by);
         bleenegy = view.findViewById(R.id.bleenegy);
         bleenegy.setVisibility(view.GONE);
-        mWrapperFL = (FrameLayout) view.findViewById(R.id.flWrapper);
         queryScroll = (ScrollView) view.findViewById(R.id.queryscroll);
+
+
 //        m.setText(message);
         // Sets up UI references.
         //((TextView) findViewById(R.id.device_address)).setText(mDeviceAddress);
         bat = (ImageView) view.findViewById(R.id.imageView1);
         temp = (ImageView) view.findViewById(R.id.imageView2);
         hu = (ImageView) view.findViewById(R.id.imageView3);
+
+        limitstatus = view.findViewById(R.id.limitstatus);
+        limiticon = view.findViewById(R.id.limiticon);
 
         currentTemp = (TextView) view.findViewById(R.id.temperature);
         currentTemp.setTypeface(font);
@@ -421,6 +430,9 @@ public class USBQueryFragment extends Fragment {
                 message = "8";
                 state = 1;
                 return true;
+            case R.id.action_read:
+                ((MainActivity)getActivity()).Read_Action();
+                return true;
             default:
                 return false;
         }
@@ -437,7 +449,7 @@ public class USBQueryFragment extends Fragment {
                 byte[] query;
 
 
-                if (storeKeyService.getDefaults("SOUND", getActivity().getApplication()) != null && storeKeyService.getDefaults("SOUND", getActivity().getApplication()).equals("1"))
+                if (storeKeyService.getDefaults("SOUND", App.getContext()) != null && storeKeyService.getDefaults("SOUND",  App.getContext()).equals("1"))
                     soundon = true;
                 else
                     soundon = false;
@@ -478,6 +490,8 @@ public class USBQueryFragment extends Fragment {
                                 promtPassword(3);
                             } else if (message.equals("4")) {
                                 promtPassword(4);
+                            } else{
+                                usbFragmentI.onUSBWrite(HexData.QUARY_USB);
                             }
                         }else
                             usbFragmentI.onUSBWrite(HexData.QUARY_USB);
@@ -716,6 +730,16 @@ public class USBQueryFragment extends Fragment {
         model.setText(QS.GetGeneration(Integer.parseInt(Q_data.get(2))));
         family.setText(QS.GetType(Integer.parseInt(Q_data.get(3))));
 
+
+        if((baseCMD.querych1hi < baseCMD.ch1Hi) && (baseCMD.querych1lo > baseCMD.ch1Lo) && (baseCMD.querych2hi < baseCMD.ch2Hi) && (baseCMD.querych2lo > baseCMD.ch2Lo)){//drawing the tick if within limits
+            limitstatus.setText(App.getContext().getString(R.string.within_limits));
+            limiticon.setBackgroundResource(R.drawable.greentick);
+        }else{//drawing the warning sign if out of limits
+            limitstatus.setText(App.getContext().getString(R.string.outof_limits));
+            limiticon.setBackgroundResource(R.drawable.redwarning);
+        }
+
+
         Lstate.setText( QS.GetState(Integer.parseInt(Q_data.get(5))));
         battery.setText(  R_data.get(17)+"%");
         if (storeKeyService.getDefaults("UNITS", getActivity().getApplication()) != null && storeKeyService.getDefaults("UNITS", getActivity().getApplication()).equals("1")) {
@@ -951,7 +975,7 @@ public class USBQueryFragment extends Fragment {
             super.onPreExecute(); ///////???????
 
             progress=new ProgressDialog(getActivity());
-            progress.setMessage(getString(R.string.ReadLogger));
+            progress.setMessage(getString(R.string.QueryLogger));
             progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             progress.setIndeterminate(false);
             progress.setProgress(0);

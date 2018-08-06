@@ -88,6 +88,13 @@ public class BaseCMD {
     public int PAGESIZE = 512;
     public int TOTALMEMORY = 16384;
 
+    public double querych1hi = 0;
+    public double querych1lo = 0;
+    public double querych2hi = 0;
+    public double querych2lo = 0;
+
+    public boolean inSaferange = true;
+
 
 
     public int CMDStart(byte[] start){
@@ -238,7 +245,10 @@ public class BaseCMD {
             returndata.add(""+msg.samplePointer.getValue());
             SamplePointer = msg.samplePointer.getValue();
             //Log.d("%%%%%0", " " +(msg.mt2_chRam1.chValue.getDoubleValue()) + " " + (msg.mt2_chRam1.valHi.getDoubleValue()) + " " + (msg.mt2_chRam1.valLo.getDoubleValue()) + " " + msg.mt2_chRam1.delayHi.value);//);
-
+            querych1hi = msg.mt2_chRam.valHi.getDoubleValue();
+        querych1lo = msg.mt2_chRam.valLo.getDoubleValue();
+        querych2hi = msg.mt2_chRam1.valHi.getDoubleValue();
+        querych2lo = msg.mt2_chRam1.valLo.getDoubleValue();
 
         return returndata;
     }

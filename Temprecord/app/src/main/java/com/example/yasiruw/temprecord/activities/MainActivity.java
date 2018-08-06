@@ -3,6 +3,7 @@ package com.example.yasiruw.temprecord.activities;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -201,13 +202,13 @@ public class MainActivity extends Activity implements
             final BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
             mBluetoothAdapter = bluetoothManager.getAdapter();
         }
-
-        temprecord_ble = new Temprecord_BLE(mBluetoothAdapter, MainActivity.this, lvDevices);
-        //temprecord_ble.isBluetoothSupported();// checks if Bluetooth is supported
-        //temprecord_ble.isBLESupported();// checks if BLE is supported
-        // Use this check to determine whether BLE is supported on the device.  Then you can
-        // selectively disable BLE-related features.
         if(!mUSBConnected) {
+            temprecord_ble = new Temprecord_BLE(mBluetoothAdapter, MainActivity.this, lvDevices);
+            //temprecord_ble.isBluetoothSupported();// checks if Bluetooth is supported
+            //temprecord_ble.isBLESupported();// checks if BLE is supported
+            // Use this check to determine whether BLE is supported on the device.  Then you can
+            // selectively disable BLE-related features.
+
             if (mBluetoothAdapter == null) {
                 Toast.makeText(this, R.string.error_bluetooth_not_supported, Toast.LENGTH_SHORT).show();
                 finish();
@@ -790,7 +791,7 @@ public class MainActivity extends Activity implements
         if ( FragmentNumber > 0     )                {//Fix fot the weired menu behaviour
             menu.findItem(R.id.menu_scan).setVisible(false);
             menu.findItem(R.id.menu_stop).setVisible(false);
-           if(!mUSBConnected) temprecord_ble.scanLeDevice(false);
+            temprecord_ble.scanLeDevice(false);//so the name doesnt change in the query page
         } else {
 
             if (!mScanning) {
@@ -929,10 +930,10 @@ public class MainActivity extends Activity implements
 
                     case "DETACHED":
                         mUSBConnected = false;
-                        Update_UI_state(1);
-                        getActionBar().show();
+                        //Update_UI_state(1);
+                        //getActionBar().show();
                         m_usb.unregister_receiver(getApplicationContext());
-                        finish();
+                        //finish();
                         //LocalBroadcastManager.getInstance(getApplicationContext()).unregisterReceiver(INTERNAL_BROADCAST_RECEIVER);
 
                         break;
@@ -940,7 +941,7 @@ public class MainActivity extends Activity implements
                     case "UI_update":
                         if (extras != null) {
                             String message = extras.getString("message");
-                            //Log.i("Device", "coming in to UI updtate part===========================");
+                            //Log.i("Device", message+"  ===========================");
 
                             switch (message){
                                 case "U06 <- USB CONNECTED !":
@@ -949,12 +950,22 @@ public class MainActivity extends Activity implements
                                         mConnected = false;
                                     }
                                     //Log.i("Device", "coming in to USB connected part===========================");
-                                    spinnerProgressDialog();
+                                    //spinnerProgressDialog();
                                     if(!mUSBConnected)temprecord_ble.scanLeDevice(false);
                                     mScanning = false;
                                     mUSBConnected = true;
-                                    //Update_UI_state(2);
-                                    m_usb.Send_Command(HexData.QUARY_USB);
+                                    if(getFragmentManager().getBackStackEntryCount() == 0) {
+                                        Update_UI_state(3);
+                                        m_bundle_data.putString(EXTRAS_MESSAGE, "1"); //put string, int, etc in bundle with a key value
+                                        usbQueryFragment = new USBQueryFragment().GET_INSTANCE(m_bundle_data); //Use bundle to pass data
+                                        FragmentNumber = 4;
+
+                                        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+                                        transaction.replace(R.id.Fragment_Container, usbQueryFragment).addToBackStack(null).commit();
+//
+                                    }
+                                    //m_usb.Send_Command(HexData.QUARY_USB);
                                     invalidateOptionsMenu();
 
                                     break;
@@ -1091,6 +1102,14 @@ public class MainActivity extends Activity implements
             }
         };
         mainThreadHandler.postDelayed(delayedTask, 20000);
+    }
+
+    public void Read_Action(){
+        Update_UI_state(3);
+        m_bundle_data.putString(EXTRAS_MESSAGE, "6"); //put string, int, etc in bundle with a key value
+        usbReadFragment = new USBReadFragment().GET_INSTANCE(m_bundle_data); //Use bundle to pass data
+        FragmentNumber = 5;
+        getFragmentManager().beginTransaction().replace(R.id.Fragment_Container, usbReadFragment).commit();
     }
 
 }

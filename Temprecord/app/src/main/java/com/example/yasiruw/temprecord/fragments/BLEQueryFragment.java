@@ -258,7 +258,7 @@ public class BLEQueryFragment extends Fragment {
 
 
         linearLayout = (LinearLayout) view.findViewById(R.id.attop);
-        mWrapperFL = (FrameLayout) view.findViewById(R.id.flWrapper);
+
         queryScroll = (ScrollView) view.findViewById(R.id.queryscroll);
 //        m.setText(message);
         // Sets up UI references.

@@ -368,10 +368,10 @@ HH:MM:SS</string>
 
 
     <string name="PDF_gen">"Generating PDF..."</string>
-    <string name="simplePDF">"Simple PDF
+    <string name="simplePDF">"Summery PDF
 # pages "</string>
-    <string name="fullPDFV1">"Full PDF V1
+    <string name="fullPDFV1">"Condensed PDF
 # pages "</string>
-    <string name="fullPDFV2">"Full PDF V2
+    <string name="fullPDFV2">"Full PDF
 # pages "</string>
 </resources>
