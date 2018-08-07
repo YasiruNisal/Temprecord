@@ -5,8 +5,6 @@ package com.example.yasiruw.temprecord.services;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
@@ -17,13 +15,12 @@ import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.v4.content.FileProvider;
-import android.util.Log;
 
 import com.example.yasiruw.temprecord.App;
 import com.example.yasiruw.temprecord.R;
 import com.example.yasiruw.temprecord.comms.BaseCMD;
 import com.example.yasiruw.temprecord.comms.MT2Values;
-import com.example.yasiruw.temprecord.comms.QueryStrings;
+import com.example.yasiruw.temprecord.CustomLibraries.Yasiru_Temp_Library;
 import com.example.yasiruw.temprecord.utils.App_Info;
 
 import java.io.File;
@@ -38,8 +35,6 @@ import static com.example.yasiruw.temprecord.CustomLibraries.Yo_Library.Comment_
 import static com.example.yasiruw.temprecord.CustomLibraries.Yo_Library.Convert_UNIX_To_Date;
 import static com.example.yasiruw.temprecord.CustomLibraries.Yo_Library.Convert_UNIX_To_Time;
 import static com.example.yasiruw.temprecord.CustomLibraries.Yo_Library.Error_Log;
-import static com.example.yasiruw.temprecord.services.TXT_FILE.Open_Txt_File_for_Read;
-import static com.example.yasiruw.temprecord.services.TXT_FILE.Read_from_Txt_File;
 
 //======================================//
 //======================================//
@@ -110,7 +105,7 @@ public class PDF
 
     private                 MT2Values.MT2Mem_values mt2Mem_values;
     private                 BaseCMD                 baseCMD;
-    private                 QueryStrings            QS = new QueryStrings();
+    private Yasiru_Temp_Library QS = new Yasiru_Temp_Library();
     private                 App_Info                app_info = new App_Info();
     private                 boolean                 alternate = false;
     private                 int                     inc_val = 0;

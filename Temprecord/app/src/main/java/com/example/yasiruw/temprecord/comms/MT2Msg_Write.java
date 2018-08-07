@@ -3,7 +3,6 @@ package com.example.yasiruw.temprecord.comms;
 
 
 import com.example.yasiruw.temprecord.Types.dataType;
-import com.example.yasiruw.temprecord.utils.CommsChar;
 
 import java.util.ArrayList;
 import java.util.Calendar;

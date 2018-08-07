@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.example.yasiruw.temprecord.comms.BaseCMD;
 import com.example.yasiruw.temprecord.comms.MT2Values;
-import com.example.yasiruw.temprecord.comms.QueryStrings;
+import com.example.yasiruw.temprecord.CustomLibraries.Yasiru_Temp_Library;
 import com.example.yasiruw.temprecord.utils.App_Info;
 
 import org.json.JSONArray;
@@ -23,7 +23,7 @@ public class Json_Data {
 
     private MT2Values.MT2Mem_values mt2Mem_values;
     private BaseCMD baseCMD;
-    private QueryStrings QS = new QueryStrings();
+    private Yasiru_Temp_Library QS = new Yasiru_Temp_Library();
     private App_Info app_info = new App_Info();
     private int viewtype;
     private int numchannel = 0;

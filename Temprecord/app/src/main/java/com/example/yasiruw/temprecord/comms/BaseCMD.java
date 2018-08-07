@@ -1,29 +1,14 @@
 package com.example.yasiruw.temprecord.comms;
 
 import android.content.Context;
-import android.text.format.Time;
-import android.util.Log;
 
 
+import com.example.yasiruw.temprecord.CustomLibraries.Yasiru_Temp_Library;
 import com.example.yasiruw.temprecord.Types.dataType;
-import com.example.yasiruw.temprecord.activities.MainActivity;
-import com.example.yasiruw.temprecord.utils.CHUserData;
-import com.example.yasiruw.temprecord.utils.CommsChar;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
-import java.util.TimeZone;
-import java.util.zip.DataFormatException;
-
-import static android.content.ContentValues.TAG;
-import static android.provider.Settings.System.DATE_FORMAT;
 
 /**
  * Created by Yasiru on 13-Dec-17.
@@ -32,7 +17,7 @@ import static android.provider.Settings.System.DATE_FORMAT;
 public class BaseCMD {
 
     private CommsChar commsChar = new CommsChar();
-    private QueryStrings queryStrings = new QueryStrings();
+    private Yasiru_Temp_Library yasiruTempLibrary = new Yasiru_Temp_Library();
 
     public boolean ImperialUnit;
     public boolean LoopOverwrite;
@@ -156,7 +141,7 @@ public class BaseCMD {
                 firmware = msg.firmware.ToString();
                 returndata.add(msg.type.getGenString());
                 returndata.add(msg.type.getTyString());
-                model = msg.type.getTyString();
+                model = msg.type.getVarientString();
                 returndata.add(msg.type.getVarientString());
                 returndata.add(msg.state.ToString());
                 returndata.add(msg.battery.ToString());
@@ -207,13 +192,13 @@ public class BaseCMD {
 
             isLoopOverwriteOverFlow = msg.mt2_flashFlags.NotOverFlowed();
 
-            returndata.add(queryStrings.YesorNo(msg.mt2_loggerFlags.startDateTime.getValue()));
-            returndata.add(queryStrings.YesorNo(msg.mt2_loggerFlags.buttonStart.getValue()));
-            returndata.add(queryStrings.Startby(msg.mt2_loggerFlags));
-            returndata.add(queryStrings.YesorNo(msg.mt2_loggerFlags.buttonStop.getValue()));
-            returndata.add(queryStrings.Stopby(msg.mt2_loggerFlags));
-            returndata.add(queryStrings.YesorNo(msg.mt2_loggerFlags.fullStop.getValue()));
-            returndata.add(queryStrings.YesorNo(msg.mt2_loggerFlags.sampleStop.getValue()));
+            returndata.add(yasiruTempLibrary.YesorNo(msg.mt2_loggerFlags.startDateTime.getValue()));
+            returndata.add(yasiruTempLibrary.YesorNo(msg.mt2_loggerFlags.buttonStart.getValue()));
+            returndata.add(yasiruTempLibrary.Startby(msg.mt2_loggerFlags));
+            returndata.add(yasiruTempLibrary.YesorNo(msg.mt2_loggerFlags.buttonStop.getValue()));
+            returndata.add(yasiruTempLibrary.Stopby(msg.mt2_loggerFlags));
+            returndata.add(yasiruTempLibrary.YesorNo(msg.mt2_loggerFlags.fullStop.getValue()));
+            returndata.add(yasiruTempLibrary.YesorNo(msg.mt2_loggerFlags.sampleStop.getValue()));
             returndata.add(msg.uval32.getValue()+"");//8
             numberofsamples = msg.uval32.getValue();
 
@@ -277,13 +262,13 @@ public class BaseCMD {
             returndata.add(msg.totalSamples.getValue()+"");
             returndata.add(msg.totalLoggedSamples.getValue()+"");//5
 
-            returndata.add(queryStrings.YesorNo(msg.mt2_userData.mt2_userFlags.LoopOverWrite()));
-            returndata.add(queryStrings.YesorNo(msg.mt2_userData.mt2_userFlags.LCDMenu()));
-            returndata.add(queryStrings.YesorNo(msg.mt2_userData.mt2_userFlags.AllowTags()));
-            returndata.add(queryStrings.YesorNo(msg.mt2_userData.mt2_userFlags.ButtonReuse()));
-            returndata.add(queryStrings.YesorNo(msg.mt2_userData.mt2_userFlags.PasswordEnabled()));
-            returndata.add(queryStrings.YesorNo(msg.mt2_userData.mt2_userFlags.StoponDate()));
-            returndata.add(queryStrings.YesorNo(msg.mt2_userData.mt2_userFlags.ExtendedMenu()));//12
+            returndata.add(yasiruTempLibrary.YesorNo(msg.mt2_userData.mt2_userFlags.LoopOverWrite()));
+            returndata.add(yasiruTempLibrary.YesorNo(msg.mt2_userData.mt2_userFlags.LCDMenu()));
+            returndata.add(yasiruTempLibrary.YesorNo(msg.mt2_userData.mt2_userFlags.AllowTags()));
+            returndata.add(yasiruTempLibrary.YesorNo(msg.mt2_userData.mt2_userFlags.ButtonReuse()));
+            returndata.add(yasiruTempLibrary.YesorNo(msg.mt2_userData.mt2_userFlags.PasswordEnabled()));
+            returndata.add(yasiruTempLibrary.YesorNo(msg.mt2_userData.mt2_userFlags.StoponDate()));
+            returndata.add(yasiruTempLibrary.YesorNo(msg.mt2_userData.mt2_userFlags.ExtendedMenu()));//12
 
             ImperialUnit = msg.mt2_userData.mt2_userFlags.ImperialUnit();
             LoopOverwrite = msg.mt2_userData.mt2_userFlags.LoopOverWrite();
@@ -299,9 +284,9 @@ public class BaseCMD {
             StoponDateTime = msg.mt2_userData.mt2_userFlags.StoponDate();
             StoponSample = msg.mt2_userData.mt2_userFlags.StoponSample();
             energysave = msg.mt2_userData.mt2_userFlags.EnergySave();
-            returndata.add(queryStrings.YesorNo(msg.mt2_userData.mt2_chUser.CHEnable()));
+            returndata.add(yasiruTempLibrary.YesorNo(msg.mt2_userData.mt2_chUser.CHEnable()));
             ch1Enable = msg.mt2_userData.mt2_chUser.CHEnable();
-            returndata.add(queryStrings.YesorNo(msg.mt2_userData.mt2_chUser.CHLimits()));
+            returndata.add(yasiruTempLibrary.YesorNo(msg.mt2_userData.mt2_chUser.CHLimits()));
             ch1limitEnabled = msg.mt2_userData.mt2_chUser.CHLimits();
             returndata.add((double)(msg.mt2_userData.mt2_chUser.alarm_Hi.getValue())/10+"");
             ch1Hi = msg.mt2_userData.mt2_chUser.alarm_Hi.getValue();
@@ -309,9 +294,9 @@ public class BaseCMD {
             ch1Lo = msg.mt2_userData.mt2_chUser.alarm_Lo.getValue();
             returndata.add(msg.mt2_userData.mt2_chUser.delay.value+"");//17
 
-            returndata.add(queryStrings.YesorNo(msg.mt2_userData.mt2_chUser2.CHEnable()));
+            returndata.add(yasiruTempLibrary.YesorNo(msg.mt2_userData.mt2_chUser2.CHEnable()));
             ch2Enable = msg.mt2_userData.mt2_chUser2.CHEnable();
-            returndata.add(queryStrings.YesorNo(msg.mt2_userData.mt2_chUser2.CHLimits()));
+            returndata.add(yasiruTempLibrary.YesorNo(msg.mt2_userData.mt2_chUser2.CHLimits()));
             ch2limitEnabled = msg.mt2_userData.mt2_chUser2.CHLimits();
             returndata.add((double)(msg.mt2_userData.mt2_chUser2.alarm_Hi.getValue())/10+"");
             ch2Hi = msg.mt2_userData.mt2_chUser2.alarm_Hi.getValue();
@@ -319,11 +304,11 @@ public class BaseCMD {
             ch2Lo = msg.mt2_userData.mt2_chUser2.alarm_Lo.getValue();
             returndata.add(msg.mt2_userData.mt2_chUser2.delay.value+"");//22
 
-            returndata.add(queryStrings.Period(msg.mt2_userData.samplePeriod.getValue()*1000));
+            returndata.add(yasiruTempLibrary.Period(msg.mt2_userData.samplePeriod.getValue()*1000));
             samplePeriod = msg.mt2_userData.samplePeriod.getValue();
-            returndata.add(queryStrings.Period(msg.mt2_userData.startDelay.getValue()*1000));
+            returndata.add(yasiruTempLibrary.Period(msg.mt2_userData.startDelay.getValue()*1000));
             startDelay = msg.mt2_userData.startDelay.getValue();
-            returndata.add(queryStrings.Period(msg.mt2_userData.startdatetime.getValue()*1000));//25
+            returndata.add(yasiruTempLibrary.Period(msg.mt2_userData.startdatetime.getValue()*1000));//25
             returndata.add(msg.mt2_userData.stoponsamples.getValue()+"");
             numberstopon = msg.mt2_userData.stoponsamples.getValue();
             startdatetime = msg.mt2_userData.startdatetime.getValue();
@@ -573,7 +558,7 @@ public class BaseCMD {
         classMessages.MT2_USERFlash msg = new classMessages.MT2_USERFlash();
 
 
-        msg.mt2_userData.timestartdadtetime.value = queryStrings.toCalendar(date);
+        msg.mt2_userData.timestartdadtetime.value = yasiruTempLibrary.toCalendar(date);
         msg.mt2_userData.timestartdadtetime.ToByte(data);
 
         int i = 0;
@@ -592,7 +577,7 @@ public class BaseCMD {
         date.add(commsChar.CMD_RTC);
         date.add(commsChar.RTC_SET);
 
-        Calendar cal = queryStrings.toCalendar(new Date());
+        Calendar cal = yasiruTempLibrary.toCalendar(new Date());
 
         new dataType.dateRtc(cal).ToByte(date);
 
@@ -629,7 +614,7 @@ public class BaseCMD {
 
     public byte[] WritePassword(String password){
         ArrayList<Byte> date = new ArrayList<>();
-        byte pass[] =  queryStrings.md5(password);
+        byte pass[] =  yasiruTempLibrary.md5(password);
         //pass = new byte[]{(byte)0xEE, (byte)0xDC,(byte) 0xFB, 0x31, (byte)0xC4, (byte)0x9B, 0x19, (byte)0xF9};
 
         date.add((byte)0x08);

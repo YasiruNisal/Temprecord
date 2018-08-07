@@ -1,11 +1,6 @@
 package com.example.yasiruw.temprecord.comms;
 
 
-import android.util.Log;
-
-import com.example.yasiruw.temprecord.utils.CommsChar;
-
-
 /**
  * Created by Yasiru on 20/02/2018.
  */

@@ -6,7 +6,6 @@ import com.example.yasiruw.temprecord.Types.DataString;
 import com.example.yasiruw.temprecord.Types.baseType;
 import com.example.yasiruw.temprecord.Types.sVal16_2;
 import com.example.yasiruw.temprecord.Types.stringAscii;
-import com.example.yasiruw.temprecord.utils.HexData;
 
 import java.util.ArrayList;
 

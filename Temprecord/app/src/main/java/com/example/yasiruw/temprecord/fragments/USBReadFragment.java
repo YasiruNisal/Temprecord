@@ -10,21 +10,13 @@ import android.bluetooth.BluetoothDevice;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.AssetManager;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
-import android.os.Message;
-import android.os.SystemClock;
 import android.support.annotation.RequiresApi;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -46,38 +38,27 @@ import com.example.yasiruw.temprecord.App;
 import com.example.yasiruw.temprecord.R;
 import com.example.yasiruw.temprecord.activities.GraphAcivity;
 import com.example.yasiruw.temprecord.activities.MainActivity;
-import com.example.yasiruw.temprecord.activities.SavedFileActivity;
-import com.example.yasiruw.temprecord.comms.BLEFragmentI;
 import com.example.yasiruw.temprecord.comms.BaseCMD;
 import com.example.yasiruw.temprecord.comms.CommsSerial;
 import com.example.yasiruw.temprecord.comms.MT2Msg_Read;
 import com.example.yasiruw.temprecord.comms.MT2Values;
-import com.example.yasiruw.temprecord.comms.QueryStrings;
+import com.example.yasiruw.temprecord.CustomLibraries.Yasiru_Temp_Library;
 import com.example.yasiruw.temprecord.comms.USBFragmentI;
 import com.example.yasiruw.temprecord.services.Json_Data;
 import com.example.yasiruw.temprecord.services.PDF;
 import com.example.yasiruw.temprecord.services.StoreKeyService;
 import com.example.yasiruw.temprecord.services.TXT_FILE;
-import com.example.yasiruw.temprecord.services.USB;
-import com.example.yasiruw.temprecord.utils.CommsChar;
-import com.example.yasiruw.temprecord.utils.HexData;
-import com.example.yasiruw.temprecord.utils.Screenshot;
+import com.example.yasiruw.temprecord.comms.CommsChar;
+import com.example.yasiruw.temprecord.comms.HexData;
+import com.example.yasiruw.temprecord.services.Screenshot;
 import com.github.mikephil.charting.charts.LineChart;
 
-import org.w3c.dom.Text;
-
-import java.io.File;
-import java.io.FileOutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
-
-import static android.content.ContentValues.TAG;
-import static com.example.yasiruw.temprecord.CustomLibraries.Yo_Library.Update_UI;
 
 public class USBReadFragment extends Fragment {
 
@@ -204,7 +185,7 @@ public class USBReadFragment extends Fragment {
     CommsSerial commsSerial = new CommsSerial();
     MT2Values.MT2Mem_values mt2Mem_values = new MT2Values.MT2Mem_values();
     MT2Msg_Read mt2Msg_read;
-    QueryStrings QS = new QueryStrings();
+    Yasiru_Temp_Library QS = new Yasiru_Temp_Library();
     CommsChar commsChar = new CommsChar();
     Json_Data json_data;
     TXT_FILE txt_file = new TXT_FILE();
@@ -1042,7 +1023,11 @@ public class USBReadFragment extends Fragment {
         // start progress bar with initial progress 10
         ///////////////////task.execute(10,5,null);
         progresspercentage = 0;
-        task.execute(5);
+        if(Build.VERSION.SDK_INT >= 11/*HONEYCOMB*/) {
+            task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        } else {
+            task.execute();
+        }
 
     }
 

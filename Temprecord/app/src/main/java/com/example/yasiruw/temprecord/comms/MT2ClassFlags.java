@@ -14,23 +14,23 @@ public class MT2ClassFlags {
 
     public static class MT2_LoggerFlags extends baseType {
 
-        bitBool safeRange;
-        bitBool batteryLow;
-        bitBool batteryExpired;
-        bitBool startupError;
-        bitBool rtcRunning;
-        bitBool comRequest;
-        bitBool comComplete;
-        bitBool startDateTime;
+        public bitBool safeRange;
+        public bitBool batteryLow;
+        public bitBool batteryExpired;
+        public bitBool startupError;
+        public bitBool rtcRunning;
+        public bitBool comRequest;
+        public bitBool comComplete;
+        public bitBool startDateTime;
 
-        bitBool buttonStart;
-        bitBool softwareStart;
-        bitBool buttonStop;
-        bitBool softwareStop;
-        bitBool fullStop;
-        bitBool sampleStop;
-        bitBool pdfStop;
-        bitBool spare;
+        public bitBool buttonStart;
+        public bitBool softwareStart;
+        public bitBool buttonStop;
+        public bitBool softwareStop;
+        public bitBool fullStop;
+        public bitBool sampleStop;
+        public bitBool pdfStop;
+        public bitBool spare;
 
         public MT2_LoggerFlags(){
             super(ByteSize);

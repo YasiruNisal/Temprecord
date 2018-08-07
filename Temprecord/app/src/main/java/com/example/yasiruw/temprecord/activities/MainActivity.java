@@ -2,7 +2,6 @@ package com.example.yasiruw.temprecord.activities;
 
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
@@ -17,18 +16,14 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -37,12 +32,12 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.yasiruw.temprecord.CustomLibraries.Temprecord_BLE;
+import com.example.yasiruw.temprecord.services.Temprecord_BLE;
 import com.example.yasiruw.temprecord.R;
 import com.example.yasiruw.temprecord.comms.BLEFragmentI;
 import com.example.yasiruw.temprecord.comms.BaseCMD;
 import com.example.yasiruw.temprecord.comms.CommsSerial;
-import com.example.yasiruw.temprecord.comms.QueryStrings;
+import com.example.yasiruw.temprecord.CustomLibraries.Yasiru_Temp_Library;
 import com.example.yasiruw.temprecord.comms.USBFragmentI;
 import com.example.yasiruw.temprecord.fragments.BLEParameterFragment;
 import com.example.yasiruw.temprecord.fragments.BLEQueryFragment;
@@ -53,8 +48,8 @@ import com.example.yasiruw.temprecord.fragments.USBReadFragment;
 import com.example.yasiruw.temprecord.services.BluetoothLeService;
 import com.example.yasiruw.temprecord.services.USB;
 import com.example.yasiruw.temprecord.utils.GattAttributes;
-import com.example.yasiruw.temprecord.utils.HexData;
-import com.example.yasiruw.temprecord.CustomLibraries.LeDeviceListAdapter;
+import com.example.yasiruw.temprecord.comms.HexData;
+import com.example.yasiruw.temprecord.services.LeDeviceListAdapter;
 
 
 import java.util.ArrayList;
@@ -84,7 +79,7 @@ public class MainActivity extends Activity implements
     private HexData hexData = new HexData();
     private byte[] extraData = new byte[100];
     private BaseCMD baseCMD = new BaseCMD();
-    private QueryStrings QS = new QueryStrings();
+    private Yasiru_Temp_Library QS = new Yasiru_Temp_Library();
     private CommsSerial commsSerial = new CommsSerial();
     private Temprecord_BLE temprecord_ble;
     private ArrayList < String > Q_data = new ArrayList < String > ();
@@ -702,8 +697,6 @@ public class MainActivity extends Activity implements
     //Sending the required data to the active fragment by calling the CommsI function in each
     //fragment
     //=============================================================================================//
-
-
     public void send_to_active_Fragment(byte[] data) {
 
         switch (FragmentNumber) {
@@ -1105,11 +1098,19 @@ public class MainActivity extends Activity implements
     }
 
     public void Read_Action(){
-        Update_UI_state(3);
-        m_bundle_data.putString(EXTRAS_MESSAGE, "6"); //put string, int, etc in bundle with a key value
-        usbReadFragment = new USBReadFragment().GET_INSTANCE(m_bundle_data); //Use bundle to pass data
-        FragmentNumber = 5;
-        getFragmentManager().beginTransaction().replace(R.id.Fragment_Container, usbReadFragment).commit();
+        if (mUSBConnected) {
+            Update_UI_state(3);
+            m_bundle_data.putString(EXTRAS_MESSAGE, "6"); //put string, int, etc in bundle with a key value
+            usbReadFragment = new USBReadFragment().GET_INSTANCE(m_bundle_data); //Use bundle to pass data
+            FragmentNumber = 5;
+            getFragmentManager().beginTransaction().replace(R.id.Fragment_Container, usbReadFragment).commit();
+        } else if(mConnected) {
+            Update_UI_state(3);
+            m_bundle_data.putString(EXTRAS_MESSAGE, "6"); //put string, int, etc in bundle with a key value
+            bleReadFragment = new BLEReadFragment().GET_INSTANCE(m_bundle_data); //Use bundle to pass data
+            FragmentNumber = 2;
+            getFragmentManager().beginTransaction().replace(R.id.Fragment_Container, bleReadFragment).commit();
+        }
     }
 
 }

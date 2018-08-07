@@ -8,7 +8,6 @@ import com.example.yasiruw.temprecord.Types.loggerType;
 import com.example.yasiruw.temprecord.Types.uVal16;
 import com.example.yasiruw.temprecord.Types.uVal32;
 import com.example.yasiruw.temprecord.Types.u_int8;
-import com.example.yasiruw.temprecord.utils.HexData;
 
 import java.util.ArrayList;
 

@@ -2,14 +2,13 @@ package com.example.yasiruw.temprecord.Types;
 
 import android.util.Log;
 
-import com.example.yasiruw.temprecord.comms.QueryStrings;
+import com.example.yasiruw.temprecord.App;
+import com.example.yasiruw.temprecord.CustomLibraries.Yasiru_Temp_Library;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.TimeZone;
 
-import static android.content.ContentValues.TAG;
 
 /**
  * Created by Yasiru on 23/02/2018.
@@ -17,7 +16,7 @@ import static android.content.ContentValues.TAG;
 
 public class dataType {
 
-    static QueryStrings QS = new QueryStrings();
+    public static Yasiru_Temp_Library QS = new Yasiru_Temp_Library();
 
 
     public static class dateRtc extends baseType {
@@ -58,7 +57,7 @@ public class dataType {
             for (byte b1 : b){
                 sb.append(String.format("%02X ", b1));
             }
-            //Log.d("HEX11", sb.toString());
+            Log.d("HEX11", sb.toString());
         }
 
         public dateRtc(ArrayList<Byte> data){
@@ -84,12 +83,12 @@ public class dataType {
 //                    value.setTimeZone(utcZone);
                     //TimeZone.setDefault(TimeZone.getDefault());
                     value.set(year, month, data.get(2), data.get(3), data.get(4), data.get(5));
-
-                    //BytetoHex2(data);
+//                    Log.d("HEX11", year +" === " + data.get(1) + " " + value.getTime());
+//                    BytetoHex2(data);
 
                     //QS.UTCtoLocal(value.getTime().getTime()/1000L);
                     //QS.LocaltoUTC();
-                    QS.UTCtoLocal(value.getTime().getTime());
+                    //QS.UTCtoLocal(value.getTime().getTime());
 
 
 //                }
@@ -131,7 +130,7 @@ public class dataType {
             data.add((byte)(value.get(Calendar.HOUR)));
             data.add((byte)(value.get(Calendar.MINUTE)));
             data.add((byte)(value.get(Calendar.SECOND)));
-            BytetoHex2(data);
+            //BytetoHex2(data);
 //            Log.d("******3", " " + (data.get(2)));
 //                    Log.d("******3", " " + data.get(3));
 //                    Log.d("******3", " " + data.get(4));

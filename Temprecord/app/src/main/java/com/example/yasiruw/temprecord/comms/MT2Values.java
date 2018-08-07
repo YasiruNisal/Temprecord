@@ -1,17 +1,13 @@
 package com.example.yasiruw.temprecord.comms;
 
-import android.util.Log;
 
-
+import com.example.yasiruw.temprecord.CustomLibraries.Yasiru_Temp_Library;
 import com.example.yasiruw.temprecord.Types.baseType;
-import com.example.yasiruw.temprecord.utils.CommsChar;
 
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-
-import static android.content.ContentValues.TAG;
 
 /**
  * Created by Yasiru on 7/03/2018.
@@ -20,7 +16,7 @@ import static android.content.ContentValues.TAG;
 public class MT2Values  {
 
     private CommsChar commsChar = new CommsChar();
-    private static QueryStrings queryStrings = new QueryStrings();
+    private static Yasiru_Temp_Library yasiruTempLibrary = new Yasiru_Temp_Library();
 
     public static class MT2Mem_values extends baseType.baseClass {
 
@@ -139,7 +135,7 @@ public class MT2Values  {
                     }
                     //Log.i("READ" , " Sample size " + sample);
                     sample++;
-                    Calendar calendar = queryStrings.toCalendar(sampleDateTime);
+                    Calendar calendar = yasiruTempLibrary.toCalendar(sampleDateTime);
                     calendar.add(Calendar.SECOND, samplePeriod);
                     sampleDateTime = calendar.getTime();
                 }
@@ -165,7 +161,7 @@ public class MT2Values  {
                     }
 
                     sample++;
-                    Calendar calendar = queryStrings.toCalendar(sampleDateTime);
+                    Calendar calendar = yasiruTempLibrary.toCalendar(sampleDateTime);
                     calendar.add(Calendar.SECOND, samplePeriod);
                     sampleDateTime = calendar.getTime();
 
@@ -191,7 +187,7 @@ public class MT2Values  {
                     }
 
                     sample++;
-                    Calendar calendar = queryStrings.toCalendar(sampleDateTime);
+                    Calendar calendar = yasiruTempLibrary.toCalendar(sampleDateTime);
                     calendar.add(Calendar.SECOND, samplePeriod);
                     sampleDateTime = calendar.getTime();
                 }
@@ -400,16 +396,16 @@ public class MT2Values  {
             AbovePercent = AboveLimit / (double)totalCount * 100.0;
             BelowPercent = BelowLimit / (double)totalCount * 100.0;
 
-            AboveTime = queryStrings.Period(samplePeriod * AboveLimit*1000);
-            BelowTime = queryStrings.Period(samplePeriod * BelowLimit*1000);
+            AboveTime = yasiruTempLibrary.Period(samplePeriod * AboveLimit*1000);
+            BelowTime = yasiruTempLibrary.Period(samplePeriod * BelowLimit*1000);
 
             TotalLimit = AboveLimit + BelowLimit;
             TotalPercent = AbovePercent + BelowPercent;
-            TotalTime = queryStrings.Period(samplePeriod * TotalLimit);
+            TotalTime = yasiruTempLibrary.Period(samplePeriod * TotalLimit);
 
             TotalLimitWithin = totalCount - TotalLimit;
             TotalPercentWithin = 100.0 - TotalPercent;
-            TotalTimeWithin = queryStrings.Period(samplePeriod * TotalLimitWithin*1000);
+            TotalTimeWithin = yasiruTempLibrary.Period(samplePeriod * TotalLimitWithin*1000);
 
             //Log.d("____++++++++++++_______", TotalTimeWithin +" "+ samplePeriod+ " "+TotalLimitWithin );
         }
@@ -577,7 +573,7 @@ public class MT2Values  {
         /// <param name="time">The timestamp of the new data logged value</param>
         public void Update(int value, int number, Date time)
         {
-            double kelv = ((value / 10.0) + queryStrings.KELVIN);
+            double kelv = ((value / 10.0) + yasiruTempLibrary.KELVIN);
             kelv = Math.exp(-DELTAH / (R * kelv));
             MKTValue += kelv;
             //Call the base update to update the inherited base class values
@@ -595,7 +591,7 @@ public class MT2Values  {
             MKTValue = MKTValue / totalCount;
             MKTValue = Math.log(MKTValue) * -1;
             MKTValue = ((DELTAH / R) / MKTValue); //10 / MKTValue;
-            MKTValue -= QueryStrings.KELVIN;
+            MKTValue -= Yasiru_Temp_Library.KELVIN;
 
             //Call the base finalize to update and finalize the inherited base class values
             super.Finalize(totalCount, samplePeriod);

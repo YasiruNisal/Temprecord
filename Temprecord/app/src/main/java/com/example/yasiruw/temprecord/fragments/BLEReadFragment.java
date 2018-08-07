@@ -4,19 +4,16 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothGattCharacteristic;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.app.Fragment;
-import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -43,18 +40,13 @@ import com.example.yasiruw.temprecord.comms.BaseCMD;
 import com.example.yasiruw.temprecord.comms.CommsSerial;
 import com.example.yasiruw.temprecord.comms.MT2Msg_Read;
 import com.example.yasiruw.temprecord.comms.MT2Values;
-import com.example.yasiruw.temprecord.comms.QueryStrings;
-import com.example.yasiruw.temprecord.services.BluetoothLeService;
+import com.example.yasiruw.temprecord.CustomLibraries.Yasiru_Temp_Library;
 import com.example.yasiruw.temprecord.services.Json_Data;
-import com.example.yasiruw.temprecord.services.PDF;
 import com.example.yasiruw.temprecord.services.StoreKeyService;
-import com.example.yasiruw.temprecord.utils.CommsChar;
-import com.example.yasiruw.temprecord.utils.HexData;
-import com.example.yasiruw.temprecord.utils.Screenshot;
+import com.example.yasiruw.temprecord.comms.CommsChar;
+import com.example.yasiruw.temprecord.comms.HexData;
+import com.example.yasiruw.temprecord.services.Screenshot;
 import com.github.mikephil.charting.charts.LineChart;
-
-import org.json.JSONArray;
-import org.json.JSONException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -64,7 +56,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static android.content.ContentValues.TAG;
 import static android.graphics.Color.GREEN;
 import static android.graphics.Color.RED;
 
@@ -146,6 +137,9 @@ public class BLEReadFragment extends Fragment {
     private ImageButton zoomin1;
     private ImageButton zoomout1;
 
+    private TextView limitstatus;
+    private ImageView limiticon;
+
     //==========================LoopOverWrite READ======
     int address;
     int bytesToRead;
@@ -191,14 +185,14 @@ public class BLEReadFragment extends Fragment {
 
     private String BLE_Address = "";
 
-
+    ProgressTask task;
 
     HexData hexData = new HexData();
     BaseCMD baseCMD =  new BaseCMD();
     CommsSerial commsSerial = new CommsSerial();
     MT2Values.MT2Mem_values mt2Mem_values = new MT2Values.MT2Mem_values();
     MT2Msg_Read mt2Msg_read;
-    QueryStrings QS = new QueryStrings();
+    Yasiru_Temp_Library QS = new Yasiru_Temp_Library();
     CommsChar commsChar = new CommsChar();
     private List<BluetoothDevice> mDevices = new ArrayList<>();
     private int currentDevice = 0;
@@ -284,7 +278,8 @@ public class BLEReadFragment extends Fragment {
 
         Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "Roboto-Light.ttf");
         Typeface font1 = Typeface.createFromAsset(getActivity().getAssets(), "Roboto-Medium.ttf");
-
+        limitstatus = view.findViewById(R.id.limitstatus);
+        limiticon = view.findViewById(R.id.limiticon);
 
 //        m.setText(message);
         // Sets up UI references.
@@ -380,8 +375,9 @@ public class BLEReadFragment extends Fragment {
         Graph1 = (WebView) view.findViewById(R.id.graphone);
 
 
-
-        progressDialoge();
+        task = new ProgressTask();
+        showProgress();
+        //progressDialoge();
 
         bleFragmentI.onBLEWrite(HexData.BLE_ACK);
         bleFragmentI.onBLERead();
@@ -439,10 +435,10 @@ public class BLEReadFragment extends Fragment {
     public void CommsI(final byte[] in){
 
 
-        Runnable runnableCode = new Runnable() {
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-            @Override
-            public void run() {
+//        Runnable runnableCode = new Runnable() {
+//            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+//            @Override
+//            public void run() {
                 byte[] query;
 
                 if (storeKeyService.getDefaults("SOUND", getActivity().getApplication()) != null && storeKeyService.getDefaults("SOUND", getActivity().getApplication()).equals("1"))
@@ -467,7 +463,7 @@ public class BLEReadFragment extends Fragment {
                         break;
                     case 1:
                         if(frommenu){
-                            progressDialoge();
+                            //progressDialoge();
                             progresspercentage = 0;
                         }
                         //enters here first
@@ -634,7 +630,7 @@ public class BLEReadFragment extends Fragment {
                             }else
                                 SetUI();
                             progresspercentage = 100;
-                            progress.cancel();
+                            stopProgress();
                             bleFragmentI.onBLEWrite(HexData.BLE_ACK);
                             bleFragmentI.onBLERead();
                             state = 29;
@@ -668,7 +664,7 @@ public class BLEReadFragment extends Fragment {
                             }else
                                 SetUI();
                             progresspercentage = 100;
-                            progress.cancel();
+                            stopProgress();
                         }
                         bleFragmentI.onBLEWrite(commsSerial.WriteByte(mt2Msg_read.Read_into_writeByte(false)));
                         bleFragmentI.onBLERead();
@@ -704,7 +700,7 @@ public class BLEReadFragment extends Fragment {
                             }else
                                 SetUI();
                             progresspercentage = 100;
-                            progress.cancel();
+                            stopProgress();
                         }
                         bleFragmentI.onBLEWrite(commsSerial.WriteByte(mt2Msg_read.Read_into_writeByte(false)));
                         bleFragmentI.onBLERead();
@@ -715,8 +711,8 @@ public class BLEReadFragment extends Fragment {
 
 
                 }
-            }
-        };handler1.postDelayed(runnableCode,1);
+//            }
+//        };handler1.postDelayed(runnableCode,1);
     }
 
 
@@ -749,7 +745,6 @@ public class BLEReadFragment extends Fragment {
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void SetUI(){
         serialno.setText(Q_data.get(0));
         //firmware.setText(Q_data.get(1));
@@ -763,6 +758,14 @@ public class BLEReadFragment extends Fragment {
         }else if(Double.parseDouble(Q_data.get(6)) > 0){
             bat.setBackgroundResource(R.drawable.blow);
 
+        }
+
+        if(mt2Mem_values.ch0Stats.TotalLimit == 0 && mt2Mem_values.ch1Stats.TotalLimit == 0){//drawing the tick if within limits
+            limitstatus.setText(App.getContext().getString(R.string.within_limits));
+            limiticon.setBackgroundResource(R.drawable.greentick);
+        }else{//drawing the warning sign if out of limits
+            limitstatus.setText(App.getContext().getString(R.string.outof_limits));
+            limiticon.setBackgroundResource(R.drawable.redwarning);
         }
 
         //model.setText(QS.GetGeneration(Integer.parseInt(Q_data.get(2))));
@@ -941,44 +944,81 @@ public class BLEReadFragment extends Fragment {
                 .show();
     }
 
-    public void progressDialoge(){
+    private class ProgressTask extends AsyncTask<Integer,Integer,Void> {
 
-        progress=new ProgressDialog(getActivity());
-        progress.setMessage(getString(R.string.ReadLogger));
-        progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progress.setIndeterminate(false);
-        progress.setProgress(0);
-        progress.setCancelable(false);
-        progress.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.Abort), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                bleFragmentI.onBLEWrite(HexData.BLE_ACK);
-                bleFragmentI.onBLERead();
-                state =29;
-                BuildDialogue("Read Aborted", "Entries might be empty!\nGo back to menu and reconnect",1);
+        protected void onPreExecute() {
+            super.onPreExecute(); ///////???????
 
-                dialog.dismiss();
-            }
-        });
-        progress.setProgressNumberFormat("");
-        progress.setMax(PROGRESSBAR_MAX);
-        progress.show();
-
-
-        final Thread t = new Thread() {
-            @Override
-            public void run() {
-                int jumpTime = 0;
-
-                while(progresspercentage < PROGRESSBAR_MAX) {
-                    progress.setProgress(progresspercentage);
+            progress=new ProgressDialog(getActivity());
+            progress.setMessage(getString(R.string.ReadLogger));
+            progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            progress.setIndeterminate(false);
+            progress.setProgress(0);
+            progress.setCancelable(false);
+            progress.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.Abort), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    bleFragmentI.onBLEWrite(HexData.BLE_ACK);
+                    bleFragmentI.onBLERead();
+                    state =29;
+                    BuildDialogue(getString(R.string.ReadAbort), getString(R.string.Go_back_and_reconnect),1);
+                    //dialog.dismiss();
+                    stopProgress();
                 }
+            });
+            progress.setProgressNumberFormat("");
+            progress.setMax(PROGRESSBAR_MAX);
+            progress.show();
+        }
+        protected void onCancelled() {
+
+            progress.dismiss();
+            //stopProgress();
+
+        }
+        protected Void doInBackground(Integer... params) {
+
+
+            while(progresspercentage < PROGRESSBAR_MAX) {
+                try {
+                    Thread.sleep(300);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                progress.setProgress(progresspercentage);
             }
-        };
-        t.start();
+            return null;
+        }
+        protected void onProgressUpdate(Integer... values) {
+
+
+        }
+        protected void onPostExecute(Void result) {
+            progresspercentage = 0;
+            progress.dismiss();
+            // async task finished
+
+        }
+
     }
 
+    public void showProgress() {
+        ////////////////////task = new ProgressTask();
+        // start progress bar with initial progress 10
+        ///////////////////task.execute(10,5,null);
+        progresspercentage = 0;
+        if(Build.VERSION.SDK_INT >= 11/*HONEYCOMB*/) {
+            task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        } else {
+            task.execute();
+        }
 
+    }
+
+    public void stopProgress() {
+        progress.dismiss();
+        task.cancel(true);
+    }
 
 
 }

@@ -21,7 +21,6 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -47,13 +46,13 @@ import com.example.yasiruw.temprecord.comms.BaseCMD;
 import com.example.yasiruw.temprecord.comms.CommsSerial;
 import com.example.yasiruw.temprecord.comms.MT2Msg_Read;
 import com.example.yasiruw.temprecord.comms.MT2Msg_Write;
-import com.example.yasiruw.temprecord.comms.QueryStrings;
+import com.example.yasiruw.temprecord.CustomLibraries.Yasiru_Temp_Library;
 import com.example.yasiruw.temprecord.services.StoreKeyService;
 import com.example.yasiruw.temprecord.services.TXT_FILE;
-import com.example.yasiruw.temprecord.utils.CHUserData;
-import com.example.yasiruw.temprecord.utils.CommsChar;
-import com.example.yasiruw.temprecord.utils.HexData;
-import com.example.yasiruw.temprecord.utils.Screenshot;
+import com.example.yasiruw.temprecord.comms.CHUserData;
+import com.example.yasiruw.temprecord.comms.CommsChar;
+import com.example.yasiruw.temprecord.comms.HexData;
+import com.example.yasiruw.temprecord.services.Screenshot;
 import com.ikovac.timepickerwithseconds.MyTimePickerDialog;
 import com.ikovac.timepickerwithseconds.TimePicker;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
@@ -65,7 +64,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
-import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
@@ -170,7 +168,7 @@ public class BLEParameterFragment extends Fragment implements com.wdullaer.mater
     CommsSerial commsSerial = new CommsSerial();
     MT2Msg_Read mt2Msg_read;
     MT2Msg_Write mt2Msg_write;
-    QueryStrings QS = new QueryStrings();
+    Yasiru_Temp_Library QS = new Yasiru_Temp_Library();
     CommsChar commsChar = new CommsChar();
     TXT_FILE txt_file = new TXT_FILE();
     private List<BluetoothDevice> mDevices = new ArrayList<>();
@@ -257,7 +255,7 @@ public class BLEParameterFragment extends Fragment implements com.wdullaer.mater
         getActivity().getActionBar().setBackgroundDrawable(new ColorDrawable(0xFFFFFFFF));
         getActivity().getActionBar().setIcon(getResources().getDrawable(R.drawable.ic_parametersc));
 
-        QS = new QueryStrings();
+        QS = new Yasiru_Temp_Library();
         AssetManager am = getActivity().getAssets();
 
 

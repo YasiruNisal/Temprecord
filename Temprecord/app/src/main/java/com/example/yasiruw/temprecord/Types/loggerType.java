@@ -1,11 +1,8 @@
 package com.example.yasiruw.temprecord.Types;
 
-import android.util.Log;
 
+import com.example.yasiruw.temprecord.comms.CommsChar;
 
-import com.example.yasiruw.temprecord.utils.CommsChar;
-
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 

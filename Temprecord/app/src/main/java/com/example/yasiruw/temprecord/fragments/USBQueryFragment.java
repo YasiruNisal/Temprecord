@@ -27,7 +27,6 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -40,17 +39,16 @@ import com.example.yasiruw.temprecord.activities.MainActivity;
 import com.example.yasiruw.temprecord.comms.BaseCMD;
 import com.example.yasiruw.temprecord.comms.CommsSerial;
 import com.example.yasiruw.temprecord.comms.MT2Msg_Read;
-import com.example.yasiruw.temprecord.comms.QueryStrings;
+import com.example.yasiruw.temprecord.CustomLibraries.Yasiru_Temp_Library;
 import com.example.yasiruw.temprecord.comms.USBFragmentI;
 import com.example.yasiruw.temprecord.services.StoreKeyService;
-import com.example.yasiruw.temprecord.utils.CommsChar;
-import com.example.yasiruw.temprecord.utils.HexData;
-import com.example.yasiruw.temprecord.utils.Screenshot;
+import com.example.yasiruw.temprecord.comms.CommsChar;
+import com.example.yasiruw.temprecord.comms.HexData;
+import com.example.yasiruw.temprecord.services.Screenshot;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 public class USBQueryFragment extends Fragment {
@@ -159,7 +157,7 @@ public class USBQueryFragment extends Fragment {
     HexData hexData = new HexData();
     BaseCMD baseCMD =  new BaseCMD();
     CommsSerial commsSerial = new CommsSerial();
-    QueryStrings QS = new QueryStrings();
+    Yasiru_Temp_Library QS = new Yasiru_Temp_Library();
     CommsChar commsChar = new CommsChar();
     MT2Msg_Read mt2Msg_read;
     USBFragmentI usbFragmentI;
@@ -727,8 +725,9 @@ public class USBQueryFragment extends Fragment {
         //Log.i("TIME", " " + TimeZone.getDefault().getDisplayName() + "____" + sdf.getTimeZone().getDisplayName());
         serialno.setText(Q_data.get(0));
         firmware.setText(Q_data.get(1));
-        model.setText(QS.GetGeneration(Integer.parseInt(Q_data.get(2))));
-        family.setText(QS.GetType(Integer.parseInt(Q_data.get(3))));
+
+        family.setText(QS.GetGeneration(Integer.parseInt(Q_data.get(3))));
+        model.setText(QS.GetType(Integer.parseInt(Q_data.get(4))));
 
 
         if((baseCMD.querych1hi < baseCMD.ch1Hi) && (baseCMD.querych1lo > baseCMD.ch1Lo) && (baseCMD.querych2hi < baseCMD.ch2Hi) && (baseCMD.querych2lo > baseCMD.ch2Lo)){//drawing the tick if within limits
@@ -1029,7 +1028,11 @@ public class USBQueryFragment extends Fragment {
         // start progress bar with initial progress 10
         ///////////////////task.execute(10,5,null);
         progresspercentage = 0;
-        task.execute(0);
+        if(Build.VERSION.SDK_INT >= 11/*HONEYCOMB*/) {
+            task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        } else {
+            task.execute();
+        }
 
     }
 

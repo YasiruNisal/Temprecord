@@ -3,13 +3,7 @@ package com.example.yasiruw.temprecord.comms;
 
 
 
-import android.util.Log;
-
-import com.example.yasiruw.temprecord.utils.CommsChar;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.zip.DataFormatException;
 

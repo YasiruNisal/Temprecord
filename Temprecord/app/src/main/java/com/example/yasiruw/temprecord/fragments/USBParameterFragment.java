@@ -20,7 +20,6 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -44,13 +43,13 @@ import com.example.yasiruw.temprecord.comms.BaseCMD;
 import com.example.yasiruw.temprecord.comms.CommsSerial;
 import com.example.yasiruw.temprecord.comms.MT2Msg_Read;
 import com.example.yasiruw.temprecord.comms.MT2Msg_Write;
-import com.example.yasiruw.temprecord.comms.QueryStrings;
+import com.example.yasiruw.temprecord.CustomLibraries.Yasiru_Temp_Library;
 import com.example.yasiruw.temprecord.comms.USBFragmentI;
 import com.example.yasiruw.temprecord.services.StoreKeyService;
-import com.example.yasiruw.temprecord.utils.CHUserData;
-import com.example.yasiruw.temprecord.utils.CommsChar;
-import com.example.yasiruw.temprecord.utils.HexData;
-import com.example.yasiruw.temprecord.utils.Screenshot;
+import com.example.yasiruw.temprecord.comms.CHUserData;
+import com.example.yasiruw.temprecord.comms.CommsChar;
+import com.example.yasiruw.temprecord.comms.HexData;
+import com.example.yasiruw.temprecord.services.Screenshot;
 import com.ikovac.timepickerwithseconds.MyTimePickerDialog;
 import com.ikovac.timepickerwithseconds.TimePicker;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
@@ -60,9 +59,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Random;
-import java.util.TimeZone;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
@@ -168,7 +165,7 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
     CommsSerial commsSerial = new CommsSerial();
     MT2Msg_Read mt2Msg_read;
     MT2Msg_Write mt2Msg_write;
-    QueryStrings QS = new QueryStrings();
+    Yasiru_Temp_Library QS = new Yasiru_Temp_Library();
     CommsChar commsChar = new CommsChar();
     ProgressTask task = new ProgressTask();
     private Handler handler1 =new Handler();
@@ -1588,7 +1585,11 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
         // start progress bar with initial progress 10
         ///////////////////task.execute(10,5,null);
         progresspercentage = 0;
-        task.execute(0);
+        if(Build.VERSION.SDK_INT >= 11/*HONEYCOMB*/) {
+            task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        } else {
+            task.execute();
+        }
 
     }
 
