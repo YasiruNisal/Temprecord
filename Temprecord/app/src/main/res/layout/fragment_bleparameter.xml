@@ -74,6 +74,7 @@
                     android:weightSum="1.0">
 
                     <LinearLayout
+                        android:id="@+id/querycurrenttemp"
                         android:layout_width="57dp"
                         android:layout_height="wrap_content"
                         android:layout_weight=".33"

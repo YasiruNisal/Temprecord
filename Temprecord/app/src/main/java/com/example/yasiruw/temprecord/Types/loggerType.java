@@ -856,7 +856,7 @@ public  class loggerType {
 
     public static class UserPassword extends baseType {//8
         /// <summary>The hidden password we show when a logger has a password.</summary>
-        private final String SHOWPASSWORD = "●●●●●●●●●●";
+        private final String SHOWPASSWORD = "........";
         /// <summary>The bytes taken up to store this type on the device.</summary>
         public final static int ByteSize = 8;
 

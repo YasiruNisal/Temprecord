@@ -1,6 +1,7 @@
 package com.example.yasiruw.temprecord.fragments;
 
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -20,10 +21,12 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -31,12 +34,14 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.yasiruw.temprecord.App;
 import com.example.yasiruw.temprecord.R;
 import com.example.yasiruw.temprecord.activities.MainActivity;
 import com.example.yasiruw.temprecord.comms.BaseCMD;
@@ -126,6 +131,7 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
     private CheckBox ch2enabledcb;
     private CheckBox ch2limitenabledcb;
 
+    private LinearLayout querycurrenttemp;
     private Button Programparam;
     //============OTHER GLOBAL VARIABLES============================================================
     private boolean backpress = false;
@@ -148,7 +154,7 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
     private byte[] UserReadtemp = new byte[398];
     private byte[] ExtraRead = new byte[284];
     private int firsttime = 0;
-
+    public boolean imperial;
     private boolean soundon = true;
     private boolean pands = false;
     private boolean prgrammingback = false;
@@ -228,6 +234,7 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
         setHasOptionsMenu(true);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
@@ -328,6 +335,18 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
         Passwordenter();
 
         usbFragmentI.onUSBWrite(HexData.BLE_ACK);
+
+        querycurrenttemp = view.findViewById(R.id.querycurrenttemp);
+        querycurrenttemp.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                Log.i("TOUCH", "Touch event" + imperial);
+                imperial = !imperial;
+                StoreKeyService.setDefaults("UNITS", String.valueOf(imperial?1:0), App.getContext());
+                SetUI();
+                return false;
+            }
+        });
 
         return view;
 
@@ -981,7 +1000,12 @@ public class USBParameterFragment extends Fragment implements com.wdullaer.mater
             time.setText(currentDateandTime);
             Lstate.setText(QS.GetState(Integer.parseInt(Q_data.get(5))));
             battery.setText(R_data.get(17) + "%");
-            currentTemp.setText("--");
+            if (storeKeyService.getDefaults("UNITS", getActivity().getApplication()) != null && storeKeyService.getDefaults("UNITS", getActivity().getApplication()).equals("1")) {
+                currentTemp.setText("---" + " °C");
+            }else {
+                currentTemp.setText("---" + " °F");
+            }
+
             currenthumidity.setText(R_data.get(13) + " %");
 
             if ((R_data.get(0)).equals("Yes")) {

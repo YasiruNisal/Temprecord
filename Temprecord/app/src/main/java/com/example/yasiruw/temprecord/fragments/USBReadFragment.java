@@ -1,6 +1,7 @@
 package com.example.yasiruw.temprecord.fragments;
 
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -17,10 +18,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.RequiresApi;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.JavascriptInterface;
@@ -51,7 +54,8 @@ import com.example.yasiruw.temprecord.services.TXT_FILE;
 import com.example.yasiruw.temprecord.comms.CommsChar;
 import com.example.yasiruw.temprecord.comms.HexData;
 import com.example.yasiruw.temprecord.services.Screenshot;
-import com.github.mikephil.charting.charts.LineChart;
+import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
+
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -145,6 +149,7 @@ public class USBReadFragment extends Fragment {
     private ScrollView scrollView;
     private ScrollView screen;
 
+    private LinearLayout querycurrenttemp;
     private WebView Graph1;
     private WebView Graph2;
 
@@ -169,7 +174,7 @@ public class USBReadFragment extends Fragment {
     private boolean frommenu = false;
 
     private boolean soundon = true;
-
+    public boolean imperial;
     private int state = 1;
     private ArrayList<String> Q_data = new ArrayList<String>();
     private ArrayList<String> U_data = new ArrayList<String>();
@@ -202,8 +207,7 @@ public class USBReadFragment extends Fragment {
     int bytePointer;
     int pageOffset;
 
-    LineChart chart;
-    LineChart chart1;
+
 
     private Handler handler1 =new Handler();
     private final String LIST_NAME = "NAME";
@@ -267,6 +271,7 @@ public class USBReadFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
@@ -377,7 +382,17 @@ public class USBReadFragment extends Fragment {
             }
         });
 
-
+//        ExpandableRelativeLayout expandablereadloggerdetails = view.findViewById(R.id.expandablereadloggerdetails);
+//        expandablereadloggerdetails.toggle();
+//
+//        ExpandableRelativeLayout expandablereadgraph = view.findViewById(R.id.expandablereadgraph);
+//        expandablereadgraph.toggle();
+//
+//        ExpandableRelativeLayout expandablechannel1stats = view.findViewById(R.id.expandablechannel1stats);
+//        expandablechannel1stats.toggle();
+//
+//        ExpandableRelativeLayout expandablechannel2stats = view.findViewById(R.id.expandablechannel2stats);
+//        expandablechannel2stats.toggle();
 
         mConnectionState.setText(getString(R.string.USB_Connected));
         task = new ProgressTask();
@@ -386,7 +401,18 @@ public class USBReadFragment extends Fragment {
 
 
         Graph1 = (WebView) view.findViewById(R.id.graphone);
-
+        querycurrenttemp = view.findViewById(R.id.querycurrenttemp);
+        querycurrenttemp.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                Log.i("TOUCH", "Touch event" + imperial);
+                imperial = !imperial;
+                StoreKeyService.setDefaults("UNITS", String.valueOf(imperial?1:0), App.getContext());
+                SetUI();
+                plotGraph1(1);
+                return false;
+            }
+        });
 
         return view;
     }

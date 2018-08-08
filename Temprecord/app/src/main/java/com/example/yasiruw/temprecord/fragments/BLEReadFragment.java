@@ -1,7 +1,9 @@
 package com.example.yasiruw.temprecord.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothDevice;
 import android.content.DialogInterface;
@@ -14,11 +16,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.app.Fragment;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.JavascriptInterface;
@@ -30,6 +34,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.yasiruw.temprecord.App;
 import com.example.yasiruw.temprecord.R;
@@ -42,11 +47,12 @@ import com.example.yasiruw.temprecord.comms.MT2Msg_Read;
 import com.example.yasiruw.temprecord.comms.MT2Values;
 import com.example.yasiruw.temprecord.CustomLibraries.Yasiru_Temp_Library;
 import com.example.yasiruw.temprecord.services.Json_Data;
+import com.example.yasiruw.temprecord.services.PDF;
 import com.example.yasiruw.temprecord.services.StoreKeyService;
 import com.example.yasiruw.temprecord.comms.CommsChar;
 import com.example.yasiruw.temprecord.comms.HexData;
 import com.example.yasiruw.temprecord.services.Screenshot;
-import com.github.mikephil.charting.charts.LineChart;
+
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -176,7 +182,7 @@ public class BLEReadFragment extends Fragment {
     private boolean frommenu = false;
     Json_Data json_data;
     private boolean soundon = true;
-
+    public boolean imperial;
     private int state = 1;
     private ArrayList<String> Q_data = new ArrayList<String>();
     private ArrayList<String> U_data = new ArrayList<String>();
@@ -197,8 +203,7 @@ public class BLEReadFragment extends Fragment {
     private List<BluetoothDevice> mDevices = new ArrayList<>();
     private int currentDevice = 0;
 
-    LineChart chart;
-    LineChart chart1;
+
 
     private Handler handler1 =new Handler();
     public static final Handler mainThreadHandler = new Handler();
@@ -264,6 +269,7 @@ public class BLEReadFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
@@ -374,7 +380,17 @@ public class BLEReadFragment extends Fragment {
 
         Graph1 = (WebView) view.findViewById(R.id.graphone);
 
+        currentTemp.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
 
+                imperial = !imperial;
+                StoreKeyService.setDefaults("UNITS", String.valueOf(imperial?1:0), App.getContext());
+                SetUI();
+                plotGraph1(1);
+                return false;
+            }
+        });
         task = new ProgressTask();
         showProgress();
         //progressDialoge();
@@ -392,6 +408,7 @@ public class BLEReadFragment extends Fragment {
         super.onCreateOptionsMenu(menu,inflater);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
@@ -399,18 +416,62 @@ public class BLEReadFragment extends Fragment {
                 //sendEmail();
                 new Screenshot(scrollView,baseCMD,getActivity()).print();
                 return true;
-//            case R.id.simplePDF:
-//                PDF pdf = new PDF();
-//                pdf.getData(mt2Mem_values, baseCMD, 0, Q_data, U_data, F_data, R_data);
-//                pdf.Create_Report(App.getContext());
-//                pdf.Open_PDF_in_Chrome(App.getContext());
-//                return true;
-//            case R.id.fullPDFV1:
-//                PDF pdf1 = new PDF();
-//                pdf1.getData(mt2Mem_values, baseCMD, 1, Q_data, U_data, F_data, R_data);
-//                pdf1.Create_Report(App.getContext());
-//                pdf1.Open_PDF_in_Chrome(App.getContext());
-//                return true;
+            case R.id.menu_pdf:
+                final Dialog dialog = new Dialog(getContext());
+                dialog.setContentView(R.layout.pdf_dialog);
+                dialog.setTitle(getString(R.string.pdf_options));
+                ImageButton simplepdf = (ImageButton) dialog.findViewById(R.id.simplepdf);
+                ImageButton pdfv1button = (ImageButton) dialog.findViewById(R.id.pdfv1);
+                ImageButton pdfv2button = (ImageButton) dialog.findViewById(R.id.pdfv2);
+                TextView simplepdf_text = dialog.findViewById(R.id.simplepdf_text);
+                TextView fullpdf_v1_text = dialog.findViewById(R.id.fullpdf_v1_text);
+                TextView fullpdf_v2_text = dialog.findViewById(R.id.fullpdf_v2_text);
+                simplepdf_text.setText(getString(R.string.simplePDF) + PDF_pages(0));
+                fullpdf_v1_text.setText(getString(R.string.fullPDFV1) + PDF_pages(1));
+                fullpdf_v2_text.setText(getString(R.string.fullPDFV2) + PDF_pages(2));
+                // if button is clicked, close the custom dialog
+                simplepdf.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getActivity(),getString(R.string.PDF_gen), Toast.LENGTH_LONG).show();
+                        dialog.dismiss();
+
+                        PDF pdf = new PDF();
+                        pdf.getData(mt2Mem_values, baseCMD, 0, Q_data, U_data, F_data, R_data);
+                        pdf.Create_Report(App.getContext());
+                        pdf.Open_PDF_in_Chrome(App.getContext());
+
+                    }
+                });
+                pdfv1button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getActivity(),getString(R.string.PDF_gen), Toast.LENGTH_LONG).show();
+                        dialog.dismiss();
+
+                        PDF pdf1 = new PDF();
+                        pdf1.getData(mt2Mem_values, baseCMD, 1, Q_data, U_data, F_data, R_data);
+                        pdf1.Create_Report(App.getContext());
+                        pdf1.Open_PDF_in_Chrome(App.getContext());
+
+                    }
+                });
+                pdfv2button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getActivity(),getString(R.string.PDF_gen), Toast.LENGTH_LONG).show();
+                        dialog.dismiss();
+
+                        PDF pdf3 = new PDF();
+                        pdf3.getData(mt2Mem_values, baseCMD, 2, Q_data, U_data, F_data, R_data);
+                        pdf3.Create_Report(App.getContext());
+                        pdf3.Open_PDF_in_Chrome(App.getContext());
+
+                    }
+                });
+
+                dialog.show();
+                return true;
                 default:
                     return false;
         }
@@ -958,7 +1019,7 @@ public class BLEReadFragment extends Fragment {
             progress.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.Abort), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    bleFragmentI.onBLEWrite(HexData.BLE_ACK);
+                    bleFragmentI.onBLEWrite(HexData.GO_TO_SLEEP);
                     bleFragmentI.onBLERead();
                     state =29;
                     BuildDialogue(getString(R.string.ReadAbort), getString(R.string.Go_back_and_reconnect),1);
@@ -981,7 +1042,7 @@ public class BLEReadFragment extends Fragment {
 
             while(progresspercentage < PROGRESSBAR_MAX) {
                 try {
-                    Thread.sleep(300);
+                    Thread.sleep(500);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -1020,5 +1081,16 @@ public class BLEReadFragment extends Fragment {
         task.cancel(true);
     }
 
+    private int PDF_pages(int option){
+        if(option == 0){
+            return 1;
+        }else if(option == 1){
+            return (int)((baseCMD.ch2Enable)? Math.ceil((mt2Mem_values.Data.size()*2/57)/11)+2 : Math.ceil((mt2Mem_values.Data.size()/57)/11)+2);
+        }else if (option == 2){
+            return (int)Math.ceil((mt2Mem_values.Data.size()/57)/2)+2;
+        }
+        return  0;
+
+    }
 
 }

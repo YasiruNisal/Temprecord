@@ -1,2 +1,2 @@
-include ':app', ':libraryMenu', ':MPChartLib'
+include ':app'
 include ':timePickerWithSeconds'

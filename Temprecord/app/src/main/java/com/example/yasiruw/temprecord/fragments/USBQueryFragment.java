@@ -1,6 +1,7 @@
 package com.example.yasiruw.temprecord.fragments;
 
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -22,11 +23,17 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.webkit.JavascriptInterface;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -35,19 +42,25 @@ import android.widget.Toast;
 
 import com.example.yasiruw.temprecord.App;
 import com.example.yasiruw.temprecord.R;
+import com.example.yasiruw.temprecord.activities.GraphAcivity;
 import com.example.yasiruw.temprecord.activities.MainActivity;
 import com.example.yasiruw.temprecord.comms.BaseCMD;
 import com.example.yasiruw.temprecord.comms.CommsSerial;
 import com.example.yasiruw.temprecord.comms.MT2Msg_Read;
 import com.example.yasiruw.temprecord.CustomLibraries.Yasiru_Temp_Library;
+import com.example.yasiruw.temprecord.comms.MT2Values;
 import com.example.yasiruw.temprecord.comms.USBFragmentI;
+import com.example.yasiruw.temprecord.services.Json_Data;
 import com.example.yasiruw.temprecord.services.StoreKeyService;
 import com.example.yasiruw.temprecord.comms.CommsChar;
 import com.example.yasiruw.temprecord.comms.HexData;
 import com.example.yasiruw.temprecord.services.Screenshot;
 
+
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -124,7 +137,13 @@ public class USBQueryFragment extends Fragment {
     private TextView ch2alarmdelay;
     private TextView ch2ul;
     private TextView ch2ll;
+    private ImageButton zoomin;
 
+    private LinearLayout querygraphlayout;
+    private LinearLayout querycurrenttemp;
+
+
+    public boolean imperial;
     private TextView limitstatus;
     private ImageView limiticon;
 
@@ -147,12 +166,24 @@ public class USBQueryFragment extends Fragment {
     private int firsttime = 0;
     private boolean soundon = true;
     StoreKeyService storeKeyService;
+    MT2Values.MT2Mem_values mt2Mem_values = new MT2Values.MT2Mem_values();
 
     ProgressTask task = new ProgressTask();
 
     private Handler handler1 =new Handler();
     Thread t = new Thread();
     private int state = 1;
+
+    //==========================LoopOverWrite READ======
+    int address;
+    int bytesToRead;
+    int totalToRead;
+    int bytePointer;
+    int pageOffset;
+    byte[] ReadValues1;
+    byte[] ReadValues2;
+    Json_Data json_data;
+    private WebView Graph1;
 
     HexData hexData = new HexData();
     BaseCMD baseCMD =  new BaseCMD();
@@ -216,6 +247,7 @@ public class USBQueryFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
@@ -335,8 +367,9 @@ public class USBQueryFragment extends Fragment {
         ch2ul = (TextView) view.findViewById(R.id.upperlimit2);
         ch2ll = (TextView) view.findViewById(R.id.lowerlimit2);
 
-
+        Graph1 = (WebView) view.findViewById(R.id.graphone);
         mConnectionState.setText(getString(R.string.USB_Connected));
+
 
         showProgress();
         //ScrollListener();
@@ -345,15 +378,43 @@ public class USBQueryFragment extends Fragment {
 //        Log.d("TAG", "am i coming to this place 11  " + bleFragmentI);
         usbFragmentI.onUSBWrite(HexData.QUARY_USB);
 //        bleFragmentI.onBLERead();
+        querycurrenttemp = view.findViewById(R.id.querycurrenttemp);
+        querycurrenttemp.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                Log.i("TOUCH", "Touch event" + imperial);
+                imperial = !imperial;
+                StoreKeyService.setDefaults("UNITS", String.valueOf(imperial?1:0), App.getContext());
+                SetUI();
+                plotGraph1(1);
+                return false;
+            }
+        });
+
+        zoomin = view.findViewById(R.id.zoominButton);
+        zoomin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), GraphAcivity.class);
+                intent.putExtra("VALUE", new Json_Data(mt2Mem_values, baseCMD, 0,getActivity()).CreateObject());
+                startActivity(intent);
+            }
+        });
+
+        querygraphlayout = view.findViewById(R.id.querygraphlayout);
 
 
         return view;
     }
 
+
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_query, menu);
         super.onCreateOptionsMenu(menu,inflater);
+
+
     }
 
     @Override
@@ -440,10 +501,10 @@ public class USBQueryFragment extends Fragment {
     public void CommsI(final byte[] in){
 
 
-        Runnable runnableCode = new Runnable() {
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-            @Override
-            public void run() {
+//        Runnable runnableCode = new Runnable() {
+//            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+//            @Override
+//            public void run() {
                 byte[] query;
 
 
@@ -705,21 +766,151 @@ public class USBQueryFragment extends Fragment {
                         }
                         usbFragmentI.onUSBWrite(commsSerial.WriteUSBByte(mt2Msg_read.Read_into_writeByte(false)));
                         break;
-                    case 24:
-                        usbFragmentI.onUSBWrite(HexData.BLE_ACK);
-                        state = 25;
+                    case 24:// the set up needs to change if loop over right is active.
+
+                        if(baseCMD.numberofsamples == 0) {
+                            if(!(baseCMD.state == 4 || baseCMD.state == 5)){
+                                //BuildDialogue("No Data","Logger is not in running or stop state to display data", 1);
+                            }else
+//                                SetUI();
+                            progresspercentage = 100;
+
+                            usbFragmentI.onUSBWrite(HexData.BLE_ACK);
+                            state = 29;
+                        }else {
+
+                            if(baseCMD.LoopOverwrite && !baseCMD.isLoopOverwriteOverFlow){//if loop overwrite is enabled
+                                state = 26;
+                                totalToRead = baseCMD.MemorySizeMax*2;
+                                bytePointer = baseCMD.SamplePointer *2;
+                                pageOffset = bytePointer % baseCMD.PAGESIZE;
+                                address = (int)((bytePointer / baseCMD.PAGESIZE) + 1) * baseCMD.PAGESIZE;
+                                address += pageOffset; //Fix up loop overwrite
+                                bytesToRead = totalToRead - address;
+                                mt2Msg_read = new MT2Msg_Read(commsChar.MEM_VAL, address, baseCMD.MemorySizeMax*2, 64, 3);
+                            }else{
+                                state = 25;
+                                mt2Msg_read = new MT2Msg_Read(commsChar.MEM_VAL, 0, baseCMD.SamplePointer *2, 64, 3);
+                            }
+                            usbFragmentI.onUSBWrite(commsSerial.WriteUSBByte(mt2Msg_read.Read_into_writeByte(true)));
+                        }
                         break;
-                    case 25:
-                       // hexData.BytetoHex(in);
-                        //FifteenSecTimeout();
+                    case 25://normal read
+                        if (mt2Msg_read.write_into_readByte(commsSerial.ReadUSBByte(in)))
+                        {
+                            state = 29;
+                            byte[] ValueRead = new byte[mt2Msg_read.memoryData.length];
+                            System.arraycopy(mt2Msg_read.memoryData, 0, ValueRead, 0, mt2Msg_read.memoryData.length);
+                            MT2ValueIn(ValueRead);
+                            plotGraph1(1);//plots the graph
+                            if(!(baseCMD.state == 4 || baseCMD.state == 5))
+                            {
+                                //BuildDialogue("No Data","Logger is not in running or stop state to display data", 1);
+                            }
+                            else
+                            {
+                                //SetUI();//fill ui elements
+//                                progresspercentage = 100;
+//                                stopProgress();
+                            }
+                            state = 29;
+                            //Log.i("SPEED", "Stop READ");
+
+                        }
+                        // Log.i("SPEED", "in state 25");
+                        usbFragmentI.onUSBWrite(commsSerial.WriteUSBByte(mt2Msg_read.Read_into_writeByte(false)));
+                        //Update_UI(App.getContext(), null, "HID_USB_Message_Received", ValueRead, null);
+                        break;
+                    case 26:
+                        if (mt2Msg_read.write_into_readByte(commsSerial.ReadUSBByte(in))) {
+                            state = 27;
+                            ReadValues1 = new byte[mt2Msg_read.memoryData.length];
+                            System.arraycopy(mt2Msg_read.memoryData, 0, ReadValues1, 0, mt2Msg_read.memoryData.length);
+
+                        }
+                        usbFragmentI.onUSBWrite(commsSerial.WriteUSBByte(mt2Msg_read.Read_into_writeByte(false)));
+
+                        break;
+                    case 27:
+
+                        mt2Msg_read = new MT2Msg_Read(commsChar.MEM_VAL, 0, bytePointer, 64, 3);
+                        usbFragmentI.onUSBWrite(commsSerial.WriteUSBByte(mt2Msg_read.Read_into_writeByte(true)));
+                        state = 28;
+                        break;
+                    case 28:
+                        if (mt2Msg_read.write_into_readByte(commsSerial.ReadUSBByte(in))) {
+
+                            state = 29;
+                            ReadValues2 = new byte[mt2Msg_read.memoryData.length];
+                            byte[] combo = new byte[ReadValues2.length  + ReadValues1.length];
+                            System.arraycopy(mt2Msg_read.memoryData, 0, ReadValues2, 0, mt2Msg_read.memoryData.length);
+                            System.arraycopy(ReadValues1,0,combo,0,ReadValues1.length-1);
+                            System.arraycopy(ReadValues2,0,combo,ReadValues1.length,ReadValues2.length);
+                            MT2ValueIn(combo);
+                            plotGraph1(1);
+                            if(!(baseCMD.state == 4 || baseCMD.state == 5)){
+                                //BuildDialogue("No Data","Logger is not in running or stop state to display data", 1);
+                            }
+//                                SetUI();
+//                            progresspercentage = 100;
+//                            stopProgress();
+                        }
+
+                        usbFragmentI.onUSBWrite(commsSerial.WriteUSBByte(mt2Msg_read.Read_into_writeByte(false)));
+                        break;
+                    case 29:
+
                         break;
 
                 }
-            }
-        };handler1.postDelayed(runnableCode,1);
+//            }
+//        };handler1.postDelayed(runnableCode,1);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    /** This passes our data out to the JS */
+    @JavascriptInterface
+    public String getData() {
+        String jobj = json_data.CreateObject();
+        //Log.i("GRAPH", jobj);
+        return jobj;
+        // return json_data.CreateObject();
+    }
+
+    public void plotGraph1(int viewtype){
+        Graph1.getSettings().setJavaScriptEnabled(true);
+        Graph1.addJavascriptInterface(this,"android");
+        //Graph1.requestFocusFromTouch();
+        Graph1.setWebViewClient(new WebViewClient());
+        Graph1.setWebChromeClient(new WebChromeClient());
+        json_data = new Json_Data(mt2Mem_values, baseCMD, viewtype,getActivity());
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Graph1.loadUrl("file:///android_asset/highcharts.html");
+            }
+        }, 0);
+
+
+    }
+
+    private void MT2ValueIn(byte[] value){
+        ArrayList<Byte> data = new ArrayList<Byte>();
+        for(int  i = 0; i < value.length; i++) data.add(value[i]);
+        //calculating first loged sample
+        Date date = baseCMD.startDateTime;
+        Calendar calendar = QS.toCalendar(date);
+        calendar.add(Calendar.SECOND, baseCMD.startDelay);
+        date = calendar.getTime();
+        try {
+            mt2Mem_values = new MT2Values.MT2Mem_values(data, date, baseCMD.ch1Hi/10, baseCMD.ch1Lo/10, baseCMD.ch2Hi/10, baseCMD.ch2Lo/10, baseCMD.samplePeriod, baseCMD.ch1Enable, baseCMD.ch2Enable );
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @SuppressLint("ClickableViewAccessibility")
     public void SetUI(){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd  hh:mm:ss aa");
         //Log.i("TIME", " " + TimeZone.getDefault().getDisplayName() + "____" + sdf.getTimeZone().getDisplayName());
@@ -849,6 +1040,11 @@ public class USBQueryFragment extends Fragment {
         if(!baseCMD.ch2Enable){
             currenthumidity.setText("--");
         }
+
+        if(!(baseCMD.state == 4 || baseCMD.state == 5))
+            querygraphlayout.setVisibility(View.GONE);
+
+
 
 
     }
@@ -1040,6 +1236,7 @@ public class USBQueryFragment extends Fragment {
         progress.dismiss();
         task.cancel(true);
     }
+
 
 
 

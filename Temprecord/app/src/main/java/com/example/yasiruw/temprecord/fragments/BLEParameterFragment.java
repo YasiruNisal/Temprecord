@@ -1,6 +1,7 @@
 package com.example.yasiruw.temprecord.fragments;
 
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -25,6 +26,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -39,6 +41,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.yasiruw.temprecord.App;
 import com.example.yasiruw.temprecord.R;
 import com.example.yasiruw.temprecord.activities.MainActivity;
 import com.example.yasiruw.temprecord.comms.BLEFragmentI;
@@ -173,7 +176,7 @@ public class BLEParameterFragment extends Fragment implements com.wdullaer.mater
     TXT_FILE txt_file = new TXT_FILE();
     private List<BluetoothDevice> mDevices = new ArrayList<>();
     private int currentDevice = 0;
-
+    public boolean imperial;
     private IBinder iBinder;
 
     private byte[] returndata;
@@ -246,6 +249,7 @@ public class BLEParameterFragment extends Fragment implements com.wdullaer.mater
         setHasOptionsMenu(true);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
@@ -339,6 +343,17 @@ public class BLEParameterFragment extends Fragment implements com.wdullaer.mater
         buttonAction();
         Passwordenter();
         ScrollListener();
+
+        currentTemp.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                imperial = !imperial;
+                StoreKeyService.setDefaults("UNITS", String.valueOf(imperial?1:0), App.getContext());
+                SetUI();
+                return false;
+            }
+        });
 
         bleFragmentI.onBLEWrite(HexData.BLE_ACK);
         bleFragmentI.onBLERead();
@@ -1056,7 +1071,7 @@ public class BLEParameterFragment extends Fragment implements com.wdullaer.mater
     }
 
     //after reading the logger the UI fields get filled with the logger information
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+
     public void SetUI(){
 
 
@@ -1068,7 +1083,11 @@ public class BLEParameterFragment extends Fragment implements com.wdullaer.mater
             time.setText(currentDateandTime);
             Lstate.setText(QS.GetState(Integer.parseInt(Q_data.get(5))));
             battery.setText(R_data.get(17) + "%");
-            currentTemp.setText("--");
+            if (storeKeyService.getDefaults("UNITS", getActivity().getApplication()) != null && storeKeyService.getDefaults("UNITS", getActivity().getApplication()).equals("1")) {
+                currentTemp.setText("---" + " °C");
+            }else {
+                currentTemp.setText("---" + " °F");
+            }
             currenthumidity.setText(R_data.get(13) + " %");
 
             if ((R_data.get(0)).equals("Yes")) {

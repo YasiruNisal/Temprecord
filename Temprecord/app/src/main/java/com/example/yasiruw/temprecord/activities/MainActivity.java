@@ -50,6 +50,7 @@ import com.example.yasiruw.temprecord.services.USB;
 import com.example.yasiruw.temprecord.utils.GattAttributes;
 import com.example.yasiruw.temprecord.comms.HexData;
 import com.example.yasiruw.temprecord.services.LeDeviceListAdapter;
+import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
 
 
 import java.util.ArrayList;
@@ -1111,6 +1112,51 @@ public class MainActivity extends Activity implements
             FragmentNumber = 2;
             getFragmentManager().beginTransaction().replace(R.id.Fragment_Container, bleReadFragment).commit();
         }
+    }
+
+    public void Expandableloggerdetails(View view){
+        ExpandableRelativeLayout expandableloggerdetails = (ExpandableRelativeLayout) findViewById(R.id.expandableloggerdetails);
+        expandableloggerdetails.toggle(); // toggle expand and collapse
+    }
+
+    public void Expandabletripinfomation(View view){
+        ExpandableRelativeLayout expandabletripinfomation = (ExpandableRelativeLayout) findViewById(R.id.expandabletripinformation);
+        expandabletripinfomation.toggle(); // toggle expand and collapse
+    }
+
+    public void Expandablechannelinfomation(View view){
+        ExpandableRelativeLayout expandablechannelinfomation = (ExpandableRelativeLayout) findViewById(R.id.expandablechannelinformation);
+        expandablechannelinfomation.toggle(); // toggle expand and collapse
+    }
+
+    public void Expandableusercomments(View view){
+        ExpandableRelativeLayout expandableusercomments = (ExpandableRelativeLayout) findViewById(R.id.expandableusercomments);
+        expandableusercomments.toggle(); // toggle expand and collapse
+    }
+
+    public  void Expandablequerygraph(View view){
+        ExpandableRelativeLayout expandablereadgraph = (ExpandableRelativeLayout) findViewById(R.id.expandablequerygraph);
+        expandablereadgraph.toggle(); // toggle expand and collapse
+    }
+
+    public void ExpandableReadloggerdetails(View view){
+        ExpandableRelativeLayout expandablereadloggerdetails = (ExpandableRelativeLayout) findViewById(R.id.expandablereadloggerdetails);
+        expandablereadloggerdetails.toggle(); // toggle expand and collapse
+    }
+
+    public  void Expandablereadgraph(View view){
+        ExpandableRelativeLayout expandablereadgraph = (ExpandableRelativeLayout) findViewById(R.id.expandablereadgraph);
+        expandablereadgraph.toggle(); // toggle expand and collapse
+    }
+
+    public  void Expandablechannel1stats(View view){
+        ExpandableRelativeLayout expandablechannel1stats = (ExpandableRelativeLayout) findViewById(R.id.expandablechannel1stats);
+        expandablechannel1stats.toggle(); // toggle expand and collapse
+    }
+
+    public  void Expandablechannel2stats(View view){
+        ExpandableRelativeLayout expandablechannel2stats = (ExpandableRelativeLayout) findViewById(R.id.expandablechannel2stats);
+        expandablechannel2stats.toggle(); // toggle expand and collapse
     }
 
 }

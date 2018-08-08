@@ -1,5 +1,6 @@
 package com.example.yasiruw.temprecord.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -15,15 +16,22 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.webkit.JavascriptInterface;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -32,21 +40,28 @@ import android.widget.Toast;
 
 import com.example.yasiruw.temprecord.App;
 import com.example.yasiruw.temprecord.R;
+import com.example.yasiruw.temprecord.activities.GraphAcivity;
 import com.example.yasiruw.temprecord.activities.MainActivity;
 import com.example.yasiruw.temprecord.comms.BLEFragmentI;
 import com.example.yasiruw.temprecord.comms.BaseCMD;
 import com.example.yasiruw.temprecord.comms.CommsSerial;
 import com.example.yasiruw.temprecord.comms.MT2Msg_Read;
 import com.example.yasiruw.temprecord.CustomLibraries.Yasiru_Temp_Library;
+import com.example.yasiruw.temprecord.comms.MT2Values;
+import com.example.yasiruw.temprecord.services.Json_Data;
 import com.example.yasiruw.temprecord.services.StoreKeyService;
 import com.example.yasiruw.temprecord.comms.CommsChar;
 import com.example.yasiruw.temprecord.comms.HexData;
 import com.example.yasiruw.temprecord.services.Screenshot;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
+
+import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
 
 import static android.graphics.Color.GREEN;
 import static android.graphics.Color.RED;
@@ -127,6 +142,21 @@ public class BLEQueryFragment extends Fragment {
 
     private TextView limitstatus;
     private ImageView limiticon;
+    private ImageButton zoomin;
+
+    private LinearLayout querygraphlayout;
+
+    //==========================LoopOverWrite READ======
+    int address;
+    int bytesToRead;
+    int totalToRead;
+    int bytePointer;
+    int pageOffset;
+    byte[] ReadValues1;
+    byte[] ReadValues2;
+    Json_Data json_data;
+    private WebView Graph1;
+    MT2Values.MT2Mem_values mt2Mem_values = new MT2Values.MT2Mem_values();
 
     private byte[] TWFlash = new byte[144];
     private byte[] RamRead = new byte[100];
@@ -153,7 +183,7 @@ public class BLEQueryFragment extends Fragment {
     private Handler handler1 =new Handler();
     Thread t = new Thread();
     private int state = 1;
-
+    public boolean imperial;
     HexData hexData = new HexData();
     BaseCMD baseCMD =  new BaseCMD();
     CommsSerial commsSerial = new CommsSerial();
@@ -220,6 +250,7 @@ public class BLEQueryFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
@@ -345,6 +376,29 @@ public class BLEQueryFragment extends Fragment {
         bleFragmentI.onBLEWrite(HexData.BLE_ACK);
         bleFragmentI.onBLERead();
 
+        currentTemp.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                imperial = !imperial;
+                StoreKeyService.setDefaults("UNITS", String.valueOf(imperial?1:0), App.getContext());
+                SetUI();
+                return false;
+            }
+        });
+        Graph1 = (WebView) view.findViewById(R.id.graphone);
+
+        querygraphlayout = view.findViewById(R.id.querygraphlayout);
+        querygraphlayout.setVisibility(View.GONE);
+        zoomin = view.findViewById(R.id.zoominButton);
+        zoomin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), GraphAcivity.class);
+                intent.putExtra("VALUE", new Json_Data(mt2Mem_values, baseCMD, 0,getActivity()).CreateObject());
+                startActivity(intent);
+            }
+        });
 
         return view;
     }
@@ -740,7 +794,7 @@ public class BLEQueryFragment extends Fragment {
                         break;
                     case 23:
                         if(mt2Msg_read.write_into_readByte(commsSerial.ReadByte(in))) {
-                            state = 24;
+                            state = 29;
                             System.arraycopy(mt2Msg_read.memoryData, 0, ExtraRead, 236, 48);
                             SetUI();
                             hexData.BytetoHex(ExtraRead);
@@ -751,25 +805,138 @@ public class BLEQueryFragment extends Fragment {
                         bleFragmentI.onBLEWrite(commsSerial.WriteByte(mt2Msg_read.Read_into_writeByte(false)));
                         bleFragmentI.onBLERead();
                         break;
-                    case 24:
-                        bleFragmentI.onBLEWrite(HexData.BLE_ACK);
-                        bleFragmentI.onBLERead();
-                        state = 25;
-//                        if (baseCMD.passwordEnabled) {
-//                            promtPassword();
-//                        }
-                        break;
-                    case 25:
-                        hexData.BytetoHex(in);
-                        FifteenSecTimeout();
+                    case 24:// the set up needs to change if loop over right is active.
 
+                        if(baseCMD.numberofsamples == 0) {
+                            if(!(baseCMD.state == 4 || baseCMD.state == 5)){
+                                //BuildDialogue("No Data","Logger is not in running or stop state to display data", 1);
+                            }
+//                                SetUI();
+//                            progresspercentage = 100;
+//                            stopProgress();
+                            bleFragmentI.onBLEWrite(HexData.BLE_ACK);
+                            bleFragmentI.onBLERead();
+                            state = 29;
+                        }else {
+                            if(baseCMD.LoopOverwrite && !baseCMD.isLoopOverwriteOverFlow){
+                                state = 26;
+                                totalToRead = baseCMD.MemorySizeMax*2;
+                                bytePointer = baseCMD.SamplePointer *2;
+                                pageOffset = bytePointer % baseCMD.PAGESIZE;
+                                address = (int)((bytePointer / baseCMD.PAGESIZE) + 1) * baseCMD.PAGESIZE;
+                                address += pageOffset; //Fix up loop overwrite
+                                bytesToRead = totalToRead - address;
+                                mt2Msg_read = new MT2Msg_Read(commsChar.MEM_VAL, address, baseCMD.MemorySizeMax *2, 120, 3);
+                            }else{
+                                state = 25;
+                                mt2Msg_read = new MT2Msg_Read(commsChar.MEM_VAL, 0, baseCMD.SamplePointer *2, 120, 3);
+                            }
+                            bleFragmentI.onBLEWrite(commsSerial.WriteByte(mt2Msg_read.Read_into_writeByte(true)));
+                            bleFragmentI.onBLERead();
+                        }
                         break;
+                    case 25://
+                        if (mt2Msg_read.write_into_readByte(commsSerial.ReadByte(in))) {
+                            state = 29;
+                            byte[] ValueRead = new byte[mt2Msg_read.memoryData.length];
+                            System.arraycopy(mt2Msg_read.memoryData, 0, ValueRead, 0, mt2Msg_read.memoryData.length);
+                            MT2ValueIn(ValueRead);
+                            plotGraph1(1);
+                            if(!(baseCMD.state == 4 || baseCMD.state == 5)){
+                                //BuildDialogue("No Data","Logger is not in running or stop state to display data", 1);
+                            }
+//                                SetUI();
+//                            progresspercentage = 100;
+//                            stopProgress();
+                        }
+                        bleFragmentI.onBLEWrite(commsSerial.WriteByte(mt2Msg_read.Read_into_writeByte(false)));
+                        bleFragmentI.onBLERead();
+                        break;
+                    case 26:
+                        if (mt2Msg_read.write_into_readByte(commsSerial.ReadByte(in))) {
+                            state = 27;
+                            ReadValues1 = new byte[mt2Msg_read.memoryData.length];
+                            System.arraycopy(mt2Msg_read.memoryData, 0, ReadValues1, 0, mt2Msg_read.memoryData.length);
+                        }
+                        bleFragmentI.onBLEWrite(commsSerial.WriteByte(mt2Msg_read.Read_into_writeByte(false)));
+                        bleFragmentI.onBLERead();
+                        break;
+                    case 27:
+                        mt2Msg_read = new MT2Msg_Read(commsChar.MEM_VAL, 0, bytePointer, 120, 3);
+                        bleFragmentI.onBLEWrite(commsSerial.WriteByte(mt2Msg_read.Read_into_writeByte(true)));
+                        bleFragmentI.onBLERead();
+                        state = 28;
+                        break;
+                    case 28:
+                        if (mt2Msg_read.write_into_readByte(commsSerial.ReadByte(in))) {
+                            state = 29;
+                            ReadValues2 = new byte[mt2Msg_read.memoryData.length];
+                            byte[] combo = new byte[ReadValues2.length  + ReadValues1.length];
+                            System.arraycopy(mt2Msg_read.memoryData, 0, ReadValues2, 0, mt2Msg_read.memoryData.length);
+                            System.arraycopy(ReadValues1,0,combo,0,ReadValues1.length-1);
+                            System.arraycopy(ReadValues2,0,combo,ReadValues1.length,ReadValues2.length);
+                            MT2ValueIn(combo);
+                            plotGraph1(1);
+                            if(!(baseCMD.state == 4 || baseCMD.state == 5)){
+                                //BuildDialogue("No Data","Logger is not in running or stop state to display data", 1);
+                            }
+//                                SetUI();
+//                            progresspercentage = 100;
+//                            stopProgress();
+                        }
+                        bleFragmentI.onBLEWrite(commsSerial.WriteByte(mt2Msg_read.Read_into_writeByte(false)));
+                        bleFragmentI.onBLERead();
+                        break;
+                    case 29:
+                        FifteenSecTimeout();
+                        break;
+
 
                 }
 //            }
 //        };handler1.postDelayed(runnableCode,1);
     }
+    /** This passes our data out to the JS */
+    @JavascriptInterface
+    public String getData() {
+        String jobj = json_data.CreateObject();
+        //Log.i("GRAPH", jobj);
+        return jobj;
+        // return json_data.CreateObject();
+    }
 
+    public void plotGraph1(int viewtype){
+        Graph1.getSettings().setJavaScriptEnabled(true);
+        Graph1.addJavascriptInterface(this,"android");
+        //Graph1.requestFocusFromTouch();
+        Graph1.setWebViewClient(new WebViewClient());
+        Graph1.setWebChromeClient(new WebChromeClient());
+        json_data = new Json_Data(mt2Mem_values, baseCMD, viewtype,getActivity());
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Graph1.loadUrl("file:///android_asset/highcharts.html");
+            }
+        }, 0);
+
+
+    }
+
+    private void MT2ValueIn(byte[] value){
+        ArrayList<Byte> data = new ArrayList<Byte>();
+        for(int  i = 0; i < value.length; i++) data.add(value[i]);
+        //calculating first loged sample
+        Date date = baseCMD.startDateTime;
+        Calendar calendar = QS.toCalendar(date);
+        calendar.add(Calendar.SECOND, baseCMD.startDelay);
+        date = calendar.getTime();
+        try {
+            mt2Mem_values = new MT2Values.MT2Mem_values(data, date, baseCMD.ch1Hi/10, baseCMD.ch1Lo/10, baseCMD.ch2Hi/10, baseCMD.ch2Lo/10, baseCMD.samplePeriod, baseCMD.ch1Enable, baseCMD.ch2Enable );
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void SetUI(){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd  hh:mm:ss aa");
@@ -894,6 +1061,10 @@ public class BLEQueryFragment extends Fragment {
         if(!baseCMD.ch2Enable){
             currenthumidity.setText("--");
         }
+
+        if(!(baseCMD.state == 4 || baseCMD.state == 5))
+            querygraphlayout.setVisibility(View.GONE);
+
 
 
     }

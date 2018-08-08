@@ -179,7 +179,7 @@ Go back to menu and reconnect</string>
     <string name="Temp">Temperature</string>
     <string name="Hum">Humidity</string>
 
-    <string name="Samples"> Samples</string>
+    <string name="Samples">  Samples</string>
 
     <string name="USB_Connected">USB Connected</string>
 
@@ -341,6 +341,7 @@ HH:MM:SS</string>
 
     <string name="RH">  %RH</string>
     <string name="C"> °C</string>
+    <string name="F"> °F</string>
     <string name="Values_Report">"Values Report"</string>
     <string name="Logger_Report">"Logger Report"</string>
     <string name="Stats_Report">"Stats Report"</string>
