@@ -23,10 +23,11 @@
             >
 
             <LinearLayout
+                android:elevation="@dimen/Elevation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:background="@color/ublox_blue_color"
+                android:background="@drawable/layout_backb"
                 android:orientation="vertical"
                 android:paddingBottom="5dp"
                 android:paddingLeft="10dp"
@@ -207,6 +208,7 @@
 
 
             <LinearLayout
+                android:elevation="@dimen/Elevation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -238,7 +240,7 @@
                         android:paddingTop="10dp"
                         android:text="@string/GeneralSettings"
                         android:textSize="@dimen/Heading_size"
-                        android:textStyle="bold" />
+                         />
 
                 </LinearLayout>
 
@@ -445,6 +447,7 @@
 
 
             <LinearLayout
+                android:elevation="@dimen/Elevation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -476,7 +479,7 @@
                         android:paddingTop="10dp"
                         android:text="@string/StartStopandSampleSettings"
                         android:textSize="@dimen/Heading_size"
-                        android:textStyle="bold" />
+                         />
 
                 </LinearLayout>
 
@@ -626,6 +629,7 @@
 
 
             <LinearLayout
+                android:elevation="@dimen/Elevation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -657,7 +661,7 @@
                         android:paddingTop="10dp"
                         android:text="@string/ChannelSettings"
                         android:textSize="@dimen/Heading_size"
-                        android:textStyle="bold" />
+                         />
 
 
                 </LinearLayout>
@@ -823,6 +827,7 @@
 
 
             <LinearLayout
+                android:elevation="@dimen/Elevation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"

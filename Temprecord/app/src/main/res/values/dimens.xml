@@ -10,5 +10,6 @@
     <dimen name="menu_icon">32dp</dimen>
 
     <dimen name="Graph_button">50dp</dimen>
+    <dimen name="Elevation">2dp</dimen>
 
 </resources>

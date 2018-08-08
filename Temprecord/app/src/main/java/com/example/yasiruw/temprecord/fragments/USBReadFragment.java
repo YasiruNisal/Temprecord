@@ -382,17 +382,6 @@ public class USBReadFragment extends Fragment {
             }
         });
 
-//        ExpandableRelativeLayout expandablereadloggerdetails = view.findViewById(R.id.expandablereadloggerdetails);
-//        expandablereadloggerdetails.toggle();
-//
-//        ExpandableRelativeLayout expandablereadgraph = view.findViewById(R.id.expandablereadgraph);
-//        expandablereadgraph.toggle();
-//
-//        ExpandableRelativeLayout expandablechannel1stats = view.findViewById(R.id.expandablechannel1stats);
-//        expandablechannel1stats.toggle();
-//
-//        ExpandableRelativeLayout expandablechannel2stats = view.findViewById(R.id.expandablechannel2stats);
-//        expandablechannel2stats.toggle();
 
         mConnectionState.setText(getString(R.string.USB_Connected));
         task = new ProgressTask();

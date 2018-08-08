@@ -402,8 +402,6 @@ public class USBQueryFragment extends Fragment {
         });
 
         querygraphlayout = view.findViewById(R.id.querygraphlayout);
-
-
         return view;
     }
 

@@ -23,12 +23,13 @@
             >
 
             <LinearLayout
+                android:elevation="@dimen/Elevation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
-                android:background="@color/ublox_blue_color"
+                android:background="@drawable/layout_backb"
                 android:orientation="vertical"
                 android:paddingBottom="5dp"
                 android:paddingLeft="10dp"
@@ -204,10 +205,11 @@
 
 
             <LinearLayout
+                android:elevation="@dimen/Elevation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginBottom="15dp"
+                android:layout_marginBottom="10dp"
                 android:layout_marginTop="0dp"
                 android:background="@drawable/layout_txtbg"
                 android:orientation="vertical">
@@ -251,10 +253,11 @@
 
 
             <LinearLayout
+                android:elevation="@dimen/Elevation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginBottom="15dp"
+                android:layout_marginBottom="10dp"
                 android:layout_marginTop="0dp"
                 android:background="@drawable/layout_txtbg"
                 android:orientation="vertical">
@@ -288,7 +291,7 @@
                         android:paddingTop="10dp"
                         android:text="@string/LoggerDetails"
                         android:textSize="@dimen/Heading_size"
-                        android:textStyle="bold" />
+                         />
 
                     <ImageView
                         android:layout_weight=".10"
@@ -521,10 +524,11 @@
             </LinearLayout>
 
             <LinearLayout
+                android:elevation="@dimen/Elevation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginBottom="15dp"
+                android:layout_marginBottom="10dp"
                 android:layout_marginTop="0dp"
                 android:background="@drawable/layout_txtbg"
                 android:orientation="vertical">
@@ -537,7 +541,7 @@
                     android:orientation="horizontal"
                     android:weightSum="1.0">
                     <ImageView
-                        android:layout_weight=".20"
+                        android:layout_weight=".10"
                         android:id="@+id/im2"
                         android:layout_width="70dp"
                         android:layout_height="40dp"
@@ -548,7 +552,7 @@
                         android:src="@drawable/temperature_graph" />
 
                     <TextView
-                        android:layout_weight=".70"
+                        android:layout_weight=".80"
                         android:id="@+id/info2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -556,7 +560,7 @@
                         android:paddingTop="10dp"
                         android:text="@string/Graph"
                         android:textSize="@dimen/Heading_size"
-                        android:textStyle="bold" />
+                         />
                     <ImageView
                         android:layout_weight=".10"
                         android:id="@+id/im18"
@@ -625,10 +629,11 @@
             </LinearLayout>
 
         <LinearLayout
+            android:elevation="@dimen/Elevation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="15dp"
+            android:layout_marginBottom="10dp"
             android:layout_marginTop="0dp"
             android:background="@drawable/layout_txtbg"
             android:orientation="vertical">
@@ -659,7 +664,7 @@
                         android:paddingTop="10dp"
                         android:text="@string/Channel1Stats"
                         android:textSize="@dimen/Heading_size"
-                        android:textStyle="bold" />
+                        />
 
                     <ImageView
                         android:layout_weight=".10"
@@ -1118,11 +1123,12 @@
             </LinearLayout>
 
         <LinearLayout
+            android:elevation="@dimen/Elevation"
             android:id="@+id/humidity2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="15dp"
+            android:layout_marginBottom="10dp"
             android:layout_marginTop="0dp"
             android:background="@drawable/layout_txtbg"
             android:orientation="vertical">
@@ -1153,7 +1159,7 @@
                         android:paddingTop="10dp"
                         android:text="@string/Channel2Stats"
                         android:textSize="@dimen/Heading_size"
-                        android:textStyle="bold" />
+                         />
 
                     <ImageView
                         android:layout_weight=".10"

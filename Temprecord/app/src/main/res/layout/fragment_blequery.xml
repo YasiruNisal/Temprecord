@@ -2,8 +2,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/queryscroll"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:background="@color/chat_name_color"
+
     android:layout_height="match_parent">
 
     <FrameLayout
@@ -12,13 +13,13 @@
         android:layout_height="wrap_content">
 
         <LinearLayout
+            android:elevation="@dimen/Elevation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/ublox_blue_color"
+            android:background="@drawable/layout_backb"
             android:orientation="vertical"
             android:paddingBottom="5dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
+
             android:paddingTop="0dp"
             android:id="@+id/attop">
             <!--android:weightSum="1.0"-->
@@ -45,7 +46,7 @@
                     android:id="@+id/time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
                     android:paddingTop="1dp"
                     android:gravity="right"
                     android:text=""
@@ -201,10 +202,11 @@
             </LinearLayout>
 
             <LinearLayout
+                android:elevation="@dimen/Elevation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginBottom="15dp"
+                android:layout_marginBottom="10dp"
                 android:layout_marginTop="0dp"
                 android:background="@drawable/layout_txtbg"
                 android:orientation="vertical">
@@ -247,10 +249,11 @@
 
 
             <LinearLayout
+                android:elevation="@dimen/Elevation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginBottom="15dp"
+                android:layout_marginBottom="10dp"
                 android:layout_marginTop="0dp"
                 android:background="@drawable/layout_txtbg"
                 android:orientation="vertical">
@@ -286,7 +289,7 @@
                         android:paddingTop="10dp"
                         android:text="@string/LoggerDetails"
                         android:textSize="@dimen/Heading_size"
-                        android:textStyle="bold" />
+                        />
 
                     <ImageView
                         android:id="@+id/im11"
@@ -531,10 +534,11 @@
 
 
             <LinearLayout
+                android:elevation="@dimen/Elevation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginBottom="15dp"
+                android:layout_marginBottom="10dp"
                 android:layout_marginTop="0dp"
                 android:background="@drawable/layout_txtbg"
                 android:orientation="vertical">
@@ -569,7 +573,7 @@
                         android:paddingTop="10dp"
                         android:text="@string/TripInfo"
                         android:textSize="@dimen/Heading_size"
-                        android:textStyle="bold" />
+                         />
 
                     <ImageView
                         android:layout_weight=".10"
@@ -1171,10 +1175,11 @@
 
 
             <LinearLayout
+                android:elevation="@dimen/Elevation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginBottom="15dp"
+                android:layout_marginBottom="10dp"
                 android:layout_marginTop="0dp"
                 android:background="@drawable/layout_txtbg"
                 android:orientation="vertical">
@@ -1207,7 +1212,7 @@
                         android:paddingTop="10dp"
                         android:text="@string/ChannelInfo"
                         android:textSize="@dimen/Heading_size"
-                        android:textStyle="bold" />
+                         />
 
                     <ImageView
                         android:layout_weight=".10"
@@ -1535,11 +1540,11 @@
             </LinearLayout>
 
             <LinearLayout
-
+                android:elevation="@dimen/Elevation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginBottom="15dp"
+                android:layout_marginBottom="10dp"
                 android:layout_marginTop="0dp"
                 android:background="@drawable/layout_txtbg"
                 android:orientation="vertical">
@@ -1554,7 +1559,7 @@
 
 
                     <ImageView
-                        android:layout_weight=".20"
+                        android:layout_weight=".10"
                         android:id="@+id/im4"
                         android:layout_width="70dp"
                         android:layout_height="40dp"
@@ -1574,7 +1579,7 @@
                         android:paddingTop="10dp"
                         android:text="@string/UserComments"
                         android:textSize="@dimen/Heading_size"
-                        android:textStyle="bold" />
+                         />
 
                     <ImageView
                         android:layout_weight=".10"
@@ -1620,10 +1625,11 @@
 
 
             <LinearLayout
+                android:elevation="@dimen/Elevation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginBottom="15dp"
+                android:layout_marginBottom="10dp"
                 android:layout_marginTop="0dp"
                 android:background="@drawable/layout_txtbg"
                 android:orientation="vertical">
@@ -1637,7 +1643,7 @@
                     android:orientation="horizontal"
                     android:weightSum="1.0">
                     <ImageView
-                        android:layout_weight=".20"
+                        android:layout_weight=".10"
                         android:id="@+id/im99"
                         android:layout_width="70dp"
                         android:layout_height="40dp"
@@ -1648,15 +1654,16 @@
                         android:src="@drawable/temperature_graph" />
 
                     <TextView
-                        android:layout_weight=".70"
+                        android:layout_weight=".80"
                         android:id="@+id/info82"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingLeft="3dp"
                         android:paddingTop="10dp"
                         android:text="@string/Graph"
+                        android:gravity="left"
                         android:textSize="@dimen/Heading_size"
-                        android:textStyle="bold" />
+                         />
                     <ImageView
                         android:layout_weight=".10"
                         android:id="@+id/im18"
