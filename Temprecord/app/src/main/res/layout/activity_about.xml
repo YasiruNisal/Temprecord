@@ -60,6 +60,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
+
+
             </LinearLayout>
 
             <LinearLayout
@@ -87,15 +89,23 @@
 
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:id="@+id/appversion"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_weight="1"
-                    android:text="Long press on the menu buttons will show their functionality.\n\nWhen Start, Stop, Tag, Quary or Read button is pressed, available device-list page is shown.\nSelect a logger from this list to carry out the required operation.
-\n\nPressing the middle button on the menu screen will take you to our products pageon our web site.
+                    android:textSize="16sp"/>
 
-\n\nSettings page allows the user to set default email address and CC address which will fast track email sending functionality."
-                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/androidversion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:id="@+id/devicemodel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
 
 
 

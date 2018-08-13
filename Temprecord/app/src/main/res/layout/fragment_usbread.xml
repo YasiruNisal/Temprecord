@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.yasiruw.temprecord.fragments.USBReadFragment">
+    tools:context="com.temprecordapp.yasiruw.temprecord.fragments.USBReadFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView

@@ -1,5 +1,5 @@
 <resources>
-    <string name="App_version">"Android 1.0"</string>
+    <string name="App_version">"0.8.3"</string>
 
     <string name="app_name">Temprecord</string>
     <string name="ble_not_supported">BLE is not supported</string>
@@ -71,6 +71,7 @@
     <string name="Timedout">Timed Out</string>
 
 
+
     <!-- Quary page Strings -->
 
     <string name="LoggerDetails">Logger Details</string>
@@ -116,7 +117,7 @@
     <string name="ExtendLCDMenu">Extended LCD Menu : </string>
 
 
-    <string name="ChannelInfo">Channel Information</string>
+    <string name="ChannelInfo">Channel Info</string>
     <string name="Channel1">Channel 1 :</string>
     <string name="Enabled">Enabled : </string>
     <string name="EnableLimits">Enable Limits : </string>
@@ -125,7 +126,7 @@
     <string name="LowerLimit">Preset lower Limit : </string>
     <string name="Channel2">Channel 2 :</string>
 
-    <string name="UserComments">User Comments</string>
+    <string name="UserComments">Comments</string>
     <string name="UserComments_">User Comments :</string>
 
     <string name="QueryLogger">Query Logger</string>
@@ -364,6 +365,7 @@ HH:MM:SS</string>
     <string name="breached">" (Breached) "</string>
 
 
+
     <string name="G_Upper_LImit">" Upper Limit"</string>
     <string name="G_Lower_LImit">" Lower Limit"</string>
 
@@ -375,4 +377,26 @@ HH:MM:SS</string>
 # pages "</string>
     <string name="fullPDFV2">"Full PDF
 # pages "</string>
+
+
+    <string name="appversion">" App Version : "</string>
+    <string name="manufacturer">" Manufacturer : "</string>
+    <string name="devicemode">" Device Model : "</string>
+    <string name="version">" Version : "</string>
+    <string name="versionrelease">" Android Version : "</string>
+
+
+    <string name="bluetoothdevice">"Bluetooth Devices"</string>
+    <string name="info">"Info"</string>
+
+    <string name="infopara">"Please connect a Mon-T² USB logger to your device's USB port"</string>
+    <string name="infopara2">"
+      WHAT'S NEW
+      + Query, Start, Stop, Re-use and Tag
+      + Read
+      + Parameter Programming
+      + PDF Generation
+      + Full screen Graph
+
+Bluetooth and NFC will be available in later versions of the application"</string>
 </resources>

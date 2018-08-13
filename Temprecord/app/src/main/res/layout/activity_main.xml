@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.yasiruw.temprecord.activities.MainActivity">
+    tools:context="com.temprecordapp.yasiruw.temprecord.activities.MainActivity">
 
     <ScrollView
         android:id="@+id/screen"
@@ -582,11 +582,72 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/Info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/layout_txtbg"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+
+                    <ImageView
+                        android:id="@+id/iim1"
+                        android:layout_width="70dp"
+                        android:layout_height="40dp"
+                        android:gravity="center"
+                        android:paddingLeft="5dp"
+                        android:scaleX="0.7"
+                        android:scaleY="0.7"
+                        android:src="@drawable/ic_infow" />
+
+                    <TextView
+                        android:id="@+id/iinfo1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="3dp"
+                        android:paddingBottom="3dp"
+                        android:paddingTop="10dp"
+                        android:text="@string/info"
+                        android:textSize="@dimen/Heading_size"
+                         />
+
+
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/infopara"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:text="@string/infopara">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/infopara2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:textSize="16sp"
+                    android:text="@string/infopara2">
+
+                </TextView>
+
+            </LinearLayout>
+
+
+            <LinearLayout
                 android:id="@+id/List"
                 android:layout_width="match_parent"
                 android:layout_height="350dp"
                 android:layout_marginTop="15dp"
-                android:background="@color/white_color1"
+                android:background="@drawable/layout_txtbg"
                 android:orientation="vertical">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -612,9 +673,9 @@
                         android:paddingLeft="3dp"
                         android:paddingBottom="3dp"
                         android:paddingTop="10dp"
-                        android:text="Bluetooth Devices"
+                        android:text="@string/bluetoothdevice"
                         android:textSize="@dimen/Heading_size"
-                        android:textStyle="bold" />
+                        />
 
 
                 </LinearLayout>
@@ -632,7 +693,7 @@
                 android:id="@+id/Fragment_Container"
                 android:background="@color/chat_name_color"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="vertical">
             </LinearLayout>
