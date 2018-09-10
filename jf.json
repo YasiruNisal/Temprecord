@@ -1,0 +1,73 @@
+{
+	"header": {
+		"version": "1.0",
+		"theme": "Yasiru",
+		"title": "Temperature",
+		"ampm": "true",
+		"celcius": "true",
+		"showlimit": "true",
+		"locked": "false"
+	},
+	"logger": [{
+		"data": {
+			"datetime": ["2132431183", "2132431185", "2132431187", "2132431189", "2132431191", "2132431193", "2132431195", "2132431197", "2132431199", "2132431201", "2132431203", "2132431205", "2132431207", "2132431209", "2132431211", "2132431213", "2132431215", "2132431217", "2132431219", "2132431221", "2132431223", "2132431225", "2132431227", "2132431229", "2132431231", "2132431233", "2132431235", "2132431237", "2132431239", "2132431241", "2132431243", "2132431245", "2132431247", "2132431249", "2132431251", "2132431253", "2132431255", "2132431257", "2132431259", "2132431261", "2132431263", "2132431265", "2132431267"],
+			"temp": ["22.1", "22.0", "22.0", "22.0", "22.0", "22.0", "22.0", "22.0", "22.1", "22.0", "22.1", "22.1", "22.1", "22.1", "22.1", "22.1", "22.1", "22.1", "22.1", "22.1", "22.1", "22.1", "22.1", "22.1", "22.1", "22.1", "22.1", "22.1", "22.1", "22.1", "22.1", "22.1", "22.1", "22.1", "22.1", "22.1", "22.1", "22.1", "22.1", "22.1", "22.1", "22.1", "22.1"],
+			"hum": ["44.7", "44.7", "44.7", "44.7", "44.7", "44.7", "44.7", "44.7", "44.7", "44.7", "44.7", "44.7", "44.7", "44.7", "44.7", "44.7", "44.7", "44.7", "44.7", "44.7", "44.7", "44.7", "44.7", "44.7", "44.8", "44.8", "44.7", "44.7", "44.7", "44.7", "44.7", "44.7", "44.7", "44.7", "44.7", "44.7", "44.7", "44.6", "44.6", "44.6", "44.7", "44.7", "44.7"],
+			"tag": ["false", "false", "false", "false", "false", "false", "false", "false", "false", "false", "false", "false", "false", "false", "false", "false", "false", "false", "false", "false", "false", "false", "false", "false", "false", "false", "false", "false", "false", "false", "false", "false", "false", "false", "false", "false", "false", "false", "false", "false", "false", "true", "false"]
+		},
+		"limits": {
+			"temp": {
+				"upper": {
+					"high": ["null", "null", "null"],
+					"mid": ["40.0", "#FF0000", "dash"],
+					"low": ["null", "null", "null"]
+				},
+				"lower": {
+					"high": ["null", "null", "null"],
+					"mid": ["10.0", "#FF0000", "dash"],
+					"low": ["null", "null", "null"]
+				}
+			},
+			"hum": {
+				"upper": {
+					"high": ["null", "null", "null"],
+					"mid": ["100.0", "#FF0000", "dash"],
+					"low": ["null", "null", "null"]
+				},
+				"lower": {
+					"high": ["null", "null", "null"],
+					"mid": ["0.0", "#FF0000", "dash"],
+					"low": ["null", "null", "null"]
+				}
+			}
+		},
+		"details": {
+			"name": "Components Room Test                                                                                                                                  ",
+			"serial": "DH00001291"
+		},
+		"graph": {
+			"temp": {
+				"linecolor": "#0000FF",
+				"linethickness": "10",
+				"linetype": "solid",
+				"limitlinecolor": "FF0000",
+				"limitlinethickness": "10",
+				"limitlinetype": "dash",
+				"markercolor": "#191919",
+				"markersize": "5",
+				"markertype": "triangle"
+			},
+			"hum": {
+				"linecolor": "#FFA500",
+				"linethickness": "10",
+				"linetype": "solid",
+				"limitlinecolor": "FF0000",
+				"limitlinethickness": "10",
+				"limitlinetype": "dash",
+				"markercolor": "#191919",
+				"markersize": "5",
+				"markertype": "triangle"
+			}
+		}
+	}]
+}
