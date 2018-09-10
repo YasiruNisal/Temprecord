@@ -13,8 +13,11 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
+import android.os.SystemClock;
 import android.support.v4.content.FileProvider;
+import android.util.Log;
 
 import com.temprecordapp.yasiruw.temprecord.App;
 import com.temprecordapp.yasiruw.temprecord.R;
@@ -61,7 +64,7 @@ public class PDF
     //==========================================================//
     //Constant
     //==========================================================//
-    private                 String                  K_PDF_FILENAME          = "yasiru_file.pdf";
+    private                 String                  K_PDF_FILENAME          = "TemprecordAppPDF.pdf";
     private static  final   String                  K_PDF_FOLDER            = "/Temprecord";
     static final    String FILENAME = "yo_file.txt";
 
@@ -115,7 +118,7 @@ public class PDF
     private                 ArrayList<Double>       ch2 = new ArrayList<Double>();
     private                 ArrayList<Long>         time = new ArrayList<Long>();
 
-                            StoreKeyService         storeKeyService;
+    StoreKeyService         storeKeyService;
     private                 int                 simplePDF = 0;
 
     private                 Paint                   line_paint = new Paint();
@@ -181,8 +184,15 @@ public class PDF
     //==========================================================//
     public void Create_Report(Context m_context)
     {
-        m_pdf_folder = Environment.getExternalStorageDirectory().toString()+K_PDF_FOLDER;
+        m_pdf_folder = Environment.getExternalStorageDirectory().getAbsolutePath().toString()+K_PDF_FOLDER;
+        File path = new File(m_pdf_folder);
+        try {
+            // Make sure the Pictures directory exists.
+            path.mkdirs();
 
+        }catch (StackOverflowError e){
+
+        }
         try {
             //==========================================================//
             //  Prepare File Handler for PDF File
@@ -191,7 +201,9 @@ public class PDF
             String formattedDate = QS.UTCtoLocal(c.getTime());
             K_PDF_FILENAME = "("+baseCMD.serialno+")" + formattedDate+".pdf";
             final File file = new File(m_pdf_folder, K_PDF_FILENAME);
-            m_file_output_stream = new FileOutputStream(file);
+
+
+                m_file_output_stream = new FileOutputStream(file);
             //==========================================================//
 
             //==========================================================//
@@ -237,7 +249,7 @@ public class PDF
             String m_ref_date = "--------";
 
             //============================================//
-           // String m_Data = Read_from_Txt_File();
+            // String m_Data = Read_from_Txt_File();
             num_col = (int)Math.ceil((K_column_max-K_column_temp)/K_column_space)+1;
             Inc_Line_and_Check_if_need_new_page();
             //=============================Logger Report=========================================
@@ -294,7 +306,7 @@ public class PDF
             m_canvas.drawText(QS.UTCtoLocal(mt2Mem_values.Data.get(mt2Mem_values.Data.size() - 1).valTime.getTime()), app_info.second_column, app_info.line_counter, m_paint);
             app_info.line_counter += app_info.line_inc;
             m_canvas.drawText(App.getContext().getString(R.string.LoggedSample), app_info.first_column, app_info.line_counter, m_paint_dark);
-            m_canvas.drawText(R_data.get(7), app_info.second_column, app_info.line_counter, m_paint);
+            m_canvas.drawText(String.valueOf(mt2Mem_values.Data.size()), app_info.second_column, app_info.line_counter, m_paint);
             app_info.line_counter += app_info.section_inc;
 
             //check if limits are breached and print that in the PDF
@@ -511,10 +523,10 @@ public class PDF
             m_canvas.drawText(String.format("%.1f",((my_unit) ?  mt2Mem_values.ch0Stats.Mean: QS.returnFD( mt2Mem_values.ch0Stats.Mean))),app_info.first_column,(float)(app_info.graph_H-((((my_unit) ?  mt2Mem_values.ch0Stats.Mean: QS.returnFD( mt2Mem_values.ch0Stats.Mean))-app_info.ch_lowest)*app_info.graph_y_scale))+app_info.graph_topY,m_paint);
             float ch1_max = (float)(app_info.graph_H-((((my_unit) ? mt2Mem_values.ch0Stats.Max.Value / 10.0 : QS.returnFD(mt2Mem_values.ch0Stats.Max.Value / 10.0))-app_info.ch_lowest)*app_info.graph_y_scale))+app_info.graph_topY;
             m_canvas.drawLine(app_info.graph_l_lineX_start,ch1_max,app_info.graph_l_lineX_end,ch1_max,app_info.ch1_max_min);
-           // m_canvas.drawText(String.format("%.1f",((my_unit) ? mt2Mem_values.ch0Stats.Max.Value / 10.0 : QS.returnFD(mt2Mem_values.ch0Stats.Max.Value / 10.0))),app_info.graph_l_lineX_end,ch1_max,app_info.max_min);
+            // m_canvas.drawText(String.format("%.1f",((my_unit) ? mt2Mem_values.ch0Stats.Max.Value / 10.0 : QS.returnFD(mt2Mem_values.ch0Stats.Max.Value / 10.0))),app_info.graph_l_lineX_end,ch1_max,app_info.max_min);
             float ch1_min = (float)(app_info.graph_H-((((my_unit) ? mt2Mem_values.ch0Stats.Min.Value / 10.0 : QS.returnFD(mt2Mem_values.ch0Stats.Min.Value / 10.0))-app_info.ch_lowest)*app_info.graph_y_scale))+app_info.graph_topY;
             m_canvas.drawLine(app_info.graph_l_lineX_start,ch1_min,app_info.graph_l_lineX_end,ch1_min,app_info.ch1_max_min);
-           // m_canvas.drawText(String.format("%.1f",((my_unit) ? mt2Mem_values.ch0Stats.Min.Value / 10.0 : QS.returnFD(mt2Mem_values.ch0Stats.Min.Value / 10.0))),app_info.graph_l_lineX_end,ch1_min,app_info.max_min);
+            // m_canvas.drawText(String.format("%.1f",((my_unit) ? mt2Mem_values.ch0Stats.Min.Value / 10.0 : QS.returnFD(mt2Mem_values.ch0Stats.Min.Value / 10.0))),app_info.graph_l_lineX_end,ch1_min,app_info.max_min);
             m_canvas.drawText("__ "+App.getContext().getString(R.string.Temp)+ Temp_unit,app_info.second_column,app_info.graph_topY-5,app_info.temp_line);
             //labeling the mean value of the graph lines
             m_canvas.drawText(String.valueOf(baseCMD.ch2Lo / 10.0),app_info.first_column,(float)app_info.ch2_lower_Y,m_paint);
@@ -528,7 +540,7 @@ public class PDF
                 m_canvas.drawLine(app_info.x_point_loc, app_info.temp_next_y, app_info.x_point_loc+app_info.graph_x_scale,(float)(app_info.graph_H-((((my_unit) ? ch1.get(k) : QS.returnFD(ch1.get(k)))-(app_info.ch_lowest))*app_info.graph_y_scale))+app_info.graph_topY, app_info.temp_line );
                 app_info.temp_next_y = (float)  (app_info.graph_H-((((my_unit) ? ch1.get(k) : QS.returnFD(ch1.get(k)))-(app_info.ch_lowest))*app_info.graph_y_scale))+app_info.graph_topY;
                 if(baseCMD.ch2Enable) {
-                   // m_canvas.drawCircle(app_info.x_point_loc, (float) (app_info.graph_H - ((ch2.get(k) - (app_info.ch_lowest)) * app_info.graph_y_scale)) + app_info.graph_topY, 5, green_tick);
+                    // m_canvas.drawCircle(app_info.x_point_loc, (float) (app_info.graph_H - ((ch2.get(k) - (app_info.ch_lowest)) * app_info.graph_y_scale)) + app_info.graph_topY, 5, green_tick);
                     m_canvas.drawLine(app_info.x_point_loc, app_info.rh_next_y,app_info.x_point_loc+app_info.graph_x_scale,(float) (app_info.graph_H - ((ch2.get(k) - (app_info.ch_lowest)) * app_info.graph_y_scale)) + app_info.graph_topY,app_info.rh_line );
                     app_info.rh_next_y = (float) (app_info.graph_H - ((ch2.get(k) - (app_info.ch_lowest)) * app_info.graph_y_scale)) + app_info.graph_topY;
                 }
@@ -675,7 +687,8 @@ public class PDF
 
                     m_canvas.drawText("|",K_v2_column_middle,m_current_line,m_paint);
                     inc_val++;
-
+                    if (inc_val >= mt2Mem_values.Data.size())
+                        break;
                     m_date = Convert_UNIX_To_Date(time.get(inc_val));
                     m_time = Convert_UNIX_To_Time(time.get(inc_val));
                     m_current_column_v2 = K_v2_column_two;
@@ -712,6 +725,8 @@ public class PDF
                     }
 
                     inc_val++;
+                    if (inc_val >= mt2Mem_values.Data.size())
+                        break;
                     Inc_Line_and_Check_if_need_new_page();
 
                 }
@@ -728,6 +743,7 @@ public class PDF
         }
         catch (IOException e)
         {
+//            Log.i("TEST", "ERROR " + e.toString());
             Error_Log(new String[]{"PDF","000",e.toString()});
         }
     }
@@ -781,33 +797,33 @@ public class PDF
             mark.setTextSize(52);
             limit_temp.setColor(Color.CYAN);
             app_info.graph_paint.setColor(Color.WHITE);
-            app_info.ch1_u_L.setColor(Color.rgb(204,0,0));
-            app_info.ch1_u_L.setStrokeWidth(app_info.graph_brush_thickness);
-            app_info.ch1_u_L.setPathEffect(dashPathEffect);
-
-            app_info.ch1_l_L.setColor(Color.rgb(0,102,204));
-            app_info.ch1_l_L.setStrokeWidth(app_info.graph_brush_thickness);
-            app_info.ch1_l_L.setPathEffect(dashPathEffect);
-
-            app_info.ch2_u_L.setColor(Color.rgb(255,51,51));
+            app_info.ch2_u_L.setColor(Color.rgb(204,0,0));
             app_info.ch2_u_L.setStrokeWidth(app_info.graph_brush_thickness);
             app_info.ch2_u_L.setPathEffect(dashPathEffect);
 
-            app_info.ch2_l_L.setColor(Color.rgb(51,153,255));
+            app_info.ch2_l_L.setColor(Color.rgb(0,102,204));
             app_info.ch2_l_L.setStrokeWidth(app_info.graph_brush_thickness);
             app_info.ch2_l_L.setPathEffect(dashPathEffect);
 
-            app_info.temp_line.setColor(Color.rgb(27,0,255));
+            app_info.ch1_u_L.setColor(Color.rgb(255,51,51));
+            app_info.ch1_u_L.setStrokeWidth(app_info.graph_brush_thickness);
+            app_info.ch1_u_L.setPathEffect(dashPathEffect);
+
+            app_info.ch1_l_L.setColor(Color.rgb(51,153,255));
+            app_info.ch1_l_L.setStrokeWidth(app_info.graph_brush_thickness);
+            app_info.ch1_l_L.setPathEffect(dashPathEffect);
+
+            app_info.temp_line.setColor(Color.rgb(16,105,15));
             app_info.temp_line.setStrokeWidth(app_info.graph_brush_thickness);
 
-            app_info.rh_line.setColor(Color.rgb(102,204,0));
+            app_info.rh_line.setColor(Color.rgb(176,128,247));
             app_info.rh_line.setStrokeWidth(app_info.graph_brush_thickness);
 
-            app_info.ch1_max_min.setColor(Color.rgb(27,0,255));
-            app_info.ch1_max_min.setPathEffect(dashPathEffect2);
-
-            app_info.ch2_max_min.setColor(Color.rgb(102,204,0));
+            app_info.ch2_max_min.setColor(Color.rgb(27,0,255));
             app_info.ch2_max_min.setPathEffect(dashPathEffect2);
+
+            app_info.ch1_max_min.setColor(Color.rgb(102,204,0));
+            app_info.ch1_max_min.setPathEffect(dashPathEffect2);
 
             //printing the header and footer on each page. -- some of them are different for the first page
             m_canvas.drawLine(line_startX, line_startY, line_endX, line_endY, line_paint);
@@ -816,8 +832,8 @@ public class PDF
             m_canvas.drawText("www.temprecord.com", app_info.siteX, app_info.siteY, m_paint);
             m_canvas.drawText(QS.UTCtoLocal(new Date().getTime()), app_info.dateX, app_info.dateY, m_paint);
             m_canvas.drawText(App.getContext().getString(R.string.App_version), app_info.versionX, app_info.versionY, m_paint);
-            Drawable d = App.getContext().getResources().getDrawable(R.drawable.temprecord_logo);
-            d.setBounds(250, 15, 450, 50);
+            Drawable d = App.getContext().getResources().getDrawable(R.drawable.logo);
+            d.setBounds(320, 10, 385, 50);
             d.draw(m_canvas);
             if (page_num == 1) {
                 m_canvas.drawText(App.getContext().getString(R.string.Logger_Report), report_startX, report_startY, line_paint);
@@ -939,20 +955,32 @@ public class PDF
      * @param m_context the GUI Context argument.*/
     //==========================================================//
     public void Open_PDF_in_Chrome(Context m_context)
-    //==========================================================//
     {
         String  urlString   =   m_pdf_folder + "/" + K_PDF_FILENAME;
         Comment_Log(new String[]{"PDF","Open in Chrome : " + urlString});
         File file = new File(urlString);
         Intent  intent      =   new Intent(Intent.ACTION_VIEW);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.setPackage("com.android.chrome");
-        Uri apkURI = FileProvider.getUriForFile(
-                m_context,
-                m_context.getApplicationContext()
-                        .getPackageName() + ".provider", file);
-        intent.setDataAndType(apkURI, "application/pdf");
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        intent.setPackage("com.android.chrome");
+//        Uri apkURI = FileProvider.getUriForFile(m_context, m_context.getApplicationContext().getPackageName() + ".provider", file);
+//        intent.setDataAndType(apkURI, "application/pdf");
+//        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+        Uri contentUri;
+        contentUri = Uri.fromFile(file);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        if (Build.VERSION.SDK_INT >= 24) {
+            Uri apkURI = FileProvider.getUriForFile(App.getContext(), App.getContext().getPackageName() + ".provider", file);
+            intent.setDataAndType(apkURI, "application/pdf");
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            //intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            intent.setPackage("com.android.chrome");
+
+        } else {
+            intent.setDataAndType(contentUri, "application/pdf");
+        }
+
         try
         {
             m_context.startActivity(intent);

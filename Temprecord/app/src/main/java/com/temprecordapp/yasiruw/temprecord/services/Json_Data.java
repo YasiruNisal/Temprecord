@@ -124,11 +124,8 @@ public class Json_Data {
                     }
                 }
                 data.put("value", tempa);
-                if (storeKeyService.getDefaults("UNITS", context) != null && storeKeyService.getDefaults("UNITS", context).equals("1")) {
-                    data.accumulate("units", QS.imperial(false));
-                }else{
-                    data.accumulate("units", QS.imperial(true));
-                }
+                data.accumulate("units", QS.imperial(baseCMD.ImperialUnit));
+
                 //date time will be left out for now
 
                 //============================limits==================================================//
@@ -169,8 +166,12 @@ public class Json_Data {
                 lhight.put(2, "null");
 
                 llowert.put("high", lhight);
+                if (storeKeyService.getDefaults("UNITS", context) != null && storeKeyService.getDefaults("UNITS", context).equals("1")) {
+                    lmidt.put(0, String.valueOf(baseCMD.ch1Lo / 10.0));
+                }else{
+                    lmidt.put(0, QS.returnF(String.valueOf(baseCMD.ch1Lo / 10.0)));
+                }
 
-                lmidt.put(0, String.valueOf(baseCMD.ch1Lo / 10.0));
                 lmidt.put(1, "#FF0000");
                 lmidt.put(2, "dash");
 

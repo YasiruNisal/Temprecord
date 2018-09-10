@@ -112,65 +112,74 @@ public class USB
 //====================================================================//
     public void unregister_receiver(Context context)
     {
+
+
         if (m_usb_HID_rx_thread != null)
         {
+            //Log.i("TEST", "UNREGISTRING IN USB CALSS if1111");
             m_usb_HID_rx_thread.interrupt();
             m_usb_HID_rx_thread = null;
         }
         if (m_usb_state_receiver != null)
         {
+            //Log.i("TEST", "UNREGISTRING IN USB CALSS if222222222222");
             context.unregisterReceiver(m_usb_state_receiver);
             m_usb_state_receiver = null;
         }
     }
     //====================================================================//
 //====================================================================//
-   public void Connection_Initialisation()
+    public void Connection_Initialisation()
     {
-        m_usb_manager = (UsbManager) m_context.getSystemService(USB_SERVICE);
+        m_usb_manager   = (UsbManager) m_context.getSystemService(USB_SERVICE);
+
         Check_Device();
         if (m_usb_device != null)
         {
-//===================================================================//
-// BROADCAST RECEIVER
-//===================================================================//
+            //===================================================================//
+            // BROADCAST RECEIVER
+            //===================================================================//
             if (m_usb_state_receiver == null)
             {
-//======================================================//
-                IntentFilter filter = new IntentFilter();
-                filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
-                filter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
-//======================================================//
-//=========================//
-                USB_open_connection();
-//=========================//
-//======================================================//
-                m_usb_state_receiver = new BroadcastReceiver()
+            //======================================================//
+            IntentFilter filter = new IntentFilter();
+            filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
+            filter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
+            //======================================================//
+
+            //=========================//
+            USB_open_connection();
+            //=========================//
+
+            //======================================================//
+            m_usb_state_receiver = new BroadcastReceiver()
+            {
+                public void onReceive(Context context, Intent intent)
                 {
-                    public void onReceive(Context context, Intent intent)
+                    String action = intent.getAction();
+                    //Log.i("TEST1", "ACTION ************  " + action);
+                    if (UsbManager.ACTION_USB_DEVICE_ATTACHED.equals(action))
                     {
-                        String action = intent.getAction();
-                        if (UsbManager.ACTION_USB_DEVICE_ATTACHED.equals(action))
-                        {
-                            //Log.i("USB", "COMING INTO USB ACTION ATTACH");
-                            Update_UI(m_context,"U02 <- onReceive ACTION_USB_DEVICE_ATTACHED","UI_update",null,null);
-                        }
-                        if (UsbManager.ACTION_USB_DEVICE_DETACHED.equals(action))
-                        {
-                            //Log.i("USB", "COMING INTO USB ACTION DEEEEEEATTACH");
-                            Update_UI(m_context,"U03 <- onReceive DETACHED","UI_update",null,null);
-//=========================//
-                            USB_close_connection();
-//=========================//
-                        }
+
+                        Update_UI(m_context,"U02 <- onReceive ACTION_USB_DEVICE_ATTACHED","UI_update",null,null);
                     }
-                };
-//===================================================//
-//===================================================//
-                m_context.registerReceiver(m_usb_state_receiver, filter);
-//===================================================//
-            }
-//===================================================================//
+                    if (UsbManager.ACTION_USB_DEVICE_DETACHED.equals(action))
+                    {
+                        Update_UI(m_context,"U03 <- onReceive DETACHED","UI_update",null,null);
+                        //=========================//
+                        USB_close_connection();
+                        //=========================//
+                    }
+                }
+            };
+            //===================================================//
+
+            //===================================================//
+            //Log.i("TEST", "======== !!!!!RECEIVER REGISTERED HERE!!!!!====" + m_context + " " +m_usb_state_receiver );
+            m_context.registerReceiver(m_usb_state_receiver, filter);
+            //===================================================//
+        }
+            //===================================================================//
         }
     }
     //====================================================================//

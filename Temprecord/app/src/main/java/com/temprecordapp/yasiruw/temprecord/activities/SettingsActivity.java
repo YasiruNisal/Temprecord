@@ -71,7 +71,7 @@ public class SettingsActivity extends Activity {
         else
             values.setChecked(false);
 
-
+        units.setChecked(true);
     }
 
 

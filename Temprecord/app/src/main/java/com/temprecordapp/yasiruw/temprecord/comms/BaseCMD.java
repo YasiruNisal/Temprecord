@@ -1,6 +1,7 @@
 package com.temprecordapp.yasiruw.temprecord.comms;
 
 import android.content.Context;
+import android.util.Log;
 
 
 import com.temprecordapp.yasiruw.temprecord.CustomLibraries.Yasiru_Temp_Library;
@@ -65,6 +66,7 @@ public class BaseCMD {
     public String State;
     public String memory;
     private Context context;
+    public int getStartDelaycounter;
 
     public Date dstart;
     public Date dstop;
@@ -205,12 +207,14 @@ public class BaseCMD {
             msg.dateRtc.getValue();
             dman = msg.dateRtc.getValue();
             returndata.add("");
+            getStartDelaycounter = msg.startPeriod.value;
+            //Log.i("TEST", "TETING DELAY ++++++++++++++" + getStartDelaycounter);
             if((msg.mt2_chRam.chValue.getDoubleValue()/10) > 3000){
                 returndata.add("0");
                 returndata.add("0");
                 returndata.add("0");
             }else {
-                returndata.add("" + (msg.mt2_chRam.chValue.getDoubleValue() / 10));
+                returndata.add("" + (msg.mt2_chRam.chValuecomms.getDoubleValue() / 100));
                 returndata.add("" + (msg.mt2_chRam.valHi.getDoubleValue() / 10));
                 returndata.add("" + (msg.mt2_chRam.valLo.getDoubleValue() / 10));//12
             }
@@ -221,7 +225,7 @@ public class BaseCMD {
                 returndata.add("0");
                 returndata.add("0");
             }else{
-                returndata.add("" + (msg.mt2_chRam1.chValue.getDoubleValue()/ 10));
+                returndata.add("" + (msg.mt2_chRam1.chValuecomms.getDoubleValue()/ 100));
                 returndata.add("" + (msg.mt2_chRam1.valHi.getDoubleValue()/ 10));
                 returndata.add("" + (msg.mt2_chRam1.valLo.getDoubleValue()/ 10));
             }

@@ -28,4 +28,16 @@
         <item name="android:textColor">#fff</item>
     </style>
 
+    <style name="AppCompatAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">@color/white_color</item>
+        <item name="android:textColorPrimary">@color/white_color</item>
+        <item name="android:background">@color/temp_blue</item>
+    </style>
+
+    <style name="AppCompatAlertDialogStyle2" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">@color/white_color</item>
+        <item name="android:textColorPrimary">@color/white_color</item>
+        <item name="android:background">@color/white_color</item>
+    </style>
+
 </resources>

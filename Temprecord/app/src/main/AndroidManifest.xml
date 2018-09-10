@@ -15,9 +15,11 @@
         android:roundIcon="@mipmap/temprecordapp_icon_round"
         android:supportsRtl="true"
         android:theme="@android:style/Theme.Holo.Light"
+        android:largeHeap="true"
          >
         <activity
             android:name=".activities.MainActivity"
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,10 +38,6 @@
             <!-- ==================================================================== -->
         </activity>
         <activity
-            android:name=".activities.AboutActivity"
-            android:label=""
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".activities.SettingsActivity"
             android:label=""
             android:screenOrientation="portrait"
@@ -52,7 +50,6 @@
         <activity
             android:name=".activities.GraphAcivity"
             android:screenOrientation="landscape" />
-        <activity android:name=".activities.SavedFileActivity"></activity>
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -61,7 +58,7 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths"/>
+                android:resource="@xml/provider_paths" />
         </provider>
     </application>
 

@@ -110,16 +110,16 @@ public class LeDeviceListAdapter extends BaseAdapter {
         else viewHolder.deviceName.setText(R.string.unknown_device);
 
         viewHolder.deviceAddress.setText(deviceAddress);
-        if (mDevicesRssi.get(device) < -90) {
-            viewHolder.image.setBackground(context.getResources().getDrawable(R.drawable.level1));
-
-        } else if (mDevicesRssi.get(device) < -85) {
-            viewHolder.image.setBackground(context.getResources().getDrawable(R.drawable.level2));
-        } else if (mDevicesRssi.get(device) < -55) {
-            viewHolder.image.setBackground(context.getResources().getDrawable(R.drawable.level3));
-        } else if (mDevicesRssi.get(device) < 0) {
-            viewHolder.image.setBackground(context.getResources().getDrawable(R.drawable.level4));
-        }
+//        if (mDevicesRssi.get(device) < -90) {
+//            viewHolder.image.setBackground(context.getResources().getDrawable(R.drawable.level1));
+//
+//        } else if (mDevicesRssi.get(device) < -85) {
+//            viewHolder.image.setBackground(context.getResources().getDrawable(R.drawable.level2));
+//        } else if (mDevicesRssi.get(device) < -55) {
+//            viewHolder.image.setBackground(context.getResources().getDrawable(R.drawable.level3));
+//        } else if (mDevicesRssi.get(device) < 0) {
+//            viewHolder.image.setBackground(context.getResources().getDrawable(R.drawable.level4));
+//        }
 
         return view;
     }

@@ -193,6 +193,7 @@ public class classMessages {
         public MT2_CHRam mt2_chRam1;
         public u_int8.uVal8_2 batLife;
         public uVal16 samplePointer;
+        public uVal32 startPeriod;
 
 
         public static final int ByteSize = 100;
@@ -218,8 +219,10 @@ public class classMessages {
             samplePointer = new uVal16(data);
             uval32 = new uVal32(data);
             dateRtc = new dataType.dateRtc(data);
-            for (int i = 0; i < 20; i++) data.remove(0);
+            for (int i = 0; i < 16; i++) data.remove(0);
+            startPeriod = new uVal32(data);
             //remove three more as as first 3 RAM channel data are not used
+
             for (int i = 0; i < 3; i++) data.remove(0);
             mt2_chRam = new MT2_CHRam(data);
             //remove three more as as first 3 RAM channel data are not used
@@ -235,6 +238,7 @@ public class classMessages {
             samplePointer.ToByte(data);
             uval32.ToByte(data);
             dateRtc.ToByte(data);
+            startPeriod.ToByte(data);
             mt2_chRam.ToByte(data);
             mt2_chRam1.ToByte(data);
         }
@@ -248,6 +252,7 @@ public class classMessages {
             i += batLife.TypeSize;
             i += samplePointer.TypeSize;
             i += dateRtc.TypeSize;
+            i += startPeriod.TypeSize;
             i += mt2_chRam.TypeSize;
             i += mt2_chRam1.TypeSize;
             return i;

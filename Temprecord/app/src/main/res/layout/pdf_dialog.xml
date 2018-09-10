@@ -30,9 +30,9 @@
                     android:layout_width="@dimen/menu_button"
                     android:layout_height="@dimen/menu_button"
                     android:layout_gravity="center"
-                    android:background="@drawable/simplepdf_button"
+                    android:background="@drawable/pdf1c"
                     android:elevation="@dimen/menu_text_gap"
-                    android:src="@drawable/android_pdf" />
+                     />
 
                 <TextView
                     android:id="@+id/simplepdf_text"
@@ -60,8 +60,8 @@
                     android:layout_height="@dimen/menu_button"
                     android:layout_gravity="center"
                     android:elevation="@dimen/menu_text_gap"
-                    android:background="@drawable/fullpdf_v1_button"
-                    android:src="@drawable/android_pdf2" />
+                    android:background="@drawable/pdf2c"
+                     />
 
                 <TextView
                     android:id="@+id/fullpdf_v1_text"
@@ -89,8 +89,9 @@
                     android:layout_height="@dimen/menu_button"
                     android:layout_gravity="center"
                     android:elevation="@dimen/menu_text_gap"
-                    android:background="@drawable/fulpdf_v2_button"
-                    android:src="@drawable/android_pdf3" />
+                    android:background="@drawable/pdf3c"
+
+                     />
 
                 <TextView
                     android:id="@+id/fullpdf_v2_text"

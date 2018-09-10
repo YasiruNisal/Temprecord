@@ -3,6 +3,8 @@ package com.temprecordapp.yasiruw.temprecord.comms;
 
 
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.DataFormatException;
@@ -180,7 +182,8 @@ public class CommsSerial {
         for (byte b1 : b){
             sb.append(String.format("%02X ", b1));
         }
-        //Log.d("HEX", sb.toString());
+//        Log.i("TEST", "-----------------------------------------");
+//        Log.i("TEST", sb.toString());
     }
 
     public byte[] int2byte(int[]src) {
@@ -352,7 +355,7 @@ public class CommsSerial {
             k++;
         }
 
-       // BytetoHex(temp2);
+        //BytetoHex(temp2);
         return temp2;
     }
 

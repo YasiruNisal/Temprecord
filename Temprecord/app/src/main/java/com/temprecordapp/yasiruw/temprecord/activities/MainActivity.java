@@ -1,39 +1,38 @@
 package com.temprecordapp.yasiruw.temprecord.activities;
 
 
+import android.Manifest;
 import android.app.Activity;
-import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGattCharacteristic;
-import android.bluetooth.BluetoothManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebView;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.temprecordapp.yasiruw.temprecord.services.StoreKeyService;
 import com.temprecordapp.yasiruw.temprecord.services.Temprecord_BLE;
 import com.temprecordapp.yasiruw.temprecord.R;
 import com.temprecordapp.yasiruw.temprecord.comms.BLEFragmentI;
@@ -41,31 +40,25 @@ import com.temprecordapp.yasiruw.temprecord.comms.BaseCMD;
 import com.temprecordapp.yasiruw.temprecord.comms.CommsSerial;
 import com.temprecordapp.yasiruw.temprecord.CustomLibraries.Yasiru_Temp_Library;
 import com.temprecordapp.yasiruw.temprecord.comms.USBFragmentI;
-import com.temprecordapp.yasiruw.temprecord.fragments.BLEParameterFragment;
-import com.temprecordapp.yasiruw.temprecord.fragments.BLEQueryFragment;
-import com.temprecordapp.yasiruw.temprecord.fragments.BLEReadFragment;
-import com.temprecordapp.yasiruw.temprecord.fragments.USBParameterFragment;
 import com.temprecordapp.yasiruw.temprecord.fragments.USBQueryFragment;
-import com.temprecordapp.yasiruw.temprecord.fragments.USBReadFragment;
 import com.temprecordapp.yasiruw.temprecord.services.BluetoothLeService;
 import com.temprecordapp.yasiruw.temprecord.services.USB;
 import com.temprecordapp.yasiruw.temprecord.utils.GattAttributes;
 import com.temprecordapp.yasiruw.temprecord.comms.HexData;
-import com.temprecordapp.yasiruw.temprecord.services.LeDeviceListAdapter;
-import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
+
 
 
 import java.util.ArrayList;
 import java.util.TimeZone;
 import java.util.UUID;
 
-import static com.temprecordapp.yasiruw.temprecord.fragments.BLEQueryFragment.EXTRAS_MESSAGE;
+import static com.temprecordapp.yasiruw.temprecord.fragments.USBQueryFragment.EXTRAS_MESSAGE;
 
 
-public class MainActivity extends Activity implements
+public class MainActivity extends FragmentActivity implements
         BLEFragmentI, USBFragmentI {
     //=================Bluetooth service variables==================================================
-
+    private static final String ACTION_USB_ATTACHED  = "android.hardware.usb.action.USB_DEVICE_ATTACHED";
     private static boolean mConnected = false;
     private static boolean mUSBConnected = false;
     public BluetoothGattCharacteristic characteristicTX;
@@ -74,7 +67,7 @@ public class MainActivity extends Activity implements
 
 
     //============Bluetooth device activity variables===============================================
-    private LeDeviceListAdapter mLeDeviceListAdapter;
+
     private BluetoothAdapter mBluetoothAdapter;
     public boolean mScanning;
 
@@ -92,6 +85,8 @@ public class MainActivity extends Activity implements
     private static final Handler mainThreadHandler = new Handler();
     Runnable delayedTask;
     public TimeZone default_timeZone;
+    public int mode = 1;// BLE no  and USB yes  0 = BLE yes  and USB yes
+    private android.support.v4.app.FragmentManager fragmentManager;
 
 
     //====================layout variables==============================================================
@@ -102,8 +97,9 @@ public class MainActivity extends Activity implements
     LinearLayout info;
     LinearLayout list;
     LinearLayout con_info;
-    LinearLayout fragment_container;
+    FrameLayout fragment_container;
     LinearLayout menubuttons;
+    LinearLayout history;
     TextView state;
     TextView type;
     TextView serial;
@@ -131,19 +127,21 @@ public class MainActivity extends Activity implements
     ImageButton help;
     ImageButton findlogger;
     ImageButton settings;
-
+    WebView web_gif;
     ListView lvDevices;
     FragmentTransaction transaction;
+
+    TextView more;
+    LinearLayout queryloggerdetails;
+
+
+
 
     private Bundle m_bundle_data = new Bundle();
     //========================Fragment Initialisation===============================================
     private int FragmentNumber = 0;
-    private BLEQueryFragment bleQueryFragment = new BLEQueryFragment();
-    private BLEReadFragment bleReadFragment = new BLEReadFragment();
-    private BLEParameterFragment bleParameterFragment = new BLEParameterFragment();
     private USBQueryFragment usbQueryFragment = new USBQueryFragment();
-    private USBReadFragment usbReadFragment = new USBReadFragment();
-    private USBParameterFragment usbParameterFragment = new USBParameterFragment();
+
 
     //==============================================================================================
 
@@ -155,71 +153,26 @@ public class MainActivity extends Activity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Log.i("TEST", "|||||||||||||||||||||||||||||||||||ONCREATE ||||||||||||||||||||||||| ");
         setContentView(R.layout.activity_main);
-
         r1 =  findViewById(R.id.r1);
-        r2 =  findViewById(R.id.r2);
-        r3 =  findViewById(R.id.r3);
-        r4 = findViewById(R.id.r4);
-        info = findViewById(R.id.Info);
-        list =  findViewById(R.id.List);
-        con_info =  findViewById(R.id.con_info);
+        info = findViewById(R.id.info);
         menubuttons =  findViewById(R.id.Menubuttons);
         fragment_container =  findViewById(R.id.Fragment_Container);
         state =  findViewById(R.id.state);
-        type =  findViewById(R.id.type);
-        serial =  findViewById(R.id.serial);
         battery =  findViewById(R.id.battery);
-        BLEname =  findViewById(R.id.blename);
-        connecttype = findViewById(R.id.connecttype);
-        starttext =  findViewById(R.id.starttext);
         parametertext =  findViewById(R.id.parametertext);
-        reusetext =  findViewById(R.id.reusetext);
-        tagtext =  findViewById(R.id.tagtext);
         readtext =  findViewById(R.id.readtext);
-        stoptext =  findViewById(R.id.stoptext);
-
-        read =  findViewById(R.id.read);
-        query =  findViewById(R.id.query);
-        parameters =  findViewById(R.id.parameters);
-        tag =  findViewById(R.id.tag);
-        start =  findViewById(R.id.start);
-        stop =  findViewById(R.id.stop);
-        devicelist =  findViewById(R.id.devicelist);
-        reuse =  findViewById(R.id.reuse);
-        files =  findViewById(R.id.files);
-        help =  findViewById(R.id.help);
-        findlogger =  findViewById(R.id.find);
-        settings =  findViewById(R.id.settings);
-
-        lvDevices =  findViewById(R.id.lvDevices);
         scroll = findViewById(R.id.screen);
-
-        getActionBar().setBackgroundDrawable(new ColorDrawable(0xFFFFFFFF));
+        web_gif = findViewById(R.id.web_gif);
+        getActionBar().hide();
         Update_UI_state(1);
+        web_gif.loadUrl("file:///android_asset/gif.html");
+        web_gif.getSettings().setLoadWithOverviewMode(true);
+//        web_gif.getSettings().setUseWideViewPort(true);
 
-        // Initializes a Bluetooth adapter.  For API level 18 and above, get a reference to
-        // BluetoothAdapter through BluetoothManager.
-        if(!mUSBConnected) {
-            final BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
-            mBluetoothAdapter = bluetoothManager.getAdapter();
-            temprecord_ble = new Temprecord_BLE(mBluetoothAdapter, MainActivity.this, lvDevices);
-            //temprecord_ble.isBluetoothSupported();// checks if Bluetooth is supported
-            //temprecord_ble.isBLESupported();// checks if BLE is supported
-            // Use this check to determine whether BLE is supported on the device.  Then you can
-            // selectively disable BLE-related features.
 
-            if (mBluetoothAdapter == null) {
-                Toast.makeText(this, R.string.error_bluetooth_not_supported, Toast.LENGTH_SHORT).show();
-                finish();
-                return;
-            }
-            if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
-                Toast.makeText(this, R.string.ble_not_supported, Toast.LENGTH_SHORT).show();
-                finish();
-            }
-        }
-
+        more = findViewById(R.id.more);
 
         //Register Receiver to be notified for All internal intent USB and BLE
         //==========================================================//
@@ -234,21 +187,16 @@ public class MainActivity extends Activity implements
         //==========================================================//
 
         //==============Menu Button click events ===================================================
-        read.setOnClickListener(OnMenuButtonClick);
-        query.setOnClickListener(OnMenuButtonClick);
-        parameters.setOnClickListener(OnMenuButtonClick);
-        tag.setOnClickListener(OnMenuButtonClick);
-        start.setOnClickListener(OnMenuButtonClick);
-        stop.setOnClickListener(OnMenuButtonClick);
-        devicelist.setOnClickListener(OnMenuButtonClick);
-        reuse.setOnClickListener(OnMenuButtonClick);
-        files.setOnClickListener(OnMenuButtonClick);
-        help.setOnClickListener(OnMenuButtonClick);
-        findlogger.setOnClickListener(OnMenuButtonClick);
-        settings.setOnClickListener(OnMenuButtonClick);
+
         //QS.LocaltoUTC();
+        fragmentManager = getSupportFragmentManager();
+        //Log.i("TEST", "++++++++++++++++++++++++++++++++++++++++++++++ " + usbQueryFragment);
 
-
+        //Log.i("TEST", "++++++++++++++++++++++++++++++++++++++++++++++ " + usbQueryFragment);
+        Update_UI_state(1);
+        StoreKeyService.setDefaults("UNITS", "1", getApplicationContext());
+        int requestcode = 0;
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},requestcode);
     }
 
     //==================================================================================================================================================================================//
@@ -257,193 +205,13 @@ public class MainActivity extends Activity implements
     //=============================================================================================//
     // Menu button click event Listener
     //=============================================================================================//
+
     private View.OnClickListener OnMenuButtonClick = new View.OnClickListener()
     {
 
         @Override
         public void onClick(View v) {
             switch (v.getId()){
-                case R.id.read:
-                    //Log.i("SPEED", "start stufff++++++++++++++++");
-                    if (mUSBConnected) {
-                        Update_UI_state(3);
-                        m_bundle_data.putString(EXTRAS_MESSAGE, "6"); //put string, int, etc in bundle with a key value
-                        usbReadFragment = new USBReadFragment().GET_INSTANCE(m_bundle_data); //Use bundle to pass data
-                        FragmentNumber = 5;
-                        getFragmentManager().beginTransaction().replace(R.id.Fragment_Container, usbReadFragment).addToBackStack(null).commit();
-                    } else if(mConnected) {
-                        Update_UI_state(3);
-                        m_bundle_data.putString(EXTRAS_MESSAGE, "6"); //put string, int, etc in bundle with a key value
-                        bleReadFragment = new BLEReadFragment().GET_INSTANCE(m_bundle_data); //Use bundle to pass data
-                        FragmentNumber = 2;
-                        getFragmentManager().beginTransaction().replace(R.id.Fragment_Container, bleReadFragment).commit();
-                    }
-                    Toast.makeText(MainActivity.this, getString(R.string.Read_S), Toast.LENGTH_SHORT).show();
-                    break;
-                case R.id.query:
-                    if(mUSBConnected){
-                        Update_UI_state(3);
-                        m_bundle_data.putString(EXTRAS_MESSAGE, "1"); //put string, int, etc in bundle with a key value
-                        usbQueryFragment = new USBQueryFragment().GET_INSTANCE(m_bundle_data); //Use bundle to pass data
-                        FragmentNumber = 4;
-                        getFragmentManager().beginTransaction().replace(R.id.Fragment_Container, usbQueryFragment).addToBackStack(null).commit();
-                    }else if(mConnected) {
-                        Update_UI_state(3);
-                        m_bundle_data.putString(EXTRAS_MESSAGE, "1"); //put string, int, etc in bundle with a key value
-                        bleQueryFragment = new BLEQueryFragment().GET_INSTANCE(m_bundle_data); //Use bundle to pass data
-                        FragmentNumber = 1;
-                        getFragmentManager().beginTransaction().replace(R.id.Fragment_Container, bleQueryFragment).commit();
-                    }
-                    Toast.makeText(MainActivity.this, getString(R.string.Query_S), Toast.LENGTH_SHORT).show();
-                    break;
-                case R.id.parameters:
-                    if (mUSBConnected) {
-                        Update_UI_state(3);
-                        m_bundle_data.putString(EXTRAS_MESSAGE, "7"); //put string, int, etc in bundle with a key value
-                        usbParameterFragment = new USBParameterFragment().GET_INSTANCE(m_bundle_data); //Use bundle to pass data
-                        FragmentNumber = 6;
-                        getFragmentManager().beginTransaction().replace(R.id.Fragment_Container, usbParameterFragment).addToBackStack(null).commit();
-                    } else if(mConnected) {
-                        Update_UI_state(3);
-                        m_bundle_data.putString(EXTRAS_MESSAGE, "7"); //put string, int, etc in bundle with a key value
-                        bleParameterFragment = new BLEParameterFragment().GET_INSTANCE(m_bundle_data); //Use bundle to pass data
-                        FragmentNumber = 3;
-                        getFragmentManager().beginTransaction().replace(R.id.Fragment_Container, bleParameterFragment).commit();
-                    }
-                    Toast.makeText(MainActivity.this, getString(R.string.Parameters_S), Toast.LENGTH_SHORT).show();
-                    break;
-                case R.id.tag:
-                    if (mUSBConnected) {
-                        Update_UI_state(3);
-                        m_bundle_data.putString(EXTRAS_MESSAGE, "5"); //put string, int, etc in bundle with a key value
-                        usbQueryFragment = new USBQueryFragment().GET_INSTANCE(m_bundle_data); //Use bundle to pass data
-                        FragmentNumber = 4;
-                        getFragmentManager().beginTransaction().replace(R.id.Fragment_Container, usbQueryFragment).addToBackStack(null).commit();
-                    } else if(mConnected) {
-                        Update_UI_state(3);
-                        m_bundle_data.putString(EXTRAS_MESSAGE, "5"); //put string, int, etc in bundle with a key value
-                        bleQueryFragment = new BLEQueryFragment().GET_INSTANCE(m_bundle_data); //Use bundle to pass data
-                        FragmentNumber = 1;
-                        getFragmentManager().beginTransaction().replace(R.id.Fragment_Container, bleQueryFragment).commit();
-                    }
-                    Toast.makeText(MainActivity.this, getString(R.string.Tag_S), Toast.LENGTH_SHORT).show();
-                    break;
-                case R.id.start:
-                    if (mUSBConnected) {
-                        Update_UI_state(3);
-                        m_bundle_data.putString(EXTRAS_MESSAGE, "2"); //put string, int, etc in bundle with a key value
-                        usbQueryFragment = new USBQueryFragment().GET_INSTANCE(m_bundle_data); //Use bundle to pass data
-                        FragmentNumber = 4;
-                        getFragmentManager().beginTransaction().replace(R.id.Fragment_Container, usbQueryFragment).addToBackStack(null).commit();
-                    } else if(mConnected) {
-                        Update_UI_state(3);
-                        m_bundle_data.putString(EXTRAS_MESSAGE, "2"); //put string, int, etc in bundle with a key value
-                        bleQueryFragment = new BLEQueryFragment().GET_INSTANCE(m_bundle_data); //Use bundle to pass data
-                        FragmentNumber = 1;
-                        getFragmentManager().beginTransaction().replace(R.id.Fragment_Container, bleQueryFragment).commit();
-                        //Toast.makeText(MainActivity.this, "Start Selected", Toast.LENGTH_SHORT).show();
-                    }
-                    Toast.makeText(MainActivity.this, getString(R.string.Start_S), Toast.LENGTH_SHORT).show();
-                    break;
-                case R.id.stop:
-                    if (mUSBConnected) {
-                        Update_UI_state(3);
-                        m_bundle_data.putString(EXTRAS_MESSAGE, "3"); //put string, int, etc in bundle with a key value
-                        usbQueryFragment = new USBQueryFragment().GET_INSTANCE(m_bundle_data); //Use bundle to pass data
-                        FragmentNumber = 4;
-                        getFragmentManager().beginTransaction().replace(R.id.Fragment_Container, usbQueryFragment).addToBackStack(null).commit();
-                    } else if(mConnected) {
-                        Update_UI_state(3);
-                        m_bundle_data.putString(EXTRAS_MESSAGE, "3"); //put string, int, etc in bundle with a key value
-                        bleQueryFragment = new BLEQueryFragment().GET_INSTANCE(m_bundle_data); //Use bundle to pass data
-                        FragmentNumber = 1;
-                        getFragmentManager().beginTransaction().replace(R.id.Fragment_Container, bleQueryFragment).commit();
-                        //Toast.makeText(MainActivity.this, "Stop Selected", Toast.LENGTH_SHORT).show();
-                    }
-                    Toast.makeText(MainActivity.this, getString(R.string.Stop_S), Toast.LENGTH_SHORT).show();
-
-                    break;
-                case R.id.devicelist:
-                    if(mUSBConnected){
-                        Toast.makeText(MainActivity.this, getString(R.string.Not_available_with_USB), Toast.LENGTH_SHORT).show();
-                    }else {
-                        mainThreadHandler.removeCallbacksAndMessages(null);
-                        appStartState();
-                    }
-                    break;
-                case R.id.reuse:
-                    if (mUSBConnected) {
-                        Update_UI_state(3);
-                        m_bundle_data.putString(EXTRAS_MESSAGE, "4"); //put string, int, etc in bundle with a key value
-                        usbQueryFragment = new USBQueryFragment().GET_INSTANCE(m_bundle_data); //Use bundle to pass data
-                        FragmentNumber = 4;
-                        getFragmentManager().beginTransaction().replace(R.id.Fragment_Container, usbQueryFragment).addToBackStack(null).commit();
-                    } else if(mConnected) {
-                        Update_UI_state(3);
-                        m_bundle_data.putString(EXTRAS_MESSAGE, "4"); //put string, int, etc in bundle with a key value
-                        bleQueryFragment = new BLEQueryFragment().GET_INSTANCE(m_bundle_data); //Use bundle to pass data
-                        FragmentNumber = 1;
-                        getFragmentManager().beginTransaction().replace(R.id.Fragment_Container, bleQueryFragment).commit();
-                        //Toast.makeText(MainActivity.this, "Re-Use Selected", Toast.LENGTH_SHORT).show();
-                    }
-                    Toast.makeText(MainActivity.this, getString(R.string.Reuse_S), Toast.LENGTH_SHORT).show();
-                    break;
-                case R.id.files:
-                    Toast.makeText(MainActivity.this, getString(R.string.nextversion), Toast.LENGTH_LONG).show();
-                    // custom dialog
-//                    final Dialog dialog = new Dialog(MainActivity.this);
-//                    dialog.setContentView(R.layout.filesbutton_dialog);
-//                    dialog.setTitle(getString(R.string.files));
-//                    ImageButton ssbutton = (ImageButton) dialog.findViewById(R.id.screenshot);
-//                    ImageButton pdfbutton = (ImageButton) dialog.findViewById(R.id.pdf);
-//                    // if button is clicked, close the custom dialog
-//                    ssbutton.setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//
-//                            dialog.dismiss();
-//                        }
-//                    });
-//                    pdfbutton.setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            Toast.makeText(MainActivity.this, getString(R.string.nextversion), Toast.LENGTH_SHORT).show();
-//                            dialog.dismiss();
-//                        }
-//                    });
-//
-//                    dialog.show();
-                    break;
-                case R.id.help:
-                    Intent myIntent = new Intent(MainActivity.this, AboutActivity.class);
-                    //myIntent.putExtra(DevicesActivity.EXTRAS_MESSAGE,"6");
-                    MainActivity.this.startActivity(myIntent);
-                    Toast.makeText(MainActivity.this, getString(R.string.Help_S), Toast.LENGTH_SHORT).show();
-                    break;
-                case R.id.find:
-                    if (mUSBConnected) {
-//                  Update_UI_state(3);
-//                  m_bundle_data.putString(EXTRAS_MESSAGE, "8"); //put string, int, etc in bundle with a key value
-//                  usbQueryFragment = new USBQueryFragment().GET_INSTANCE(m_bundle_data); //Use bundle to pass data
-//                  FragmentNumber = 4;
-//                  getFragmentManager().beginTransaction().replace(R.id.Fragment_Container, usbQueryFragment).commit();
-                        Toast.makeText(MainActivity.this, getString(R.string.Invalid_for_device), Toast.LENGTH_SHORT).show();
-                    } else if(mConnected) {
-                        Update_UI_state(3);
-                        m_bundle_data.putString(EXTRAS_MESSAGE, "8"); //put string, int, etc in bundle with a key value
-                        bleQueryFragment = new BLEQueryFragment().GET_INSTANCE(m_bundle_data); //Use bundle to pass data
-                        FragmentNumber = 1;
-                        getFragmentManager().beginTransaction().replace(R.id.Fragment_Container, bleQueryFragment).commit();
-
-                    }
-                    Toast.makeText(MainActivity.this, getString(R.string.Find_S), Toast.LENGTH_SHORT).show();
-                    break;
-                case R.id.settings:
-                    Intent myIntent1 = new Intent(MainActivity.this, SettingsActivity.class);
-                    //myIntent.putExtra(DevicesActivity.EXTRAS_MESSAGE,"6");
-                    MainActivity.this.startActivity(myIntent1);
-                    Toast.makeText(MainActivity.this,getString(R.string.Settings_S), Toast.LENGTH_SHORT).show();
-                    break;
 
             }
         }
@@ -459,103 +227,14 @@ public class MainActivity extends Activity implements
             case KeyEvent.KEYCODE_BACK:
 
                 switch (FragmentNumber) {
-                    case 1:
-                        //coming back from the query page
-                        BLEQueryFragment.mainThreadHandler.removeCallbacksAndMessages(null);
-                        for (int i = 0; i < getFragmentManager().getBackStackEntryCount(); ++i) {
-                            getFragmentManager().popBackStack();
-                        }
-                        if (mConnected) {
-                            temprecord_ble.mBluetoothLeService.writeCharacteristic(characteristicTX, HexData.QUARY);
-                            temprecord_ble.mBluetoothLeService.readCharacteristic(characteristicRX);
-                            Update_UI_state(2);
-                        } else {
-                            Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                            LocalBroadcastManager.getInstance(this).unregisterReceiver(INTERNAL_BROADCAST_RECEIVER);
-                            unbindService(temprecord_ble.mServiceConnection);
-                            finish();
-                            startActivity(intent);
-                        }
-                        break;
-                    case 2:
-                        //coming back from the read page
-                        BLEReadFragment.mainThreadHandler.removeCallbacksAndMessages(null);
-                        for (int i = 0; i < getFragmentManager().getBackStackEntryCount(); ++i) {
-                            getFragmentManager().popBackStack();
-                        }
-                        if (mConnected) {
-                            temprecord_ble.mBluetoothLeService.writeCharacteristic(characteristicTX, HexData.QUARY);
-                            temprecord_ble.mBluetoothLeService.readCharacteristic(characteristicRX);
-                            Update_UI_state(2);
-                        } else {
-                            Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                            LocalBroadcastManager.getInstance(this).unregisterReceiver(INTERNAL_BROADCAST_RECEIVER);
-                            unbindService(temprecord_ble.mServiceConnection);
-                            finish();
-                            startActivity(intent);
-                        }
-                        break;
-                    case 3://comming back from the parameter page
-                        BLEParameterFragment.mainThreadHandler.removeCallbacksAndMessages(null);
-                        for (int i = 0; i < getFragmentManager().getBackStackEntryCount(); ++i) {
-                            getFragmentManager().popBackStack();
-                        }
-                        if (mConnected) {
-                            temprecord_ble.mBluetoothLeService.writeCharacteristic(characteristicTX, HexData.QUARY);
-                            temprecord_ble.mBluetoothLeService.readCharacteristic(characteristicRX);
-                            Update_UI_state(2);
-                        } else {
-                            Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                            LocalBroadcastManager.getInstance(this).unregisterReceiver(INTERNAL_BROADCAST_RECEIVER);
-                            unbindService(temprecord_ble.mServiceConnection);
-                            finish();
-                            startActivity(intent);
-                        }
-                        break;
                     case 4:
-                        for (int i = 0; i < getFragmentManager().getBackStackEntryCount(); ++i) {
-                            getFragmentManager().popBackStack();
-                        }
-                        if (mUSBConnected) {
-                            m_usb.Send_Command(HexData.QUARY_USB);
-                            Update_UI_state(2);
-                        } else {
-                            Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                            m_usb.unregister_receiver(this);
-                            LocalBroadcastManager.getInstance(this).unregisterReceiver(INTERNAL_BROADCAST_RECEIVER);
-                            finish();
-                            startActivity(intent);
-                        }
-                        break;
-                    case 5:
-                        for (int i = 0; i < getFragmentManager().getBackStackEntryCount(); ++i) {
-                            getFragmentManager().popBackStack();
-                        }
-                        if (mUSBConnected) {
-                            m_usb.Send_Command(HexData.QUARY_USB);
-                            Update_UI_state(2);
-                        } else {
-                            Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                            m_usb.unregister_receiver(this);
-                            LocalBroadcastManager.getInstance(this).unregisterReceiver(INTERNAL_BROADCAST_RECEIVER);
-                            finish();
-                            startActivity(intent);
-                        }
-                        break;
-                    case 6:
-                        for (int i = 0; i < getFragmentManager().getBackStackEntryCount(); ++i) {
-                            getFragmentManager().popBackStack();
-                        }
-                        if (mUSBConnected) {
-                            m_usb.Send_Command(HexData.QUARY_USB);
-                            Update_UI_state(2);
-                        } else {
-                            Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                            m_usb.unregister_receiver(this);
-                            LocalBroadcastManager.getInstance(this).unregisterReceiver(INTERNAL_BROADCAST_RECEIVER);
-                            finish();
-                            startActivity(intent);
-                        }
+                        if(mUSBConnected) {
+                            for(int i = 0; i < fragmentManager.getBackStackEntryCount(); ++i) {
+                                fragmentManager.popBackStack();
+                            }
+                            this.finish();
+                        }else
+                            Update_UI_state(1);
                         break;
 
                 }
@@ -571,51 +250,15 @@ public class MainActivity extends Activity implements
     //=============================================================================================//
     public void Update_UI_state(int UIstate) {
         switch (UIstate) {
-
             case 1:
-                //start of the app with the device list
-                menubuttons.setVisibility(View.VISIBLE);
-                r1.setVisibility(View.GONE);
-                r2.setVisibility(View.GONE);
-                r3.setVisibility(View.GONE);
-                r4.setVisibility(View.VISIBLE);
                 info.setVisibility(View.VISIBLE);
-                list.setVisibility(View.VISIBLE);
-                con_info.setVisibility(View.GONE);
                 fragment_container.setVisibility(View.GONE);
                 main_state = 1;
-
                 break;
             case 2:
-
-                //after connection to a logger over BLE
-               // Log.i("YAS", "UI UPDATE STATE " + baseCMD.state);
-                FragmentNumber = 0;
-                buttonVisibility();
-                r3.setVisibility(View.VISIBLE);
-                r4.setVisibility(View.VISIBLE);
-                menubuttons.setVisibility(View.VISIBLE);
                 info.setVisibility(View.GONE);
-                list.setVisibility(View.GONE);
-                con_info.setVisibility(View.VISIBLE);
-                fragment_container.setVisibility(View.GONE);
-                getActionBar().hide();
-                main_state = 2;
-                break;
-            case 3:
-                mainThreadHandler.removeCallbacksAndMessages(null);
-                //when query or read fragment is selected
-                menubuttons.setVisibility(View.GONE);
-                r1.setVisibility(View.GONE);
-                r2.setVisibility(View.GONE);
-                r3.setVisibility(View.GONE);
-                r4.setVisibility(View.GONE);
-                info.setVisibility(View.GONE);
-                list.setVisibility(View.GONE);
-                con_info.setVisibility(View.GONE);
                 fragment_container.setVisibility(View.VISIBLE);
-                main_state = 3;
-
+                main_state = 2;
                 break;
         }
         invalidateOptionsMenu();
@@ -625,82 +268,12 @@ public class MainActivity extends Activity implements
     //Settings which buttons are visible at different states
     //=============================================================================================//
 
-    private void buttonVisibility() {
-        if (baseCMD.state == 2) { //ready state
-            r2.setVisibility(View.GONE);
-            parametertext.setVisibility(View.VISIBLE);
-            starttext.setVisibility(View.VISIBLE);
-            reusetext.setVisibility(View.GONE);
-            r1.setVisibility(View.VISIBLE);
 
-        } else if (baseCMD.state == 3) { //start delay state
-            r2.setVisibility(View.GONE);
-            r1.setVisibility(View.GONE);
-
-        } else if (baseCMD.state == 4) { //running
-            tagtext.setVisibility(View.VISIBLE);
-            readtext.setVisibility(View.VISIBLE);
-            stoptext.setVisibility(View.VISIBLE);
-            r2.setVisibility(View.VISIBLE);
-            r1.setVisibility(View.GONE);
-
-        } else if (baseCMD.state == 5) { //stopped
-            parametertext.setVisibility(View.GONE);
-            tagtext.setVisibility(View.GONE);
-            starttext.setVisibility(View.GONE);
-            stoptext.setVisibility(View.GONE);
-            readtext.setVisibility(View.VISIBLE);
-            reusetext.setVisibility(View.VISIBLE);
-            r2.setVisibility(View.VISIBLE);
-            r1.setVisibility(View.VISIBLE);
-
-        }else if(baseCMD.state == 7){//error state
-            r2.setVisibility(View.GONE);
-            r1.setVisibility(View.GONE);
-        }else {
-            r1.setVisibility(View.VISIBLE);
-            r2.setVisibility(View.VISIBLE);
-
-        }
-    }
 
     //=============================================================================================//
     //Filling in the data in the Blue banner
     //logger state, serial number and  connection status
     //=============================================================================================//
-
-    private void fillBlueBanner(byte[] data) {
-        //commsSerial.BytetoHex(commsSerial.ReadUSBByte(data));
-        Typeface font = Typeface.createFromAsset(this.getAssets(), "Roboto-Light.ttf");
-        if(data[0] == 0xFF){
-            temprecord_ble.mBluetoothLeService.writeCharacteristic(characteristicTX, HexData.QUARY);
-            temprecord_ble.mBluetoothLeService.readCharacteristic(characteristicRX);
-        }
-        if(!mUSBConnected)
-            Q_data = baseCMD.CMDQuery(commsSerial.ReadByte(data));
-        else
-            Q_data = baseCMD.CMDQuery(commsSerial.ReadUSBByte(data));
-        if (Q_data.size() >= 7) {
-            state.setText(QS.GetState(Integer.parseInt(Q_data.get(5))));
-            state.setTypeface(font);
-            serial.setText(Q_data.get(0));
-            serial.setTypeface(font);
-            battery.setText(Q_data.get(6)+getString(R.string.Percentage));
-            battery.setTypeface(font);
-            if (mConnected && !mUSBConnected) {
-                type.setText(getString(R.string.BLE_Active));
-                connecttype.setImageDrawable(getResources().getDrawable(R.drawable.ic_bluetooth_logo));
-                BLEname.setText(temprecord_ble.getDevice().getName());
-                BLEname.setTypeface(font);
-            } else if(mUSBConnected){
-                type.setText(getString(R.string.USB_Active));
-                type.setTextColor(Color.WHITE);
-                connecttype.setImageDrawable(getResources().getDrawable(R.drawable.ic_usb_logo));
-            }//we can add NFC or WI-FI here as well
-            else type.setText(getString(R.string.Inactive));
-            type.setTypeface(font);
-        }
-    }
 
     //=============================================================================================//
     //Sending the required data to the active fragment by calling the CommsI function in each
@@ -712,28 +285,28 @@ public class MainActivity extends Activity implements
             case 0:
                 //still in the main activity so access the UI elements directly=
 
-                fillBlueBanner(data);
+                //fillBlueBanner(data);
                 if(mConnected || mUSBConnected)
-                Update_UI_state(2);// updates the buttons concidering what state the logger is in
+                    Update_UI_state(2);// updates the buttons concidering what state the logger is in
                 if(mConnected) {
-                    BLEmainTimeout();
+                    //BLEmainTimeout();
 
                     temprecord_ble.stopRunable();
                 }
                 if(progressDialog!=null)
-                progressDialog.cancel();
+                    progressDialog.cancel();
                 break;
             case 1:
                 //query page(BLE)
-                bleQueryFragment.CommsI(data);
+                //bleQueryFragment.CommsI(data);
                 break;
             case 2:
                 //read page(BLE)
-                bleReadFragment.CommsI(data);
+                //bleReadFragment.CommsI(data);
                 break;
             case 3:
                 //parameter page(BLE)
-                bleParameterFragment.CommsI(data);
+                //bleParameterFragment.CommsI(data);
                 break;
             case 4:
                 //USB query page
@@ -741,10 +314,10 @@ public class MainActivity extends Activity implements
                 break;
             case 5:
                 //USB read page
-                usbReadFragment.CommsI(data);
+                //usbReadFragment.CommsI(data);
                 break;
             case 6:
-                usbParameterFragment.CommsI(data);
+                //usbParameterFragment.CommsI(data);
                 break;
         }
     }
@@ -754,21 +327,22 @@ public class MainActivity extends Activity implements
     //Used to update the connection status of the fragment if a timeout occurs while in that
     //fragment
     //=============================================================================================//
-    public void send_to_active_Fragment(final int resourceId, final int num) {
+    public void send_to_active_Fragment(boolean disconnected) {
         switch (FragmentNumber) {
-            case 0:
+            case 4:
+                usbQueryFragment.updateConnectionState(disconnected);
                 //still in the main activity so access the UI elements directly
                 break;
-            case 1:
-                //query page
-                bleQueryFragment.updateConnectionState(resourceId, num);
-                break;
-            case 2:
-                //read page
-                bleReadFragment.updateConnectionState(resourceId, num);
-                break;
-            case 3:
-                bleParameterFragment.updateConnectionState(resourceId, num);
+//            case 1:
+//                //query page
+//                bleQueryFragment.updateConnectionState(num);
+//                break;
+//            case 2:
+//                //read page
+//                bleReadFragment.updateConnectionState(num);
+//                break;
+//            case 3:
+//                bleParameterFragment.updateConnectionState(num);
         }
     }
 
@@ -781,33 +355,13 @@ public class MainActivity extends Activity implements
     //=============================================================================================//
     @Override
     public void onBackPressed() {
-        if (main_state == 1) {
+        if (main_state == 1)
             super.onBackPressed();
-        }
+        //}
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        mainmenu = menu;
-        getMenuInflater().inflate(R.menu.menu_devices, menu);
-        if ( FragmentNumber > 0     )                {//Fix fot the weired menu behaviour
-            menu.findItem(R.id.menu_scan).setVisible(false);
-            menu.findItem(R.id.menu_stop).setVisible(false);
-            temprecord_ble.scanLeDevice(false);//so the name doesnt change in the query page
-        } else {
-
-            if (!mScanning) {
-
-                menu.findItem(R.id.menu_stop).setVisible(false);
-                menu.findItem(R.id.menu_scan).setVisible(true);
-                menu.findItem(R.id.menu_refresh).setActionView(null);
-            } else {
-                menu.findItem(R.id.menu_stop).setVisible(true);
-                menu.findItem(R.id.menu_scan).setVisible(false);
-                menu.findItem(R.id.menu_refresh).setActionView(
-                        R.layout.actionbar_indeterminate_progress);
-            }
-        }
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -819,40 +373,17 @@ public class MainActivity extends Activity implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.menu_scan:
-                mLeDeviceListAdapter.clear();
-                if(!mUSBConnected)temprecord_ble.scanLeDevice(true);
-                break;
-            case R.id.menu_stop:
-                if(!mUSBConnected)temprecord_ble.scanLeDevice(false);
-                break;
-        }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
-
-        // Ensures Bluetooth is enabled on the device.  If Bluetooth is not currently enabled,
-        // fire an intent to display a dialog asking the user to grant permission to enable it.
-       if(!mUSBConnected) {
-
-           temprecord_ble.BLE_turnon_dialog();
-
-           // Initializes list view adapter.
-           mLeDeviceListAdapter = new LeDeviceListAdapter(getApplicationContext(), MainActivity.this);
-           temprecord_ble.setListAdapter(mLeDeviceListAdapter, mScanning);
-           temprecord_ble.scanLeDevice(true);
-
-           if (m_usb == null) {
-               m_usb = new USB(this);
-           }
-       }
-
+        //Log.i("TEST", "******************************************** Going to OnResume " + m_usb);
+        if (m_usb == null) {
+            m_usb = new USB(this);
+            //Log.i("TEST", "******************************************** new USB object " + m_usb);
+        }
         m_usb.Connection_Initialisation();
     }
 
@@ -860,21 +391,33 @@ public class MainActivity extends Activity implements
     public void onDestroy()
     {
         super.onDestroy();
-        //Log.i("YO", "On Destroy !");
+        //Log.i("TEST", "******************************************** Going to OnDestroy |||||||||||||||||||||||||" + m_usb);
         if(m_usb != null)
-        m_usb.unregister_receiver(this);
+            m_usb.unregister_receiver(this);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(INTERNAL_BROADCAST_RECEIVER);
-        // if (mGattUpdateReceiver != null && mServiceConnection != null) unregisterReceiver(mGattUpdateReceiver);
-        //if (mServiceConnection != null) unbindService(mServiceConnection);
-
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if(!mUSBConnected)temprecord_ble.scanLeDevice(false);
-        mLeDeviceListAdapter.clear();
+        //Log.i("TEST", "******************************************** Going to OnPause " + m_usb);
     }
+
+    @Override
+    protected  void onStop(){
+        super.onStop();
+        //Log.i("TEST", "******************************************** Going to OnStop " + m_usb);
+
+    }
+
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+        //Log.i("TEST", "******************************************** Going to OnStart " + m_usb);
+
+    }
+
 
     //=============================================================================================//
     //function of the BLEFragmentI interface
@@ -915,8 +458,8 @@ public class MainActivity extends Activity implements
     @Override
     public void onUSBWrite(byte[] value)
     {
-
-        m_usb.Send_Command(value);
+        if(m_usb != null)
+            m_usb.Send_Command(value);
     }
 
     //==================================================================================================================================================================================//
@@ -934,94 +477,40 @@ public class MainActivity extends Activity implements
             final String action = intent.getAction();
 
 
-            //Log.d("TAG", "Coming in to  INTERNAL_BROADCAST_RECEIVER " + action );
+            //Log.d("TEST", "Coming in to  INTERNAL_BROADCAST_RECEIVER " + action );
             if (intent.getPackage() != null) {
                 switch (intent.getPackage()) {
 
                     case "DETACHED":
+                        send_to_active_Fragment(true);
+                        //Log.i("TEST", "******************************************** Going to DETACHED======== " + m_usb);
+//                        if(m_usb != null)
+//                            m_usb.unregister_receiver(getApplication());
+//                        LocalBroadcastManager.getInstance(getApplication()).unregisterReceiver(INTERNAL_BROADCAST_RECEIVER);
+//                        m_usb = null;
                         mUSBConnected = false;
-                        //Update_UI_state(1);
-                        //getActionBar().show();
-                        type.setText(getString(R.string.Inactive));
-                        type.setTextColor(getResources().getColor(R.color.colorRED));
-                        m_usb.unregister_receiver(getApplicationContext());
-                        //finish();
-                        //LocalBroadcastManager.getInstance(getApplicationContext()).unregisterReceiver(INTERNAL_BROADCAST_RECEIVER);
 
                         break;
 
                     case "UI_update":
                         if (extras != null) {
                             String message = extras.getString("message");
-                            //Log.i("Device", message+"  ===========================");
 
                             switch (message){
                                 case "U06 <- USB CONNECTED !":
-                                    if(mConnected && temprecord_ble.mBluetoothLeService != null){//if BLE is in connected state it disconnects before USB comms happen
-                                        temprecord_ble.mBluetoothLeService.writeCharacteristic(characteristicTX, HexData.GO_TO_SLEEP);
-                                        mConnected = false;
-                                    }
-
-//                                    while (getFragmentManager().getBackStackEntryCount() > 0) {
-//                                        getFragmentManager().popBackStackImmediate();
-//                                    }
-                                    //Log.i("Device", "coming in to USB connected part===========================");
-                                    //spinnerProgressDialog();
-                                    if(!mUSBConnected)temprecord_ble.scanLeDevice(false);
-                                    mScanning = false;
                                     mUSBConnected = true;
-                                    //if(getFragmentManager().getBackStackEntryCount() == 0) {
-                                    if (!isFinishing()) {
-                                        Update_UI_state(3);
-                                        if(getFragmentManager().getBackStackEntryCount() == 0) {
-                                            m_bundle_data.putString(EXTRAS_MESSAGE, "1"); //put string, int, etc in bundle with a key value
-                                            usbQueryFragment = new USBQueryFragment().GET_INSTANCE(m_bundle_data); //Use bundle to pass data
-                                        }
-                                        FragmentNumber = 4;
+                                    //Log.i("TEST", "******************************************** Going to CONNECTED======== " + m_usb);
 
-                                        transaction = getFragmentManager().beginTransaction();
-
-                                        transaction.replace(R.id.Fragment_Container, usbQueryFragment).addToBackStack(null).commitAllowingStateLoss();
-                                        getFragmentManager().executePendingTransactions();
-//
+                                    for(int i = 0; i < fragmentManager.getBackStackEntryCount(); ++i) {
+                                        fragmentManager.popBackStack();
                                     }
-                                    //m_usb.Send_Command(HexData.QUARY_USB);
-                                    invalidateOptionsMenu();
-
-                                    break;
-                                case "U02 <- onReceive ACTION_USB_DEVICE_ATTACHED":
-                                    if(mConnected && temprecord_ble.mBluetoothLeService != null){//if BLE is in connected state it disconnects before USB comms happen
-                                        temprecord_ble.mBluetoothLeService.writeCharacteristic(characteristicTX, HexData.GO_TO_SLEEP);
-                                        mConnected = false;
-                                    }
-                                    //Log.i("Device", "coming in to USB connected part===========================");
-                                    //spinnerProgressDialog();
-                                    if(!mUSBConnected)temprecord_ble.scanLeDevice(false);
-                                    mScanning = false;
-                                    mUSBConnected = true;
-                                    //if(getFragmentManager().getBackStackEntryCount() == 0) {
-                                    Update_UI_state(3);
-                                    m_bundle_data.putString(EXTRAS_MESSAGE, "1"); //put string, int, etc in bundle with a key value
-                                    usbQueryFragment = new USBQueryFragment().GET_INSTANCE(m_bundle_data); //Use bundle to pass data
+                                    Update_UI_state(2);
+                                    m_bundle_data.putString(EXTRAS_MESSAGE, "1");
+                                    usbQueryFragment = new USBQueryFragment().GET_INSTANCE(m_bundle_data);
                                     FragmentNumber = 4;
-
-                                    transaction = getFragmentManager().beginTransaction();
-
-                                    transaction.replace(R.id.Fragment_Container, usbQueryFragment).addToBackStack(null);
-                                    transaction.commitAllowingStateLoss();
-//
-                                    //}
-                                    //m_usb.Send_Command(HexData.QUARY_USB);
+                                    fragmentManager.beginTransaction().add(R.id.Fragment_Container, usbQueryFragment, "Page1").addToBackStack(null).commit();
                                     invalidateOptionsMenu();
-                                    break;
 
-                                case "U03 <- onReceive DETACHED":
-                                    mUSBConnected = false;
-                                    //Update_UI_state(1);
-                                    //getActionBar().show();
-                                    type.setText(getString(R.string.Inactive));
-                                    type.setTextColor(getResources().getColor(R.color.colorRED));
-                                    m_usb.unregister_receiver(getApplicationContext());
                                     break;
                             }
                         }
@@ -1032,13 +521,11 @@ public class MainActivity extends Activity implements
                         //-------------------//
                         if (extras != null) {
                             byte[] i_message = extras.getByteArray("b_data");
-                            //commsSerial.BytetoHex(i_message);
+
                             if (i_message != null) {
 
                                 send_to_active_Fragment(i_message);
-                               // usbReadFragment.CommsI(i_message);
 
-                                //DO SOMETHING WITH DATA RECEIVED FROM USB
                             }
                         }
                         break;
@@ -1060,13 +547,13 @@ public class MainActivity extends Activity implements
                         mConnected = true;
                         mainmenu.findItem(R.id.menu_scan).setVisible(false);
                         invalidateOptionsMenu();
-                        send_to_active_Fragment(R.string.connected, 1);
+                        //send_to_active_Fragment(R.string.connected, 1);
                         break;
 
                     case BluetoothLeService.ACTION_GATT_DISCONNECTED:
                         invalidateOptionsMenu();
                         mConnected = false;
-                        send_to_active_Fragment(R.string.disconnected, 0);
+                        //send_to_active_Fragment(R.string.disconnected, 0);
                         break;
 
                     case BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED:
@@ -1084,7 +571,7 @@ public class MainActivity extends Activity implements
                         //String extraUuid = intent.getStringExtra(BluetoothLeService.EXTRA_UUID);
                         //int extraType = intent.getIntExtra(BluetoothLeService.EXTRA_TYPE, -1);
                         extraData = intent.getByteArrayExtra(BluetoothLeService.EXTRA_DATA);
-                       // Log.d("TAG", "extra data size " + extraData.length);
+                        // Log.d("TAG", "extra data size " + extraData.length);
                         commsSerial.BytetoHex(extraData);
                         send_to_active_Fragment(extraData);
                         break;
@@ -1107,12 +594,13 @@ public class MainActivity extends Activity implements
         progressDialog.setIndeterminate(false);
         progressDialog.setProgress(0);
         progressDialog.setCancelable(false);
-        progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.Retry_connecting), new DialogInterface.OnClickListener() {@Override
-        public void onClick(DialogInterface dialog, int which) {
-            dialog.dismiss();
-            temprecord_ble.stopRunable();
-            appStartState();
-        }
+        progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.Retry_connecting), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                temprecord_ble.stopRunable();
+                //appStartState();
+            }
         });
         progressDialog.show();
     }
@@ -1160,63 +648,32 @@ public class MainActivity extends Activity implements
 
     public void Read_Action(){
         if (mUSBConnected) {
-            Update_UI_state(3);
-            m_bundle_data.putString(EXTRAS_MESSAGE, "6"); //put string, int, etc in bundle with a key value
-            usbReadFragment = new USBReadFragment().GET_INSTANCE(m_bundle_data); //Use bundle to pass data
-            FragmentNumber = 5;
-            getFragmentManager().beginTransaction().replace(R.id.Fragment_Container, usbReadFragment).commit();
+//            Update_UI_state(3);
+//            m_bundle_data.putString(EXTRAS_MESSAGE, "6"); //put string, int, etc in bundle with a key value
+//            usbReadFragment = new USBReadFragment().GET_INSTANCE(m_bundle_data); //Use bundle to pass data
+//            FragmentNumber = 5;
+//            getFragmentManager().beginTransaction().replace(R.id.Fragment_Container, usbReadFragment).commit();
         } else if(mConnected) {
-            Update_UI_state(3);
-            m_bundle_data.putString(EXTRAS_MESSAGE, "6"); //put string, int, etc in bundle with a key value
-            bleReadFragment = new BLEReadFragment().GET_INSTANCE(m_bundle_data); //Use bundle to pass data
-            FragmentNumber = 2;
-            getFragmentManager().beginTransaction().replace(R.id.Fragment_Container, bleReadFragment).commit();
+            //Update_UI_state(3);
+            //m_bundle_data.putString(EXTRAS_MESSAGE, "6"); //put string, int, etc in bundle with a key value
+            //bleReadFragment = new BLEReadFragment().GET_INSTANCE(m_bundle_data); //Use bundle to pass data
+            //FragmentNumber = 2;
+            //getFragmentManager().beginTransaction().replace(R.id.Fragment_Container, bleReadFragment).commit();
         }
     }
 
-    public void Expandableloggerdetails(View view){
-        ExpandableRelativeLayout expandableloggerdetails = (ExpandableRelativeLayout) findViewById(R.id.expandableloggerdetails);
-        expandableloggerdetails.toggle(); // toggle expand and collapse
+
+   public  void HistoryButton(View view){
+       // Log.i("TEST", "IN button" + getFragmentManager().getBackStackEntryCount() + " " + getFragmentManager().findFragmentByTag("USBQuery"));
+        Update_UI_state(3);
+        FragmentNumber = 4;
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        getFragmentManager().beginTransaction().attach(getFragmentManager().findFragmentByTag("USBQuery")).commit();
+
     }
 
-    public void Expandabletripinfomation(View view){
-        ExpandableRelativeLayout expandabletripinfomation = (ExpandableRelativeLayout) findViewById(R.id.expandabletripinformation);
-        expandabletripinfomation.toggle(); // toggle expand and collapse
-    }
-
-    public void Expandablechannelinfomation(View view){
-        ExpandableRelativeLayout expandablechannelinfomation = (ExpandableRelativeLayout) findViewById(R.id.expandablechannelinformation);
-        expandablechannelinfomation.toggle(); // toggle expand and collapse
-    }
-
-    public void Expandableusercomments(View view){
-        ExpandableRelativeLayout expandableusercomments = (ExpandableRelativeLayout) findViewById(R.id.expandableusercomments);
-        expandableusercomments.toggle(); // toggle expand and collapse
-    }
-
-    public  void Expandablequerygraph(View view){
-        ExpandableRelativeLayout expandablereadgraph = (ExpandableRelativeLayout) findViewById(R.id.expandablequerygraph);
-        expandablereadgraph.toggle(); // toggle expand and collapse
-    }
-
-    public void ExpandableReadloggerdetails(View view){
-        ExpandableRelativeLayout expandablereadloggerdetails = (ExpandableRelativeLayout) findViewById(R.id.expandablereadloggerdetails);
-        expandablereadloggerdetails.toggle(); // toggle expand and collapse
-    }
-
-    public  void Expandablereadgraph(View view){
-        ExpandableRelativeLayout expandablereadgraph = (ExpandableRelativeLayout) findViewById(R.id.expandablereadgraph);
-        expandablereadgraph.toggle(); // toggle expand and collapse
-    }
-
-    public  void Expandablechannel1stats(View view){
-        ExpandableRelativeLayout expandablechannel1stats = (ExpandableRelativeLayout) findViewById(R.id.expandablechannel1stats);
-        expandablechannel1stats.toggle(); // toggle expand and collapse
-    }
-
-    public  void Expandablechannel2stats(View view){
-        ExpandableRelativeLayout expandablechannel2stats = (ExpandableRelativeLayout) findViewById(R.id.expandablechannel2stats);
-        expandablechannel2stats.toggle(); // toggle expand and collapse
+    public void setFragmentNumber(int fragmentNumber){
+        this.FragmentNumber = fragmentNumber;
     }
 
 }

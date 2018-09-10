@@ -1,5 +1,5 @@
 <resources>
-    <string name="App_version">"0.8.3"</string>
+    <string name="App_version">"0.9.6.5"</string>
 
     <string name="app_name">Temprecord</string>
     <string name="ble_not_supported">BLE is not supported</string>
@@ -76,19 +76,19 @@
 
     <string name="LoggerDetails">Logger Details</string>
     <string name="LoggerFamily">Logger Family :</string>
-    <string name="LoggerModel">Logger Model :</string>
+    <string name="LoggerModel">Model :</string>
     <string name="LoggerState">Logger State :</string>
-    <string name="LoggerFirmware">Logger Firmware : </string>
+    <string name="LoggerFirmware">Firmware Version : </string>
     <string name="Estimated_Battery">Battery : </string>
-    <string name="LoggerSerialNo">Logger Serial No. : </string>
-    <string name="LoggerMemory">Logger Memory :</string>
-    <string name="LoggerManDate">Manufacture Data : </string>
+    <string name="LoggerSerialNo">Serial No. : </string>
+    <string name="LoggerMemory">Memory Size :</string>
+    <string name="LoggerManDate">Manufacture Date : </string>
     <string name="TotalSamples">Total Samples : </string>
     <string name="TotalTrips">Total Trips : </string>
     <string name="BLEEnergySave">Bluetooth Energy Save : </string>
 
 
-    <string name="TripInfo">Trip Information</string>
+    <string name="TripInfo">Trip Info.</string>
     <string name="Logging">Logging :</string>
     <string name="LoggerUnits">Logger Units :</string>
     <string name="StartDelay">Start Delay : </string>
@@ -117,7 +117,7 @@
     <string name="ExtendLCDMenu">Extended LCD Menu : </string>
 
 
-    <string name="ChannelInfo">Channel Info</string>
+    <string name="ChannelInfo">Sensors Info.</string>
     <string name="Channel1">Channel 1 :</string>
     <string name="Enabled">Enabled : </string>
     <string name="EnableLimits">Enable Limits : </string>
@@ -129,7 +129,7 @@
     <string name="UserComments">Comments</string>
     <string name="UserComments_">User Comments :</string>
 
-    <string name="QueryLogger">Query Logger</string>
+    <string name="QueryLogger">Query</string>
     <string name="QueryingLogger">Querying Logger</string>
     <string name="Abort">Abort</string>
     <string name="Screenshot">Screenshot</string>
@@ -140,7 +140,7 @@
     <string name="ReuseLogger">Re-Use Logger</string>
     <string name="TagLogger">Tag Logger</string>
     <string name="SearchLogger">Search Logger</string>
-    <string name="ReadLogger">Read Logger</string>
+    <string name="ReadLogger">Read</string>
 
     <string name="Start">Start</string>
     <string name="StartSuccessfull">The Logger has started successfully.</string>
@@ -196,8 +196,8 @@ Go back to menu and reconnect</string>
     <string name="TemperatureGraph">Temperature Graph</string>
     <string name="Graph">Graph</string>
 
-    <string name="Channel1Stats">Channel 1 Stats</string>
-    <string name="Channel2Stats">Channel 2 Stats</string>
+    <string name="Channel1Stats">Temperature Stats</string>
+    <string name="Channel2Stats">Humidity Stats</string>
 
     <string name="Mean">Mean Value : </string>
     <string name="MKT">MKT Value : </string>
@@ -226,7 +226,7 @@ Go back to menu and reconnect</string>
 
     <!-- Parameter page Strings -->
 
-    <string name="GeneralSettings">General Settings</string>
+    <string name="GeneralSettings">General</string>
     <string name="Celsius">Celsius</string>
     <string name="Fahrenheit">Fahrenheit</string>
 
@@ -237,26 +237,26 @@ Go back to menu and reconnect</string>
     <string name="StartwB">Start with Button</string>
     <string name="StopwithButton">Stop with Button</string>
     <string name="ReusewithButton">Re-Use with Button</string>
-    <string name="AllowplacingTags">Allow placing Tags</string>
+    <string name="AllowplacingTags">Allow Tags</string>
     <string name="EnableLCD_Menu">Enable LCD Menu</string>
-    <string name="SecureloggerwithPassword">Secure logger with Password</string>
+    <string name="SecureloggerwithPassword">Secure logger</string>
     <string name="Password">Password</string>
     <string name="Confirm">Confirm</string>
     <string name="BluetoothName">Bluetooth Name</string>
 
-    <string name="StartStopandSampleSettings">Start, Stop and Sample Settings</string>
+    <string name="StartStopandSampleSettings">Start, Stop and Sample</string>
     <string name="StartOptions">Start Options</string>
     <string name="StartwithDelay">Start with Delay</string>
-    <string name="Starton_DateTime">Start on date time</string>
+    <string name="Starton_DateTime">Start on date time (24h)</string>
     <string name="Sample_Period">Sample Period</string>
     <string name="Sample_Period_">Sample Period :</string>
     <string name="StopOptions">Stop Options</string>
     <string name="RequiresstopbyUser">Requires stop by User</string>
     <string name="StopwhenFull">Stop when Full</string>
     <string name="Stopon_Sample">Stop on Sample</string>
-    <string name="Stopon_DateTime">Stop on Date Time</string>
+    <string name="Stopon_DateTime">Stop on Date Time (24h)</string>
 
-    <string name="ChannelSettings">Channel Settings</string>
+    <string name="ChannelSettings">Sensor Limits</string>
     <string name="Channel1Temperature">Channel 1: Temperature</string>
 
     <string name="Enabled_">Enabled</string>
@@ -266,7 +266,7 @@ Go back to menu and reconnect</string>
     <string name="LowerLimit_">Lower Limit</string>
 
     <string name="Channel2Humidity">Channel 2: Humidity</string>
-    <string name="ProgramParameters">Program Parameters</string>
+    <string name="ProgramParameters">Program</string>
     <string name="ProgramingParameters">Programming Parameters</string>
 
     <string name="LoggerParameters">Logger Parameters</string>
@@ -314,7 +314,7 @@ HH:MM:SS</string>
     <string name="Error">Error</string>
     <string name="Reuse_">Reuse</string>
     <string name="Stopped">Stopped</string>
-    <string name="Running">Running</string>
+    <string name="Running">Logging</string>
     <string name="Start_Delay">Start Delay</string>
     <string name="Start_Delay_">Start Delay :</string>
     <string name="Ready">Ready</string>
@@ -389,7 +389,7 @@ HH:MM:SS</string>
     <string name="bluetoothdevice">"Bluetooth Devices"</string>
     <string name="info">"Info"</string>
 
-    <string name="infopara">"Please connect a Mon-T² USB logger to your device's USB port"</string>
+    <string name="infopara">"Please connect Mon-T² USB logger\n to your device's USB port"</string>
     <string name="infopara2">"
       WHAT'S NEW
       + Query, Start, Stop, Re-use and Tag
@@ -399,4 +399,64 @@ HH:MM:SS</string>
       + Full screen Graph
 
 Bluetooth and NFC will be available in later versions of the application"</string>
+
+
+    <string name="Lastread">Last Read Data</string>
+
+    <string name="warning">Warning</string>
+    <string name="check">Check</string>
+    <string name="Moreavailable">More Data Available</string>
+    <string name="startwarning">Starting will delete all data from the last trip.\nAre you sure you want to continue?</string>
+    <string name="programmingwarning">Programming will delete all data from the last trip.\nAre you sure you want to continue?</string>
+    <string name="programmingwarning2">Are you sure you want to cancel?</string>
+    <string name="wait">Please wait..\nLogger is being read in the background</string>
+    <string name="removed">Logger removed before full read</string>
+    <string name="more">Do you want to re-read before generating PDF?</string>
+    <string name="Parametermenu">Parameters</string>
+
+    <string name="certificate">Get Certificate of Accuracy</string>
+    <string name="temprecord">www.temprecord.com</string>
+
+    <string name="comment">Comment : </string>
+
+    <string name="moreinfo">more...</string>
+    <string name="lessinfo">less...</string>
+
+    <string name="pleasewait">Please Wait...</string>
+
+    <string name="limitbreached">Limit Breach</string>
+
+    <string name="tempupperB">
+        Temperature Upper Limit Breached!
+</string>
+    <string name="templowerB">
+        Temperature Lower Limit Breached!
+</string>
+    <string name="humupperB">
+        Humidity Upper Limit Breached!
+</string>
+    <string name="humlowerB">
+        Humidity Lower Limit Breached!
+</string>
+
+
+
+    <string name="channel1uppernotset">Channel 1 upper limit not set</string>
+    <string name="channel1lowernotset">Channel 1 lower limit not set</string>
+    <string name="channel2uppernotset">Channel 2 upper limit not set</string>
+    <string name="channel2lowernotset">channel 2 lower limit not set</string>
+    <string name="channel1alarmnotset">Channel 1 alarm delay not set</string>
+    <string name="channel2alarmnotset">Channel 2 alarm delay not set</string>
+
+    <string name="channel2upperlower">Channel 2 upper limit is lower than lower limit</string>
+    <string name="channel1upperlower">Channel 1 upper limit is lower than lower limit</string>
+
+
+    <string name="startdateincomplete">Start on date time field is incomplete</string>
+    <string name="stopdateincomplete">Stop on date time field is incomplete</string>
+
+    <string name="startdatelowerthannow">Start on date time is lower than the current time</string>
+    <string name="stopdatelowerthannow">Stop on date time is lower than the current time</string>
+    <string name="stopdatelowerthanstart">Stop on date time is lower than the start on time</string>
+
 </resources>

@@ -43,13 +43,8 @@ public class GraphAcivity extends Activity {
         Graphbig.setWebViewClient(new WebViewClient());
         Graphbig.setWebChromeClient(new WebChromeClient());
         //json_data = new Json_Data(mt2Mem_values, baseCMD, viewtype);
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Graphbig.loadUrl("file:///android_asset/highcharts.html");
-            }
-        }, 0);
+        Graphbig.loadUrl("file:///android_asset/highcharts.html");
+
 
 
     }

@@ -57,7 +57,7 @@ public class dataType {
             for (byte b1 : b){
                 sb.append(String.format("%02X ", b1));
             }
-            Log.d("HEX11", sb.toString());
+            //Log.d("TEST", sb.toString());
         }
 
         public dateRtc(ArrayList<Byte> data){
@@ -75,16 +75,20 @@ public class dataType {
 //                if (rtcStruct == 1)
 //                {
                     //RTC Structure
+                    int month_weekb = data.get(1)&0xFF;
+
+
                     int year = (data.get(0) >> 1 ) + YEAREPOCH;
-                    int weekday = (data.get(1) & 0x0F); //Not really used but good for debug
-                    int month = (data.get(1) >> 4)-1;
+                    int weekday = (month_weekb & 0x0F); //Not really used but good for debug
+                    int month = (month_weekb >> 4)-1;
                     //value.setTimeZone(TimeZone.getDefault());
 //                    TimeZone utcZone = TimeZone.getTimeZone("GMT");
 //                    value.setTimeZone(utcZone);
                     //TimeZone.setDefault(TimeZone.getDefault());
                     value.set(year, month, data.get(2), data.get(3), data.get(4), data.get(5));
-//                    Log.d("HEX11", year +" === " + data.get(1) + " " + value.getTime());
-//                    BytetoHex2(data);
+//                    Log.d("TEST", data.get(0) +" ++++ " + (data.get(1)&0xFF) + " " + data.get(2)+ " " + data.get(3)+ " " + data.get(4)+ " " + " " + data.get(5));
+//                   Log.d("TEST", year +" === " + month + " " + value.getTime());
+                    //BytetoHex2(data);
 
                     //QS.UTCtoLocal(value.getTime().getTime()/1000L);
                     //QS.LocaltoUTC();
