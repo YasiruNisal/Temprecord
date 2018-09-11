@@ -1,5 +1,5 @@
 <resources>
-    <string name="App_version">"0.9.6.7"</string>
+    <string name="App_version">"0.9.7.0"</string>
 
     <string name="app_name">Temprecord</string>
     <string name="ble_not_supported">BLE is not supported</string>
@@ -427,16 +427,16 @@ Bluetooth and NFC will be available in later versions of the application"</strin
     <string name="limitbreached">Limit Breach</string>
 
     <string name="tempupperB">
-        Temperature Upper Limit Breached!
+       • Temperature Upper Limit Breached!
 </string>
     <string name="templowerB">
-        Temperature Lower Limit Breached!
+       • Temperature Lower Limit Breached!
 </string>
     <string name="humupperB">
-        Humidity Upper Limit Breached!
+       • Humidity Upper Limit Breached!
 </string>
     <string name="humlowerB">
-        Humidity Lower Limit Breached!
+       • Humidity Lower Limit Breached!
 </string>
 
 
@@ -459,6 +459,6 @@ Bluetooth and NFC will be available in later versions of the application"</strin
     <string name="stopdatelowerthannow">Stop on date time is lower than the current time</string>
     <string name="stopdatelowerthanstart">Stop on date time is lower than the start on time</string>
 
-    <string name="channel1deisabled">Channel 1 is disabled</string>
+    <string name="channel1deisabled">Channel 1 is disabled.\nPlease enable at least channel 1</string>
 
 </resources>

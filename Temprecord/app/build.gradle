@@ -6,8 +6,8 @@ android {
         applicationId "com.temprecordapp.yasiruw.temprecord"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 19
-        versionName "0.9.6.7"
+        versionCode 22
+        versionName "0.9.7.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

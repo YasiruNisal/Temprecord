@@ -217,6 +217,7 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
     private TextView limitstatus;
     private ImageView limiticon;
 
+    private ImageButton tagbutton;
     private ImageButton start_stop;
     private TextView start_stop_text;
     private ImageButton read;
@@ -636,6 +637,8 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
         view.findViewById(R.id.bVisit1).setOnClickListener(QueryButtonClick);
         view.findViewById(R.id.querycurrenttemp).setOnClickListener(QueryButtonClick);
         view.findViewById(R.id.zoominButton).setOnClickListener(QueryButtonClick);
+        tagbutton = view.findViewById(R.id.tagbutton);
+        tagbutton.setOnClickListener(QueryButtonClick);
         limitlayout.setOnClickListener(QueryButtonClick);
         querygraphlayout = view.findViewById(R.id.querygraphlayout);
 
@@ -837,10 +840,27 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
+                case R.id.tagbutton:
+                    if (done_Reading) {
+                        Stop_Timer();
+                        done_Reading = false;
+                        switch (baseCMD.state) {
+                            case 4:
+                                usbFragmentI.onUSBWrite(HexData.BLE_ACK);
+                                message = "5";
+                                state = 1;
+                                //task = new ProgressTask();
+                                showProgress();
+
+                        }
+                    }
+                    break;
                 case R.id.zoominButton:
+                    Toast.makeText(getActivity(), "Please wait....", Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(getActivity(), GraphAcivity.class);
                     intent.putExtra("VALUE", new Json_Data(mt2Mem_values, baseCMD, 0,getActivity()).CreateObject());
                     startActivity(intent);
+
                     break;
                 case R.id.pdf:
                     if(done_Reading) {
@@ -1284,6 +1304,7 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
                 parameterlayout.setVisibility(View.VISIBLE);
                 Menubuttons.setVisibility(View.VISIBLE);
                 querytripinfomation.setVisibility(View.GONE);
+                tagbutton.setVisibility(View.GONE);
                 break;
             case 3://start delay
                 countdownlayout.setVisibility(View.VISIBLE);
@@ -1300,6 +1321,7 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
                 Menubuttons.setVisibility(View.GONE);
                 querytripinfomation.setVisibility(View.VISIBLE);
                 querycurrenttemp.setClickable(false);
+                tagbutton.setVisibility(View.GONE);
                 break;
             case 4://running
                 countdownlayout.setVisibility(View.GONE);
@@ -1318,6 +1340,7 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
                 Menubuttons.setVisibility(View.VISIBLE);
                 querytripinfomation.setVisibility(View.VISIBLE);
                 querycurrenttemp.setClickable(true);
+                tagbutton.setVisibility(View.VISIBLE);
                 break;
             case 5://stopped
                 countdownlayout.setVisibility(View.GONE);
@@ -1335,6 +1358,7 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
                 parameterlayout.setVisibility(View.VISIBLE);
                 Menubuttons.setVisibility(View.VISIBLE);
                 querytripinfomation.setVisibility(View.VISIBLE);
+                tagbutton.setVisibility(View.GONE);
                 Stop_Timer();
                 break;
             default://
@@ -1706,7 +1730,7 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
                         Start_Timer();
                         done_Reading = true;
                         SetUI_stage2();
-                        //SetUI();//fill ui elements
+                        SetUI();//fill ui elements
 //                                progresspercentage = 100;
 //                                stopProgress();
                     }
@@ -1756,7 +1780,7 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
                         Start_Timer();
                     }
                     SetUI_stage2();
-//                                SetUI();
+                    SetUI();
 //                            progresspercentage = 100;
 //                            stopProgress();
                 }
@@ -2084,12 +2108,13 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
      * ********************************************************************************************/
     private class ProgressTask extends AsyncTask<Integer,Integer,Void> {
 
+        @Override
         protected void onPreExecute() {
             super.onPreExecute(); ///////???????
 
             progress=new ProgressDialog(getActivity());
             progress.setMessage(getString(R.string.pleasewait));
-            progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progress.setIndeterminate(false);
             progress.setProgress(0);
             progress.setCancelable(false);
@@ -2109,18 +2134,20 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
             //progresspercentage = 0;
 
         }
+        @Override
         protected void onCancelled() {
-
+            super.onCancelled();
             progress.dismiss();
 
         }
+        @Override
         protected Void doInBackground(Integer... params) {
             //LogThings("Doinf stuff in the background " + progresspercentage);
 
-            for(int i = 0; i < 500; i+=5){
+            for(int i = 0; i < 20; i+=5){
                 if(!isCancelled()) {
                     try {
-                        Thread.sleep(400);
+                        Thread.sleep(90);
 
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -2131,12 +2158,15 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
             }
             return null;
         }
+        @Override
         protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
             progress.setProgress(values[0]);
 
         }
+        @Override
         protected void onPostExecute(Void result) {
-
+            super.onPostExecute(result);
             //progresspercentage = 0;
 
             progress.dismiss();

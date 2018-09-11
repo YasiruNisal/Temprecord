@@ -319,7 +319,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_margin="5dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/layout_backb"
                 android:orientation="vertical">
@@ -383,6 +382,62 @@
 
 
             </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/parameterlayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/bottom_gap"
+                android:layout_marginTop="@dimen/bottom_gap_large"
+                android:background="@color/chat_name_color"
+                android:elevation="@dimen/Elevation"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/parametersparent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/layout_txtbg"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <ImageView
+                        android:id="@+id/im49"
+                        android:layout_width="70dp"
+                        android:layout_height="40dp"
+                        android:layout_weight=".20"
+                        android:gravity="center"
+                        android:paddingLeft="5dp"
+                        android:scaleX="0.7"
+                        android:scaleY="0.7"
+                        android:src="@drawable/generalsettings" />
+
+                    <TextView
+                        android:id="@+id/info42"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".70"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:text="@string/Parametermenu"
+                        android:textSize="@dimen/Heading_size" />
+
+                    <ImageView
+                        android:id="@+id/im48"
+                        android:layout_width="82dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="right"
+                        android:scaleX="0.6"
+                        android:scaleY="0.6"
+                        android:src="@drawable/ic_more" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
 
 
 
@@ -2833,64 +2888,19 @@
                                 android:layout_margin="10dp"
                                 android:src="@drawable/ic_zoom_full"/>
 
+                            <ImageButton
+                                android:id="@+id/tagbutton"
+                                android:layout_width="@dimen/Graph_button"
+                                android:layout_height="@dimen/Graph_button"
+                                android:background="@drawable/graphbutton"
+                                android:layout_margin="10dp"
+                                android:src="@drawable/ic_tag"/>
+
                         </LinearLayout>
                     </LinearLayout>
                 </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/parameterlayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="@dimen/bottom_gap"
-                android:layout_marginTop="@dimen/bottom_gap_large"
-                android:background="@color/chat_name_color"
-                android:elevation="@dimen/Elevation"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:id="@+id/parametersparent"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/layout_txtbg"
-                    android:orientation="horizontal"
-                    android:weightSum="1.0">
-
-                    <ImageView
-                        android:id="@+id/im49"
-                        android:layout_width="70dp"
-                        android:layout_height="40dp"
-                        android:layout_weight=".20"
-                        android:gravity="center"
-                        android:paddingLeft="5dp"
-                        android:scaleX="0.7"
-                        android:scaleY="0.7"
-                        android:src="@drawable/generalsettings" />
-
-                    <TextView
-                        android:id="@+id/info42"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight=".70"
-                        android:paddingLeft="10dp"
-                        android:paddingTop="10dp"
-                        android:text="@string/Parametermenu"
-                        android:textSize="@dimen/Heading_size" />
-
-                    <ImageView
-                        android:id="@+id/im48"
-                        android:layout_width="82dp"
-                        android:layout_height="40dp"
-                        android:layout_gravity="right"
-                        android:scaleX="0.6"
-                        android:scaleY="0.6"
-                        android:src="@drawable/ic_more" />
-
-                </LinearLayout>
-
-
-            </LinearLayout>
 
 
 
