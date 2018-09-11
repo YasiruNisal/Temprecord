@@ -87,7 +87,7 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
 
     public static final String EXTRAS_MESSAGE = "0";
 
-    private static final int PROGRESSBAR_MAX = 700;
+    private static final int PROGRESSBAR_MAX = 500;
 
     private ScrollView queryScroll;
     private FrameLayout mWrapperFL;
@@ -335,6 +335,7 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
 
     private ProgressDialog progress;
     private int progresspercentage;
+    private int progressperc = 0;
     private int timeoutdelay;
     private int firsttime = 0;
     private boolean soundon = true;
@@ -613,7 +614,7 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
 //        mConnectionState.setText(getString(R.string.USB_Connected));
 
 
-        task = new ProgressTask();
+        //task = new ProgressTask();
         showProgress();
         appversion = (TextView) view.findViewById(R.id.appversion);
         androidversion = (TextView) view.findViewById(R.id.androidversion);
@@ -865,7 +866,7 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
                         usbFragmentI.onUSBWrite(HexData.BLE_ACK);
                         message = "1";
                         state = 1;
-                        task = new ProgressTask();
+                        //task = new ProgressTask();
                         showProgress();
                     }else
                         Toast.makeText(getActivity(), getString(R.string.wait), Toast.LENGTH_LONG).show();
@@ -881,7 +882,7 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
                                 usbFragmentI.onUSBWrite(HexData.BLE_ACK);
                                 message = "2";
                                 state = 1;
-                                task = new ProgressTask();
+                                //task = new ProgressTask();
                                 showProgress();
                                 break;
                             case 4:
@@ -889,7 +890,7 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
                                 usbFragmentI.onUSBWrite(HexData.BLE_ACK);
                                 message = "3";
                                 state = 1;
-                                task = new ProgressTask();
+                                //task = new ProgressTask();
                                 showProgress();
                                 break;
                             case 5:
@@ -1365,7 +1366,7 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
                 usbFragmentI.onUSBWrite(HexData.BLE_ACK);
                 message = "1";
                 state = 1;
-                task = new ProgressTask();
+                //task = new ProgressTask();
                 showProgress();
             }
         }.start();
@@ -1399,7 +1400,7 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
         else
             soundon = false;
 
-        progresspercentage = progresspercentage + 5;
+        //progresspercentage = progresspercentage + 5;
         switch (state) {
             case 0:
                 connected = true;
@@ -1652,7 +1653,7 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
                     SetUI();
 
                     //   hexData.BytetoHex(ExtraRead);
-                    progresspercentage = 100;
+                    //progresspercentage = 100;
                     stopProgress();
                 }
                 usbFragmentI.onUSBWrite(commsSerial.WriteUSBByte(mt2Msg_read.Read_into_writeByte(false)));
@@ -1665,7 +1666,7 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
                         //BuildDialogue("No Data","Logger is not in running or stop state to display data", 1);
                     }else
 //                                SetUI();
-                        progresspercentage = 100;
+                        //progresspercentage = 100;
 
                     usbFragmentI.onUSBWrite(HexData.BLE_ACK);
                     state = 29;
@@ -1792,11 +1793,11 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
                 }
                 break;
             case 34:
-                progresspercentage = progresspercentage + 10;
+                //progresspercentage = progresspercentage + 10;
                 hexData.BytetoHex(in);
                 if(mt2Msg_write.writeDone()){
                     state = 35;
-                    progresspercentage = 100;
+                    //progresspercentage = 100;
                     stopProgress();
                 }
                 usbFragmentI.onUSBWrite(commsSerial.WriteUSBByte(mt2Msg_write.writeFill()));
@@ -1812,7 +1813,7 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
                 usbFragmentI.onUSBWrite(HexData.BLE_ACK);
                 message = "1";
                 state = 1;
-                task = new ProgressTask();
+                //task = new ProgressTask();
                 showProgress();
                 break;
             case 37:
@@ -1943,7 +1944,7 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
                             usbFragmentI.onUSBWrite(HexData.REUSE_USB);
                             message = "2";
                             state = 1;
-                            task = new ProgressTask();
+                            //task = new ProgressTask();
                             showProgress();
                         }else if(press == 3){
                             //Log.i("Q", done_Reading +"");
@@ -1952,7 +1953,7 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
                             message = "1";
                             state = 1;
                             Show_PDF_Dialogue();
-                            task = new ProgressTask();
+                            //task = new ProgressTask();
                             showProgress();
                         }else if(press == 4){
                             if(Complete) {
@@ -2105,22 +2106,26 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
             progress.setProgressNumberFormat("");
             progress.setMax(PROGRESSBAR_MAX);
             progress.show();
-            progresspercentage = 0;
+            //progresspercentage = 0;
+
         }
         protected void onCancelled() {
+
             progress.dismiss();
 
         }
         protected Void doInBackground(Integer... params) {
             //LogThings("Doinf stuff in the background " + progresspercentage);
-            while(progresspercentage < PROGRESSBAR_MAX) {
+
+            for(int i = 0; i < 500; i+=5){
                 if(!isCancelled()) {
                     try {
-                        Thread.sleep(600);
+                        Thread.sleep(400);
 
                     } catch (InterruptedException e) {
                         e.printStackTrace();
-                    }publishProgress(progresspercentage);
+                    }
+                    publishProgress(i);
                 }
 
             }
@@ -2131,7 +2136,8 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
 
         }
         protected void onPostExecute(Void result) {
-            progresspercentage = 0;
+
+            //progresspercentage = 0;
 
             progress.dismiss();
             // async task finished
@@ -2147,8 +2153,9 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
         ////////////////////task = new ProgressTask();
         // start progress bar with initial progress 10
         ///////////////////task.execute(10,5,null);
-        progresspercentage = 0;
-        LogThings("TASK " + task);
+        //progresspercentage = 0;
+        //LogThings("TASK " + task);
+        task = new ProgressTask();
         if(Build.VERSION.SDK_INT >= 11/*HONEYCOMB*/) {
             task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         } else {
@@ -3240,7 +3247,7 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
                     if (Complete) {
                         state = 30;
                         usbFragmentI.onUSBWrite(commsSerial.WriteUSBByte(baseCMD.ReadRTC()));
-                        task = new ProgressTask();
+                        //task = new ProgressTask();
                         showProgress();
                         dialogcancel.dismiss();
                     }else{

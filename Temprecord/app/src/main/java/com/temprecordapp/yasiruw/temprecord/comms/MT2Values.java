@@ -1,6 +1,8 @@
 package com.temprecordapp.yasiruw.temprecord.comms;
 
 
+import android.util.Log;
+
 import com.temprecordapp.yasiruw.temprecord.CustomLibraries.Yasiru_Temp_Library;
 import com.temprecordapp.yasiruw.temprecord.Types.baseType;
 
@@ -401,13 +403,13 @@ public class MT2Values  {
 
             TotalLimit = AboveLimit + BelowLimit;
             TotalPercent = AbovePercent + BelowPercent;
-            TotalTime = yasiruTempLibrary.Period(samplePeriod * TotalLimit);
+            TotalTime = yasiruTempLibrary.Period(samplePeriod * TotalLimit*1000);
 
             TotalLimitWithin = totalCount - TotalLimit;
             TotalPercentWithin = 100.0 - TotalPercent;
             TotalTimeWithin = yasiruTempLibrary.Period(samplePeriod * TotalLimitWithin*1000);
 
-            //Log.d("____++++++++++++_______", TotalTimeWithin +" "+ samplePeriod+ " "+TotalLimitWithin );
+            //Log.d("____++++++++++++_______", TotalTime +" "+ AboveLimit+ " "+BelowLimit + " "+ TotalLimit );
         }
 
 

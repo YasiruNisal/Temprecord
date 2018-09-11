@@ -1,6 +1,6 @@
 *{margin: 0;padding: 0;}
 html, head, body {height: 100%; width: auto;margin: 0;padding:0;}
-#container{width: 100%;height: 88%;margin: 0;padding:0;}
+#container{width: 100%;height: 100%;margin: 0;padding:0;}
 #zoom{margin: 0;padding:0;}
 body{font-family:oswald;font-size: 15px;}
 .button{height: 80px;width: 65px;background: rgba(40,40,40,1);font-family: 'oswald';color: rgba(250,250,250,1);border: 0;text-align: center}

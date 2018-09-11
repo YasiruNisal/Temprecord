@@ -42,26 +42,27 @@ var initialY2= 0;
 var initialY2Limit = 0;
 var sendJson = 0; 
 var eventflag = false;
+var isApp = false;
 
-var graphBackground
-var graphBorder
-var grid
-var font
-var fontcolor
-var Upperline1
-var line1
-var Lowerline1
-var Upperline2
-var line2
-var Lowerline2
-var linewidth
-var gridwidth
-var graphColor
-var UpperLimitLine
-var UpperLimitArea
-var BelowLimitLine
-var BelowLimitArea
-var WithinLimitArea
+var graphBackground;
+var graphBorder;
+var grid;
+var font;
+var fontcolor;
+var Upperline1;
+var line1;
+var Lowerline1;
+var Upperline2;
+var line2;
+var Lowerline2;
+var linewidth;
+var gridwidth;
+var graphColor;
+var UpperLimitLine;
+var UpperLimitArea;
+var BelowLimitLine;
+var BelowLimitArea;
+var WithinLimitArea;
 
 //intialize the graph
 window.onload = function()
@@ -82,7 +83,7 @@ window.onload = function()
     if the jsonfile = 0, no json file was found from a desktop application
     android.getData() gets jsonfile from mobile app.
     */
-    if(jsonfile == 0)
+    if(jsonfile === 0)
     {
         fromJava = android.getData();
         jsonfile = JSON.parse(fromJava);
@@ -421,160 +422,135 @@ function enableButtons()
          chart.xAxis[0].setExtremes(selectedstartdate, selectedstopdate);
     });
 
-
-    //disables ctrl+scroll
-    document.onmousewheel = function(){ stopWheel(); }
-    if(document.addEventListener){
-        document.addEventListener('DOMMouseScroll', stopWheel, false);
-    }
-     
-    function stopWheel(e){
-        if(!e){ e = window.event; }
-        if(e.preventDefault) { e.preventDefault(); }
-        e.returnValue = false;
-    }
-
-
-    document.onclick = hideContextMenu;
-    var contextMenu = document.getElementById('contextMenu');
-    var commentbox = document.getElementById('box');
-    var cancelbox = document.getElementById('cancel');
-    function showContextMenu(event)
-    {
-        contextMenu.style.display = 'block';
-        contextMenu.style.left = event.clientX + 'px';
-        contextMenu.style.top = event.clientY + 'px';
-        return false;
-    }
-
-    function hideContextMenu ()
-    {
-        contextMenu.style.display = 'none' ;
-    }
-
-
-    document.getElementById("SetStart").addEventListener("mouseup", function()
-    {
-        selectedstartdate = timestamp;
-
-        chart.xAxis[0].removePlotBand('SetStart');
-
-        chart.xAxis[0].addPlotBand
-        ({
-            id:'SetStart',
-            from: timestamp,
-            to: startdate,
-            color:  'rgba(112,112,112,0.5)',
-            zIndex: 4
-        });
-
-        chart.xAxis[0].addPlotLine
-        ({ //lower limit
-            id:'SetStart',
-            width: 1.5,
-            value: timestamp,
-            color: "gray",
-            dashStyle: 'dash',
-            zIndex: 4
-        });
-    });
-
-    document.getElementById("SetEnd").addEventListener("mouseup", function()
-    {
-        selectedstopdate = timestamp;
-
-        chart.xAxis[0].removePlotBand('SetEnd');
-
-        chart.xAxis[0].addPlotBand
-        ({
-            id:'SetEnd',
-            from: timestamp,
-            to: stopdate,
-            color:  'rgba(112,112,112,0.5)',
-            zIndex: 4
-        });
-
-
-
-        chart.xAxis[0].addPlotLine
-        ({ //lower limit
-            id:'SetEnd',
-            width: 1.5,
-            value: timestamp,
-            color: "gray",
-            dashStyle: 'dash',
-            zIndex: 4
-        });
-    });
-
-
-    document.getElementById("ClearStart").addEventListener("mouseup", function()
-    {
-        selectedstartdate = startdate;
-        chart.xAxis[0].removePlotBand('SetStart');
-    });
-
-
-    document.getElementById("ClearEnd").addEventListener("mouseup", function()
-    {
-        selectedstopdate = stopdate;
-        chart.xAxis[0].removePlotBand('SetEnd');
-    });
         
 }
 //---------------------------------------------------------------------------------//
 
 
 //---------------------------------------------------------------------------------//
-function setLimits ()
-{
-    minY = chart.yAxis[0].dataMin;
-    maxY = chart.yAxis[0].dataMax;
-    minY2 = chart.yAxis[1].dataMin;
-    maxY2 = chart.yAxis[1].dataMax;
-    zoomxInterval = (stopdate-startdate)/20;
-    zoomyInterval = (maxY - minY)/10;
-    zoomy2Interval = (maxY2 - minY2)/10;
-    selectedstartdate = chart.xAxis[0].dataMin;
-    selectedstopdate = chart.xAxis[0].dataMax;
+//disables ctrl+scroll
+document.onmousewheel = function(){ stopWheel(); }
+if(document.addEventListener){
+    document.addEventListener('DOMMouseScroll', stopWheel, false);
+}
+//---------------------------------------------------------------------------------//
 
-    chart.update({
-        yAxis:
-         [{
-            min: minY - zoomyInterval,
-            max: maxY + zoomyInterval
-        },
-        {
-            min: minY2 - zoomy2Interval,
-            max: maxY2 + zoomy2Interval
-        }]
+
+//---------------------------------------------------------------------------------// 
+function stopWheel(e){
+    if(!e){ e = window.event; }
+    if(e.preventDefault) { e.preventDefault(); }
+    e.returnValue = false;
+}
+//---------------------------------------------------------------------------------//
+
+
+//---------------------------------------------------------------------------------//
+document.onclick = hideContextMenu;
+var contextMenu = document.getElementById('contextMenu');
+var commentbox = document.getElementById('box');
+var cancelbox = document.getElementById('cancel');
+function showContextMenu(event)
+{
+    contextMenu.style.display = 'block';
+    contextMenu.style.left = event.clientX + 'px';
+    contextMenu.style.top = event.clientY + 'px';
+    return false;
+}
+//---------------------------------------------------------------------------------//
+
+
+//---------------------------------------------------------------------------------//
+function hideContextMenu ()
+{
+    contextMenu.style.display = 'none' ;
+}
+//---------------------------------------------------------------------------------//
+
+
+//---------------------------------------------------------------------------------//
+document.getElementById("SetStart").addEventListener("mouseup", function()
+{
+    selectedstartdate = timestamp;
+
+    chart.xAxis[0].removePlotBand('SetStart');
+
+    chart.xAxis[0].addPlotBand
+    ({
+        id:'SetStart',
+        from: timestamp,
+        to: startdate,
+        color:  'rgba(112,112,112,0.5)',
+        zIndex: 4
+    });
+
+    chart.xAxis[0].addPlotLine
+    ({ //lower limit
+        id:'SetStart',
+        width: 1.5,
+        value: timestamp,
+        color: "gray",
+        dashStyle: 'dash',
+        zIndex: 4
+    });
+});
+//---------------------------------------------------------------------------------//
+
+
+//---------------------------------------------------------------------------------//
+document.getElementById("SetEnd").addEventListener("mouseup", function()
+{
+    selectedstopdate = timestamp;
+
+    chart.xAxis[0].removePlotBand('SetEnd');
+
+    chart.xAxis[0].addPlotBand
+    ({
+        id:'SetEnd',
+        from: timestamp,
+        to: stopdate,
+        color:  'rgba(112,112,112,0.5)',
+        zIndex: 4
     });
 
 
-    if ((minY < TLL) || (maxY > TUL) || (minY2 < HLL) || (maxY2 > HUL))
-    {
-        var image = document.getElementById("image");
-        image.src = "images/redWarning.png"
-    }
 
-    if(jsonfile.device[0].zoom != undefined)
-    {
-        var zoom = jsonfile.device[0].zoom;
-        chart.xAxis[0].setExtremes(zoom.startdate,zoom.stopdate);
-        chart.yAxis[0].setExtremes(zoom.y0min, zoom.y0max);
-        chart.yAxis[0].setExtremes(zoom.y1min, zoom.y1max);
+    chart.xAxis[0].addPlotLine
+    ({ //lower limit
+        id:'SetEnd',
+        width: 1.5,
+        value: timestamp,
+        color: "gray",
+        dashStyle: 'dash',
+        zIndex: 4
+    });
+});
+//---------------------------------------------------------------------------------//
 
-        document.querySelector('.hideAllTraces').checked = zoom.hidegray;
-        document.querySelector('.hideAllTraces').checked = zoom.showalllimits;
-    }
 
-}
+//---------------------------------------------------------------------------------//
+document.getElementById("ClearStart").addEventListener("mouseup", function()
+{
+    selectedstartdate = startdate;
+    chart.xAxis[0].removePlotBand('SetStart');
+});
+//---------------------------------------------------------------------------------//
+
+
+
+//---------------------------------------------------------------------------------//
+document.getElementById("ClearEnd").addEventListener("mouseup", function()
+{
+    selectedstopdate = stopdate;
+    chart.xAxis[0].removePlotBand('SetEnd');
+});
 //---------------------------------------------------------------------------------//
 
 
 //---------------------------------------------------------------------------------//
 function setAppSetting(dataRecieve)
 {
+    isApp = true;
     document.getElementById("zoom").style.display = 'none';
     //AM/PM FORMAT PR 24HRs
     if(dataRecieve.device[0].header.apmp == "true")
@@ -594,6 +570,8 @@ function setAppSetting(dataRecieve)
     plotOptions = {};
     initialY2 = line2;
     initialY2Limit = Upperline2;
+
+    font = '3.5vh';
 }
 //---------------------------------------------------------------------------------//
 
@@ -925,6 +903,73 @@ function getData(dataRecieve)
 
 
 //---------------------------------------------------------------------------------//
+function setLimits ()
+{
+    minY = chart.yAxis[0].dataMin;
+    maxY = chart.yAxis[0].dataMax;
+    minY2 = chart.yAxis[1].dataMin;
+    maxY2 = chart.yAxis[1].dataMax;
+    zoomxInterval = (stopdate-startdate)/20;
+    zoomyInterval = (maxY - minY)/10;
+    zoomy2Interval = (maxY2 - minY2)/10;
+    selectedstartdate = chart.xAxis[0].dataMin;
+    selectedstopdate = chart.xAxis[0].dataMax;
+
+    chart.update({
+        yAxis:
+         [{
+            min: minY - zoomyInterval,
+            max: maxY + zoomyInterval
+        },
+        {
+            min: minY2 - zoomy2Interval,
+            max: maxY2 + zoomy2Interval
+        }]
+    });
+
+
+    if ((minY < TLL) || (maxY > TUL) || (minY2 < HLL) || (maxY2 > HUL))
+    {
+        var image = document.getElementById("image");
+        image.src = "images/redWarning.png"
+    }
+
+    if(jsonfile.device[0].zoom != undefined)
+    {
+        var zoom = jsonfile.device[0].zoom;
+        chart.xAxis[0].setExtremes(zoom.startdate,zoom.stopdate);
+        chart.yAxis[0].setExtremes(zoom.y0min, zoom.y0max);
+        chart.yAxis[0].setExtremes(zoom.y1min, zoom.y1max);
+
+        document.querySelector('.hideAllTraces').checked = zoom.hidegray;
+        document.querySelector('.hideAllTraces').checked = zoom.showalllimits;
+    }
+
+    if(isApp === true)
+    {
+        chart.update({
+            series:[{},{
+                zones:[{value: HLL,color: Lowerline2},{value: HUL,color:line2},{color: Upperline2}],
+                width: 2,
+                color: line2}],
+            yAxis:[{},{
+                labels:{
+                    style: {
+                        color: line2
+                    }
+                },
+                tickColor: line2}]
+        });
+
+        setPlotband2(jsonfile);
+    }
+
+}
+//---------------------------------------------------------------------------------//
+
+
+
+//---------------------------------------------------------------------------------//
 function setPlotband1 (dataRecieve)
 {
     var channelsize = Object.keys(dataRecieve.device[0].channel).length;
@@ -1073,9 +1118,9 @@ function setPlotband2 (dataRecieve)
 function clickstate(line){
     if(line.index != tag)
     {
-        if(line.visible == true)
+        if(line.visible === true)
         {
-            if(line.color == '#bababa')
+            if(line.color === '#bababa')
             {
                 visible++;
                 select(line.index);
@@ -1087,7 +1132,7 @@ function clickstate(line){
                 visible--;
                 deselect(line.index);
                 line.setVisible();
-                if(document.querySelector('.hideAllTraces').checked == true)
+                if(document.querySelector('.hideAllTraces').checked === true)
                     line.show();
             }
         }

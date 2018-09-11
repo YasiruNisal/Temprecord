@@ -177,17 +177,23 @@ public class Yasiru_Temp_Library {
             r = App.getContext().getString(R.string.SampleCount);
         }else if(data.fullStop.getValue()){
             r = App.getContext().getString(R.string.MemoryFull);
-        }else if(!data.sampleStop.getValue()){
+        }else if(data.sampleStop.getValue()){
             r = App.getContext().getString(R.string.DateTime);
         }
 
         return r;
     }
 
+//    public String Period(int mseconds){
+//        TimeZone tz = TimeZone.getTimeZone("UTC");
+//        SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
+//        df.setTimeZone(tz);
+//        String time = df.format(new Date(mseconds));
+//        return time;
+//    }
+
     public String Period(int mseconds){
-        TimeZone tz = TimeZone.getTimeZone("UTC");
         SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
-        df.setTimeZone(tz);
         String time = df.format(new Date(mseconds));
         return time;
     }
@@ -233,7 +239,7 @@ public class Yasiru_Temp_Library {
         if (hours > 0)
             return hours + ":" + minsString + ":" + secsString;
         else if (mins > 0)
-            return "00:" +minsString + ":" + secsString;
+            return "00:" +mins + ":" + secsString;
         else return "00:00:" + secsString;
     }
 
