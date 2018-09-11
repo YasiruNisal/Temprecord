@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorRED">#ff1f2a</color>
+    <color name="white_color">#fafafa</color>
+    <color name="white_color1">#ffffff</color>
+    <color name="gray_bg_color">#E5E5E5</color>
+    <color name="text_color">#333333</color>
+    <color name="ublox_blue_color">#005595</color>
+    <color name="BLACK">#000000</color>
+    <color name="WHITE">#FFFFFF</color>
+    <color name="BackG_blue_color">#00a2ff</color>
+    <color name="list_title_color">#666666</color>
+    <color name="chat_name_color">#eeeeee</color>
+    <color name="connect_green">#35d72f</color>
+    <color name="contentback">#fafafa</color>
+    <color name="temp_blue">#1237A0</color>
+</resources>
