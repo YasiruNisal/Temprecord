@@ -1917,11 +1917,14 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
     private void MT2ValueIn(byte[] value){
         ArrayList<Byte> data = new ArrayList<Byte>();
         for(int  i = 0; i < value.length; i++) data.add(value[i]);
+        int loopednumber = (baseCMD.numberofsamples/16384);
+        //Log.i("TEST", " SIZEEEEE " + baseCMD.numberofsamples + " " + loopednumber + " "+ baseCMD.numberofsamples%16384);
         //calculating first loged sample
         Date date = baseCMD.startDateTime;
         Calendar calendar = QS.toCalendar(date);
         calendar.add(Calendar.SECOND, baseCMD.startDelay);
-        int loopednumber = mt2Mem_values.Data.size()/16384;
+        //calendar.add(Calendar.SECOND, (baseCMD.samplePeriod*loopednumber*16384)-(baseCMD.samplePeriod*(baseCMD.numberofsamples%16384)));
+
         date = calendar.getTime();
         try {
             mt2Mem_values = new MT2Values.MT2Mem_values(data, date, baseCMD.ch1Hi/10, baseCMD.ch1Lo/10, baseCMD.ch2Hi/10, baseCMD.ch2Lo/10, baseCMD.samplePeriod, baseCMD.ch1Enable, baseCMD.ch2Enable ,loopednumber);
