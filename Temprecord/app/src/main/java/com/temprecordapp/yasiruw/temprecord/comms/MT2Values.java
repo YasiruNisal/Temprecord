@@ -2,6 +2,7 @@ package com.temprecordapp.yasiruw.temprecord.comms;
 
 
 import android.util.Log;
+import android.widget.LinearLayout;
 
 import com.temprecordapp.yasiruw.temprecord.CustomLibraries.Yasiru_Temp_Library;
 import com.temprecordapp.yasiruw.temprecord.Types.baseType;
@@ -83,7 +84,7 @@ public class MT2Values  {
         }
 
         public MT2Mem_values(ArrayList<Byte> data, Date firstLogSample, int Ch0Hi, int Ch0Lo, int Ch1Hi, int Ch1Lo, int samplePeriod,
-        boolean ch0Enable, boolean ch1Enable) throws ParseException {
+        boolean ch0Enable, boolean ch1Enable, int loopnumber) throws ParseException {
             super(ByteSize);
 
             ch0Stats = new sVal_MKTStats(Ch0Hi, Ch0Lo);
@@ -98,11 +99,11 @@ public class MT2Values  {
                 HasBeenRead = true;
                 RawData = data;
                 //Log.i("READ" , " Raw data size" + RawData.size());
-                FillData(RawData, firstLogSample, samplePeriod, ch0Enable, ch1Enable);
+                FillData(RawData, firstLogSample, samplePeriod, ch0Enable, ch1Enable, loopnumber);
             }
         }
 
-        private void FillData(ArrayList<Byte> rawData, Date firstLoggedSample, int samplePeriod, boolean ch0Enable, boolean ch1Enable) throws ParseException {
+        private void FillData(ArrayList<Byte> rawData, Date firstLoggedSample, int samplePeriod, boolean ch0Enable, boolean ch1Enable, int loopnumber) throws ParseException {
             Data = new ArrayList<>();
             TagData = new ArrayList<>();
             boolean hasFlag = false;
@@ -168,7 +169,7 @@ public class MT2Values  {
                     sampleDateTime = calendar.getTime();
 
                 }
-
+                //Log.i("TEST", "NUmber:" + rawData.size() / 2);
                 ch0Stats.Finalize(rawData.size() / 2, samplePeriod);
                 LoggedTripDuration = (SamplePeriod * (rawData.size() / 2));
 
@@ -362,7 +363,6 @@ public class MT2Values  {
         /// <param name="time">The timestamp of the new data logged value</param>
         public void Update(int value, int number, Date time)
         {
-
             Mean += value;
             if (Min.MinCompare(value))
             {
@@ -392,6 +392,7 @@ public class MT2Values  {
         /// <param name="samplePeriod">The sample period in seconds to use when calculating time above/below limits</param>
         public void Finalize(int totalCount, int samplePeriod)
         {
+
             Mean = Mean / (double)totalCount;
             Mean = Mean / 10.0;
 

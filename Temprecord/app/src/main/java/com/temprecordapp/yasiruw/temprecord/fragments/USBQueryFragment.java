@@ -1199,7 +1199,7 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
         FragmentUIupdate();
         if(baseCMD.numberofsamples != 0) {
 
-            loggedsamples.setText(String.valueOf(mt2Mem_values.Data.size()));
+            //loggedsamples.setText(String.valueOf(mt2Mem_values.Data.size()));
             tripsamples.setText(String.valueOf(mt2Mem_values.Data.size()));
             LoggedTags.setText(mt2Mem_values.TagCount() + "");
             FirstSample.setText(QS.UTCtoLocal(mt2Mem_values.Data.get(0).valTime.getTime()));
@@ -1410,7 +1410,7 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
      *@param in byte array of data sent from the MainActivity INTERNAL BROADCAST RECEIVER
      * *******************************************************************************************/
     public void CommsI(final byte[] in){
-//        LogThings("in " + state);
+        //LogThings("in " + state);
         //Log.i("TEST", "******************************************** Going to CONNECTED======== " + state);
 //        Runnable runnableCode = new Runnable() {
 //            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -1866,6 +1866,7 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
             stopProgress();
             connected = false;
             linearLayout.setBackgroundColor(getResources().getColor(R.color.list_title_color));
+            tagbutton.setVisibility(View.GONE);
             start_stop.setClickable(false);
             if(querycurrenttemp!=null)
                 querycurrenttemp.setClickable(false);
@@ -1920,9 +1921,10 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
         Date date = baseCMD.startDateTime;
         Calendar calendar = QS.toCalendar(date);
         calendar.add(Calendar.SECOND, baseCMD.startDelay);
+        int loopednumber = mt2Mem_values.Data.size()/16384;
         date = calendar.getTime();
         try {
-            mt2Mem_values = new MT2Values.MT2Mem_values(data, date, baseCMD.ch1Hi/10, baseCMD.ch1Lo/10, baseCMD.ch2Hi/10, baseCMD.ch2Lo/10, baseCMD.samplePeriod, baseCMD.ch1Enable, baseCMD.ch2Enable );
+            mt2Mem_values = new MT2Values.MT2Mem_values(data, date, baseCMD.ch1Hi/10, baseCMD.ch1Lo/10, baseCMD.ch2Hi/10, baseCMD.ch2Lo/10, baseCMD.samplePeriod, baseCMD.ch1Enable, baseCMD.ch2Enable ,loopednumber);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -2227,6 +2229,7 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
 
     }
 
+
     /*********************************************************************************************
      * Three button option PDF dialogue shows up when the pdf circile button is pressed
      * ********************************************************************************************/
@@ -2287,6 +2290,7 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
         dialog.show();
     }
 
+
     /*********************************************************************************************
      * Makes a sound depending on a positive or negative outcome eg. start successful stop unsuccessful)
      * @param context context of the application
@@ -2298,6 +2302,7 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
             mp.start();
         }
     }
+
 
     /*********************************************************************************************
      * Opens the certificate of accuracy
@@ -2311,6 +2316,7 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
             startActivity(i);
         }
     }
+
 
     /*********************************************************************************************
      *Takes the user to Temprecord web page
@@ -2751,6 +2757,8 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
 
 
     }
+
+
     /*********************************************************************************************
      * Parameter stop on date time pop-up
      * ********************************************************************************************/
@@ -2827,6 +2835,8 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
 
 
     }
+
+
     /*********************************************************************************************
     * used to compare the two password fields
     * if the passwords do not match the second one turns red
@@ -2893,6 +2903,7 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
 
         );
     }
+
 
     /*********************************************************************************************
      * set all the UI on the parameter pop-up
@@ -3415,7 +3426,7 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
 //    {
 //        public void run()
 //        {
-//            LogThings("in runable update temp and hum");
+//            //LogThings("in runable update temp and hum");
 //            if(part == 0) {
 //                mt2Msg_read = new MT2Msg_Read(commsChar.MEM_RAM, 0, 100, 100, 3);
 //                usbFragmentI.onUSBWrite(commsSerial.WriteUSBByte(mt2Msg_read.Read_into_writeByte(true)));
@@ -3440,7 +3451,7 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
 //
 //            }
 //
-//            //m_handler.postDelayed(m_timer, 1 * 1000);
+//            m_handler.postDelayed(m_timer, 1 * 1000);
 //        }
 //    };
 
