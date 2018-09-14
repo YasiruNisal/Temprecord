@@ -1,5 +1,5 @@
 <resources>
-    <string name="App_version">"0.9.7.1"</string>
+    <string name="App_version">"0.9.7.3"</string>
 
     <string name="app_name">Temprecord</string>
     <string name="ble_not_supported">BLE is not supported</string>
@@ -455,9 +455,9 @@ Bluetooth and NFC will be available in later versions of the application"</strin
     <string name="startdateincomplete">Start on date time field is incomplete</string>
     <string name="stopdateincomplete">Stop on date time field is incomplete</string>
 
-    <string name="startdatelowerthannow">Start on date time is lower than the current time</string>
-    <string name="stopdatelowerthannow">Stop on date time is lower than the current time</string>
-    <string name="stopdatelowerthanstart">Stop on date time is lower than the start on time</string>
+    <string name="startdatelowerthannow">Start on date time is behind current time</string>
+    <string name="stopdatelowerthannow">Stop on date time is behind current time</string>
+    <string name="stopdatelowerthanstart">Stop on date time is behind start on time</string>
 
     <string name="channel1deisabled">Channel 1 is disabled.\nPlease enable at least channel 1</string>
 

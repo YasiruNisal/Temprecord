@@ -120,7 +120,7 @@ public class Json_Data {
                     if (storeKeyService.getDefaults("UNITS", context) != null && storeKeyService.getDefaults("UNITS", context).equals("1")) {
                         tempa.put(i, String.valueOf(mt2Mem_values.Data.get(i).valueCh0()));
                     }else{
-                        tempa.put(i, QS.returnF(String.valueOf(mt2Mem_values.Data.get(i).valueCh0())));
+                        tempa.put(i, String.format( "%.2f",QS.returnFD(mt2Mem_values.Data.get(i).valueCh0())));
                     }
                 }
                 data.put("value", tempa);
@@ -144,7 +144,7 @@ public class Json_Data {
                 if (storeKeyService.getDefaults("UNITS", context) != null && storeKeyService.getDefaults("UNITS", context).equals("1")) {
                     umidt.put(0, String.valueOf(baseCMD.ch1Hi / 10.0));
                 }else{
-                    umidt.put(0, QS.returnF(String.valueOf(baseCMD.ch1Hi / 10.0)));
+                    umidt.put(0, String.format( "%.2f",QS.returnFD((baseCMD.ch1Hi / 10.0))));
                 }
                 umidt.put(1, "#FF0000");
                 umidt.put(2, "dash");
@@ -169,7 +169,7 @@ public class Json_Data {
                 if (storeKeyService.getDefaults("UNITS", context) != null && storeKeyService.getDefaults("UNITS", context).equals("1")) {
                     lmidt.put(0, String.valueOf(baseCMD.ch1Lo / 10.0));
                 }else{
-                    lmidt.put(0, QS.returnF(String.valueOf(baseCMD.ch1Lo / 10.0)));
+                    lmidt.put(0, String.format( "%.2f",QS.returnFD((baseCMD.ch1Lo / 10.0))));
                 }
 
                 lmidt.put(1, "#FF0000");

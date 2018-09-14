@@ -243,9 +243,10 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
     LinearLayout querychannel2stats;
     LinearLayout querygraphlayout;
     LinearLayout helplayout;
-
-
     LinearLayout parametersparent;
+
+
+    //LinearLayout parametersparent;
 
     ExpandableRelativeLayout expandablemore;
     ExpandableRelativeLayout expandablehelp;
@@ -344,7 +345,7 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
     StoreKeyService storeKeyService;
     MT2Values.MT2Mem_values mt2Mem_values = new MT2Values.MT2Mem_values();
     MT2Msg_Write mt2Msg_write;
-    ProgressTask task;
+//    ProgressTask task;
     private final   Handler         m_handler               = new Handler();
     private Handler handler1 =new Handler();
     Thread t = new Thread();
@@ -583,7 +584,7 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
         samplesbelowLowerLimit1 = (TextView) view.findViewById(R.id.samplesbelowlowerlimit);
         timebelowLowerSamples1 = (TextView) view.findViewById(R.id.timebelowlowerlimit);
         percentagebelowLowerSample1 = (TextView) view.findViewById(R.id.percentagebelowlowerlimit);
-
+        //parametersparent = view.findViewById(R.id.parametersparent);
 
         channel2 = (TextView) view.findViewById(R.id.channel2query);
         upperLimit2 = (TextView) view.findViewById(R.id.upperlimit2query);
@@ -781,6 +782,7 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
 //                    else
 //                        parametersparent.setBackgroundColor(getResources().getColor(R.color.gray_bg_color));
 //                    collapsAllParameters();
+                    parametersparent.setEnabled(false);
                     parameterDialogue();
                     break;
 
@@ -1203,6 +1205,11 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
             tripsamples.setText(String.valueOf(mt2Mem_values.Data.size()));
             LoggedTags.setText(mt2Mem_values.TagCount() + "");
             FirstSample.setText(QS.UTCtoLocal(mt2Mem_values.Data.get(0).valTime.getTime()));
+            Date date = baseCMD.startDateTime;
+            Calendar calendar = QS.toCalendar(date);
+            calendar.add(Calendar.SECOND, baseCMD.startDelay);
+
+            date = calendar.getTime();
             FirstLoggedSample.setText(QS.UTCtoLocal(mt2Mem_values.Data.get(0).valTime.getTime()));
             LastSample.setText(QS.UTCtoLocal(mt2Mem_values.Data.get(mt2Mem_values.Data.size() - 1).valTime.getTime()));
             LastLoggedSample.setText(QS.UTCtoLocal(mt2Mem_values.Data.get(mt2Mem_values.Data.size() - 1).valTime.getTime()));
@@ -1224,10 +1231,10 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
             }else{
                 upperLimit1.setText(QS.returnFD(baseCMD.ch1Hi / 10.0) + " °F");
                 lowerLimit1.setText(QS.returnFD(baseCMD.ch1Lo / 10.0) + " °F");
-                mkt.setText(QS.returnF(String.format("%.1f", mt2Mem_values.ch0Stats.MKTValue)) + " °F");
-                mean1.setText(QS.returnF(String.format("%.1f", mt2Mem_values.ch0Stats.Mean)) + " °F");
+                mkt.setText(( String.format( "%.2f",QS.returnFD( mt2Mem_values.ch0Stats.MKTValue)) + " °F"));
+                mean1.setText( String.format( "%.2f",QS.returnFD( mt2Mem_values.ch0Stats.Mean)) + " °F");
                 String max1time = QS.UTCtoLocal(mt2Mem_values.Data.get(mt2Mem_values.ch0Stats.Max.Number - 1).valTime.getTime());
-                max1.setText(String.format("%.1f",QS.returnFD(mt2Mem_values.ch0Stats.Max.Value / 10.0)) + " °F\n" + max1time);
+                max1.setText( String.format( "%.2f",QS.returnFD(mt2Mem_values.ch0Stats.Max.Value / 10.0)) + " °F\n" + max1time);
                 String min1time = QS.UTCtoLocal(mt2Mem_values.Data.get(mt2Mem_values.ch0Stats.Min.Number - 1).valTime.getTime());
                 min1.setText(String.format("%.1f",QS.returnFD(mt2Mem_values.ch0Stats.Min.Value / 10.0)) + " °F\n" + min1time);
             }
@@ -1918,12 +1925,12 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
         ArrayList<Byte> data = new ArrayList<Byte>();
         for(int  i = 0; i < value.length; i++) data.add(value[i]);
         int loopednumber = (baseCMD.numberofsamples/16384);
-        //Log.i("TEST", " SIZEEEEE " + baseCMD.numberofsamples + " " + loopednumber + " "+ baseCMD.numberofsamples%16384);
+        Log.i("TEST", " SIZEEEEE " + baseCMD.numberofsamples + " " + loopednumber + " "+ baseCMD.numberofsamples%16384);
         //calculating first loged sample
         Date date = baseCMD.startDateTime;
         Calendar calendar = QS.toCalendar(date);
         calendar.add(Calendar.SECOND, baseCMD.startDelay);
-        //calendar.add(Calendar.SECOND, (baseCMD.samplePeriod*loopednumber*16384)-(baseCMD.samplePeriod*(baseCMD.numberofsamples%16384)));
+        calendar.add(Calendar.SECOND, (baseCMD.samplePeriod*loopednumber*16384));
 
         date = calendar.getTime();
         try {
@@ -2111,75 +2118,75 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
     /*********************************************************************************************
      * AsyncTask for the prograsbar at the start. Meant to help with context switching between the threads
      * ********************************************************************************************/
-    private class ProgressTask extends AsyncTask<Integer,Integer,Void> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute(); ///////???????
-
-            progress=new ProgressDialog(getActivity());
-            progress.setMessage(getString(R.string.pleasewait));
-            progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            progress.setIndeterminate(false);
-            progress.setProgress(0);
-            progress.setCancelable(false);
-            progress.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.Abort), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    //usbFragmentI.onUSBWrite(HexData.BLE_ACK);
-                    state =29;
-                    BuildDialogue(getString(R.string.ReadAbort), getString(R.string.Go_back_and_reconnect),1, false,getString(R.string.Yes));
-                    stopProgress();
-                    //dialog.dismiss();
-                }
-            });
-            progress.setProgressNumberFormat("");
-            progress.setMax(PROGRESSBAR_MAX);
-            progress.show();
-            //progresspercentage = 0;
-
-        }
-        @Override
-        protected void onCancelled() {
-            super.onCancelled();
-            progress.dismiss();
-
-        }
-        @Override
-        protected Void doInBackground(Integer... params) {
-            //LogThings("Doinf stuff in the background " + progresspercentage);
-
-            for(int i = 0; i < 20; i+=5){
-                if(!isCancelled()) {
-                    try {
-                        Thread.sleep(90);
-
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    publishProgress(i);
-                }
-
-            }
-            return null;
-        }
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
-            progress.setProgress(values[0]);
-
-        }
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-            //progresspercentage = 0;
-
-            progress.dismiss();
-            // async task finished
-
-        }
-
-    }
+//    private class ProgressTask extends AsyncTask<Integer,Integer,Void> {
+//
+//        @Override
+//        protected void onPreExecute() {
+//            super.onPreExecute(); ///////???????
+//
+////            progress=new ProgressDialog(getActivity());
+////            progress.setMessage(getString(R.string.pleasewait));
+////            progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+////            progress.setIndeterminate(false);
+////            progress.setProgress(0);
+////            progress.setCancelable(false);
+////            progress.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.Abort), new DialogInterface.OnClickListener() {
+////                @Override
+////                public void onClick(DialogInterface dialog, int which) {
+////                    //usbFragmentI.onUSBWrite(HexData.BLE_ACK);
+////                    state =29;
+////                    BuildDialogue(getString(R.string.ReadAbort), getString(R.string.Go_back_and_reconnect),1, false,getString(R.string.Yes));
+////                    stopProgress();
+////                    //dialog.dismiss();
+////                }
+////            });
+////            progress.setProgressNumberFormat("");
+////            progress.setMax(PROGRESSBAR_MAX);
+////            progress.show();
+//            //progresspercentage = 0;
+//
+//        }
+//        @Override
+//        protected void onCancelled() {
+//            super.onCancelled();
+////            progress.dismiss();
+//
+//        }
+//        @Override
+//        protected Void doInBackground(Integer... params) {
+//            //LogThings("Doinf stuff in the background " + progresspercentage);
+//
+////            for(int i = 0; i < 20; i+=5){
+////                if(!isCancelled()) {
+////                    try {
+////                        Thread.sleep(90);
+////
+////                    } catch (InterruptedException e) {
+////                        e.printStackTrace();
+////                    }
+////                    publishProgress(i);
+////                }
+////
+////            }
+//            return null;
+//        }
+//        @Override
+//        protected void onProgressUpdate(Integer... values) {
+//            super.onProgressUpdate(values);
+////            progress.setProgress(values[0]);
+//
+//        }
+//        @Override
+//        protected void onPostExecute(Void result) {
+//            super.onPostExecute(result);
+//            //progresspercentage = 0;
+//
+////            progress.dismiss();
+//            // async task finished
+//
+//        }
+//
+//    }
 
     /*********************************************************************************************
      * start the progress
@@ -2190,12 +2197,33 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
         ///////////////////task.execute(10,5,null);
         //progresspercentage = 0;
         //LogThings("TASK " + task);
-        task = new ProgressTask();
-        if(Build.VERSION.SDK_INT >= 11/*HONEYCOMB*/) {
-            task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        } else {
-            task.execute();
-        }
+//        task = new ProgressTask();
+//        if(Build.VERSION.SDK_INT >= 11/*HONEYCOMB*/) {
+//            task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+//        } else {
+//            task.execute();
+//        }
+
+        progress=new ProgressDialog(getActivity());
+        progress.setMessage(getString(R.string.pleasewait));
+        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progress.setIndeterminate(false);
+        progress.setProgress(0);
+        progress.setCancelable(false);
+        progress.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.Abort), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //usbFragmentI.onUSBWrite(HexData.BLE_ACK);
+                state =29;
+                BuildDialogue(getString(R.string.ReadAbort), getString(R.string.Go_back_and_reconnect),1, false,getString(R.string.Yes));
+                stopProgress();
+                //dialog.dismiss();
+            }
+        });
+        progress.setProgressNumberFormat("");
+        progress.setMax(PROGRESSBAR_MAX);
+        progress.show();
+
 
     }
 
@@ -2204,7 +2232,7 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
      * ********************************************************************************************/
     public void stopProgress() {
         progress.dismiss();
-        task.cancel(true);
+//        task.cancel(true);
     }
 
     /*********************************************************************************************
@@ -2561,6 +2589,7 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
                     ch1alarmdelaynb.setEnabled(false);
                 }else{
                     ch1limitenabledcb.setChecked(false);
+                    ch1limitenabledcb.setEnabled(false);
                     ch1upperlimitnb.setEnabled(false);
                     ch1lowerlimitnb.setEnabled(false);
                     ch1alarmdelaynb.setEnabled(false);
@@ -2581,6 +2610,7 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
                     ch2alarmdelaynb.setEnabled(false);
                 }else{
                     ch2limitenabledcb.setChecked(false);
+                    ch2limitenabledcb.setEnabled(false);
                     ch2upperlimitnb.setEnabled(false);
                     ch2lowerlimitnb.setEnabled(false);
                     ch2alarmdelaynb.setEnabled(false);
@@ -2635,6 +2665,7 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
         startwithdelaybutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                startwithdelaybutton.setEnabled(false);
                 Toast.makeText(getActivity(), getString(R.string.StartwithdelayF), Toast.LENGTH_LONG).show();
                 showPicker(v, startwithdelaybutton);
             }
@@ -2643,6 +2674,7 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
         sampleperiodbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sampleperiodbutton.setEnabled(false);
                 Toast.makeText(getActivity(), getString(R.string.SampleperiodF), Toast.LENGTH_LONG).show();
                 showPicker(v, sampleperiodbutton);
             }
@@ -2651,6 +2683,7 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
         startondatetimebutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                startondatetimebutton.setEnabled(false);
                 whichbutton = 0;
                 startondatepopup();
 
@@ -2660,6 +2693,7 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
         stopondatebutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                stopondatebutton.setEnabled(false);
                 whichbutton = 1;
                 stopondatepopup();
             }
@@ -2681,19 +2715,33 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute, int seconds) {
                 // TODO Auto-generated method stub
+
                 b.setText(String.format("%02d", hourOfDay)+
                         ":" + String.format("%02d", minute) +
                         ":" + String.format("%02d", seconds));
+
             }
+
         }, Integer.parseInt(QS.StringDatetoInt(b.getText().toString())[0]), Integer.parseInt(QS.StringDatetoInt(b.getText().toString())[1]), Integer.parseInt(QS.StringDatetoInt(b.getText().toString())[2]), true);
         mTimePicker.show();
+
+        mTimePicker.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                startwithdelaybutton.setEnabled(true);
+                sampleperiodbutton.setEnabled(true);
+            }
+        });
+
     }
+
 
 
     /*********************************************************************************************
      * Parameters start on date time pop-up
      * ********************************************************************************************/
     private void startondatepopup(){
+
         timeoutdelay = timeoutdelay + 15;
         Date date = new Date();
         Calendar now = QS.toCalendar(date);
@@ -2747,7 +2795,12 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
         tpd.show(getActivity().getFragmentManager(), "Datepickerdialog");
         tpd.setVersion(TimePickerDialog.Version.VERSION_1);
         tpd.setAccentColor(getResources().getColor(R.color.temp_blue));
-
+        tpd.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                startondatetimebutton.setEnabled(true);
+            }
+        });
         DatePickerDialog dpd = DatePickerDialog.newInstance(
                 this,
                 year,
@@ -2757,7 +2810,12 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
         dpd.show(getActivity().getFragmentManager(), "Datepickerdialog");
         dpd.setVersion(DatePickerDialog.Version.VERSION_1);
         dpd.setAccentColor(getResources().getColor(R.color.temp_blue));
-
+        dpd.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                startondatetimebutton.setEnabled(true);
+            }
+        });
 
     }
 
@@ -2766,6 +2824,7 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
      * Parameter stop on date time pop-up
      * ********************************************************************************************/
     private void stopondatepopup(){
+
         timeoutdelay = timeoutdelay + 15;
         Date date = new Date();
         Calendar now = QS.toCalendar(date);
@@ -2819,12 +2878,12 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
         tpd.show(getActivity().getFragmentManager(), "Datepickerdialog");
         tpd.setVersion(TimePickerDialog.Version.VERSION_1);
         tpd.setAccentColor(getResources().getColor(R.color.temp_blue));
-//        tpd.setOnCancelListener(new DialogInterface.OnCancelListener() {
-//            @Override
-//            public void onCancel(DialogInterface dialog) {
-//                tpd.se
-//            }
-//        });
+        tpd.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                stopondatebutton.setEnabled(true);
+            }
+        });
 
         DatePickerDialog dpd = DatePickerDialog.newInstance(
                 this,
@@ -2835,6 +2894,12 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
         dpd.show(getActivity().getFragmentManager(), "Datepickerdialog");
         dpd.setVersion(DatePickerDialog.Version.VERSION_1);
         dpd.setAccentColor(getResources().getColor(R.color.temp_blue));
+        dpd.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                stopondatebutton.setEnabled(true);
+            }
+        });
 
 
     }
@@ -3046,6 +3111,13 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
             stopondatebutton.setText(QS.UTCtoLocalParameters(baseCMD.startDateTime.getTime()));
         }
 
+
+        if(baseCMD.StartwithDelay){
+            startwithdelay.setChecked(true);
+        }else{
+            startwithdelay.setChecked(false);
+        }
+
         usercommenttxt.setText(U_data.get(27));
         BLE_Name.setText(U_data.get(28));
 
@@ -3185,6 +3257,7 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
      * Initializes all the layout variables
      * ********************************************************************************************/
     private void parameterDialogue(){
+
         builder1 = new AlertDialog.Builder(getActivity(),R.style.AppCompatAlertDialogStyle);
 
         // Get the layout inflater
@@ -3278,6 +3351,7 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
         dialogcancel.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                parametersparent.setEnabled(true);
                 // User clicked OK button
                 if(baseCMD.state == 5){
                     fillEmpty();
@@ -3307,7 +3381,7 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
             @Override
             public void onClick(View v)
             {
-
+                parametersparent.setEnabled(true);
                 BuildDialogue(getString(R.string.warning), getString(R.string.programmingwarning2), 5, true,getString(R.string.Yes));
                 //Do stuff, possibly set wantToCloseDialog to true then...
 //                if(wantToCloseDialog) {
