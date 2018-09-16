@@ -317,6 +317,7 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
     private AlertDialog.Builder builder1 = null;
     Boolean wantToCloseDialog = false;
     AlertDialog dialogcancel = null;
+    private boolean fromRead = false;
 
     private byte[] TWFlash = new byte[144];
     private byte[] RamRead = new byte[100];
@@ -882,6 +883,7 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
                     break;
                 case R.id.read:
                     if(done_Reading) {
+                        fromRead = true;
                         Stop_Timer();
                         done_Reading = false;
                         getActivity().getActionBar().setTitle(R.string.QueryLogger);
@@ -1685,7 +1687,8 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
 
                     //   hexData.BytetoHex(ExtraRead);
                     //progresspercentage = 100;
-                    stopProgress();
+                    if(!fromRead)
+                        stopProgress();
                 }
                 usbFragmentI.onUSBWrite(commsSerial.WriteUSBByte(mt2Msg_read.Read_into_writeByte(false)));
                 break;
@@ -1722,6 +1725,10 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
             case 25://normal read
                 if (mt2Msg_read.write_into_readByte(commsSerial.ReadUSBByte(in)))
                 {
+                    if(fromRead) {
+                        fromRead = false;
+                        stopProgress();
+                    }
                     state = 29;
                     //Toast.makeText(getActivity(), "Background Reading DONE", Toast.LENGTH_LONG).show();
                     byte[] ValueRead = new byte[mt2Msg_read.memoryData.length];
@@ -1770,7 +1777,10 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
                 break;
             case 28:
                 if (mt2Msg_read.write_into_readByte(commsSerial.ReadUSBByte(in))) {
-
+                    if(fromRead) {
+                        fromRead = false;
+                        stopProgress();
+                    }
                     state = 29;
                     //Toast.makeText(getActivity(), "Background Reading DONE", Toast.LENGTH_LONG).show();
                     ReadValues2 = new byte[mt2Msg_read.memoryData.length];

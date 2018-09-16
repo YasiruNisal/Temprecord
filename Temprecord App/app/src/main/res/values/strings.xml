@@ -1,5 +1,5 @@
 <resources>
-    <string name="App_version">"0.9.7.3"</string>
+    <string name="App_version">"0.9.7.4"</string>
 
     <string name="app_name">Temprecord</string>
     <string name="ble_not_supported">BLE is not supported</string>
