@@ -1940,7 +1940,9 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
         Date date = baseCMD.startDateTime;
         Calendar calendar = QS.toCalendar(date);
         calendar.add(Calendar.SECOND, baseCMD.startDelay);
-        calendar.add(Calendar.SECOND, (baseCMD.samplePeriod*loopednumber*16384));
+        if(baseCMD.LoopOverwrite && !baseCMD.isLoopOverwriteOverFlow){
+            calendar.add(Calendar.SECOND, (baseCMD.samplePeriod*16384*loopednumber)-(baseCMD.samplePeriod*(16384-baseCMD.numberofsamples%16384)));
+        }
 
         date = calendar.getTime();
         try {
@@ -1994,6 +1996,7 @@ public class USBQueryFragment extends Fragment implements com.wdullaer.materiald
                             showProgress();
                         }else if(press == 3){
                             //Log.i("Q", done_Reading +"");
+                            fromRead = true;
                             done_Reading = false;
                             usbFragmentI.onUSBWrite(HexData.QUARY_USB);
                             message = "1";
