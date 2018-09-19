@@ -1,1 +1,1 @@
-Temprecord App - Android project file
+Temprecord Apps - Android project file
