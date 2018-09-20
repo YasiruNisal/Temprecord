@@ -3,11 +3,11 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 27
     defaultConfig {
-        applicationId "com.temprecordapp.yasiruw.temprecord"
+        applicationId "com.temprecord.temprecordapp"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 27
-        versionName "0.9.7.5"
+        versionCode 36
+        versionName "0.1.8"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

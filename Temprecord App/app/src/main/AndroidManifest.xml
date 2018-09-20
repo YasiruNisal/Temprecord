@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.temprecordapp.yasiruw.temprecord">
+    package="com.temprecord.temprecordapp">
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
-        android:name=".App"
+        android:name="com.temprecord.temprecordapp.App"
         android:allowBackup="true"
         android:icon="@mipmap/temprecordapp_icon"
         android:label="@string/app_name"
@@ -18,7 +18,7 @@
         android:largeHeap="true"
          ><!--android:launchMode="singleInstance"-->
         <activity
-            android:name=".activities.MainActivity"
+            android:name="com.temprecord.temprecordapp.activities.MainActivity"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -38,17 +38,17 @@
             <!-- ==================================================================== -->
         </activity>
         <activity
-            android:name=".activities.SettingsActivity"
+            android:name="com.temprecord.temprecordapp.activities.SettingsActivity"
             android:label=""
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
 
         <service
-            android:name=".services.BluetoothLeService"
+            android:name="com.temprecord.temprecordapp.services.BluetoothLeService"
             android:enabled="true" />
 
         <activity
-            android:name=".activities.GraphAcivity"
+            android:name="com.temprecord.temprecordapp.activities.GraphAcivity"
             android:screenOrientation="landscape" />
 
         <provider

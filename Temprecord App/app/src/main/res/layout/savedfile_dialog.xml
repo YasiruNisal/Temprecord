@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/queryscroll"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@color/white_color"
+    android:layout_height="100dp">
+
+    <ScrollView
+        android:id="@+id/parameterpopoup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/bottom_gap"
+        android:background="@color/white_color"
+        android:elevation="@dimen/Elevation"
+        android:orientation="vertical">
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/menu_text_gap"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical">
+
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="500dp"
+                android:id="@+id/savedfileslist">
+
+            </ListView>
+        </LinearLayout>
+
+
+    </ScrollView>
+
+
+
+</LinearLayout>

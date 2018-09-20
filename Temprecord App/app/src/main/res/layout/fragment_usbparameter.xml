@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.USBParameterFragment">
+    tools:context="com.temprecord.temprecordapp.fragments.USBParameterFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
