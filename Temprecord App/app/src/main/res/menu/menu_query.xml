@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item android:id="@+id/menu_about"
+        android:orderInCategory="100"
+        android:title="@string/Screenshot"
+        android:icon="@drawable/ic_screenshotb"
+        android:showAsAction="always"/>
+    <item
+        android:id="@+id/menu"
+        android:title="@string/Options"
+        android:icon="@drawable/query_option"
+        android:orderInCategory="101"
+        android:showAsAction="always">
+
+        <menu>
+
+            <item android:id="@+id/action_requery"
+                android:icon="@drawable/ic_infob"
+                android:showAsAction="ifRoom"
+                android:title="@string/ReQuery" />
+
+            <item android:id="@+id/action_start"
+                android:icon="@drawable/ic_startb"
+                android:showAsAction="ifRoom"
+                android:title="@string/StartLogger" />
+
+            <item android:id="@+id/action_stop"
+                android:icon="@drawable/ic_stopb"
+                android:showAsAction="ifRoom"
+                android:title="@string/StopLogger" />
+
+            <item android:id="@+id/action_reuse"
+                android:icon="@drawable/ic_reuseb"
+                android:showAsAction="ifRoom"
+                android:title="@string/ReuseLogger" />
+
+            <item android:id="@+id/action_tag"
+                android:icon="@drawable/ic_tagb"
+                android:showAsAction="ifRoom"
+                android:title="@string/TagLogger" />
+            <item android:id="@+id/action_find"
+                android:icon="@drawable/ic_findb"
+                android:showAsAction="ifRoom"
+                android:title="@string/FindLogger" />
+            <item android:id="@+id/action_read"
+                android:icon="@drawable/ic_readb"
+                android:showAsAction="ifRoom"
+                android:title="@string/ReadLogger" />
+
+
+
+        </menu>
+
+    </item>
+
+</menu>

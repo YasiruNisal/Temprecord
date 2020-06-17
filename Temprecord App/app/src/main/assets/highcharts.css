@@ -1,0 +1,18 @@
+*{margin: 0;padding: 0;}
+html, head, body {height: 100%; width: auto;margin: 0;padding:0;}
+#container{width: 100%;height: 100%;margin: 0;padding:0;}
+#zoom{margin: 0;padding:0;}
+body{font-family:oswald;font-size: 15px;}
+.button{height: 80px;width: 65px;background: rgba(40,40,40,1);font-family: 'oswald';color: rgba(250,250,250,1);border: 0;text-align: center}
+.zoom .hideAllTraces{margin-top: 100px;}
+.zoom .showAllLimit{margin-top: 100px;}
+.image{width: 80px; height:80px;padding: 5px 80px 0px 0px;}
+.context {width: 150px;height: auto;box-shadow: 2px 2px 20px 2px;position: absolute;background-color: 'black';display: none;}
+.context ul {list-style: none;padding: 0px 0px 0px 0px;}
+.context ul li{padding: 10px 5px 10px 5px;background: #fff;border-left: 4px solid transparent;cursor: pointer;}
+.context ul li:hover{background: #eee;border-left: 4px solid #666;}
+.box{position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);width: 400px;padding: 40px;background: rgba(0,0,0,0.8);box-sizing: boarder-box;border-radius: 10px;display: none;}
+.box .inputBox{position: relative;color: #fff;font-size: 18px;font-family: 'oswald';}
+.box .inputBox input{width: 100%;padding: 10px 0;font-size: 15px;color: #fff;background: transparent;border: none;outline:none;border-bottom: 1px solid #fff;margin-bottom: 30px;}
+.box .submit{width: 25%;height: 40px;outline: none;border: none;font-family: 'oswald';font-size: 15px;color: #fff;background: transparent;background: #03a9f4;cursor: pointer;border-radius: 5px;}
+.box #paragraph{width: 100%;padding: 10px 0;font-size: 20px;color: #fff;background: transparent;border: none;outline:none;margin-bottom: 10px;}
